@@ -97,41 +97,27 @@ flowchart TD
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Plugin Installation)
 
 ### Prerequisites
-- **Python:** `>= 3.12`
-- **Git:** `>= 2.30`
 - **CLI Ecosystem:** Google Antigravity CLI or Gemini CLI
+- **Python:** `>= 3.12`
 
-### Installation & Setup
+### 2-Step Plugin Installation
 
-1. **Clone the Repository:**
+1. **Install Plugin to your CLI Environment:**
+   Copy or clone `security-sast-guard` directly into your global plugins directory:
    ```bash
-   git clone https://github.com/nguyenduydan/security-sast-guard-plugin.git
-   cd security-sast-guard-plugin
+   # Windows (Powershell)
+   git clone https://github.com/nguyenduydan/security-sast-guard-plugin.git "$env:USERPROFILE\.gemini\config\plugins\security-sast-guard"
    ```
 
-2. **Install Development Dependencies:**
-   ```bash
-   pip install pre-commit ruff mypy pytest detect-secrets pylint
-   ```
+2. **Start Using Security Slash Commands:**
+   Open Antigravity CLI or Gemini CLI and run slash commands directly:
+   - Type `/sast-status` to inspect active firewall rules & security profiles.
+   - Type `/sast-audit codebase .` to run a silent vulnerability scan on your project.
 
-3. **Enable Pre-Commit Git Hooks:**
-   ```bash
-   # Enable pre-commit hook (runs linting & type checks before commit)
-   pre-commit install
-
-   # Enable commit-msg hook (enforces Conventional Commits format)
-   pre-commit install --hook-type commit-msg
-   ```
-
-4. **Verify Environment Readiness:**
-   ```bash
-   python -m ruff check .
-   python -m mypy --config-file=pyproject.toml control_plane.py src/
-   python -m pytest
-   ```
+> 🛠️ **Developer Note:** Looking to contribute or modify SAST rules? Check out the developer setup guide in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
