@@ -1,19 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "packages": {
-    ".": {
-      "release-type": "python",
-      "package-name": "security-sast-guard",
-      "changelog-sections": [
-        { "type": "feat", "section": "🚀 Features & SAST Security Rules", "hidden": false },
-        { "type": "fix", "section": "🐛 Bug Fixes", "hidden": false },
-        { "type": "perf", "section": "⚡ Performance Improvements", "hidden": false },
-        { "type": "refactor", "section": "🛠️ Refactoring & Code Hygiene", "hidden": false },
-        { "type": "build", "section": "⚙️ Build System & Dependencies", "hidden": false },
-        { "type": "ci", "section": "⚙️ CI/CD Workflows", "hidden": false },
-        { "type": "docs", "section": "📚 Documentation", "hidden": false },
-        { "type": "style", "section": "🎨 Code Style & Formatting", "hidden": false }
-      ]
-    }
-  }
+  "release-type": "python",
+  "changelog-sections": [
+    { "type": "feat", "section": "🚀 Features & SAST Security Rules", "hidden": false },
+    { "type": "fix", "section": "🐛 Bug Fixes", "hidden": false },
+    { "type": "perf", "section": "⚡ Performance Improvements", "hidden": false },
+    { "type": "refactor", "section": "♻️ Refactoring & Code Hygiene", "hidden": false },
+    { "type": "build", "section": "📦 Build System & Dependencies", "hidden": false },
+    { "type": "ci", "section": "🤖 CI/CD Workflows", "hidden": false },
+    { "type": "docs", "section": "📝 Documentation", "hidden": false },
+    { "type": "style", "section": "🎨 Code Style & Formatting", "hidden": false }
+  ]
 }
