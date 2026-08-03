@@ -16,10 +16,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Determine Release Notes File
+        id: notes
+        run: |
+          if [ -f "docs/releases/${{ github.ref_name }}.md" ]; then
+            echo "path=docs/releases/${{ github.ref_name }}.md" >> $GITHUB_OUTPUT
+          else
+            echo "path=CHANGELOG.md" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Security SAST Guard ${{ github.ref_name }}
-          body_path: CHANGELOG.md
+          body_path: ${{ steps.notes.outputs.path }}
+          generate_release_notes: true
           prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') }}
