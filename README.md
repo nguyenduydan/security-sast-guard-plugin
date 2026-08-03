@@ -1,6 +1,45 @@
 # Security SAST Guard Plugin
 
+[![CI Quality Gate](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml)
+[![Release Please](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml)
+[![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![code style: mypy](https://img.shields.io/badge/type_checker-mypy-blue)](https://mypy-lang.org/)
+
 SAST Security & Command Firewall Guard Plugin for Antigravity & Gemini CLI.
+
+---
+
+## Cấu trúc Dự Án (Repository Architecture)
+
+```
+security-sast-guard/
+├── .github/
+│   ├── ISSUE_TEMPLATE/     # Templates cho Bug report & Feature request
+│   ├── workflows/          # Workflows CI Quality Gate & Automated Release
+│   ├── CODEOWNERS          # Khai báo chủ sở hữu mã nguồn
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── SECURITY.md         # Chính sách báo cáo lỗ hổng an toàn thông tin
+├── docs/
+│   ├── releases/           # Báo cáo phát hành chi tiết cho các phiên bản
+│   ├── RELEASE_GUIDE.md    # Quy trình deploy & xuất bản Release chuẩn
+│   └── RULE_TEMPLATE.md    # Mẫu định nghĩa quy tắc SAST mới
+├── rules/
+│   ├── sast_rules.json     # 53 quy tắc SAST chuẩn OWASP/CWE/NIST
+│   └── profiles.json
+├── skills/                 # AI Skill Prompt Directives (chạy ngầm ngầm)
+├── src/
+│   ├── cli/                # Dispatcher CLI entrypoint
+│   ├── domain/             # SAST Scanner & Command Firewall core domain
+│   └── infrastructure/     # Logger & Profile loader
+├── tests/                  # Pytest test suite
+├── .editorconfig           # Cấu hình chuẩn định dạng IDE
+├── .pre-commit-config.yaml # Pipeline 14 bước Pre-commit
+├── pyproject.toml          # Cấu hình Ruff, Mypy & Pytest
+├── LICENSE                 # Giấy phép mã nguồn mở MIT
+└── README.md
+```
 
 ---
 
@@ -48,17 +87,3 @@ Format yêu cầu: `<type>(<scope>): <description>`
 - `build`: Thay đổi hệ thống build hoặc dependencies
 - `chore`: Thao tác lặt vặt khác
 - `revert`: Revert lại commit trước đó
-
-### Ví dụ hợp lệ:
-```bash
-git commit -m "feat(auth): add login logic"
-git commit -m "fix(api): handle connection timeout"
-git commit -m "refactor(sast): simplify rule parser"
-```
-
-### Ví dụ KHÔNG hợp lệ (sẽ bị từ chối):
-```bash
-git commit -m "update"
-git commit -m "fix bug"
-git commit -m "abc"
-```

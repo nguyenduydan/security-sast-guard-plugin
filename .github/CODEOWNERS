@@ -1,0 +1,7 @@
+# Global Code Owners
+* @nguyenduydan
+
+# Security Rules & Domain Owners
+/rules/ @nguyenduydan
+/src/domain/ @nguyenduydan
+/.github/workflows/ @nguyenduydan
