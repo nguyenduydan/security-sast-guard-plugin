@@ -31,10 +31,13 @@ import os
 import pytest
 from src.domain.context_extractor import extract_context
 
+
 def test_extract_context(tmp_path):
     test_file = tmp_path / "sample.py"
-    test_file.write_text("import os\nfrom sys import exit\n\ndef my_func():\n    query = 'SELECT'\n")
-    
+    test_file.write_text(
+        "import os\nfrom sys import exit\n\ndef my_func():\n    query = 'SELECT'\n"
+    )
+
     result = extract_context(str(test_file), 4)
     assert result["line_content"].strip() == "query = 'SELECT'"
     assert "import os" in result["imports"]
@@ -53,32 +56,33 @@ Expected: FAIL with ModuleNotFoundError or ImportError
 import re
 from typing import Dict
 
+
 def extract_context(file_path: str, line_number: int) -> Dict[str, str]:
     imports = []
     scope = "global"
     line_content = ""
-    
+
     with open(file_path, "r", encoding="utf-8") as f:
         lines = f.readlines()
-        
+
     for i, line in enumerate(lines):
         line_idx = i + 1
         stripped = line.strip()
-        
+
         if stripped.startswith("import ") or stripped.startswith("from "):
             imports.append(stripped)
-            
+
         if stripped.startswith("def ") or stripped.startswith("class "):
             scope = stripped
-            
+
         if line_idx == line_number:
             line_content = line
             break
-            
+
     return {
         "line_content": line_content.strip("\n"),
         "imports": "\n".join(imports),
-        "scope": scope
+        "scope": scope,
     }
 ```
 
@@ -114,21 +118,28 @@ import pytest
 from unittest.mock import patch
 from src.domain.sast_scanner import SASTScanner
 
+
 def test_sast_scanner_lazy_prompt(tmp_path):
     test_file = tmp_path / "vuln.py"
-    test_file.write_text("import sqlite3\ndef fetch():\n    query = 'SELECT * FROM users'\n")
-    
+    test_file.write_text(
+        "import sqlite3\ndef fetch():\n    query = 'SELECT * FROM users'\n"
+    )
+
     scanner = SASTScanner()
-    
+
     # Mocking a regex match detection internally and input() function
     with patch("builtins.input", return_value="Y"):
-        with patch.object(scanner, "_detect_matches", return_value=[{"line": 3, "rule": "SQLi"}]):
+        with patch.object(
+            scanner, "_detect_matches", return_value=[{"line": 3, "rule": "SQLi"}]
+        ):
             results = scanner.scan(str(test_file))
             # Since user replied 'Y', it's allowed (filtered out of violations)
             assert len(results) == 0
 
     with patch("builtins.input", return_value="N"):
-        with patch.object(scanner, "_detect_matches", return_value=[{"line": 3, "rule": "SQLi"}]):
+        with patch.object(
+            scanner, "_detect_matches", return_value=[{"line": 3, "rule": "SQLi"}]
+        ):
             results = scanner.scan(str(test_file))
             # User replied 'N', so it remains a violation
             assert len(results) == 1
@@ -148,9 +159,10 @@ Modify `src/domain/sast_scanner.py`:
 from typing import Any, List, Dict
 from .context_extractor import extract_context
 
+
 class SASTScanner:
     """SAST rule scanner implementation."""
-    
+
     def _detect_matches(self, path: str) -> List[Dict[str, Any]]:
         # Placeholder for actual regex engine execution
         return []
@@ -159,18 +171,24 @@ class SASTScanner:
         """Scan specified file path for SAST rule matches with lazy interactive loop."""
         matches = self._detect_matches(path)
         violations = []
-        
+
         for match in matches:
             ctx = extract_context(path, match["line"])
-            print(f"[SAST WARNING] Potential {match['rule']} at `{path}:{match['line']}`.")
+            print(
+                f"[SAST WARNING] Potential {match['rule']} at `{path}:{match['line']}`."
+            )
             print(f"- Line: `{ctx['line_content'].strip()}`")
             print(f"- Scope: `{ctx['scope']}`")
             print(f"- Imports: `{ctx['imports']}`")
-            
-            answer = input("? Is this context safe? (Reply Y to allow, N to block): ").strip().upper()
+
+            answer = (
+                input("? Is this context safe? (Reply Y to allow, N to block): ")
+                .strip()
+                .upper()
+            )
             if answer != "Y":
                 violations.append(match)
-                
+
         return violations
 ```
 

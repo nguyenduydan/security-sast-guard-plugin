@@ -27,9 +27,7 @@ class SASTScanner:
             print(f"- Scope: `{ctx['scope']}`")
             print(f"- Imports: `{ctx['imports']}`")
 
-            prompt_msg = (
-                "? Is this context safe? (Reply Y to allow, N to block): "
-            )
+            prompt_msg = "? Is this context safe? (Reply Y to allow, N to block): "
             answer = input(prompt_msg).strip().upper()
             if answer != "Y":
                 violations.append(match)

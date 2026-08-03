@@ -63,12 +63,7 @@ def test_extract_context_file_not_found(tmp_path: Path) -> None:
 
 def test_extract_context_scope_reset_after_func(tmp_path: Path) -> None:
     test_file = tmp_path / "after_func.py"
-    test_file.write_text(
-        "def helper():\n"
-        "    return 1\n"
-        "\n"
-        "var_after = 100\n"
-    )
+    test_file.write_text("def helper():\n    return 1\n\nvar_after = 100\n")
 
     result = extract_context(str(test_file), 4)
     assert result["line_content"] == "var_after = 100"
