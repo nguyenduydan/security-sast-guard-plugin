@@ -1,0 +1,76 @@
+# Pre-commit configuration for Python 3.12+ modern project
+# Repository: security-sast-guard
+
+default_stages: [pre-commit]
+fail_fast: true
+
+repos:
+  # 1. Standard Sanitation & Syntax Validation Hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-merge-conflict
+        name: 1. Check Merge Conflicts
+      - id: trailing-whitespace
+        name: 2. Trim Trailing Whitespace
+      - id: end-of-file-fixer
+        name: 3. Fix End of Files
+      - id: check-yaml
+        name: 4. Validate YAML Syntax
+      - id: check-json
+        name: 5. Validate JSON Syntax
+      - id: check-toml
+        name: 6. Validate TOML Syntax
+      - id: check-added-large-files
+        name: 7. Block Large Files (>500KB)
+        args: ['--maxkb=500']
+      - id: check-symlinks
+        name: 8. Detect Broken Symlinks
+      - id: destroyed-symlinks
+        name: 8b. Check Destroyed Symlinks
+
+  # 2. Secret & Sensitive Data Detection
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        name: 9. Detect Secrets & API Keys
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package-lock.json
+
+  # 3. Fast Python Linting & Formatting (Ruff)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.5
+    hooks:
+      - id: ruff
+        name: 10. Ruff Linter
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+        name: 11. Ruff Formatter
+
+  # 4. Static Type Checking (mypy)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.1
+    hooks:
+      - id: mypy
+        name: 12. Static Type Analysis (mypy)
+        additional_dependencies: []
+        args: [--config-file=pyproject.toml]
+
+  # 5. Automated Unit Tests (pytest)
+  - repo: local
+    hooks:
+      - id: pytest
+        name: 13. Pytest Suite Execution
+        entry: python -m pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+
+  # 6. Commit Message Formatting Check (Conventional Commits)
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.4.0
+    hooks:
+      - id: conventional-pre-commit
+        name: 14. Validate Conventional Commit Message
+        stages: [commit-msg]
