@@ -1,35 +1,39 @@
-name: Release Automation
+name: Automated Release & Tagging
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  release:
-    name: Create GitHub Release
+  release-please:
+    name: Release Please (SemVer & Changelog)
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout Code
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: python
+          package-name: security-sast-guard
+
+      # Post-release validation step when a release PR is merged
+      - name: Checkout code on Release
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
-      - name: Determine Release Notes File
-        id: notes
-        run: |
-          if [ -f "docs/releases/${{ github.ref_name }}.md" ]; then
-            echo "path=docs/releases/${{ github.ref_name }}.md" >> $GITHUB_OUTPUT
-          else
-            echo "path=CHANGELOG.md" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Set up Python 3.12
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-python@v5
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Security SAST Guard ${{ github.ref_name }}
-          body_path: ${{ steps.notes.outputs.path }}
-          generate_release_notes: true
-          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') }}
+          python-version: "3.12"
+
+      - name: Verify Rules & Package
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          python -m pip install --upgrade pip
+          python .gemini/scripts/verify_rules.py || true
