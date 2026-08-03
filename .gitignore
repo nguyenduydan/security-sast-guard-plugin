@@ -47,3 +47,8 @@ ENV/
 
 # Pre-commit & Build cache
 .pre-commit-config.yaml.bak
+
+# Antigravity & AI Plugin Artifacts
+.superpower
+.superpowers/
+.aiops/
