@@ -36,7 +36,7 @@ def extract_context(file_path: str, line_number: int) -> dict[str, str | bool]:
                     if t.type in (tokenize.COMMENT, tokenize.STRING):
                         is_safe_context = True
                         break
-                    elif t.type not in (
+                    if t.type not in (
                         tokenize.NL,
                         tokenize.NEWLINE,
                         tokenize.INDENT,

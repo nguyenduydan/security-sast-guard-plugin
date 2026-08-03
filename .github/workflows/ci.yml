@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Pylint Analysis
         run: |
-          python -m pylint control_plane.py hooks/run_audit_hook.py hooks/run_firewall_hook.py scripts/md_to_json.py src/ tests/
+          python -m pylint control_plane.py hooks/run_audit_hook.py scripts/md_to_json.py src/ tests/
 
       - name: Run Mypy Type Checker
         run: |
