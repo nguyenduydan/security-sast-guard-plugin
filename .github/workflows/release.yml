@@ -4,41 +4,59 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  release-please:
-    name: Release Please (SemVer & GitHub Release)
+  release-gh:
+    name: Create Official GitHub Release
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Configure Git Author Identity
         run: |
           git config --global user.name "fogvn"
           git config --global user.email "dn135897@gmail.com"
 
+      - name: Determine Release Notes File
+        id: notes
+        run: |
+          if [ -f "docs/releases/${{ github.ref_name }}.md" ]; then
+            echo "path=docs/releases/${{ github.ref_name }}.md" >> $GITHUB_OUTPUT
+          elif [ -f "CHANGELOG.md" ]; then
+            echo "path=CHANGELOG.md" >> $GITHUB_OUTPUT
+          else
+            echo "path=README.md" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          name: Security SAST Guard ${{ github.ref_name }}
+          body_path: ${{ steps.notes.outputs.path }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+
+  release-please:
+    name: Release Please PR Automation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-
-      # Optional post-release validation when a release PR is merged
-      - name: Checkout code on Release
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v4
-
-      - name: Setup Python 3.12
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Verify Package Readiness
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          python -m pip install --upgrade pip
-          python .gemini/scripts/verify_rules.py || true
