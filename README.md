@@ -16,6 +16,15 @@
 
 </div>
 
+## 📖 About Security SAST Guard
+
+**Security SAST Guard** is an enterprise-grade security plugin engineered specifically for **Google Antigravity & Gemini CLI** environments. It acts as an autonomous security co-pilot that combines **real-time terminal command firewalling** with **deep static application security testing (SAST)**.
+
+### Why Security SAST Guard?
+- 🛡️ **Zero-Accident Command Execution:** Prevents destructive terminal commands from executing automatically without explicit human confirmation.
+- ⚡ **Seamless AI Integration:** Runs non-intrusive background static scans that inform the AI agent of potential security flaws (OWASP, CWE, NIST) before code gets committed.
+- 🚦 **Zero-Friction Code Quality:** Enforces industry-standard PEP8, strict typing, and secret protection using modern Python 3.12+ tooling.
+
 ---
 
 ## ✨ Key Features
