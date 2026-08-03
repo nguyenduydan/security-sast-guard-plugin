@@ -14,14 +14,19 @@ jobs:
     name: Release Please (SemVer & GitHub Release)
     runs-on: ubuntu-latest
     steps:
+      - name: Configure Git Bot Author
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      # Post-release verification when a release PR is merged
+      # Optional post-release validation when a release PR is merged
       - name: Checkout code on Release
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
