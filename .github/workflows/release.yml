@@ -18,8 +18,8 @@ jobs:
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: python
-          package-name: security-sast-guard
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
       # Post-release verification when a release PR is merged
       - name: Checkout code on Release
