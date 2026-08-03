@@ -1,6 +1,8 @@
 {
   "project_id": "security-sast-guard",
   "stack": "python-security",
+  "mode": "draft",
+  "audit_level": "full",
   "sast_level": "ultra",
   "command_firewall_overlay": {
     "deny": [

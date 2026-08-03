@@ -58,6 +58,7 @@ def test_extract_context_file_not_found(tmp_path: Path) -> None:
         "line_content": "",
         "imports": "",
         "scope": "global",
+        "is_safe_context": False,
     }
 
 

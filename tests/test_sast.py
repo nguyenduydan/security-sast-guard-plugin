@@ -11,7 +11,8 @@ def test_sast_scanner_lazy_prompt(tmp_path: Path) -> None:
     )
 
     scanner = SASTScanner()
-    match_item = [{"line": 3, "rule": "SQLi"}]
+    scanner.mode = "strict"
+    match_item = [{"line": 3, "rule": "SQLi", "severity": "HIGH"}]
 
     # Mocking a regex match detection internally and input() function
     with (

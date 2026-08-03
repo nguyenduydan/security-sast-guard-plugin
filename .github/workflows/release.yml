@@ -38,6 +38,15 @@ jobs:
             echo "path=README.md" >> $GITHUB_OUTPUT
           fi
 
+      - name: Package Release Asset
+        run: |
+          # Create a clean zip excluding .git and github workflows
+          git archive --format=zip --output=${{ github.ref_name }}.zip HEAD
+          
+      - name: Generate Checksum
+        run: |
+          sha256sum ${{ github.ref_name }}.zip > checksums.txt
+          
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -45,6 +54,9 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           body_path: ${{ steps.notes.outputs.path }}
+          files: |
+            ${{ github.ref_name }}.zip
+            checksums.txt
           generate_release_notes: true
           draft: false
           prerelease: false

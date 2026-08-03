@@ -17,11 +17,22 @@ Write-Host "Fetching latest release information..."
 $ApiUrl = "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
 try {
     $Release = Invoke-RestMethod -Uri $ApiUrl
-    $ZipUrl = $Release.zipball_url
+    
+    $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
+    $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
+    
+    if ($null -ne $ZipAsset) {
+        $ZipUrl = $ZipAsset.browser_download_url
+        $ChecksumUrl = if ($null -ne $ChecksumAsset) { $ChecksumAsset.browser_download_url } else { $null }
+    } else {
+        $ZipUrl = $Release.zipball_url
+        $ChecksumUrl = $null
+    }
     Write-Host "Found release: $($Release.tag_name)"
 } catch {
     Write-Host "Failed to fetch release info. Trying to download main branch zip..." -ForegroundColor Yellow
     $ZipUrl = "https://github.com/$RepoOwner/$RepoName/archive/refs/heads/main.zip"
+    $ChecksumUrl = $null
 }
 
 $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString())
@@ -32,6 +43,22 @@ $ExtractPath = Join-Path $TempDir "extracted"
 try {
     Write-Host "Downloading $ZipUrl ..."
     Invoke-WebRequest -Uri $ZipUrl -OutFile $ZipPath
+
+    if ($null -ne $ChecksumUrl) {
+        Write-Host "Downloading checksums.txt..."
+        $ChecksumPath = Join-Path $TempDir "checksums.txt"
+        Invoke-WebRequest -Uri $ChecksumUrl -OutFile $ChecksumPath
+        
+        $ExpectedHashLine = (Get-Content $ChecksumPath) | Where-Object { $_ -match "\.zip$" } | Select-Object -First 1
+        if ($ExpectedHashLine) {
+            $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
+            $ActualHash = (Get-FileHash -Path $ZipPath -Algorithm SHA256).Hash.ToUpper()
+            if ($ExpectedHash -ne $ActualHash) {
+                throw "Checksum mismatch! Expected: $ExpectedHash, Actual: $ActualHash. The file might be corrupted or compromised."
+            }
+            Write-Host "Checksum verified successfully." -ForegroundColor Green
+        }
+    }
 
     Write-Host "Extracting..."
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force

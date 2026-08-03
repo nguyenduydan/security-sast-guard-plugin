@@ -3,7 +3,7 @@
     "PreCommandExecute": [
       {
         "type": "command",
-        "command": "python \"${PLUGIN_ROOT}/control_plane.py\" firewall \"${COMMAND}\""
+        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${PLUGIN_ROOT}/hooks/firewall_hook.ps1\" -CommandText \"${COMMAND}\""
       }
     ]
   }
