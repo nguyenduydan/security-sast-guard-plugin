@@ -18,11 +18,30 @@
 
 ## 📖 About Security SAST Guard
 
-**Security SAST Guard** is an enterprise-grade security plugin engineered specifically for **Google Antigravity & Gemini CLI** environments. It acts as an autonomous security co-pilot that combines **real-time terminal command firewalling** with **deep static application security testing (SAST)**.
+**Security SAST Guard** is your automated security co-pilot for Google Antigravity & Gemini CLI. You don't need to be a cybersecurity expert to use it—it works behind the scenes to keep your computer safe and ensure the code written by AI is completely free of security flaws and hidden bugs.
 
-### ❓ Why Security SAST Guard when Native Permissions exist?
+---
 
-While Google Antigravity features a robust native resource permission system (Granting tool & directory access), native permissions operate at a binary level (*"Allow/Deny terminal access"*). **Security SAST Guard** adds an intelligent, deep-inspection security layer that works alongside native permissions.
+## ❓ What Makes It Essential For You?
+
+### 🛡️ 1. Is It Safe? (Command Firewall Protection)
+**Yes, 100%.** When you give AI full access to your terminal, one wrong command could delete your files or format your drive. Security SAST Guard acts as a real-time shield:
+- 🛑 **Automatic Danger Block:** Hard-blocks destructive commands (`rm -rf`, `format C:`, registry edits, or malicious remote script downloads) before they execute.
+- ⚠️ **High-Risk Confirmation:** Forces explicit human approval for actions that alter code history (`Remove-Item`, `git push --force`, `del`).
+
+### 🔍 2. How Deeply Can It Scan? (53 Security Vulnerability Scenarios)
+It checks every line of code written by AI against **53 international security standards** (OWASP Top 10, OWASP API 2023, CWE Top 25, NIST 800-53):
+- **Database Hacks (SQL Injection):** Prevents attackers from stealing or deleting database records.
+- **API Security Vulnerabilities:** Catches broken authentication, authorization bypasses (BOLA), and unauthorized API access.
+- **Secret & API Key Protection:** Instantly stops passwords, Private Keys, or API tokens from leaking onto GitHub.
+- **Remote Code Execution (RCE) & Injection:** Blocks malicious inputs from executing commands on your server.
+
+### 🌟 3. What Value Do You Get?
+- 🚀 **Peace of Mind with Full AI Autonomy:** Enable AI tools with 100% confidence knowing your machine and codebase are bulletproof.
+- 💎 **Clean, Senior-Grade Code:** Ensures AI-generated code is clean, PEP8 compliant, strictly typed, and completely error-free.
+- 🤫 **Silent & Fast:** Operates seamlessly in the background without cluttering your chat UI with raw command text.
+
+---
 
 | Feature / Protection Scope | Native Antigravity Permissions | Security SAST Guard Plugin |
 | :--- | :---: | :---: |
