@@ -11,28 +11,28 @@ permissions:
 
 jobs:
   release-please:
-    name: Release Please (SemVer & Changelog)
+    name: Release Please (SemVer & GitHub Release)
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: python
-          package-name: security-sast-guard
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
-      # Post-release validation step when a release PR is merged
+      # Optional post-release verification when a release PR is merged
       - name: Checkout code on Release
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
+      - name: Setup Python 3.12
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Verify Rules & Package
+      - name: Verify Package Readiness
         if: ${{ steps.release.outputs.release_created }}
         run: |
           python -m pip install --upgrade pip
