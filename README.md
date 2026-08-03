@@ -20,10 +20,19 @@
 
 **Security SAST Guard** is an enterprise-grade security plugin engineered specifically for **Google Antigravity & Gemini CLI** environments. It acts as an autonomous security co-pilot that combines **real-time terminal command firewalling** with **deep static application security testing (SAST)**.
 
-### Why Security SAST Guard?
-- 🛡️ **Zero-Accident Command Execution:** Prevents destructive terminal commands from executing automatically without explicit human confirmation.
-- ⚡ **Seamless AI Integration:** Runs non-intrusive background static scans that inform the AI agent of potential security flaws (OWASP, CWE, NIST) before code gets committed.
-- 🚦 **Zero-Friction Code Quality:** Enforces industry-standard PEP8, strict typing, and secret protection using modern Python 3.12+ tooling.
+### ❓ Why Security SAST Guard when Native Permissions exist?
+
+While Google Antigravity features a robust native resource permission system (Granting tool & directory access), native permissions operate at a binary level (*"Allow/Deny terminal access"*). **Security SAST Guard** adds an intelligent, deep-inspection security layer that works alongside native permissions.
+
+| Feature / Protection Scope | Native Antigravity Permissions | Security SAST Guard Plugin |
+| :--- | :---: | :---: |
+| **Tool & Resource Access Control** | ✅ Native Access Control | ➖ Relies on Native Harness |
+| **Deep Command Inspection (Regex Firewall)** | ❌ Binary Allow/Deny | ✅ **`ALLOW` / `CONFIRM` / `DENY` Regex Inspection** |
+| **Destructive Command Blocking (`rm -rf`, `format`)** | ❌ Allowed if Terminal Granted | ✅ **Automatic Hard Block (DENY)** |
+| **High-Risk Command Guard (`Remove-Item`, `git push --force`)** | ❌ Allowed if Terminal Granted | ⚠️ **Mandatory User Confirmation (CONFIRM)** |
+| **Code Vulnerability Auditing (OWASP/CWE/NIST)** | ❌ No Code Analysis | 🔍 **53 SAST Rules Scanning Engine** |
+| **API Keys & Secret Leakage Prevention** | ❌ No Secret Scanning | 🔒 **Detect-Secrets Baseline Enforcement** |
+| **Automated CI/CD Quality Gate & Linting** | ❌ No Code Formatting | 🚦 **Ruff, Mypy Strict, Pylint 10/10, Pytest** |
 
 ---
 
