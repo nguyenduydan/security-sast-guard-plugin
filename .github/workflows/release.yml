@@ -14,10 +14,10 @@ jobs:
     name: Release Please (SemVer & GitHub Release)
     runs-on: ubuntu-latest
     steps:
-      - name: Configure Git Bot Author
+      - name: Configure Git Author Identity
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "fogvn"
+          git config --global user.email "dn135897@gmail.com"
 
       - uses: googleapis/release-please-action@v4
         id: release
