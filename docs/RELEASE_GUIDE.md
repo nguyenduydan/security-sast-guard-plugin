@@ -13,7 +13,14 @@ Tài liệu này quy định tiêu chuẩn phát hành phiên bản, quy trình 
 ### 1.2. Quy tắc Semantic Versioning (SemVer)
 - **MAJOR (`v1.0.0`):** Tăng khi có Breaking Changes phá vỡ tương thích ngược.
 - **MINOR (`v0.1.0`):** Tăng khi bổ sung tính năng mới (Features, Rules mới) mà vẫn tương thích ngược.
-- **PATCH (`v0.0.1`):** Tăng khi sửa lỗi (Bug fix), cập nhật tài liệu, hoặc refactor code nhỏ.
+### 1.3. Quy Định Nhánh & Pull Request (Bắt buộc GitHub Flow)
+- **Cấm commit trực tiếp lên `main`:** Tất cả các thay đổi mã nguồn, tính năng hay tài liệu phải được thực hiện trên một nhánh độc lập (`feat/<feature-name>`, `fix/<bug-name>`, `docs/<topic-name>`).
+- **Quy trình Push & PR:**
+  1. Tạo nhánh mới: `git checkout -b feat/ten-tinh-nang`
+  2. Commit & Push nhánh lên GitHub: `git push origin feat/ten-tinh-nang`
+  3. Mở **Pull Request (PR)** hướng vào nhánh `main`.
+  4. Đợi GitHub Actions chạy kiểm tra **CI Quality Gate** đạt điểm xanh 100%.
+  5. Tiến hành **Merge Pull Request** vào nhánh `main`.
 
 ---
 
