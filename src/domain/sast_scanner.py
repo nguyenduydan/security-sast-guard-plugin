@@ -14,7 +14,7 @@ class SASTScanner:
         self.mode = "strict"
         self._load_profile()
 
-    def _load_profile(self):
+    def _load_profile(self) -> None:
         try:
             with open(self.profile_path, encoding="utf-8") as f:
                 profile = json.load(f)
@@ -44,7 +44,7 @@ class SASTScanner:
 
             print(f"[SAST WARNING] Potential {rule} at `{path}:{line_no}`.")
             print(f"- Severity: {severity}")
-            print(f"- Line: `{ctx['line_content'].strip()}`")
+            print(f"- Line: `{str(ctx['line_content']).strip()}`")
             print(f"- Scope: `{ctx['scope']}`")
 
             if self.mode == "draft" and severity in ("MEDIUM", "LOW"):
