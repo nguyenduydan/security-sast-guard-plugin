@@ -1,4 +1,9 @@
-# Security SAST Guard Plugin
+<div align="center">
+
+# 🛡️ Security SAST Guard Plugin
+
+**Enterprise Static Application Security Testing (SAST) & Real-time Command Firewall Guard**  
+*Built for Google Antigravity & Gemini CLI Ecosystems*
 
 [![CI Quality Gate](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml)
 [![Release Please](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml)
@@ -7,83 +12,163 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![code style: mypy](https://img.shields.io/badge/type_checker-mypy-blue)](https://mypy-lang.org/)
 
-SAST Security & Command Firewall Guard Plugin for Antigravity & Gemini CLI.
+[Features](#-key-features) • [Architecture](#-architecture-overview) • [Quick Start](#-quick-start) • [Slash Commands](#-slash-commands-reference) • [Rules Summary](#-sast-rules-coverage) • [Contributing](#-contributing)
+
+</div>
 
 ---
 
-## Cấu trúc Dự Án (Repository Architecture)
+## ✨ Key Features
+
+- 🔒 **Real-Time Command Firewall:** Intercepts terminal executions via `PreCommandExecute` hook to evaluate safety (`ALLOW` | `CONFIRM` | `DENY`), preventing accidental file destruction (`rm -rf`, `format`), registry mutation, or remote script execution (`curl | bash`, `Invoke-Expression`).
+- 🔍 **53 Security SAST Rules:** Out-of-the-box static analysis rules mapping directly to **OWASP Top 10**, **OWASP API Security 2023**, **CWE-SANS Top 25**, and **NIST 800-53**.
+- ⚡ **Silent AI Skill Execution:** Intelligent prompt directives that run background verification scripts cleanly without polluting the user chat UI.
+- 🚦 **Enterprise Pre-Commit System:** 14-stage automated pre-commit sanitation equipped with **Ruff** (linting + formatting), **Mypy** (strict typing), **Pytest**, and **Detect-Secrets**.
+- 📦 **Automated Release Please Pipeline:** Automated SemVer versioning, changelog compilation, and GitHub Release publication using `release-please-action`.
+
+---
+
+## 🏗️ Architecture Overview
+
+```mermaid
+flowchart TD
+    subgraph Client["Antigravity / Gemini CLI"]
+        UserCmd["Shell Command Input"]
+        AISkill["AI Skill Directives"]
+    end
+
+    subgraph SecurityGuard["Security SAST Guard Core"]
+        Firewall["PreCommandExecute Firewall"]
+        Engine["SAST Scanning Engine"]
+        Profile["Profile Loader (lite/full/ultra)"]
+    end
+
+    subgraph KnowledgeBase["Rules & Storage"]
+        RuleDB[("53 SAST Rules (sast_rules.json)")]
+        Baseline[(".secrets.baseline")]
+    end
+
+    UserCmd -->|"Intercept Command"| Firewall
+    Firewall -->|"Validate Regex Rules"| Profile
+    Profile -->|"ALLOW / CONFIRM / DENY"| UserCmd
+
+    AISkill -->|"Trigger /sast-audit"| Engine
+    Engine -->|"Load Rules"| RuleDB
+    Engine -->|"Detect Secrets"| Baseline
+    Engine -->|"Generate Report"| AISkill
+```
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **Python:** `>= 3.12`
+- **Git:** `>= 2.30`
+- **CLI Ecosystem:** Google Antigravity CLI or Gemini CLI
+
+### Installation & Setup
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/nguyenduydan/security-sast-guard-plugin.git
+   cd security-sast-guard-plugin
+   ```
+
+2. **Install Development Dependencies:**
+   ```bash
+   pip install pre-commit ruff mypy pytest detect-secrets pylint
+   ```
+
+3. **Enable Pre-Commit Git Hooks:**
+   ```bash
+   # Enable pre-commit hook (runs linting & type checks before commit)
+   pre-commit install
+
+   # Enable commit-msg hook (enforces Conventional Commits format)
+   pre-commit install --hook-type commit-msg
+   ```
+
+4. **Verify Environment Readiness:**
+   ```bash
+   python -m ruff check .
+   python -m mypy --config-file=pyproject.toml control_plane.py src/
+   python -m pytest
+   ```
+
+---
+
+## 🎮 Slash Commands Reference
+
+| Slash Command | Syntax | Description |
+| :--- | :--- | :--- |
+| `/sast-audit` | `/sast-audit <file\|codebase\|api\|web> <path>` | Triggers static vulnerability audit. Runs single file synchronously or codebase audits silently in the background. |
+| `/sast-audit-level` | `/sast-audit-level [lite\|full\|ultra]` | Sets or views active audit strictness (`lite`: Critical only, `full`: OWASP Top10, `ultra`: All + CWE/NIST). |
+| `/sast-rules` | `/sast-rules <add\|sync> <path>` | Converts Markdown rule files into compiled JSON pattern definitions. |
+| `/sast-firewall` | `/sast-firewall <command>` | Manually tests a shell command against the Firewall overlay rules (`ALLOW` / `CONFIRM` / `DENY`). |
+| `/sast-status` | `/sast-status` | Displays security profile card, loaded rule counts, and deny/confirm pattern statistics. |
+| `/sast-help` | `/sast-help` | Displays quick reference cheatsheet for SAST Guard plugin options. |
+
+---
+
+## 📊 SAST Rules Coverage
+
+| Category | Count | Example Coverage |
+| :--- | :---: | :--- |
+| **OWASP API Security 2023** | 10 | BOLA (API1), Broken Auth (API2), Mass Assignment (API3), SSRF (API7) |
+| **OWASP Web Application 2021** | 10 | Access Control (A01), Cryptographic Failures (A02), Injection (A03) |
+| **Web App Specific** | 11 | Race Condition (WEB10), Source File Exposure (WEB11), CORS (WEB9) |
+| **CWE-SANS Top 25** | 12 | SQLi (CWE-89), XSS (CWE-79), Command Injection (CWE-77), RCE |
+| **NIST 800-53 Security Controls** | 10 | AC-2 (Account Management), SC-8 (Transmission Integrity), AU-2 (Audit Events) |
+
+---
+
+## 🌳 Repository Structure
 
 ```
 security-sast-guard/
 ├── .github/
-│   ├── ISSUE_TEMPLATE/     # Templates cho Bug report & Feature request
-│   ├── workflows/          # Workflows CI Quality Gate & Automated Release
-│   ├── CODEOWNERS          # Khai báo chủ sở hữu mã nguồn
+│   ├── ISSUE_TEMPLATE/       # Bug report & Feature request templates
+│   ├── workflows/            # CI Quality Gate (ci.yml) & Release Please (release.yml)
+│   ├── CODEOWNERS            # Codeownership declaration
 │   ├── PULL_REQUEST_TEMPLATE.md
-│   └── SECURITY.md         # Chính sách báo cáo lỗ hổng an toàn thông tin
+│   └── SECURITY.md           # Security disclosure policy
 ├── docs/
-│   ├── releases/           # Báo cáo phát hành chi tiết cho các phiên bản
-│   ├── RELEASE_GUIDE.md    # Quy trình deploy & xuất bản Release chuẩn
-│   └── RULE_TEMPLATE.md    # Mẫu định nghĩa quy tắc SAST mới
+│   ├── releases/             # Formal release reports (v0.0.1, v1.1.0-beta.1...)
+│   ├── RELEASE_GUIDE.md      # Deployment & Release management standard
+│   └── RULE_TEMPLATE.md      # Custom SAST rule creation guide
 ├── rules/
-│   ├── sast_rules.json     # 53 quy tắc SAST chuẩn OWASP/CWE/NIST
-│   └── profiles.json
-├── skills/                 # AI Skill Prompt Directives (chạy ngầm ngầm)
+│   ├── sast_rules.json       # 53 compiled SAST rules
+│   └── profiles.json         # Firewall deny & confirm pattern overlays
+├── skills/                   # AI Prompt Directives for silent background execution
 ├── src/
-│   ├── cli/                # Dispatcher CLI entrypoint
-│   ├── domain/             # SAST Scanner & Command Firewall core domain
-│   └── infrastructure/     # Logger & Profile loader
-├── tests/                  # Pytest test suite
-├── .editorconfig           # Cấu hình chuẩn định dạng IDE
-├── .pre-commit-config.yaml # Pipeline 14 bước Pre-commit
-├── pyproject.toml          # Cấu hình Ruff, Mypy & Pytest
-├── LICENSE                 # Giấy phép mã nguồn mở MIT
+│   ├── cli/                  # Command line dispatcher
+│   ├── domain/               # Core SAST Scanner & Firewall logic
+│   └── infrastructure/       # Profile loader & Execution logger
+├── tests/                    # Unit & Integration test suite
+├── .editorconfig             # Unified IDE formatting standard
+├── .pre-commit-config.yaml   # 14-stage automated pre-commit pipeline
+├── .secrets.baseline         # Detect-secrets baseline file
+├── pyproject.toml            # Ruff, Mypy & Pytest configurations
+├── release-please-config.json # Release Please changelog section mappings
+├── .release-please-manifest.json
+├── LICENSE                   # MIT License
 └── README.md
 ```
 
 ---
 
-## Hướng dẫn cài đặt & sử dụng Pre-Commit System
+## 🤝 Contributing
 
-Dự án sử dụng hệ thống **Pre-Commit** hiện đại cho Python 3.12+ (bao gồm Ruff, mypy, pytest, detect-secrets và Conventional Commits).
+We welcome community contributions! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide before submitting Pull Requests.
 
-### 1. Cài đặt các công cụ cần thiết
-
-```bash
-pip install pre-commit ruff mypy pytest detect-secrets
-```
-
-### 2. Kích hoạt Pre-Commit Hooks vào Git
-
-```bash
-# Kích hoạt pre-commit hook (chạy trước khi commit)
-pre-commit install
-
-# Kích hoạt commit-msg hook (kiểm tra chuẩn Conventional Commits)
-pre-commit install --hook-type commit-msg
-```
-
-### 3. Chạy kiểm tra thủ công trên toàn bộ dự án
-
-```bash
-pre-commit run --all-files
-```
+1. Fork the repo and create your feature branch: `git checkout -b feat/my-new-rule`.
+2. Follow Conventional Commits format for your commit messages.
+3. Ensure all CI quality checks pass: `pre-commit run --all-files`.
+4. Open a Pull Request using our PR template.
 
 ---
 
-## Chuẩn Commit Message (Conventional Commits)
+## 📄 License
 
-Format yêu cầu: `<type>(<scope>): <description>`
-
-### Các prefix (type) được phép:
-- `feat`: Tính năng mới
-- `fix`: Sửa lỗi
-- `refactor`: Tái cấu trúc code (không đổi logic/tính năng)
-- `docs`: Thêm/sửa tài liệu
-- `style`: Định dạng code (khoảng trắng, chấm phẩy...)
-- `test`: Thêm hoặc sửa test
-- `perf`: Tối ưu hiệu năng
-- `ci`: Cấu hình CI/CD
-- `build`: Thay đổi hệ thống build hoặc dependencies
-- `chore`: Thao tác lặt vặt khác
-- `revert`: Revert lại commit trước đó
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
