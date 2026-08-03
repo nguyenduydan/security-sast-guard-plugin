@@ -37,7 +37,7 @@ class SASTScanner:
             rule = match["rule"]
             line_no = match["line"]
             severity = match.get("severity", "MEDIUM")
-            
+
             # Reduce alert fatigue: check if match is purely inside a comment or string
             if ctx.get("is_safe_context"):
                 continue
@@ -46,9 +46,12 @@ class SASTScanner:
             print(f"- Severity: {severity}")
             print(f"- Line: `{ctx['line_content'].strip()}`")
             print(f"- Scope: `{ctx['scope']}`")
-            
+
             if self.mode == "draft" and severity in ("MEDIUM", "LOW"):
-                print(">> [DRAFT MODE] Auto-allowing low/medium severity finding to preserve vibe.")
+                print(
+                    ">> [DRAFT MODE] Auto-allowing low/medium severity finding "
+                    "to preserve vibe."
+                )
                 continue
 
             prompt_msg = "? Is this context safe? (Reply Y to allow, N to block): "

@@ -1,5 +1,6 @@
 import tokenize
 
+
 def extract_context(file_path: str, line_number: int) -> dict[str, str | bool]:
     imports: list[str] = []
     scope = "global"
@@ -26,7 +27,7 @@ def extract_context(file_path: str, line_number: int) -> dict[str, str | bool]:
                 if line_idx == line_number:
                     line_content = line
                     break
-                    
+
         # Use tokenize to check if the line is purely comment or string
         with open(file_path, "rb") as f:
             tokens = tokenize.tokenize(f.readline)
@@ -35,7 +36,12 @@ def extract_context(file_path: str, line_number: int) -> dict[str, str | bool]:
                     if t.type in (tokenize.COMMENT, tokenize.STRING):
                         is_safe_context = True
                         break
-                    elif t.type not in (tokenize.NL, tokenize.NEWLINE, tokenize.INDENT, tokenize.DEDENT):
+                    elif t.type not in (
+                        tokenize.NL,
+                        tokenize.NEWLINE,
+                        tokenize.INDENT,
+                        tokenize.DEDENT,
+                    ):
                         is_safe_context = False
                         break
 
