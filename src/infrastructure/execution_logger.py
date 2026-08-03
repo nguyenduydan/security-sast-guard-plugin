@@ -1,3 +1,9 @@
+"""Execution logger infrastructure component."""
+
+
 class ExecutionLogger:
-    def log(self, msg: str):
+    """Execution logger implementation."""
+
+    def log(self, msg: str) -> None:
+        """Log execution message."""
         print(msg)

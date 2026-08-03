@@ -1,7 +1,10 @@
+"""Dispatcher CLI module."""
+
 import sys
 
 
-def main():
+def main() -> int:
+    """Main CLI entrypoint."""
     print("Dispatcher CLI")
     return 0
 
