@@ -1,0 +1,5 @@
+{
+  "name": "security-sast-guard",
+  "description": "SAST Guard plugin for security static analysis and command firewalling",
+  "version": "1.0.0"
+}

@@ -1,0 +1,3 @@
+[command]
+name = "sast-rules"
+description = "Manage SAST rules"

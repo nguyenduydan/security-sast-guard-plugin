@@ -1,0 +1,3 @@
+[command]
+name = "sast-audit"
+description = "Run SAST audit"

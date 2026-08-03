@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreCommandExecute": [
+      {
+        "type": "command",
+        "command": "python \"${PLUGIN_ROOT}/control_plane.py\" firewall \"${COMMAND}\""
+      }
+    ]
+  }
+}

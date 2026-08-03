@@ -1,0 +1,3 @@
+[command]
+name = "sast-firewall"
+description = "Check command firewall"

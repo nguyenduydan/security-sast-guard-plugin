@@ -1,0 +1,3 @@
+[command]
+name = "sast-help"
+description = "Show SAST help"

@@ -1,0 +1,3 @@
+[command]
+name = "sast-status"
+description = "View SAST status"
