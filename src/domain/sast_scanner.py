@@ -35,5 +35,3 @@ class SASTScanner:
                 violations.append(match)
 
         return violations
-
-

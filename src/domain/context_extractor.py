@@ -15,7 +15,10 @@ def extract_context(file_path: str, line_number: int) -> dict[str, str]:
                 if stripped:
                     if stripped.startswith("def ") or stripped.startswith("class "):
                         scope = stripped
-                    elif not (line.startswith(" ") or line.startswith("\t")) and not stripped.startswith("@"):
+                    elif (
+                        not (line.startswith(" ") or line.startswith("\t"))
+                        and not stripped.startswith("@")
+                    ):
                         scope = "global"
 
                 if line_idx == line_number:
@@ -33,4 +36,3 @@ def extract_context(file_path: str, line_number: int) -> dict[str, str]:
         "imports": "\n".join(imports),
         "scope": scope,
     }
-

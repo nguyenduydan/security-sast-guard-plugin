@@ -29,6 +29,3 @@ def test_sast_scanner_lazy_prompt(tmp_path: Path) -> None:
         results = scanner.scan(str(test_file))
         # User replied 'N', so it remains a violation
         assert len(results) == 1
-
-
-

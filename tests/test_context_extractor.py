@@ -81,4 +81,3 @@ def test_extract_context_windows_line_endings(tmp_path: Path) -> None:
 
     result = extract_context(str(test_file), 1)
     assert result["line_content"] == "x = 10"
-
