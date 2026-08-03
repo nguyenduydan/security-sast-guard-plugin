@@ -1,3 +1,9 @@
+"""Profile loader infrastructure component."""
+
 class ProfileLoader:
-    def load(self, path: str):
+    """Security profile loader implementation."""
+
+    def load(self, path: str) -> dict:
+        """Load security profile configuration from path."""
+        _ = path
         return {}

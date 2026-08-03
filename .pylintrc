@@ -1,0 +1,14 @@
+[MAIN]
+py-version = 3.12
+
+[MESSAGES CONTROL]
+disable =
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    too-few-public-methods,
+    invalid-name,
+    duplicate-code
+
+[REPORTS]
+output-format = colorized
