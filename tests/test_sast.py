@@ -4,10 +4,6 @@ from unittest.mock import patch
 from src.domain.sast_scanner import SASTScanner
 
 
-def test_sast() -> None:
-    assert True
-
-
 def test_sast_scanner_lazy_prompt(tmp_path: Path) -> None:
     test_file = tmp_path / "vuln.py"
     test_file.write_text(

@@ -49,3 +49,36 @@ def test_extract_context_line_out_of_bounds(tmp_path: Path) -> None:
     assert result["line_content"] == ""
     assert result["imports"] == ""
     assert result["scope"] == "global"
+
+
+def test_extract_context_file_not_found(tmp_path: Path) -> None:
+    non_existent = tmp_path / "does_not_exist.py"
+    result = extract_context(str(non_existent), 1)
+    assert result == {
+        "line_content": "",
+        "imports": "",
+        "scope": "global",
+    }
+
+
+def test_extract_context_scope_reset_after_func(tmp_path: Path) -> None:
+    test_file = tmp_path / "after_func.py"
+    test_file.write_text(
+        "def helper():\n"
+        "    return 1\n"
+        "\n"
+        "var_after = 100\n"
+    )
+
+    result = extract_context(str(test_file), 4)
+    assert result["line_content"] == "var_after = 100"
+    assert result["scope"] == "global"
+
+
+def test_extract_context_windows_line_endings(tmp_path: Path) -> None:
+    test_file = tmp_path / "windows.py"
+    test_file.write_bytes(b"x = 10\r\ny = 20\r\n")
+
+    result = extract_context(str(test_file), 1)
+    assert result["line_content"] == "x = 10"
+
