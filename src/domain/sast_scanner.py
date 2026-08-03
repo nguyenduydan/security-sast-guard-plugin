@@ -1,5 +1,6 @@
 """SAST Scanner domain component."""
 
+
 class SASTScanner:
     """SAST rule scanner implementation."""
 

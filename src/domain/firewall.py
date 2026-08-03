@@ -1,5 +1,6 @@
 """Firewall domain component."""
 
+
 class Firewall:
     """Command Firewall checking logic."""
 

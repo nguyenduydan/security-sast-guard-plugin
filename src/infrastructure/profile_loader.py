@@ -1,5 +1,6 @@
 """Profile loader infrastructure component."""
 
+
 class ProfileLoader:
     """Security profile loader implementation."""
 
