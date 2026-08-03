@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: 'pip'
 
       - name: Install Dependencies
         run: |
@@ -28,16 +27,16 @@ jobs:
 
       - name: Run Ruff Linter & Formatter Check
         run: |
-          ruff check .
-          ruff format --check .
+          python -m ruff check .
+          python -m ruff format --check .
 
       - name: Run Pylint Analysis
         run: |
-          python -m pylint $(git ls-files '*.py')
+          python -m pylint control_plane.py hooks/run_audit_hook.py hooks/run_firewall_hook.py scripts/md_to_json.py src/ tests/
 
       - name: Run Mypy Type Checker
         run: |
-          mypy --config-file=pyproject.toml control_plane.py src/
+          python -m mypy --config-file=pyproject.toml control_plane.py src/
 
       - name: Run Pytest Suite
         run: |
