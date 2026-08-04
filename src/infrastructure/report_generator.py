@@ -16,9 +16,13 @@ def _count_severities(findings: list[dict[str, Any]]) -> dict[str, int]:
 
 def _build_finding_row(f: dict[str, Any]) -> str:
     snippet = str(f.get("line_content", "")).replace("|", "\\|")
+    rule_id = f.get("rule_id", "UNKNOWN")
+    location = f"{f.get('path', 'unknown')}:{f.get('line', 0)}"
+    severity = f.get("severity", "Medium")
+    scope = f.get("scope", "global")
     return (
-        f"| `{f.get('rule_id', 'UNKNOWN')}` | `{f.get('path', 'unknown')}:{f.get('line', 0)}` | "
-        f"**{f.get('severity', 'Medium')}** | `{snippet}` | `{f.get('scope', 'global')}` |"
+        f"| `{rule_id}` | `{location}` | **{severity}** | "
+        f"`{snippet}` | `{scope}` |"
     )
 
 
