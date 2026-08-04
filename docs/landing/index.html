@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security SAST Guard — Dual Theme Neo-Brutalist Security Platform</title>
+  <meta name="description" content="Dual-Theme (Light/Dark) Neo-Brutalist High-Contrast Zero-Trust Security Shield & Real-Time Command Interceptor for Google Antigravity & Gemini CLI Ecosystems. Audits code against 53 SAST rules.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Outfit', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            obsidian: {
+              950: '#040711',
+              900: '#0d1424',
+              850: '#141e33',
+              800: '#1e2d4a',
+            },
+            brand: {
+              emerald: '#10b981',
+              cyan: '#06b6d4',
+              violet: '#8b5cf6',
+              rose: '#f43f5e',
+              amber: '#f59e0b',
+            }
+          },
+          boxShadow: {
+            'brutal': '4px 4px 0px 0px #000000',
+            'brutal-dark': '4px 4px 0px 0px rgba(16,185,129,0.35)',
+            'brutal-lg': '8px 8px 0px 0px #000000',
+            'brutal-sm': '2px 2px 0px 0px #000000',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      line-height: 1.6;
+    }
+    .font-display { font-family: 'Outfit', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Neo-Brutalist Light / Dark Styling */
+    .brutal-card {
+      background: #ffffff;
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px 0px #000000;
+      transition: all 0.2s ease;
+    }
+    .dark .brutal-card {
+      background: #0d1424;
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 4px 4px 0px 0px rgba(16, 185, 129, 0.35);
+    }
+
+    .brutal-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px 0px #000000;
+    }
+    .dark .brutal-card:hover {
+      box-shadow: 6px 6px 0px 0px rgba(16, 185, 129, 0.5);
+      border-color: rgba(16, 185, 129, 0.6);
+    }
+
+    .brutal-btn {
+      background: #000000;
+      color: #ffffff;
+      border: 2px solid #000000;
+      box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.3);
+      transition: all 0.15s ease;
+    }
+    .dark .brutal-btn {
+      background: #10b981;
+      color: #040711;
+      border: 2px solid #10b981;
+      box-shadow: 3px 3px 0px 0px rgba(16, 185, 129, 0.4);
+    }
+    .brutal-btn:hover {
+      background: #1e293b;
+      transform: translate(-1px, -1px);
+    }
+    .dark .brutal-btn:hover {
+      background: #34d399;
+      color: #040711;
+    }
+
+    .brutal-btn-alt {
+      background: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      box-shadow: 3px 3px 0px 0px #000000;
+      transition: all 0.15s ease;
+    }
+    .dark .brutal-btn-alt {
+      background: #141e33;
+      color: #ffffff;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 3px 3px 0px 0px rgba(255, 255, 255, 0.1);
+    }
+    .brutal-btn-alt:hover {
+      background: #e2e8f0;
+    }
+    .dark .brutal-btn-alt:hover {
+      background: #1e2d4a;
+      border-color: #10b981;
+    }
+
+    /* WCAG Focus Rings */
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 3px solid #10b981 !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Prefers Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .terminal-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .terminal-scrollbar::-webkit-scrollbar-track { background: #040711; }
+    .terminal-scrollbar::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.35); border-radius: 3px; }
+
+    ::selection { background: #10b981; color: #040711; }
+  </style>
+</head>
+<body class="overflow-x-hidden bg-slate-100 dark:bg-obsidian-950 text-black dark:text-slate-100">
+
+  <!-- SKIP TO MAIN CONTENT LINK (ACCESSIBILITY WCAG 2.1 AA) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] px-4 py-2 bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 font-bold rounded border-2 border-black dark:border-brand-emerald shadow-brutal font-mono text-xs">
+    Skip to main content
+  </a>
+
+  <!-- SINGLE LINE TOP NAV HEADER (DUAL LIGHT/DARK MODE WITH TOGGLE) -->
+  <header class="sticky top-0 z-40 bg-slate-100 dark:bg-obsidian-900/90 backdrop-blur-md border-b-3 border-black dark:border-white/10 px-6 md:px-10 py-3.5 flex items-center justify-between">
+    <div class="max-w-7xl w-full mx-auto flex items-center justify-between">
+      
+      <!-- Left: Logo & Release Tag v0.4.2 -->
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center font-bold text-lg border-2 border-black dark:border-brand-emerald">
+          <i class="ph-bold ph-shield-check"></i>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-display font-black text-base md:text-lg uppercase tracking-tight text-black dark:text-white">SECURITY SAST GUARD</span>
+          <a id="ver-badge-nav" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="px-2.5 py-0.5 rounded bg-black dark:bg-brand-emerald/10 text-white dark:text-brand-emerald font-mono font-bold text-xs border border-black dark:border-brand-emerald/30 hover:bg-slate-800 transition-colors" data-version-link>
+            <span data-version-text>v0.4.2</span>
+          </a>
+        </div>
+      </a>
+
+      <!-- Center Nav Links -->
+      <div class="hidden lg:flex items-center gap-8 font-display font-extrabold text-sm text-black dark:text-slate-200">
+        <a href="#firewall" class="hover:underline dark:hover:text-brand-emerald">Firewall Interceptor</a>
+        <a href="#features" class="hover:underline dark:hover:text-brand-emerald">Capabilities</a>
+        <a href="#diff-sec" class="hover:underline dark:hover:text-brand-emerald">Threat Audit</a>
+        <button onclick="openRulesModal()" class="hover:underline flex items-center gap-1.5 font-extrabold text-black dark:text-brand-cyan">
+          <i class="ph-bold ph-list-checks text-base"></i> 53 Rules Explorer
+        </button>
+        <a href="#compare" class="hover:underline dark:hover:text-brand-emerald">Comparison</a>
+      </div>
+
+      <!-- Right Action CTAs + DARK MODE TOGGLE BUTTON -->
+      <div class="hidden sm:flex items-center gap-3 font-mono">
+        <!-- Interactive Theme Switcher -->
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="px-3 py-1.5 rounded brutal-btn-alt text-xs font-bold flex items-center gap-2" title="Toggle Light/Dark Theme" aria-label="Toggle light or dark theme">
+          <!-- Dynamically populated by JS -->
+        </button>
+
+        <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="px-3.5 py-1.5 rounded brutal-btn-alt text-xs font-bold flex items-center gap-1.5">
+          <i class="ph-bold ph-github-logo text-sm"></i> GitHub
+        </a>
+        <a href="#install" class="px-4 py-2 rounded brutal-btn text-xs font-display font-black uppercase tracking-wider">
+          INSTALL 
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded brutal-btn-alt text-black dark:text-white" aria-label="Toggle navigation drawer">
+        <i class="ph-bold ph-list text-xl"></i>
+      </button>
+
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-slate-100 dark:bg-obsidian-900 border-b-3 border-black dark:border-white/20 p-6 space-y-3 font-display font-bold text-sm shadow-brutal dark:text-white">
+      <a href="#firewall" onclick="toggleMobileMenu()" class="block hover:underline">Firewall Interceptor</a>
+      <a href="#features" onclick="toggleMobileMenu()" class="block hover:underline">Capabilities</a>
+      <a href="#diff-sec" onclick="toggleMobileMenu()" class="block hover:underline">Threat Audit</a>
+      <button onclick="toggleMobileMenu(); openRulesModal();" class="block font-extrabold text-brand-cyan hover:underline">53 Rules Explorer (Open Modal)</button>
+      <a href="#compare" onclick="toggleMobileMenu()" class="block hover:underline">Comparison</a>
+      <div class="pt-3 border-t-2 border-black dark:border-white/20 flex flex-col gap-2 font-mono">
+        <button onclick="toggleTheme()" class="px-4 py-2 rounded brutal-btn-alt text-center font-bold">Toggle Light/Dark Mode</button>
+        <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="px-4 py-2 rounded brutal-btn-alt text-center font-bold">GitHub Repository</a>
+        <a href="#install" onclick="toggleMobileMenu()" class="px-4 py-2 rounded brutal-btn text-center font-bold uppercase">INSTALL V0.4.2</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main id="main-content" class="relative z-10 overflow-x-hidden w-full max-w-full">
+
+    <!-- HERO SECTION (DUAL LIGHT/DARK NEO-BRUTALIST HERO) -->
+    <section class="py-16 md:py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Eyebrow Badge -->
+        <div class="inline-block px-3.5 py-1 rounded bg-black dark:bg-brand-emerald/10 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider mb-6 border-2 border-black dark:border-brand-emerald/30">
+          ZERO-TRUST SAST GUARD & COMMAND FIREWALL — ACTIVE
+        </div>
+
+        <!-- 2-Line Enforced Heading -->
+        <h1 class="font-display font-black text-4xl sm:text-6xl md:text-7xl text-black dark:text-white tracking-tight leading-[1.08] max-w-5xl mb-6">
+          Real-Time Command Firewall & <br class="hidden sm:inline" />
+          <span class="text-black dark:text-brand-emerald">Zero-Trust AI Security Shield</span>
+        </h1>
+
+        <!-- Subtext -->
+        <p class="text-slate-800 dark:text-slate-300 text-lg md:text-xl max-w-3xl font-medium leading-relaxed mb-10">
+          Intercept dangerous shell commands before execution and audit code against 53 OWASP and CWE threat standards automatically in under 50ms.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap items-center gap-4 mb-16 font-display font-black">
+          <a href="#install" class="px-8 py-4 rounded-xl brutal-btn text-base uppercase tracking-wider flex items-center gap-2.5">
+            <i class="ph-bold ph-terminal-window text-xl"></i>
+            Install in PowerShell
+          </a>
+          <button onclick="openRulesModal()" class="px-8 py-4 rounded-xl brutal-btn-alt text-base uppercase tracking-wider flex items-center gap-2.5">
+            <i class="ph-bold ph-shield-check text-xl"></i>
+            Explore 53 SAST Rules
+          </button>
+        </div>
+
+        <!-- KEY METRICS CARDS (DUAL LIGHT & DARK STYLED) -->
+        <div>
+          <h2 class="font-display font-black text-2xl text-black dark:text-white mb-6 uppercase tracking-tight">Key Metrics</h2>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Card 1 -->
+            <div class="brutal-card p-6 rounded-2xl flex items-center justify-between">
+              <div>
+                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">SAST Threat Vector Rules</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-white mt-1">53 Rules</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">OWASP, CWE & NIST Controls</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
+                <i class="ph-bold ph-shield-warning"></i>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="brutal-card p-6 rounded-2xl flex items-center justify-between">
+              <div>
+                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Intercept Latency</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-cyan mt-1">&lt; 50ms</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">PowerShell AST Parsing</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
+                <i class="ph-bold ph-lightning"></i>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="brutal-card p-6 rounded-2xl flex items-center justify-between">
+              <div>
+                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Release Version</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1">v0.4.2</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Release-Please Tagged</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-violet text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
+                <i class="ph-bold ph-tag"></i>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="brutal-card p-6 rounded-2xl flex items-center justify-between">
+              <div>
+                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Test Suite Pass Rate</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-emerald mt-1">100%</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Pytest Automated Gate</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
+                <i class="ph-bold ph-check-circle"></i>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PERFORMANCE OVERVIEW (PROGRESS BARS STYLED FOR BOTH MODES) -->
+    <section class="py-16 md:py-20 px-6 md:px-10 bg-slate-200/70 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <h2 class="font-display font-black text-3xl text-black dark:text-white mb-8 uppercase tracking-tight">Security Coverage Overview</h2>
+
+        <div class="brutal-card p-8 rounded-2xl space-y-6">
+          
+          <!-- Bar 1 -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
+              <span>OWASP API Security 2023 Rules (10 Rules)</span>
+              <span>100% Coverage</span>
+            </div>
+            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
+              <div class="h-full bg-black dark:bg-brand-emerald w-[100%]"></div>
+            </div>
+          </div>
+
+          <!-- Bar 2 -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
+              <span>CWE Top 25 Vulnerabilities (12 Rules)</span>
+              <span>100% Coverage</span>
+            </div>
+            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
+              <div class="h-full bg-black dark:bg-brand-cyan w-[100%]"></div>
+            </div>
+          </div>
+
+          <!-- Bar 3 -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
+              <span>NIST 800-53 Control Mappings (10 Controls)</span>
+              <span>100% Coverage</span>
+            </div>
+            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
+              <div class="h-full bg-black dark:bg-brand-violet w-[100%]"></div>
+            </div>
+          </div>
+
+          <!-- Bar 4 -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
+              <span>Command Interceptor Execution Speed</span>
+              <span>&lt; 50ms Benchmark</span>
+            </div>
+            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
+              <div class="h-full bg-black dark:bg-brand-emerald w-[95%]"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LIVE INTERACTIVE FIREWALL SANDBOX -->
+    <section id="firewall" class="py-20 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-12">
+          <span class="px-3 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">LIVE TERMINAL SIMULATOR</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Command Firewall Sandbox</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base max-w-xl mx-auto mt-2 font-medium">
+            Test real-time ALLOW / CONFIRM / DENY responses against shell commands.
+          </p>
+        </div>
+
+        <div class="brutal-card rounded-2xl max-w-4xl mx-auto overflow-hidden">
+          <div class="bg-black text-white px-6 py-3.5 flex items-center justify-between font-mono text-xs border-b-2 border-black dark:border-white/20">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+              <span class="font-bold ml-2">firewall-interceptor.ps1</span>
+            </div>
+            <span class="px-3 py-0.5 rounded bg-white text-black font-bold text-[11px] uppercase">FIREWALL ACTIVE</span>
+          </div>
+
+          <div class="p-4 bg-slate-200/80 dark:bg-obsidian-850 border-b-2 border-black dark:border-white/10 flex flex-wrap items-center gap-2 font-mono text-xs">
+            <span class="font-bold text-black dark:text-slate-200 mr-2">Preset Commands:</span>
+            <button onclick="simulateCommand('rm -rf /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">rm -rf /</button>
+            <button onclick="simulateCommand('Remove-Item C:\\Windows\\System32 -Recurse')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Remove-Item System32</button>
+            <button onclick="simulateCommand('git push origin main --force')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">git push --force</button>
+            <button onclick="simulateCommand('pytest --cov=src')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">pytest --cov=src</button>
+            <button onclick="simulateCommand('/sast-audit file src/main.py')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">/sast-audit file</button>
+          </div>
+
+          <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-950 space-y-4 min-h-[280px] max-h-[400px] overflow-y-auto terminal-scrollbar flex flex-col justify-between">
+            <div id="terminal-output" class="space-y-3">
+              <div class="text-slate-600 dark:text-slate-400">// Security SAST Guard Interceptor v0.4.2 ready.</div>
+              <div class="text-black dark:text-slate-200 font-semibold">Click a preset above or enter shell instruction to evaluate firewall rules.</div>
+            </div>
+
+            <form onsubmit="handleCustomCommand(event)" class="mt-4 flex items-center gap-3 bg-slate-100 dark:bg-obsidian-900 p-3 rounded-xl border-2 border-black dark:border-white/20">
+              <label for="cmd-input" class="font-bold text-black dark:text-brand-emerald">$</label>
+              <input type="text" id="cmd-input" name="command" placeholder="Type command (e.g. format C:, git commit, rmdir /s)..." class="bg-transparent text-black dark:text-white font-bold w-full focus:outline-none font-mono text-xs placeholder:text-slate-500" autocomplete="off" aria-label="Terminal command input" />
+              <button type="submit" class="px-4 py-2 rounded brutal-btn font-bold text-xs uppercase whitespace-nowrap">
+                Evaluate
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LIVE CODE VULNERABILITY VS FIXED DIFF AUDITOR -->
+    <section id="diff-sec" class="py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-12">
+          <span class="px-3 py-1 bg-black dark:bg-brand-violet/20 text-white dark:text-brand-violet font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-violet/40">STATIC CODE AUDITOR</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Vulnerability Detection</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base max-w-xl mx-auto mt-2 font-medium">
+            Detects AI-generated security flaws and minifies context for instant resolution.
+          </p>
+        </div>
+
+        <div class="brutal-card p-6 md:p-8 rounded-2xl">
+          <div class="flex items-center justify-between border-b-2 border-black dark:border-white/20 pb-4 mb-6 font-mono text-xs">
+            <div class="flex items-center gap-4">
+              <span class="text-black dark:text-rose-400 font-extrabold flex items-center gap-1.5"><i class="ph-bold ph-bug"></i> FLAGGED VULNERABLE CODE</span>
+              <span class="text-black dark:text-brand-emerald font-extrabold flex items-center gap-1.5"><i class="ph-bold ph-shield-check"></i> SANITIZED SECURE CODE</span>
+            </div>
+            <span class="font-bold text-black dark:text-slate-200">Rule: <code class="bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 px-2 py-0.5 rounded font-bold">CWE-89 (SQL Injection)</code></span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+            <div class="p-5 rounded-xl bg-slate-100 dark:bg-rose-950/20 border-2 border-black dark:border-rose-500/40 space-y-2">
+              <div class="text-black dark:text-rose-400 font-bold text-[11px] uppercase border-b border-black/30 dark:border-rose-500/30 pb-1">// FLAGGED BY SAST GUARD</div>
+              <pre class="text-black dark:text-rose-200 overflow-x-auto font-bold"><code><span class="text-slate-600 dark:text-slate-400"># Vulnerable SQL Query Construction</span>
+def get_user_account(user_id):
+    query = f"SELECT * FROM users WHERE id = '{user_id}'"
+    cursor.execute(query) <span class="bg-black text-white px-1"># SQLi Threat!</span>
+    return cursor.fetchone()</code></pre>
+            </div>
+
+            <div class="p-5 rounded-xl bg-slate-100 dark:bg-emerald-950/20 border-2 border-black dark:border-emerald-500/40 space-y-2">
+              <div class="text-black dark:text-brand-emerald font-bold text-[11px] uppercase border-b border-black/30 dark:border-emerald-500/30 pb-1">// SANITIZED SECURE PATTERN</div>
+              <pre class="text-black dark:text-emerald-200 overflow-x-auto font-bold"><code><span class="text-slate-600 dark:text-slate-400"># Parameterized Query</span>
+def get_user_account(user_id):
+    query = "SELECT * FROM users WHERE id = %s"
+    cursor.execute(query, (user_id,)) <span class="bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 px-1 font-bold"># Safe!</span>
+    return cursor.fetchone()</code></pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CAPABILITIES BENTO GRID -->
+    <section id="features" class="py-20 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-12">
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white uppercase">Zero-Trust Protection System</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 grid-flow-dense">
+          
+          <div class="brutal-card rounded-2xl p-8 md:col-span-2 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
+                  <i class="ph-bold ph-shield-warning"></i>
+                </div>
+                <button onclick="openRulesModal()" class="px-4 py-2 rounded brutal-btn font-mono text-xs font-bold uppercase">
+                  Open 53 Rules Explorer &rarr;
+                </button>
+              </div>
+
+              <h3 class="font-display font-black text-2xl text-black dark:text-white mb-3">53 Security Vector Rules</h3>
+              <p class="text-slate-800 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
+                Audits code against international security frameworks before commits enter git history:
+              </p>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div onclick="openRulesModal('OWASP API 2023')" class="p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-brand-emerald">
+                  <div class="text-black dark:text-brand-emerald font-bold">OWASP API (10)</div>
+                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">BOLA, SSRF, Mass Assign</div>
+                </div>
+                <div onclick="openRulesModal('OWASP Web 2021')" class="p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-brand-cyan">
+                  <div class="text-black dark:text-brand-cyan font-bold">OWASP Web (10)</div>
+                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">Access Control, Crypto</div>
+                </div>
+                <div onclick="openRulesModal('CWE Top 25')" class="p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-brand-violet">
+                  <div class="text-black dark:text-brand-violet font-bold">CWE Top 25 (12)</div>
+                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">SQLi, XSS, Command Inj</div>
+                </div>
+                <div onclick="openRulesModal('NIST 800-53')" class="p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-rose-500">
+                  <div class="text-black dark:text-rose-400 font-bold">NIST 800-53 (10)</div>
+                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">AC-2, SC-8 Controls</div>
+                </div>
+                <div onclick="openRulesModal('Web App Specific')" class="p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-amber-500">
+                  <div class="text-black dark:text-amber-400 font-bold">Web Specific (11)</div>
+                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">Race Conditions, CORS</div>
+                </div>
+                <div onclick="openRulesModal('Secret Protection')" class="p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-emerald-500">
+                  <div class="text-black dark:text-emerald-400 font-bold">Secret Leak Guard</div>
+                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">RSA Keys & API Tokens</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="brutal-card rounded-2xl p-8 md:col-span-1 flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold mb-6">
+                <i class="ph-bold ph-git-commit"></i>
+              </div>
+              <h3 class="font-display font-black text-2xl text-black dark:text-white mb-3">14-Stage Pre-Commit Gate</h3>
+              <p class="text-slate-800 dark:text-slate-300 text-sm font-medium leading-relaxed mb-4">
+                Automated sanitation pipeline with strict tooling:
+              </p>
+              <ul class="space-y-3 font-mono text-xs text-black dark:text-slate-200 font-bold">
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Ruff Formatting & Linting</li>
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Mypy Strict Type Safety</li>
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Pytest 100% Coverage</li>
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Detect-Secrets Baseline</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMPARISON TABLE SECTION -->
+    <section id="compare" class="py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-12">
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white uppercase">Feature Comparison</h2>
+        </div>
+
+        <div class="brutal-card rounded-2xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono text-black dark:text-slate-200">
+              <thead class="bg-black dark:bg-obsidian-950 text-white text-xs uppercase border-b-2 border-black dark:border-white/20">
+                <tr>
+                  <th scope="col" class="py-4 px-6 font-bold">Capability</th>
+                  <th scope="col" class="py-4 px-6 text-white dark:text-brand-emerald font-black">Security SAST Guard v0.4.2</th>
+                  <th scope="col" class="py-4 px-6 font-bold">SonarQube / Snyk</th>
+                  <th scope="col" class="py-4 px-6 font-bold">Semgrep</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y-2 divide-black dark:divide-white/10 font-bold">
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Real-Time Command Firewall</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Yes (PreCommand Hook)</td>
+                  <td class="py-4 px-6 text-slate-500">No (Code Only)</td>
+                  <td class="py-4 px-6 text-slate-500">No (Code Only)</td>
+                </tr>
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">AI Agent Trajectory Protection</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Native Interceptor Hook</td>
+                  <td class="py-4 px-6 text-slate-500">None</td>
+                  <td class="py-4 px-6 text-slate-500">None</td>
+                </tr>
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Context Minification (Token Saving)</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Built-in Snippet Extractor</td>
+                  <td class="py-4 px-6 text-slate-500">N/A</td>
+                  <td class="py-4 px-6 text-slate-500">N/A</td>
+                </tr>
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Scan Speed / Latency</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black">&lt; 50ms (PowerShell AST)</td>
+                  <td class="py-4 px-6 text-slate-500">Slow (Heavy Java AST)</td>
+                  <td class="py-4 px-6 text-slate-500">Medium</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INSTALLATION SUITE SECTION -->
+    <section id="install" class="py-20 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950">
+      <div class="max-w-4xl mx-auto">
+        
+        <div class="text-center mb-10">
+          <span class="px-3 py-1 bg-black dark:bg-brand-emerald/20 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-emerald/40">AUTOMATED SUITE</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Install Plugin v0.4.2</h2>
+        </div>
+
+        <div class="brutal-card rounded-2xl overflow-hidden">
+          <div class="bg-black text-white px-6 py-3.5 flex items-center justify-between font-mono text-xs border-b-2 border-black dark:border-white/20">
+            <div class="flex items-center gap-3">
+              <button onclick="switchTab('install')" id="tab-install" class="px-4 py-1.5 rounded brutal-btn-alt font-bold uppercase text-xs">1. Install v0.4.2</button>
+              <button onclick="switchTab('update')" id="tab-update" class="px-4 py-1.5 rounded text-white hover:underline font-bold text-xs">2. Update</button>
+              <button onclick="switchTab('remove')" id="tab-remove" class="px-4 py-1.5 rounded text-white hover:underline font-bold text-xs">3. Remove</button>
+            </div>
+            <span class="font-bold">PowerShell Core 7+</span>
+          </div>
+
+          <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-900">
+            <div id="content-install" class="space-y-4">
+              <div class="text-slate-700 dark:text-slate-300 font-bold">// Downloads v0.4.2 release ZIP, extracts, and configures Antigravity CLI plugin</div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 flex items-center justify-between text-black dark:text-brand-emerald font-bold gap-3">
+                <code id="code-install" class="overflow-x-auto">Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"; .\install.ps1</code>
+                <button onclick="copySnippet('code-install')" class="ml-2 px-4 py-2 rounded brutal-btn text-xs font-bold whitespace-nowrap">Copy</button>
+              </div>
+            </div>
+
+            <div id="content-update" class="space-y-4 hidden">
+              <div class="text-slate-700 dark:text-slate-300 font-bold">// Updates plugin while preserving user profile.json config</div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 flex items-center justify-between text-black dark:text-brand-cyan font-bold gap-3">
+                <code id="code-update" class="overflow-x-auto">cd $HOME\.gemini\config\plugins\security-sast-guard; .\update.ps1</code>
+                <button onclick="copySnippet('code-update')" class="ml-2 px-4 py-2 rounded brutal-btn text-xs font-bold whitespace-nowrap">Copy</button>
+              </div>
+            </div>
+
+            <div id="content-remove" class="space-y-4 hidden">
+              <div class="text-slate-700 dark:text-slate-300 font-bold">// Safely uninstalls plugin and restores original environment</div>
+              <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 flex items-center justify-between text-black dark:text-rose-400 font-bold gap-3">
+                <code id="code-remove" class="overflow-x-auto">cd $HOME\.gemini\config\plugins\security-sast-guard; .\remove.ps1</code>
+                <button onclick="copySnippet('code-remove')" class="ml-2 px-4 py-2 rounded brutal-btn text-xs font-bold whitespace-nowrap">Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- INTERACTIVE 53 RULES EXPLORER MODAL -->
+  <div id="rules-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 md:p-8" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="brutal-card w-full max-w-5xl max-h-[88vh] rounded-2xl shadow-brutal-lg flex flex-col overflow-hidden bg-white dark:bg-obsidian-900">
+      
+      <div class="bg-black dark:bg-obsidian-950 text-white px-6 py-4 flex items-center justify-between font-mono border-b-2 border-black dark:border-white/20">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded bg-white text-black dark:bg-brand-emerald dark:text-obsidian-950 flex items-center justify-center font-bold text-lg">
+            <i class="ph-bold ph-list-checks"></i>
+          </div>
+          <div>
+            <h3 id="modal-title" class="font-display font-black text-xl text-white">53 Security SAST Rules Database</h3>
+            <p class="text-xs text-slate-300">Plugin v0.4.2 Threat Vectors</p>
+          </div>
+        </div>
+        <button onclick="closeRulesModal()" class="w-8 h-8 rounded bg-white text-black dark:bg-white/10 dark:text-white font-bold flex items-center justify-center" aria-label="Close rules explorer modal">✕</button>
+      </div>
+
+      <div class="bg-slate-100 dark:bg-obsidian-850 p-5 border-b-2 border-black dark:border-white/10 space-y-4">
+        <div class="relative">
+          <label for="rule-search" class="sr-only">Search Security Rules</label>
+          <i class="ph-bold ph-magnifying-glass absolute left-4 top-3.5 text-black dark:text-slate-400 font-bold text-base"></i>
+          <input type="text" id="rule-search" name="rule-search" oninput="filterRules()" placeholder="Search Rule ID (e.g. API1, CWE-89, A03), category or keyword..." class="w-full bg-white dark:bg-obsidian-950 pl-11 pr-4 py-3 rounded-xl border-2 border-black dark:border-white/20 text-sm text-black dark:text-white font-mono font-bold placeholder:text-slate-500 focus:outline-none" autocomplete="off" />
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs font-mono" id="category-pills"></div>
+      </div>
+
+      <div class="p-6 overflow-y-auto terminal-scrollbar flex-1 bg-white dark:bg-obsidian-950 space-y-3" id="rules-list-container"></div>
+
+      <div class="bg-black dark:bg-obsidian-950 text-white px-6 py-4 flex items-center justify-between text-xs font-mono border-t-2 border-black dark:border-white/20">
+        <span id="rules-count-badge">Showing 53 of 53 rules</span>
+        <a href="https://github.com/nguyenduydan/security-sast-guard-plugin/tree/main/rules" target="_blank" class="text-white dark:text-brand-emerald font-bold hover:underline">
+          View Raw Rules on GitHub &rarr;
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t-3 border-black dark:border-white/10 py-10 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 font-mono text-xs text-black dark:text-slate-300 font-bold">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center font-bold">
+          <i class="ph-bold ph-shield-check text-lg"></i>
+        </div>
+        <span class="font-display font-black text-black dark:text-white text-base">Security SAST Guard <span data-version-text>v0.4.2</span></span>
+        <span class="text-slate-700 dark:text-slate-400">• Release-Please Tagged • MIT License</span>
+      </div>
+
+      <div class="flex items-center gap-6 text-black dark:text-slate-300 font-bold">
+        <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="hover:underline flex items-center gap-1.5"><i class="ph-bold ph-github-logo"></i> GitHub</a>
+        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v0.4.2</span></a>
+        <a href="https://github.com/nguyenduydan/security-sast-guard-plugin/blob/main/LICENSE" target="_blank" class="hover:underline">LICENSE</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT ENGINE -->
+  <script>
+    const SAST_RULES = [
+      { id: "API1:2023", category: "OWASP API 2023", name: "Broken Object Level Authorization (BOLA)", severity: "CRITICAL", desc: "User access to objects is not checked against token identity." },
+      { id: "API2:2023", category: "OWASP API 2023", name: "Broken Authentication", severity: "CRITICAL", desc: "Weak token validation or missing authentication checks on API routes." },
+      { id: "API3:2023", category: "OWASP API 2023", name: "Broken Object Property Level Authorization", severity: "HIGH", desc: "Mass assignment allowing unauthorized state mutation." },
+      { id: "API4:2023", category: "OWASP API 2023", name: "Unrestricted Resource Consumption", severity: "MEDIUM", desc: "Missing rate limits or allocation quotas on API endpoints." },
+      { id: "API5:2023", category: "OWASP API 2023", name: "Broken Function Level Authorization (BFLA)", severity: "HIGH", desc: "Administrative functions exposed without strict role authorization." },
+      { id: "API6:2023", category: "OWASP API 2023", name: "Unrestricted Access to Sensitive Business Flows", severity: "MEDIUM", desc: "Automated bot exploitation of business logic workflows." },
+      { id: "API7:2023", category: "OWASP API 2023", name: "Server-Side Request Forgery (SSRF)", severity: "CRITICAL", desc: "Unfiltered user-supplied URLs fetched by internal API servers." },
+      { id: "API8:2023", category: "OWASP API 2023", name: "Security Misconfiguration", severity: "HIGH", desc: "Exposed debug endpoints, verbose stack traces, or missing TLS." },
+      { id: "API9:2023", category: "OWASP API 2023", name: "Improper Inventory Management", severity: "MEDIUM", desc: "Deprecated API versions (v1/v2) left unpatched in production." },
+      { id: "API10:2023", category: "OWASP API 2023", name: "Unsafe Consumption of APIs", severity: "HIGH", desc: "Blindly trusting third-party API response payloads without sanitization." },
+      { id: "A01:2021", category: "OWASP Web 2021", name: "Broken Access Control", severity: "CRITICAL", desc: "Horizontal/Vertical privilege escalation vectors." },
+      { id: "A02:2021", category: "OWASP Web 2021", name: "Cryptographic Failures", severity: "CRITICAL", desc: "Weak hashing algorithms (MD5/SHA1) or unencrypted data transmission." },
+      { id: "A03:2021", category: "OWASP Web 2021", name: "Injection Vectors", severity: "CRITICAL", desc: "SQL, NoSQL, OS command, or LDAP injection patterns." },
+      { id: "A04:2021", category: "OWASP Web 2021", name: "Insecure Design", severity: "HIGH", desc: "Architectural flaws lacking threat modeling control boundaries." },
+      { id: "A05:2021", category: "OWASP Web 2021", name: "Security Misconfiguration", severity: "HIGH", desc: "Default credentials or permissive CORS headers." },
+      { id: "A06:2021", category: "OWASP Web 2021", name: "Vulnerable & Outdated Components", severity: "HIGH", desc: "Known CVE vulnerabilities in imported dependencies." },
+      { id: "A07:2021", category: "OWASP Web 2021", name: "Identification & Auth Failures", severity: "CRITICAL", desc: "Credential stuffing or weak session management." },
+      { id: "A08:2021", category: "OWASP Web 2021", name: "Software & Data Integrity Failures", severity: "HIGH", desc: "Unverified auto-updates or unsafe deserialization." },
+      { id: "A09:2021", category: "OWASP Web 2021", name: "Security Logging & Monitoring Failures", severity: "MEDIUM", desc: "Missing audit logs for critical security events." },
+      { id: "A10:2021", category: "OWASP Web 2021", name: "Server-Side Request Forgery", severity: "CRITICAL", desc: "Internal port scanning via web request proxying." },
+      { id: "CWE-89", category: "CWE Top 25", name: "SQL Injection", severity: "CRITICAL", desc: "Unsanitized input concatenated directly into SQL queries." },
+      { id: "CWE-79", category: "CWE Top 25", name: "Cross-Site Scripting (XSS)", severity: "HIGH", desc: "Unescaped user input rendered in HTML DOM context." },
+      { id: "CWE-77", category: "CWE Top 25", name: "Command Injection", severity: "CRITICAL", desc: "Executing shell commands via subprocess without escaping." },
+      { id: "CWE-22", category: "CWE Top 25", name: "Path Traversal", severity: "HIGH", desc: "Reading restricted files via ../ relative file path manipulation." },
+      { id: "CWE-352", category: "CWE Top 25", name: "Cross-Site Request Forgery", severity: "HIGH", desc: "Missing Anti-CSRF tokens on state-changing requests." },
+      { id: "CWE-798", category: "CWE Top 25", name: "Hardcoded Credentials", severity: "CRITICAL", desc: "Passwords, AWS keys, or RSA private keys embedded in code." },
+      { id: "CWE-502", category: "CWE Top 25", name: "Deserialization of Untrusted Data", severity: "CRITICAL", desc: "Pickle/YAML unsafe loading causing Remote Code Execution." },
+      { id: "CWE-416", category: "CWE Top 25", name: "Use After Free", severity: "CRITICAL", desc: "Referencing memory pointers after deallocation." },
+      { id: "CWE-787", category: "CWE Top 25", name: "Out-of-bounds Write", severity: "CRITICAL", desc: "Writing data past buffer boundaries." },
+      { id: "CWE-94", category: "CWE Top 25", name: "Code Injection (RCE)", severity: "CRITICAL", desc: "Dynamic evaluation of string input using eval() or exec()." },
+      { id: "CWE-476", category: "CWE Top 25", name: "NULL Pointer Dereference", severity: "MEDIUM", desc: "Unchecked null pointers leading to application crash." },
+      { id: "CWE-119", category: "CWE Top 25", name: "Buffer Restriction Failure", severity: "HIGH", desc: "Improper memory array bounds checking." },
+      { id: "AC-2", category: "NIST 800-53", name: "Account Management", severity: "HIGH", desc: "Automated account provisioning and access revocation control." },
+      { id: "SC-8", category: "NIST 800-53", name: "Transmission Confidentiality", severity: "CRITICAL", desc: "Enforces TLS 1.3 encryption across network channels." },
+      { id: "AU-2", category: "NIST 800-53", name: "Event Logging", severity: "MEDIUM", desc: "Mandatory logging of authorization and authentication actions." },
+      { id: "IA-2", category: "NIST 800-53", name: "Identification & Authentication", severity: "HIGH", desc: "Multi-factor authentication enforcement." },
+      { id: "SI-4", category: "NIST 800-53", name: "Information System Monitoring", severity: "HIGH", desc: "Real-time anomaly monitoring across agent execution trajectories." },
+      { id: "CM-6", category: "NIST 800-53", name: "Configuration Settings", severity: "MEDIUM", desc: "Hardened secure baseline settings for runtime plugins." },
+      { id: "SA-11", category: "NIST 800-53", name: "Developer Testing & Evaluation", severity: "HIGH", desc: "100% test coverage and static code security gate enforcement." },
+      { id: "SC-13", category: "NIST 800-53", name: "Cryptographic Protection", severity: "CRITICAL", desc: "FIPS 140-3 approved cryptographic modules." },
+      { id: "AC-6", category: "NIST 800-53", name: "Least Privilege", severity: "HIGH", desc: "Restricting AI agent permissions strictly to workspace scope." },
+      { id: "RA-5", category: "NIST 800-53", name: "Vulnerability Monitoring", severity: "HIGH", desc: "Automated CVE scanning of dependency libraries." },
+      { id: "WEB1", category: "Web App Specific", name: "CORS Misconfiguration", severity: "HIGH", desc: "Wildcard Access-Control-Allow-Origin header set with credentials." },
+      { id: "WEB2", category: "Web App Specific", name: "Insecure Cookie Settings", severity: "HIGH", desc: "Missing HttpOnly, Secure, or SameSite flags on session cookies." },
+      { id: "WEB3", category: "Web App Specific", name: "Clickjacking Protection", severity: "MEDIUM", desc: "Missing X-Frame-Options or Content-Security-Policy frame-ancestors." },
+      { id: "WEB4", category: "Web App Specific", name: "Open Redirect", severity: "MEDIUM", desc: "Unvalidated target parameter in HTTP 302 redirects." },
+      { id: "WEB5", category: "Web App Specific", name: "Unrestricted File Upload", severity: "CRITICAL", desc: "Uploading executable scripts (.php, .exe, .sh) to web root." },
+      { id: "WEB6", category: "Web App Specific", name: "HTTP Header Injection", severity: "HIGH", desc: "CRLF injection in HTTP response headers." },
+      { id: "WEB7", category: "Web App Specific", name: "DOM-Based XSS", severity: "HIGH", desc: "Unsanitized location.hash passed directly to innerHTML." },
+      { id: "WEB8", category: "Web App Specific", name: "Subdomain Takeover", severity: "HIGH", desc: "Dangling CNAME DNS entries pointing to unclaimed cloud services." },
+      { id: "WEB9", category: "Web App Specific", name: "Race Condition (TOCTOU)", severity: "HIGH", desc: "Time-of-check to time-of-use vulnerability in file handling." },
+      { id: "WEB10", category: "Web App Specific", name: "Source File Exposure", severity: "MEDIUM", desc: "Exposing .git, .env, or backup files in web server document root." },
+      { id: "WEB11", category: "Web App Specific", name: "Prototype Pollution", severity: "CRITICAL", desc: "Modifying Object.prototype via unvalidated JSON deep merge." }
+    ];
+
+    let activeCategory = "ALL";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initTheme();
+      syncVersionFromGitHub();
+      renderCategoryPills();
+      renderRules();
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeRulesModal();
+      });
+    });
+
+    // GitHub Live Version Sync Engine
+    // Fetches latest release tag from GitHub API and updates ALL version badges
+    const FALLBACK_VERSION = 'v0.4.2';
+    const GITHUB_REPO = 'nguyenduydan/security-sast-guard-plugin';
+
+    async function syncVersionFromGitHub() {
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`,
+          { headers: { Accept: 'application/vnd.github.v3+json' } }
+        );
+        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+        const data = await res.json();
+        const tag = data.tag_name || FALLBACK_VERSION;
+        applyVersionToPage(tag, data.html_url);
+      } catch (err) {
+        // Silently fall back to hardcoded version — no broken UI
+        applyVersionToPage(FALLBACK_VERSION,
+          `https://github.com/${GITHUB_REPO}/releases/tag/${FALLBACK_VERSION}`);
+      }
+    }
+
+    function applyVersionToPage(tag, releaseUrl) {
+      // Only update navbar badge and footer — keep hero clean
+      document.querySelectorAll('[data-version-text]').forEach(el => {
+        el.textContent = tag;
+      });
+      // Only update release links (navbar badge + footer release link)
+      document.querySelectorAll('[data-version-link]').forEach(el => {
+        el.href = releaseUrl;
+      });
+      // Update page title
+      document.title = `Security SAST Guard ${tag} — Dual Theme Neo-Brutalist Security Platform`;
+    }
+
+    // Theme Management Engine (Light/Dark Persistence)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        updateToggleIcon(true);
+      } else {
+        document.documentElement.classList.remove('dark');
+        updateToggleIcon(false);
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateToggleIcon(isDark);
+    }
+
+    function updateToggleIcon(isDark) {
+      const btn = document.getElementById('theme-toggle-btn');
+      if (btn) {
+        btn.innerHTML = isDark 
+          ? '<i class="ph-bold ph-sun text-amber-400 text-base"></i> <span class="hidden sm:inline font-mono text-xs font-bold">Light</span>' 
+          : '<i class="ph-bold ph-moon text-slate-900 text-base"></i> <span class="hidden sm:inline font-mono text-xs font-bold">Dark</span>';
+      }
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function openRulesModal(categoryFilter = "ALL") {
+      activeCategory = categoryFilter;
+      renderCategoryPills();
+      renderRules();
+      const modal = document.getElementById('rules-modal');
+      modal.classList.remove('hidden');
+      document.getElementById('rule-search').focus();
+    }
+
+    function closeRulesModal() {
+      document.getElementById('rules-modal').classList.add('hidden');
+    }
+
+    function renderCategoryPills() {
+      const categories = ["ALL", "OWASP API 2023", "OWASP Web 2021", "CWE Top 25", "NIST 800-53", "Web App Specific"];
+      const container = document.getElementById('category-pills');
+      container.innerHTML = categories.map(cat => {
+        const isSelected = activeCategory === cat;
+        const count = cat === "ALL" ? SAST_RULES.length : SAST_RULES.filter(r => r.category === cat).length;
+        const activeClass = isSelected 
+          ? "bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 font-bold border-2 border-black dark:border-brand-emerald" 
+          : "bg-white dark:bg-obsidian-950 text-black dark:text-white font-bold border-2 border-black dark:border-white/20 hover:bg-slate-200 dark:hover:border-brand-emerald";
+        return `<button onclick="setCategory('${cat}')" class="px-3 py-1 rounded transition-all ${activeClass}">${cat} (${count})</button>`;
+      }).join('');
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      renderCategoryPills();
+      renderRules();
+    }
+
+    function filterRules() { renderRules(); }
+
+    function renderRules() {
+      const query = document.getElementById('rule-search').value.toLowerCase().trim();
+      const container = document.getElementById('rules-list-container');
+      const filtered = SAST_RULES.filter(r => {
+        const matchesCat = activeCategory === "ALL" || r.category === activeCategory;
+        const matchesQuery = !query || r.id.toLowerCase().includes(query) || r.name.toLowerCase().includes(query) || r.desc.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+
+      document.getElementById('rules-count-badge').innerText = `Showing ${filtered.length} of ${SAST_RULES.length} rules`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center font-mono font-bold text-xs">No matching rules found.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(r => {
+        return `
+          <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/10 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="font-mono font-bold text-white dark:text-obsidian-950 bg-black dark:bg-brand-emerald px-2 py-0.5 rounded text-xs">${r.id}</span>
+                <span class="font-display font-black text-black dark:text-white text-base">${r.name}</span>
+              </div>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 uppercase">${r.severity}</span>
+            </div>
+            <p class="text-xs text-black dark:text-slate-300 font-mono font-semibold">${r.desc}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function simulateCommand(cmd) {
+      document.getElementById('cmd-input').value = cmd;
+      runFirewallLogic(cmd);
+    }
+
+    function handleCustomCommand(e) {
+      e.preventDefault();
+      const cmd = document.getElementById('cmd-input').value.trim();
+      if (cmd) runFirewallLogic(cmd);
+    }
+
+    function runFirewallLogic(cmd) {
+      const outputDiv = document.getElementById('terminal-output');
+      const lower = cmd.toLowerCase();
+
+      let status = "ALLOW";
+      let statusClass = "bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950";
+      let icon = "ph-check-circle";
+      let reason = "Verified clean execution trajectory.";
+
+      if (lower.includes('rm -rf /') || lower.includes('format c:') || lower.includes('reg delete') || lower.includes('mkfs')) {
+        status = "DENY";
+        statusClass = "bg-black dark:bg-rose-500 text-white dark:text-obsidian-950";
+        icon = "ph-x-circle";
+        reason = "CRITICAL: Destructive system operation blocked by PreCommand Interceptor!";
+      } else if (lower.includes('remove-item') || lower.includes('--force') || lower.includes('rmdir') || lower.includes('del ')) {
+        status = "CONFIRM";
+        statusClass = "bg-black dark:bg-amber-500 text-white dark:text-obsidian-950";
+        icon = "ph-warning-circle";
+        reason = "HIGH RISK: Operation alters file state/history. Halting for Y/N user prompt.";
+      }
+
+      const timestamp = new Date().toLocaleTimeString();
+      const newEntry = document.createElement('div');
+      newEntry.className = 'p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-2 shadow-brutal-sm';
+      newEntry.innerHTML = `
+        <div class="flex items-center justify-between text-xs font-mono font-bold">
+          <span class="text-black dark:text-white">$ ${escapeHtml(cmd)}</span>
+          <span class="text-[10px] text-slate-700 dark:text-slate-400">${timestamp}</span>
+        </div>
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded font-bold border border-black dark:border-white/20 ${statusClass}">
+            <i class="ph-bold ${icon}" aria-hidden="true"></i> ${status}
+          </span>
+          <span class="text-black dark:text-slate-200 font-semibold text-xs">${reason}</span>
+        </div>
+      `;
+
+      outputDiv.appendChild(newEntry);
+      outputDiv.parentElement.scrollTop = outputDiv.parentElement.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function switchTab(tab) {
+      ['install', 'update', 'remove'].forEach(t => {
+        const btn = document.getElementById(`tab-${t}`);
+        const content = document.getElementById(`content-${t}`);
+        if (t === tab) {
+          btn.className = "px-4 py-1.5 rounded brutal-btn-alt font-bold uppercase text-xs";
+          content.classList.remove('hidden');
+        } else {
+          btn.className = "px-4 py-1.5 rounded text-white hover:underline font-bold text-xs";
+          content.classList.add('hidden');
+        }
+      });
+    }
+
+    function copySnippet(id) {
+      navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => {
+        alert("PowerShell snippet copied!");
+      });
+    }
+  </script>
+</body>
+</html>
