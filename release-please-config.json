@@ -18,7 +18,8 @@
         { "type": "build", "section": "📦 Build System & Dependencies", "hidden": false },
         { "type": "ci", "section": "🤖 CI/CD Workflows", "hidden": false },
         { "type": "docs", "section": "📝 Documentation", "hidden": false },
-        { "type": "style", "section": "🎨 Code Style & Formatting", "hidden": false }
+        { "type": "style", "section": "🎨 Code Style & Formatting", "hidden": false },
+        { "type": "chore", "section": "Maintenance & Tooling", "hidden": false }
       ]
     }
   }
