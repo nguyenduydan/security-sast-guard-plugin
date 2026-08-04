@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.4.3...v0.5.0) (2026-08-04)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **landing:** add GitHub Releases API live version sync and dual-theme neo-brutalist UI ([12a06fb](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/12a06fb2b0665762be0881f23e1022fbe9d90f50))
+* **landing:** GitHub Releases API live version sync & dual-theme neo-brutalist UI ([9b48fab](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9b48fabb4fbcaa028610a00d3e60dcc7fa2984a2))
+
 ## [0.4.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.4.2...v0.4.3) (2026-08-04)
 
 
