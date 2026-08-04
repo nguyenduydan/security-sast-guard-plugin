@@ -1,6 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "python",
+  "extra-files": [
+    {
+      "type": "json",
+      "path": "plugin.json",
+      "jsonpath": "$.version"
+    }
+  ],
   "changelog-sections": [
     { "type": "feat", "section": "🚀 Features & SAST Security Rules", "hidden": false },
     { "type": "fix", "section": "🐛 Bug Fixes", "hidden": false },
