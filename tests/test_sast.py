@@ -30,3 +30,27 @@ def test_sast_scanner_lazy_prompt(tmp_path: Path) -> None:
         results = scanner.scan(str(test_file))
         # User replied 'N', so it remains a violation
         assert len(results) == 1
+
+
+def test_sast_scanner_real_regex_detection(tmp_path: Path) -> None:
+    test_file = tmp_path / "app.py"
+    test_file.write_text(
+        '<input onfocus="alert(1)">\n'
+        "role = request.query.role\n"
+        "# role = request.query.role\n"
+        '// <input onfocus="alert(1)">\n'
+    )
+
+    scanner = SASTScanner()
+    scanner.mode = "strict"
+
+    with patch("builtins.input", return_value="N"):
+        results = scanner.scan(str(test_file))
+
+    assert len(results) == 2
+    rule_ids = [r["rule_id"] for r in results]
+    assert "XSS_INLINE_EVENT" in rule_ids
+    assert "BROKEN_ACCESS_CONTROL" in rule_ids
+    lines = [r["line"] for r in results]
+    assert lines == [1, 2]
+
