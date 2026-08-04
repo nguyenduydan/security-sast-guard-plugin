@@ -58,6 +58,9 @@ try {
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
     Write-Host "Removing old version..."
+    # The script is commonly launched from $InstallDir. Move out first so
+    # Windows does not keep the directory as the process working directory.
+    Set-Location -Path $TempDir
     Remove-Item -Path $InstallDir -Recurse -Force
 
     Write-Host "Installing new version to $InstallDir ..."
@@ -73,6 +76,8 @@ try {
     Write-Host "Update successful!" -ForegroundColor Green
     Write-Host "Plugin updated at: $InstallDir" -ForegroundColor Green
 } finally {
+    # Leave the temporary directory before deleting it.
+    Set-Location -Path ([System.IO.Path]::GetTempPath())
     if (Test-Path $TempDir) {
         Remove-Item -Path $TempDir -Recurse -Force
     }
