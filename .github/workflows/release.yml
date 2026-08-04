@@ -72,3 +72,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      - name: Enable Auto-merge for Release PR
+        if: ${{ steps.release.outputs.pr }}
+        run: gh pr merge --auto --merge "${{ fromJson(steps.release.outputs.pr).number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
