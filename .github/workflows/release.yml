@@ -64,7 +64,9 @@ jobs:
   release-please:
     name: Release Please PR Automation
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: |
+      github.ref == 'refs/heads/main' &&
+      !startsWith(github.event.head_commit.message, 'chore(main): release')
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
