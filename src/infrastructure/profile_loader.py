@@ -19,4 +19,3 @@ class ProfileLoader:
                 return data
         except (json.JSONDecodeError, OSError):
             return {}
-
