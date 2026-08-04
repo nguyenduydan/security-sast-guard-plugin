@@ -40,8 +40,25 @@ jobs:
 
       - name: Package Release Asset
         run: |
-          # Create a clean zip excluding .git and github workflows
-          git archive --format=zip --output=${{ github.ref_name }}.zip HEAD
+          # Package only runtime files. Keep the top-level directory expected
+          # by install.ps1/update.ps1 while excluding source/docs/dev files.
+          git archive \
+            --format=zip \
+            --prefix=security-sast-guard/ \
+            --output=${{ github.ref_name }}.zip \
+            HEAD -- \
+            plugin.json \
+            gemini-extension.json \
+            control_plane.py \
+            hooks.json \
+            install.ps1 \
+            update.ps1 \
+            remove.ps1 \
+            commands \
+            hooks \
+            rules \
+            skills \
+            src
           
       - name: Generate Checksum
         run: |
