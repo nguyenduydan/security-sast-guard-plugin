@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+
 from scripts.md_to_json import parse_md_rules, sync_rules
 
 

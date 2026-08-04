@@ -8,7 +8,7 @@ from typing import Any
 def generate_markdown_report(
     findings: list[dict[str, Any]], output_dir: str = "reports"
 ) -> tuple[str, str]:
-    """Generate Markdown report file for SAST findings and return (path, summary_msg)."""
+    """Generate Markdown report file for SAST findings."""
     target_dir = Path(output_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
 
@@ -24,9 +24,7 @@ def generate_markdown_report(
     medium_count = sum(
         1 for f in findings if str(f.get("severity", "")).lower() == "medium"
     )
-    low_count = sum(
-        1 for f in findings if str(f.get("severity", "")).lower() == "low"
-    )
+    low_count = sum(1 for f in findings if str(f.get("severity", "")).lower() == "low")
 
     lines = [
         "# 🛡️ SAST Security Audit Report",
@@ -56,16 +54,19 @@ def generate_markdown_report(
             line = f.get("line", 0)
             severity = f.get("severity", "Medium")
             scope = f.get("scope", "global")
-            lines.append(
-                f"| `{rule_id}` | `{file_path}:{line}` | **{severity}** | `{snippet}` | `{scope}` |"
+            row = (
+                f"| `{rule_id}` | `{file_path}:{line}` | "
+                f"**{severity}** | `{snippet}` | `{scope}` |"
             )
+            lines.append(row)
 
     report_file.write_text("\n".join(lines), encoding="utf-8")
 
     file_uri = report_file.resolve().as_uri()
     summary = (
         f"SAST Audit completed. Total: {len(findings)} findings "
-        f"(Critical: {critical_count}, High: {high_count}, Medium: {medium_count}, Low: {low_count}).\n"
+        f"(Critical: {critical_count}, High: {high_count}, "
+        f"Medium: {medium_count}, Low: {low_count}).\n"
         f"Detailed report saved to: [{report_file.name}]({file_uri})"
     )
 

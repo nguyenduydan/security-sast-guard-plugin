@@ -49,13 +49,13 @@ class SASTScanner:
         try:
             with open(rules_file, encoding="utf-8") as f:
                 self._rules_cache = json.load(f)
-        except Exception:
+        except (json.JSONDecodeError, OSError):
             self._rules_cache = []
 
         return self._rules_cache or []
 
     def _is_valid_pattern(self, pattern: str) -> bool:
-        """Check if a regex pattern is valid and not a junk pattern from markdown conversion."""
+        """Check if a regex pattern is valid and not a markdown junk pattern."""
         if not pattern:
             return False
         stripped = pattern.strip()
@@ -92,8 +92,8 @@ class SASTScanner:
         ):
             return False
 
-        # Markdown blockquotes, documentation, HTTP examples, table borders, and checklist lines
-        if (
+        # Markdown blockquotes, documentation, HTTP examples, table borders
+        return not (
             stripped.startswith(">")
             or stripped.startswith(r"\*")
             or stripped.startswith(r"\-")
@@ -109,10 +109,7 @@ class SASTScanner:
             or stripped.startswith("PATCH ")
             or stripped.startswith("|")
             or stripped.startswith(r"\|")
-        ):
-            return False
-
-        return True
+        )
 
     def _detect_matches(self, path: str) -> list[dict[str, Any]]:
         """Match target file content against loaded SAST rules."""
@@ -171,11 +168,13 @@ class SASTScanner:
 
         return findings
 
-    def scan(self, path: str) -> list[dict[str, Any]]:
-        """Scan specified file path for SAST rule matches with lazy interactive loop."""
+    def scan(self, path: str, interactive: bool = False) -> list[dict[str, Any]]:
+        """Scan specified file path for SAST rule matches."""
         matches = self._detect_matches(path)
-        violations: list[dict[str, Any]] = []
+        if not interactive:
+            return matches
 
+        violations: list[dict[str, Any]] = []
         for match in matches:
             rule_name = (
                 match.get("rule_name")

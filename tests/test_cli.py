@@ -36,4 +36,3 @@ def test_dispatcher_scan_command(capsys: CaptureFixture[str], tmp_path) -> None:
     captured = capsys.readouterr()
     assert "SAST Audit completed." in captured.out
     assert "Detailed report saved to:" in captured.out
-

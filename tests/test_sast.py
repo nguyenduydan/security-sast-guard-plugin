@@ -19,7 +19,7 @@ def test_sast_scanner_lazy_prompt(tmp_path: Path) -> None:
         patch("builtins.input", return_value="Y"),
         patch.object(scanner, "_detect_matches", return_value=match_item),
     ):
-        results = scanner.scan(str(test_file))
+        results = scanner.scan(str(test_file), interactive=True)
         # Since user replied 'Y', it's allowed (filtered out of violations)
         assert len(results) == 0
 
@@ -27,7 +27,7 @@ def test_sast_scanner_lazy_prompt(tmp_path: Path) -> None:
         patch("builtins.input", return_value="N"),
         patch.object(scanner, "_detect_matches", return_value=match_item),
     ):
-        results = scanner.scan(str(test_file))
+        results = scanner.scan(str(test_file), interactive=True)
         # User replied 'N', so it remains a violation
         assert len(results) == 1
 
@@ -53,4 +53,3 @@ def test_sast_scanner_real_regex_detection(tmp_path: Path) -> None:
     assert "BROKEN_ACCESS_CONTROL" in rule_ids
     lines = [r["line"] for r in results]
     assert lines == [1, 2]
-

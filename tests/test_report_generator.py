@@ -1,6 +1,7 @@
 """Tests for report generator infrastructure component."""
 
 from pathlib import Path
+
 from src.infrastructure.report_generator import generate_markdown_report
 
 
@@ -26,9 +27,7 @@ def test_generate_markdown_report(tmp_path: Path):
         },
     ]
 
-    report_file, summary = generate_markdown_report(
-        findings, output_dir=str(tmp_path)
-    )
+    report_file, summary = generate_markdown_report(findings, output_dir=str(tmp_path))
 
     assert Path(report_file).exists()
     content = Path(report_file).read_text(encoding="utf-8")

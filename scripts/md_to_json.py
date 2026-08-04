@@ -17,7 +17,11 @@ def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
 
     # Extract Title and ID
     title_match = re.search(r"##\s*\[(.*?)\]\s*(.*)", content)
-    rule_id = title_match.group(1).replace(":", "_").replace(" ", "_") if title_match else path.stem
+    rule_id = (
+        title_match.group(1).replace(":", "_").replace(" ", "_")
+        if title_match
+        else path.stem
+    )
     name = title_match.group(2).strip() if title_match else path.stem
 
     # Extract Severity
@@ -43,19 +47,25 @@ def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
                 for match in grep_matches:
                     if match.startswith("*") or match.startswith("."):
                         continue
-                    patterns.append(match if match.startswith("(?i)") else re.escape(match))
+                    patterns.append(
+                        match if match.startswith("(?i)") else re.escape(match)
+                    )
             else:
-                patterns.append(line_str if line_str.startswith("(?i)") else re.escape(line_str))
+                patterns.append(
+                    line_str if line_str.startswith("(?i)") else re.escape(line_str)
+                )
 
     if patterns:
-        rules.append({
-            "id": rule_id,
-            "name": name,
-            "description": f"Imported rule from {path.name}",
-            "category": path.parent.name,
-            "severity": severity,
-            "patterns": patterns,
-        })
+        rules.append(
+            {
+                "id": rule_id,
+                "name": name,
+                "description": f"Imported rule from {path.name}",
+                "category": path.parent.name,
+                "severity": severity,
+                "patterns": patterns,
+            }
+        )
 
     return rules
 
@@ -69,7 +79,7 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
     if target_path.exists():
         try:
             existing_rules = json.loads(target_path.read_text(encoding="utf-8"))
-        except Exception:
+        except (json.JSONDecodeError, OSError):
             existing_rules = []
 
     rule_map = {r["id"]: r for r in existing_rules}
@@ -78,12 +88,14 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
     rule_map["XSS_INLINE_EVENT"] = {
         "id": "XSS_INLINE_EVENT",
         "name": "Cross-Site Scripting Inline Event Attributes (CWE-79)",
-        "description": "Detects inline JavaScript event attributes like onfocus=, onerror=",
+        "description": (
+            "Detects inline JavaScript event attributes like onfocus=, onerror="
+        ),
         "category": "owasp-web-2021",
         "severity": "High",
         "patterns": [
             r"(?i)on(focus|error|load|click|mouseover|submit|keydown)\s*=\s*[\"'].*?[\"']"
-        ]
+        ],
     }
     rule_map["BROKEN_ACCESS_CONTROL"] = {
         "id": "BROKEN_ACCESS_CONTROL",
@@ -93,8 +105,8 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
         "severity": "Critical",
         "patterns": [
             r"(?i)(role|privilege|is_admin)\s*=\s*(req|request|params|query|GET|POST)[\.\[]",
-            r"(?i)request\.(getParameter|query|args)\s*\(\s*[\"'](role|admin|privilege)[\"']\s*\)"
-        ]
+            r"(?i)request\.(getParameter|query|args)\s*\(\s*[\"'](role|admin|privilege)[\"']\s*\)",
+        ],
     }
 
     if source_path.exists():
@@ -104,7 +116,9 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
 
     final_rules = list(rule_map.values())
     target_path.parent.mkdir(parents=True, exist_ok=True)
-    target_path.write_text(json.dumps(final_rules, indent=2, ensure_ascii=False), encoding="utf-8")
+    target_path.write_text(
+        json.dumps(final_rules, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     return len(final_rules)
 
 

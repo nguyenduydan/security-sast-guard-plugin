@@ -43,7 +43,7 @@ def main(args: Sequence[str] | None = None) -> int:
     if command in ("scan", "audit"):
         target_path = args[1] if len(args) > 1 else "."
         scanner = SASTScanner()
-        findings = scanner._detect_matches(target_path)
+        findings = scanner.scan(target_path)
         _, summary = generate_markdown_report(findings)
         print(summary)
         return 0
@@ -54,4 +54,3 @@ def main(args: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
