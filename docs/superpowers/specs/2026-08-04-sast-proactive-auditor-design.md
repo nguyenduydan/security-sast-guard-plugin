@@ -20,8 +20,8 @@ Khi người dùng gọi `/superpowers:sast-proactive-auditor` (hoặc trực ti
   3. Rút ra kết luận: Những luật nào đang thiếu so với trend thế giới.
 
 ### Phase 2: Codebase Auditing (Săn Bug)
-- **Công cụ:** `grep_search`, `view_file` (hoặc delegate cho subagent `research`).
-- **Mục tiêu:** Rà soát kiến trúc mã nguồn (`src/` và `tests/`) để tìm kiếm:
+- **Công cụ:** Các tool từ MCP `codebase-memory-mcp` (`search_graph`, `get_architecture`, `search_code`) kết hợp với subagent `research`.
+- **Mục tiêu:** Rà soát kiến trúc mã nguồn (`src/` và `tests/`) thông qua Memory Graph để tìm kiếm:
   - Logic lỏng lẻo hoặc Hardcode secrets.
   - Vấn đề hiệu năng hoặc thiếu Type hints (mypy/pylint issues).
   - Thiếu Unit Test.
