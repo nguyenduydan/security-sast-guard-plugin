@@ -3,7 +3,9 @@
 import sys
 from collections.abc import Sequence
 
+from src.domain.sast_scanner import SASTScanner
 from src.infrastructure.profile_loader import ProfileLoader
+from src.infrastructure.report_generator import generate_markdown_report
 
 
 def main(args: Sequence[str] | None = None) -> int:
@@ -38,9 +40,18 @@ def main(args: Sequence[str] | None = None) -> int:
         print(f"  - Confirm Rules: {len(confirm_rules)}")
         return 0
 
+    if command in ("scan", "audit"):
+        target_path = args[1] if len(args) > 1 else "."
+        scanner = SASTScanner()
+        findings = scanner._detect_matches(target_path)
+        _, summary = generate_markdown_report(findings)
+        print(summary)
+        return 0
+
     print(f"Unknown command: {command}")
     return 1
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
