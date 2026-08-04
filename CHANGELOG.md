@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.4.0...v0.4.1) (2026-08-04)
+
+
+### 📝 Documentation
+
+* **gemini:** define strict rules for conventional commits usage ([#21](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/21)) ([37210c7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/37210c7dc30e193534cd2261df72b47adbba1049))
+
 ## [0.4.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.3.0...v0.4.0) (2026-08-04)
 
 
