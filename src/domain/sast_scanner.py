@@ -111,6 +111,17 @@ class SASTScanner:
             or stripped.startswith(r"\|")
         )
 
+    def _rule_matches_line(self, line_content: str, rule: dict[str, Any]) -> bool:
+        for pattern in rule.get("patterns", []):
+            if not self._is_valid_pattern(pattern):
+                continue
+            try:
+                if re.search(pattern, line_content):
+                    return True
+            except re.error:
+                continue
+        return False
+
     def _detect_matches(self, path: str) -> list[dict[str, Any]]:
         """Match target file content against loaded SAST rules."""
         file_path = Path(path)
@@ -130,41 +141,26 @@ class SASTScanner:
             line_content = raw_line.rstrip("\r\n")
             stripped = line_content.strip()
 
-            # Skip single-line comment lines
             if stripped.startswith("#") or stripped.startswith("//"):
                 continue
 
             for rule in rules:
-                patterns = rule.get("patterns", [])
-                if not patterns:
-                    continue
-
-                matched = False
-                for pattern in patterns:
-                    if not self._is_valid_pattern(pattern):
-                        continue
-                    try:
-                        if re.search(pattern, line_content):
-                            matched = True
-                            break
-                    except re.error:
-                        continue
-
-                if matched:
+                if self._rule_matches_line(line_content, rule):
                     ctx = extract_context(path, line_idx)
                     if ctx.get("is_safe_context"):
                         continue
 
-                    finding = {
-                        "rule_id": rule.get("id", "UNKNOWN"),
-                        "rule_name": rule.get("name", "Unknown Rule"),
-                        "path": path,
-                        "line": line_idx,
-                        "line_content": ctx.get("line_content", line_content),
-                        "severity": rule.get("severity", "MEDIUM"),
-                        "scope": ctx.get("scope", "global"),
-                    }
-                    findings.append(finding)
+                    findings.append(
+                        {
+                            "rule_id": rule.get("id", "UNKNOWN"),
+                            "rule_name": rule.get("name", "Unknown Rule"),
+                            "path": path,
+                            "line": line_idx,
+                            "line_content": ctx.get("line_content", line_content),
+                            "severity": rule.get("severity", "MEDIUM"),
+                            "scope": ctx.get("scope", "global"),
+                        }
+                    )
 
         return findings
 

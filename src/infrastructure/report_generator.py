@@ -5,6 +5,23 @@ from pathlib import Path
 from typing import Any
 
 
+def _count_severities(findings: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {"critical": 0, "high": 0, "medium": 0, "low": 0}
+    for f in findings:
+        sev = str(f.get("severity", "")).lower()
+        if sev in counts:
+            counts[sev] += 1
+    return counts
+
+
+def _build_finding_row(f: dict[str, Any]) -> str:
+    snippet = str(f.get("line_content", "")).replace("|", "\\|")
+    return (
+        f"| `{f.get('rule_id', 'UNKNOWN')}` | `{f.get('path', 'unknown')}:{f.get('line', 0)}` | "
+        f"**{f.get('severity', 'Medium')}** | `{snippet}` | `{f.get('scope', 'global')}` |"
+    )
+
+
 def generate_markdown_report(
     findings: list[dict[str, Any]], output_dir: str = "reports"
 ) -> tuple[str, str]:
@@ -14,17 +31,7 @@ def generate_markdown_report(
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     report_file = target_dir / f"sast_audit_report_{timestamp}.md"
-
-    critical_count = sum(
-        1 for f in findings if str(f.get("severity", "")).lower() == "critical"
-    )
-    high_count = sum(
-        1 for f in findings if str(f.get("severity", "")).lower() == "high"
-    )
-    medium_count = sum(
-        1 for f in findings if str(f.get("severity", "")).lower() == "medium"
-    )
-    low_count = sum(1 for f in findings if str(f.get("severity", "")).lower() == "low")
+    counts = _count_severities(findings)
 
     lines = [
         "# 🛡️ SAST Security Audit Report",
@@ -34,10 +41,10 @@ def generate_markdown_report(
         "## 📊 Executive Summary",
         "| Severity | Count |",
         "|---|---|",
-        f"| 🔴 Critical | {critical_count} |",
-        f"| 🟠 High | {high_count} |",
-        f"| 🟡 Medium | {medium_count} |",
-        f"| 🔵 Low | {low_count} |",
+        f"| 🔴 Critical | {counts['critical']} |",
+        f"| 🟠 High | {counts['high']} |",
+        f"| 🟡 Medium | {counts['medium']} |",
+        f"| 🔵 Low | {counts['low']} |",
         "",
         "## 🔍 Detailed Findings",
     ]
@@ -48,25 +55,15 @@ def generate_markdown_report(
         lines.append("| Rule ID | File & Line | Severity | Code Snippet | Scope |")
         lines.append("|---|---|---|---|---|")
         for f in findings:
-            snippet = str(f.get("line_content", "")).replace("|", "\\|")
-            rule_id = f.get("rule_id", "UNKNOWN")
-            file_path = f.get("path", "unknown")
-            line = f.get("line", 0)
-            severity = f.get("severity", "Medium")
-            scope = f.get("scope", "global")
-            row = (
-                f"| `{rule_id}` | `{file_path}:{line}` | "
-                f"**{severity}** | `{snippet}` | `{scope}` |"
-            )
-            lines.append(row)
+            lines.append(_build_finding_row(f))
 
     report_file.write_text("\n".join(lines), encoding="utf-8")
 
     file_uri = report_file.resolve().as_uri()
     summary = (
         f"SAST Audit completed. Total: {len(findings)} findings "
-        f"(Critical: {critical_count}, High: {high_count}, "
-        f"Medium: {medium_count}, Low: {low_count}).\n"
+        f"(Critical: {counts['critical']}, High: {counts['high']}, "
+        f"Medium: {counts['medium']}, Low: {counts['low']}).\n"
         f"Detailed report saved to: [{report_file.name}]({file_uri})"
     )
 
