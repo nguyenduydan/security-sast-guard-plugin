@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.6.0...v0.7.0) (2026-08-04)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **report:** export SAST audit findings to Markdown report ([72f7e01](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/72f7e01a456cf8b9534d6b786ec220c9eee2dcf6))
+* **rules:** implement rule sync engine for Markdown security rules ([3d935f0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3d935f02cdfcc7d1e61044d65cb22ff518c606c7))
+* **scanner:** enhance SAST scanning engine, sync markdown rules, and generate Markdown reports ([b9db0ec](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b9db0ec167f6b348d7fa64581b1d7772764a3731))
+* **scanner:** implement real regex pattern matching engine ([a18af7a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a18af7ab59a5c3eeb449b9b0b2df7fe9c19bfcef))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** fix ruff formatting and linter issues for CI quality gate ([8878acb](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8878acb988452569b542a672ab9597dc7d74ec34))
+* **report:** ensure safe ASCII formatting for Windows stdout report summaries ([a00e171](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a00e171d9435a4b82a318e7855b33d16aaad46ac))
+* resolve Ruff E501 line length violations ([14f1216](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/14f121675c5f0f67106c55ac07b887283aea2334))
+* satisfy Ruff formatting ([61b58e1](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/61b58e12759094257d65690d3fa33cb2295750a0))
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **quality:** resolve R0914 too-many-locals warnings to reach 10.00/10 pylint rating ([bdf515e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bdf515e7450150dac30910d13dd68b6f0fcbc9ee))
+
 ## [0.6.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.10...v0.6.0) (2026-08-04)
 
 
