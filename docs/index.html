@@ -199,6 +199,15 @@
     .terminal-scrollbar::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.35); border-radius: 3px; }
 
     ::selection { background: #10b981; color: #040711; }
+
+    .nav-link-active {
+      background: #fff;
+      color: #000 !important;
+      border-radius: 0.5rem;
+      padding: 0.45rem 0.65rem;
+      border: 2px solid #000;
+      box-shadow: 3px 3px 0 #000;
+    }
   </style>
 </head>
 <body class="overflow-x-hidden bg-slate-100 dark:bg-obsidian-950 text-black dark:text-slate-100">
@@ -213,27 +222,28 @@
     <div class="max-w-7xl w-full mx-auto flex items-center justify-between">
       
       <!-- Left: Logo & Release Tag v0.4.2 -->
-      <a href="#" class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded bg-black flex items-center justify-center font-bold text-lg">
+      <div class="flex items-center gap-3 shrink-0">
+        <a href="#" class="w-12 h-12 rounded bg-black flex items-center justify-center font-bold text-lg">
           <img src="./logo.png" alt="Security SAST Guard Logo" class="w-11 h-11" />
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="font-display font-black text-base md:text-lg uppercase tracking-tight text-black dark:text-white">SECURITY SAST GUARD</span>
+        </a>
+        <div class="flex items-start flex-col gap-1 min-w-0">
+          <span class="font-display font-black text-base md:text-lg uppercase tracking-tight text-black dark:text-white whitespace-nowrap">SECURITY SAST GUARD</span>
           <a id="ver-badge-nav" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="px-2.5 py-0.5 rounded bg-black dark:bg-brand-emerald/10 text-white dark:text-brand-emerald font-mono font-bold text-xs border border-black dark:border-brand-emerald/30 hover:bg-slate-800 transition-colors" data-version-link>
             <span data-version-text>v0.4.2</span>
           </a>
         </div>
-      </a>
+      </div>
 
       <!-- Center Nav Links -->
-      <div class="hidden lg:flex items-center gap-8 font-display font-extrabold text-sm text-black dark:text-slate-200">
-        <a href="#firewall" class="hover:underline dark:hover:text-brand-emerald">Firewall Interceptor</a>
-        <a href="#features" class="hover:underline dark:hover:text-brand-emerald">Capabilities</a>
-        <a href="#diff-sec" class="hover:underline dark:hover:text-brand-emerald">Threat Audit</a>
-        <button onclick="openRulesModal()" class="hover:underline flex items-center gap-1.5 font-extrabold text-black dark:text-brand-cyan">
-          <i class="ph-bold ph-list-checks text-base"></i> 53 Rules Explorer
+      <div class="hidden lg:flex items-center gap-4 xl:gap-6 font-display font-extrabold text-xs xl:text-sm text-black dark:text-slate-200 whitespace-nowrap">
+        <a href="#firewall" data-nav-section="firewall" class="text-center leading-tight hover:underline dark:hover:text-brand-emerald">Firewall<br>Interceptor</a>
+        <a href="#diff-sec" data-nav-section="diff-sec" class="text-center leading-tight hover:underline dark:hover:text-brand-emerald">Threat<br>Audit</a>
+        <a href="#features" data-nav-section="features" class="hover:underline dark:hover:text-brand-emerald">Capabilities</a>
+        <a href="#compare" data-nav-section="compare" class="hover:underline dark:hover:text-brand-emerald">Comparison</a>
+        <a href="#usage" data-nav-section="usage" class="hover:underline dark:hover:text-brand-emerald">Usage</a>
+        <button onclick="openRulesModal()" class="hover:underline flex items-center gap-1.5 font-extrabold text-black dark:text-brand-cyan text-center leading-tight">
+          <i class="ph-bold ph-list-checks text-base"></i><span>53 Rules<br>Explorer</span>
         </button>
-        <a href="#compare" class="hover:underline dark:hover:text-brand-emerald">Comparison</a>
       </div>
 
       <!-- Right Action CTAs + DARK MODE TOGGLE BUTTON -->
@@ -260,9 +270,10 @@
 
     <!-- Mobile Drawer Menu -->
     <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-slate-100 dark:bg-obsidian-900 border-b-3 border-black dark:border-white/20 p-6 space-y-3 font-display font-bold text-sm shadow-brutal dark:text-white">
-      <a href="#firewall" onclick="toggleMobileMenu()" class="block hover:underline">Firewall Interceptor</a>
-      <a href="#features" onclick="toggleMobileMenu()" class="block hover:underline">Capabilities</a>
-      <a href="#diff-sec" onclick="toggleMobileMenu()" class="block hover:underline">Threat Audit</a>
+      <a href="#firewall" data-nav-section="firewall" onclick="toggleMobileMenu()" class="block hover:underline">Firewall Interceptor</a>
+      <a href="#features" data-nav-section="features" onclick="toggleMobileMenu()" class="block hover:underline">Capabilities</a>
+      <a href="#diff-sec" data-nav-section="diff-sec" onclick="toggleMobileMenu()" class="block hover:underline">Threat Audit</a>
+      <a href="#usage" data-nav-section="usage" onclick="toggleMobileMenu()" class="block hover:underline">Usage</a>
       <button onclick="toggleMobileMenu(); openRulesModal();" class="block font-extrabold text-brand-cyan hover:underline">53 Rules Explorer (Open Modal)</button>
       <a href="#compare" onclick="toggleMobileMenu()" class="block hover:underline">Comparison</a>
       <div class="pt-3 border-t-2 border-black dark:border-white/20 flex flex-col gap-2 font-mono">
@@ -700,6 +711,61 @@ def get_user_account(user_id):
       </div>
     </section>
 
+    <!-- PLUGIN USAGE GUIDE -->
+    <section id="usage" class="py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <span class="px-3 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">PLUGIN USAGE GUIDE</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Use Security SAST Guard</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base max-w-2xl mx-auto mt-2 font-medium">
+            Run security audits, inspect rules, and test commands directly from your Antigravity or Gemini CLI workspace.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="brutal-card rounded-2xl p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-brand-emerald border-2 border-black"><i class="ph-bold ph-shield-check text-xl"></i></span>
+              <h3 class="font-display font-black text-xl uppercase text-black dark:text-white">Audit Code</h3>
+            </div>
+            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-5">Scan a file, codebase, API, or web target against the active SAST profile.</p>
+            <code class="block rounded-xl bg-black text-brand-emerald p-4 font-mono text-xs leading-6">/sast-audit file src/main.py<br>/sast-audit codebase .</code>
+          </div>
+
+          <div class="brutal-card rounded-2xl p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-brand-cyan border-2 border-black"><i class="ph-bold ph-sliders-horizontal text-xl"></i></span>
+              <h3 class="font-display font-black text-xl uppercase text-black dark:text-white">Choose Profile</h3>
+            </div>
+            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-5">Tune audit depth for fast checks or full security reviews.</p>
+            <code class="block rounded-xl bg-black text-brand-cyan p-4 font-mono text-xs leading-6">/sast-audit-level lite<br>/sast-audit-level full<br>/sast-audit-level ultra</code>
+          </div>
+
+          <div class="brutal-card rounded-2xl p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-brand-violet border-2 border-black"><i class="ph-bold ph-terminal-window text-xl"></i></span>
+              <h3 class="font-display font-black text-xl uppercase text-black dark:text-white">Inspect & Test</h3>
+            </div>
+            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-5">Review loaded rules, firewall decisions, and plugin health.</p>
+            <code class="block rounded-xl bg-black text-brand-violet p-4 font-mono text-xs leading-6">/sast-status<br>/sast-rules sync .<br>/sast-firewall &lt;command&gt;<br>/sast-help</code>
+          </div>
+        </div>
+
+        <div class="mt-8 brutal-card rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div class="md:col-span-2">
+            <div class="font-mono text-xs font-black uppercase text-brand-cyan mb-2">Recommended workflow</div>
+            <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white mb-2">Scan → Review → Fix → Verify</h3>
+            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Start with a targeted audit, review the flagged context, apply the fix, then run the audit again before committing.</p>
+          </div>
+          <div class="font-mono text-xs bg-black text-brand-emerald rounded-xl p-5 leading-7 border-2 border-black">
+            <div><span class="text-brand-cyan">01</span> /sast-audit file path</div>
+            <div><span class="text-brand-cyan">02</span> inspect findings</div>
+            <div><span class="text-brand-cyan">03</span> fix and re-run</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- INTERACTIVE 53 RULES EXPLORER MODAL -->
@@ -822,6 +888,7 @@ def get_user_account(user_id):
     document.addEventListener("DOMContentLoaded", () => {
       initTheme();
       syncVersionFromGitHub();
+      initScrollSpy();
       renderCategoryPills();
       renderRules();
 
@@ -894,6 +961,24 @@ def get_user_account(user_id):
 
     function toggleMobileMenu() {
       document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function initScrollSpy() {
+      const sections = [...document.querySelectorAll('[data-nav-section]')]
+        .map(link => document.getElementById(link.dataset.navSection))
+        .filter(Boolean);
+      const links = document.querySelectorAll('[data-nav-section]');
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        links.forEach(link => {
+          const active = link.dataset.navSection === visible.target.id;
+          link.classList.toggle('nav-link-active', active);
+          link.setAttribute('aria-current', active ? 'page' : 'false');
+        });
+      }, { rootMargin: '-18% 0px -62% 0px', threshold: [0.1, 0.35, 0.6] });
+      sections.forEach(section => observer.observe(section));
     }
 
     function openRulesModal(categoryFilter = "ALL") {

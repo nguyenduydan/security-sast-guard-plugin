@@ -8,7 +8,8 @@ disable =
     missing-function-docstring,
     too-few-public-methods,
     invalid-name,
-    duplicate-code
+    duplicate-code,
+    import-error
 
 [REPORTS]
 output-format = colorized
