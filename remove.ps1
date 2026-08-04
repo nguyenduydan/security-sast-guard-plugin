@@ -37,6 +37,8 @@ if ($Confirmation -notmatch "^[Yy]$") {
 try {
     Write-Progress -Activity "Removing Security SAST Guard" -Status "Removing plugin files" -PercentComplete 50
     Write-Host "Deleting $InstallDir ..."
+    # Move out of the plugin directory before deleting it on Windows.
+    Set-Location -Path (Split-Path -Path $InstallDir -Parent)
     Remove-Item -Path $InstallDir -Recurse -Force
     Write-Progress -Activity "Removing Security SAST Guard" -Status "Removal complete" -PercentComplete 100 -Completed
     Write-Host ""
