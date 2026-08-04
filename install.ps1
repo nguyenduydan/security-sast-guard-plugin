@@ -8,16 +8,12 @@ $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 Clear-Host
 Write-Host "==============================================" -ForegroundColor DarkCyan
 $SastLogo = @(
-    "{B}{B}{B}{B}{B}{B}{B}{R} {B}{B}{B}{B}{B}{R} {B}{B}{B}{B}{B}{B}{B}{R}{B}{B}{B}{B}{B}{B}{B}{B}{R}",
-    "{B}{B}{C}{E}{E}{E}{E}{E}{L}{B}{B}{C}{E}{E}{B}{B}{R}{B}{B}{C}{E}{E}{E}{E}{E}{L}{B}{B}{K}{E}{E}{B}{B}{C}{E}{E}{K}",
-    "{B}{B}{B}{B}{B}{B}{B}{R}{B}{B}{B}{B}{B}{B}{B}{R}{B}{B}{B}{B}{B}{B}{B}{R}   {B}{B}{K}   ",
-    "{K}{E}{E}{E}{E}{B}{B}{R}{B}{B}{C}{E}{E}{B}{B}{R}{K}{E}{E}{E}{E}{B}{B}{R}   {B}{B}{K}   ",
-    "{B}{B}{B}{B}{B}{B}{B}{R}{B}{B}{R}  {B}{B}{R} {B}{B}{B}{B}{B}{B}{B}{R}   {B}{B}{K}   ",
-    "{K}{E}{E}{E}{E}{E}{E}{R}{K}{E}{K}  {K}{E}{K}  {K}{E}{E}{E}{E}{E}{E}{R}   {K}{E}{K}   "
+    "  #####  #####  #####  #######",
+    " #      #     # #      #    #   ",
+    "  ###   #######  ###        #   ",
+    "     #  #     #     #       #   ",
+    "#####   #     # #####       #   "
 )
-$SastLogo = $SastLogo | ForEach-Object {
-    $_.Replace('{B}', [string][char]0x2588).Replace('{R}', [string][char]0x2557).Replace('{C}', [string][char]0x2554).Replace('{E}', [string][char]0x2550).Replace('{K}', [string][char]0x255A).Replace('{L}', [string][char]0x255D)
-}
 foreach ($Line in $SastLogo) {
     Write-Host $Line -ForegroundColor Cyan
 }
@@ -44,7 +40,13 @@ try {
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
-    if (-not $ZipAsset) { throw "No plugin ZIP asset found in the latest release." }
+    if (-not $ZipAsset) {
+        Write-Host "No release ZIP asset found; falling back to GitHub source archive." -ForegroundColor Yellow
+        $ZipAsset = [pscustomobject]@{
+            name = "$($Release.tag_name).zip"
+            browser_download_url = $Release.zipball_url
+        }
+    }
     Write-Host "Found release: $($Release.tag_name)" -ForegroundColor Green
     Invoke-WebRequest -Uri $ZipAsset.browser_download_url -OutFile (Join-Path $TempDir $ZipAsset.name)
     if ($ChecksumAsset) { Invoke-WebRequest -Uri $ChecksumAsset.browser_download_url -OutFile (Join-Path $TempDir $ChecksumAsset.name) }
