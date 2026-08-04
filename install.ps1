@@ -13,43 +13,23 @@ if (Test-Path $InstallDir) {
     exit 1
 }
 
-Write-Host "Fetching latest release information..."
-$ApiUrl = "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
-try {
-    $Release = Invoke-RestMethod -Uri $ApiUrl
-    
-    $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
-    $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
-    
-    if ($null -ne $ZipAsset) {
-        $ZipUrl = $ZipAsset.browser_download_url
-        $ChecksumUrl = if ($null -ne $ChecksumAsset) { $ChecksumAsset.browser_download_url } else { $null }
-    } else {
-        $ZipUrl = $Release.zipball_url
-        $ChecksumUrl = $null
-    }
-    Write-Host "Found release: $($Release.tag_name)"
-} catch {
-    Write-Host "Failed to fetch release info. Trying to download main branch zip..." -ForegroundColor Yellow
-    $ZipUrl = "https://github.com/$RepoOwner/$RepoName/archive/refs/heads/main.zip"
-    $ChecksumUrl = $null
-}
+Write-Host "Fetching latest release information using GitHub CLI..."
 
 $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString())
 New-Item -ItemType Directory -Path $TempDir | Out-Null
-$ZipPath = Join-Path $TempDir "plugin.zip"
 $ExtractPath = Join-Path $TempDir "extracted"
 
 try {
-    Write-Host "Downloading $ZipUrl ..."
-    Invoke-WebRequest -Uri $ZipUrl -OutFile $ZipPath
+    # Download zip and checksums using gh CLI (handles authentication automatically)
+    gh release download --repo "$RepoOwner/$RepoName" --pattern "*.zip" --dir $TempDir
+    gh release download --repo "$RepoOwner/$RepoName" --pattern "checksums.txt" --dir $TempDir
+    
+    # Get the downloaded zip file path
+    $ZipPath = (Get-ChildItem -Path $TempDir -Filter "*.zip" | Select-Object -First 1).FullName
+    $ChecksumPath = Join-Path $TempDir "checksums.txt"
 
-    if ($null -ne $ChecksumUrl) {
-        Write-Host "Downloading checksums.txt..."
-        $ChecksumPath = Join-Path $TempDir "checksums.txt"
-        Invoke-WebRequest -Uri $ChecksumUrl -OutFile $ChecksumPath
-        
-        $ExpectedHashLine = (Get-Content $ChecksumPath) | Where-Object { $_ -match "\.zip$" } | Select-Object -First 1
+    if (Test-Path $ChecksumPath) {
+        Write-Host "Verifying checksum..."
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
             $ActualHash = (Get-FileHash -Path $ZipPath -Algorithm SHA256).Hash.ToUpper()

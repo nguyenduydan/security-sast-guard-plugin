@@ -18,3 +18,7 @@ Khi được yêu cầu fix bug hoặc thêm tính năng, Agent BẮT BUỘC tu�
    - Bắt buộc chạy `/sast-audit file <path>` để kiểm tra bảo mật (không có lỗ hổng OWASP/CWE).
 3. **Commit đúng chuẩn**: Bắt buộc sử dụng Conventional Commits có Scope (như đã quy định ở trên).
 4. **Không Merge/Tag thủ công**: Báo cáo lại cho User để họ tự tạo Pull Request và Merge vào `main`. Không được tự ý `git merge` vào `main` hay đánh tag phiên bản. Bot `release-please` sẽ lo phần còn lại.
+
+## Khám Phá Mã Nguồn (Agentic Code Discovery)
+
+- **Sử dụng MCP (codebase-memory-mcp):** Agent BẮT BUỘC phải ưu tiên sử dụng các công cụ từ MCP `codebase-memory-mcp` (như `search_graph`, `query_graph`, `get_code_snippet`, `get_architecture`) để khám phá và phân tích kiến trúc mã nguồn trước khi dùng các lệnh tìm kiếm mù quáng (`grep` hoặc đọc chay). Điều này giúp Agent hiểu sâu về Dependency và các liên kết trong dự án.
