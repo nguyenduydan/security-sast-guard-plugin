@@ -1,5 +1,17 @@
 ﻿$ErrorActionPreference = "Stop"
 
+$ProgressPreference = "SilentlyContinue"
+
+function Write-Stage {
+    param([string]$Message, [int]$Percent)
+    $width = 30
+    $filled = [math]::Floor($width * $Percent / 100)
+    $bar = ("█" * $filled) + ("░" * ($width - $filled))
+    $line = "[$bar] $Percent% $Message"
+    Write-Host ("`r{0,-90}" -f $line) -NoNewline -ForegroundColor Cyan
+}
+function Write-StageDone { param([string]$Message); Write-Host ("`r{0,-90}" -f "[OK] $Message") -ForegroundColor Green }
+
 $PluginName = "security-sast-guard"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
@@ -35,12 +47,11 @@ if ($Confirmation -notmatch "^[Yy]$") {
 }
 
 try {
-    Write-Progress -Activity "Removing Security SAST Guard" -Status "Removing plugin files" -PercentComplete 50
-    Write-Host "Deleting $InstallDir ..."
+    Write-Stage "Removing plugin files" 50
     # Move out of the plugin directory before deleting it on Windows.
     Set-Location -Path (Split-Path -Path $InstallDir -Parent)
     Remove-Item -Path $InstallDir -Recurse -Force
-    Write-Progress -Activity "Removing Security SAST Guard" -Status "Removal complete" -PercentComplete 100 -Completed
+    Write-StageDone "Removal complete"
     Write-Host ""
     Write-Host "Plugin removed successfully!" -ForegroundColor Green
 } catch {

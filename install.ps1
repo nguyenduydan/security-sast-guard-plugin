@@ -1,5 +1,17 @@
 ﻿$ErrorActionPreference = "Stop"
 
+$ProgressPreference = "SilentlyContinue"
+
+function Write-Stage {
+    param([string]$Message, [int]$Percent)
+    $width = 30
+    $filled = [math]::Floor($width * $Percent / 100)
+    $bar = ("█" * $filled) + ("░" * ($width - $filled))
+    $line = "[$bar] $Percent% $Message"
+    Write-Host ("`r{0,-90}" -f $line) -NoNewline -ForegroundColor Cyan
+}
+function Write-StageDone { param([string]$Message); Write-Host ("`r{0,-90}" -f "[OK] $Message") -ForegroundColor Green }
+
 $PluginName = "security-sast-guard"
 $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
@@ -37,7 +49,7 @@ New-Item -ItemType Directory -Path $TempDir | Out-Null
 $ExtractPath = Join-Path $TempDir "extracted"
 
 try {
-    Write-Progress -Activity "Installing Security SAST Guard" -Status "Downloading latest release" -PercentComplete 20
+    Write-Stage "Downloading latest release" 20
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
@@ -55,7 +67,7 @@ try {
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
 
     if (Test-Path $ChecksumPath) {
-        Write-Progress -Activity "Installing Security SAST Guard" -Status "Verifying package integrity" -PercentComplete 45
+        Write-Stage "Verifying package integrity" 45
         $ExpectedHashLine = Get-Content $ChecksumPath | Where-Object { $_ -match [regex]::Escape((Split-Path $ZipPath -Leaf)) } | Select-Object -First 1
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
@@ -67,8 +79,7 @@ try {
         }
     }
 
-    Write-Host "Extracting..."
-    Write-Progress -Activity "Installing Security SAST Guard" -Status "Extracting runtime files" -PercentComplete 70
+    Write-Stage "Extracting runtime files" 70
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
 
     # GitHub zipballs have a single root folder containing the repo name and commit hash
@@ -82,7 +93,7 @@ try {
     }
 
     Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
-    Write-Progress -Activity "Installing Security SAST Guard" -Status "Installation complete" -PercentComplete 100 -Completed
+    Write-StageDone "Installation complete"
 
     Write-Host ""
     Write-Host "Installation successful!" -ForegroundColor Green

@@ -1,5 +1,17 @@
 ﻿$ErrorActionPreference = "Stop"
 
+$ProgressPreference = "SilentlyContinue"
+
+function Write-Stage {
+    param([string]$Message, [int]$Percent)
+    $width = 30
+    $filled = [math]::Floor($width * $Percent / 100)
+    $bar = ("█" * $filled) + ("░" * ($width - $filled))
+    $line = "[$bar] $Percent% $Message"
+    Write-Host ("`r{0,-90}" -f $line) -NoNewline -ForegroundColor Cyan
+}
+function Write-StageDone { param([string]$Message); Write-Host ("`r{0,-90}" -f "[OK] $Message") -ForegroundColor Green }
+
 $PluginName = "security-sast-guard"
 $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
@@ -47,7 +59,7 @@ if (Test-Path $ProfilePath) {
 
 Write-Host "Fetching latest release information from GitHub API..."
 try {
-    Write-Progress -Activity "Updating Security SAST Guard" -Status "Downloading latest release" -PercentComplete 20
+    Write-Stage "Downloading latest release" 20
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
@@ -65,7 +77,7 @@ try {
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
 
     if (Test-Path $ChecksumPath) {
-        Write-Progress -Activity "Updating Security SAST Guard" -Status "Verifying package integrity" -PercentComplete 45
+        Write-Stage "Verifying package integrity" 45
         $ExpectedHashLine = Get-Content $ChecksumPath | Where-Object { $_ -match [regex]::Escape((Split-Path $ZipPath -Leaf)) } | Select-Object -First 1
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
@@ -79,8 +91,7 @@ try {
 
 
 
-    Write-Host "Extracting..."
-    Write-Progress -Activity "Updating Security SAST Guard" -Status "Replacing runtime files" -PercentComplete 70
+    Write-Stage "Extracting and replacing runtime files" 70
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
 
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
@@ -103,7 +114,7 @@ try {
     Write-Host ""
     Write-Host "Update successful!" -ForegroundColor Green
     Write-Host "Plugin updated at: $InstallDir" -ForegroundColor Green
-    Write-Progress -Activity "Updating Security SAST Guard" -Status "Update complete" -PercentComplete 100 -Completed
+    Write-StageDone "Update complete"
 } finally {
     # Leave the temporary directory before deleting it.
     Set-Location -Path ([System.IO.Path]::GetTempPath())
