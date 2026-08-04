@@ -1,6 +1,6 @@
 [project]
 name = "security-sast-guard"
-version = "0.3.0"
+version = "0.4.0"
 description = "Static Application Security Testing (SAST) & Command Firewall Guard Plugin"
 readme = "README.md"
 requires-python = ">=3.12"
