@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.8](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.7...v0.5.8) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* **tui:** stabilize ANSI Shadow logo rendering in PowerShell ([d65ab2c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d65ab2ca147f474036a82aa0a85a3f4d3022cf9e))
+
 ## [0.5.7](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.6...v0.5.7) (2026-08-04)
 
 
