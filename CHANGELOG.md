@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.0...v0.5.1) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* **docs:** resolve GitHub Pages asset paths ([9fea842](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9fea84210c29ac19a0098f9051d81e515e243756))
+* **docs:** resolve GitHub Pages asset paths ([c05851f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c05851f15f5d0702c3f4202e841364e5b225747d))
+
+
+### Maintenance & Tooling
+
+* **avt:** add branding assets, site metadata and update readme ([2d69612](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2d6961276aaaba2d94dd79b5d4849620c3df2a1b))
+* **avt:** add branding assets, site metadata and update readme ([5ebd337](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5ebd3373d885c5d1088b26008a8698393949513a))
+* move index.html ([5d51b3e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5d51b3ed37acc7d6b7af1c998cc033377736ef58))
+* move index.html ([4feadd5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4feadd579ca7eee0163e6fc4634ef57972acadd2))
+
 ## [0.5.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.4.3...v0.5.0) (2026-08-04)
 
 
