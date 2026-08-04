@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.4.2...v0.4.3) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* **ci:** disable auto-merge for release-please PRs ([e109169](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e109169639cba35b725ab618053d11bf9173dfeb))
+* **ci:** skip release-please when commit is a release to prevent double version bump ([#27](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/27)) ([d4a51b6](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d4a51b69effaa44d08d17a67dba75be16980506a))
+
 ## [0.4.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.4.1...v0.4.2) (2026-08-04)
 
 

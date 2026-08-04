@@ -1,6 +1,6 @@
 {
   "name": "security-sast-guard",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Static Application Security Testing (SAST) & Command Firewall Guard Plugin",
   "author": "Antigravity Security Team",
   "main": "control_plane.py",
