@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.6](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.5...v0.5.6) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* **installer:** handle missing release assets and stabilize terminal logo ([562e1b1](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/562e1b181ee22bd9f7c6fe8ad4358677d6e5fcac))
+
 ## [0.5.5](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.4...v0.5.5) (2026-08-04)
 
 
