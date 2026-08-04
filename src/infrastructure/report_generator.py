@@ -20,10 +20,7 @@ def _build_finding_row(f: dict[str, Any]) -> str:
     location = f"{f.get('path', 'unknown')}:{f.get('line', 0)}"
     severity = f.get("severity", "Medium")
     scope = f.get("scope", "global")
-    return (
-        f"| `{rule_id}` | `{location}` | **{severity}** | "
-        f"`{snippet}` | `{scope}` |"
-    )
+    return f"| `{rule_id}` | `{location}` | **{severity}** | `{snippet}` | `{scope}` |"
 
 
 def generate_markdown_report(
