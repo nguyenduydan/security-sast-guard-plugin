@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Test</title>
+</head>
+<body>
+    <input type="text" name="username" onfocus="alert('XSS Payload')">
+    <script>
+        const userRole = request.query.role;
+    </script>
+</body>
+</html>

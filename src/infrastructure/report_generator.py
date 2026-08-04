@@ -66,7 +66,7 @@ def generate_markdown_report(
     summary = (
         f"SAST Audit completed. Total: {len(findings)} findings "
         f"(Critical: {critical_count}, High: {high_count}, Medium: {medium_count}, Low: {low_count}).\n"
-        f"📄 Detailed report saved to: [`{report_file.name}`]({file_uri})"
+        f"Detailed report saved to: [{report_file.name}]({file_uri})"
     )
 
     return str(report_file), summary
