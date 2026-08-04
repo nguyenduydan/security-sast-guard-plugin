@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 
 $PluginName = "security-sast-guard"
 $RepoOwner = "nguyenduydan"
@@ -8,11 +8,12 @@ $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 Clear-Host
 Write-Host "==============================================" -ForegroundColor DarkCyan
 $SastLogo = @(
-    "  #####  #####  #####  #######",
-    " #      #     # #      #    #   ",
-    "  ###   #######  ###        #   ",
-    "     #  #     #     #       #   ",
-    "#####   #     # #####       #   "
+    "███████╗ █████╗ ███████╗████████╗",
+    "██╔════╝██╔══██╗██╔════╝╚══██╔══╝",
+    "███████╗███████║███████╗   ██║   ",
+    "╚════██║██╔══██║╚════██║   ██║   ",
+    "███████║██║  ██║███████║   ██║   ",
+    "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   "
 )
 foreach ($Line in $SastLogo) {
     Write-Host $Line -ForegroundColor Cyan
@@ -110,3 +111,4 @@ try {
         Remove-Item -Path $TempDir -Recurse -Force
     }
 }
+

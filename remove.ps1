@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 
 $PluginName = "security-sast-guard"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
@@ -6,11 +6,12 @@ $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 Clear-Host
 Write-Host "==============================================" -ForegroundColor DarkCyan
 $SastLogo = @(
-    "  #####  #####  #####  #######",
-    " #      #     # #      #    #   ",
-    "  ###   #######  ###        #   ",
-    "     #  #     #     #       #   ",
-    "#####   #     # #####       #   "
+    "███████╗ █████╗ ███████╗████████╗",
+    "██╔════╝██╔══██╗██╔════╝╚══██╔══╝",
+    "███████╗███████║███████╗   ██║   ",
+    "╚════██║██╔══██║╚════██║   ██║   ",
+    "███████║██║  ██║███████║   ██║   ",
+    "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   "
 )
 foreach ($Line in $SastLogo) {
     Write-Host $Line -ForegroundColor Cyan
@@ -44,3 +45,4 @@ try {
     Write-Host "Error removing plugin: $_" -ForegroundColor Red
     exit 1
 }
+
