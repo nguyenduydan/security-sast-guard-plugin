@@ -680,9 +680,9 @@ def get_user_account(user_id):
             </div>
 
             <div id="content-update" class="space-y-4 hidden">
-              <div class="text-slate-700 dark:text-slate-300 font-bold">// Updates plugin while preserving user profile.json config</div>
+              <div class="text-slate-700 dark:text-slate-300 font-bold">// Run from the parent plugins directory to avoid Windows file-lock issues</div>
               <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 flex items-center justify-between text-black dark:text-brand-cyan font-bold gap-3">
-                <code id="code-update" class="overflow-x-auto">cd $HOME\.gemini\config\plugins\security-sast-guard; .\update.ps1</code>
+                <code id="code-update" class="overflow-x-auto">cd $HOME\.gemini\config\plugins; .\security-sast-guard\update.ps1</code>
                 <button onclick="copySnippet('code-update')" class="ml-2 px-4 py-2 rounded brutal-btn text-xs font-bold whitespace-nowrap">Copy</button>
               </div>
             </div>

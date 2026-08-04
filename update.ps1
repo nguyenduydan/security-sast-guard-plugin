@@ -5,7 +5,24 @@ $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
-Write-Host "Updating $PluginName..." -ForegroundColor Cyan
+Clear-Host
+Write-Host "==============================================" -ForegroundColor DarkCyan
+$SastLogo = @(
+    "███████╗ █████╗ ███████╗████████╗",
+    "██╔════╝██╔══██╗██╔════╝╚══██╔══╝",
+    "███████╗███████║███████╗   ██║   ",
+    "╚════██║██╔══██║╚════██║   ██║   ",
+    "███████║██║  ██║███████║   ██║   ",
+    "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   "
+)
+foreach ($Line in $SastLogo) {
+    Write-Host $Line -ForegroundColor Cyan
+}
+Write-Host "          SECURITY SAST GUARD" -ForegroundColor White
+Write-Host "               UPDATER" -ForegroundColor DarkCyan
+Write-Host "==============================================" -ForegroundColor DarkCyan
+Write-Host "Target: $InstallDir" -ForegroundColor Gray
+Write-Host ""
 
 if (-not (Test-Path $InstallDir)) {
     Write-Host "Plugin is not installed at $InstallDir" -ForegroundColor Red
@@ -30,6 +47,7 @@ if (Test-Path $ProfilePath) {
 
 Write-Host "Fetching latest release information using GitHub CLI..."
 try {
+    Write-Progress -Activity "Updating Security SAST Guard" -Status "Downloading latest release" -PercentComplete 20
     # Download zip and checksums using gh CLI (handles authentication automatically)
     gh release download --repo "$RepoOwner/$RepoName" --pattern "*.zip" --dir $TempDir
     gh release download --repo "$RepoOwner/$RepoName" --pattern "checksums.txt" --dir $TempDir
@@ -39,7 +57,7 @@ try {
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
 
     if (Test-Path $ChecksumPath) {
-        Write-Host "Verifying checksum..."
+        Write-Progress -Activity "Updating Security SAST Guard" -Status "Verifying package integrity" -PercentComplete 45
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
             $ActualHash = (Get-FileHash -Path $ZipPath -Algorithm SHA256).Hash.ToUpper()
@@ -53,6 +71,7 @@ try {
 
 
     Write-Host "Extracting..."
+    Write-Progress -Activity "Updating Security SAST Guard" -Status "Replacing runtime files" -PercentComplete 70
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
 
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
@@ -75,6 +94,7 @@ try {
     Write-Host ""
     Write-Host "Update successful!" -ForegroundColor Green
     Write-Host "Plugin updated at: $InstallDir" -ForegroundColor Green
+    Write-Progress -Activity "Updating Security SAST Guard" -Status "Update complete" -PercentComplete 100 -Completed
 } finally {
     # Leave the temporary directory before deleting it.
     Set-Location -Path ([System.IO.Path]::GetTempPath())

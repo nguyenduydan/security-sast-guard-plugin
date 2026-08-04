@@ -5,7 +5,24 @@ $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
-Write-Host "Installing $PluginName..." -ForegroundColor Cyan
+Clear-Host
+Write-Host "==============================================" -ForegroundColor DarkCyan
+$SastLogo = @(
+    "███████╗ █████╗ ███████╗████████╗",
+    "██╔════╝██╔══██╗██╔════╝╚══██╔══╝",
+    "███████╗███████║███████╗   ██║   ",
+    "╚════██║██╔══██║╚════██║   ██║   ",
+    "███████║██║  ██║███████║   ██║   ",
+    "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   "
+)
+foreach ($Line in $SastLogo) {
+    Write-Host $Line -ForegroundColor Cyan
+}
+Write-Host "          SECURITY SAST GUARD" -ForegroundColor White
+Write-Host "              INSTALLER" -ForegroundColor DarkCyan
+Write-Host "==============================================" -ForegroundColor DarkCyan
+Write-Host "Target: $InstallDir" -ForegroundColor Gray
+Write-Host ""
 
 if (Test-Path $InstallDir) {
     Write-Host "Plugin is already installed at $InstallDir" -ForegroundColor Yellow
@@ -20,6 +37,7 @@ New-Item -ItemType Directory -Path $TempDir | Out-Null
 $ExtractPath = Join-Path $TempDir "extracted"
 
 try {
+    Write-Progress -Activity "Installing Security SAST Guard" -Status "Downloading latest release" -PercentComplete 20
     # Download zip and checksums using gh CLI (handles authentication automatically)
     gh release download --repo "$RepoOwner/$RepoName" --pattern "*.zip" --dir $TempDir
     gh release download --repo "$RepoOwner/$RepoName" --pattern "checksums.txt" --dir $TempDir
@@ -29,7 +47,7 @@ try {
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
 
     if (Test-Path $ChecksumPath) {
-        Write-Host "Verifying checksum..."
+        Write-Progress -Activity "Installing Security SAST Guard" -Status "Verifying package integrity" -PercentComplete 45
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
             $ActualHash = (Get-FileHash -Path $ZipPath -Algorithm SHA256).Hash.ToUpper()
@@ -41,6 +59,7 @@ try {
     }
 
     Write-Host "Extracting..."
+    Write-Progress -Activity "Installing Security SAST Guard" -Status "Extracting runtime files" -PercentComplete 70
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
 
     # GitHub zipballs have a single root folder containing the repo name and commit hash
@@ -54,6 +73,7 @@ try {
     }
 
     Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
+    Write-Progress -Activity "Installing Security SAST Guard" -Status "Installation complete" -PercentComplete 100 -Completed
 
     Write-Host ""
     Write-Host "Installation successful!" -ForegroundColor Green
