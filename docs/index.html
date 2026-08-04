@@ -220,7 +220,7 @@
       <div class="pt-3 border-t-2 border-black dark:border-white/20 flex flex-col gap-2 font-mono">
         <button onclick="toggleTheme()" class="px-4 py-2 rounded brutal-btn-alt text-center font-bold">Toggle Light/Dark Mode</button>
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="px-4 py-2 rounded brutal-btn-alt text-center font-bold">GitHub Repository</a>
-        <a href="#install" onclick="toggleMobileMenu()" class="px-4 py-2 rounded brutal-btn text-center font-bold uppercase">INSTALL V0.4.2</a>
+        <a href="#install" onclick="toggleMobileMenu()" class="px-4 py-2 rounded brutal-btn text-center font-bold uppercase">INSTALL</a>
       </div>
     </div>
   </header>
@@ -294,7 +294,7 @@
             <div class="brutal-card p-6 rounded-2xl flex items-center justify-between">
               <div>
                 <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Release Version</div>
-                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1">v0.4.2</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1" data-version-text>v0.4.2</div>
                 <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Release-Please Tagged</div>
               </div>
               <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-violet text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
@@ -411,7 +411,7 @@
 
           <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-950 space-y-4 min-h-[280px] max-h-[400px] overflow-y-auto terminal-scrollbar flex flex-col justify-between">
             <div id="terminal-output" class="space-y-3">
-              <div class="text-slate-600 dark:text-slate-400">// Security SAST Guard Interceptor v0.4.2 ready.</div>
+              <div class="text-slate-600 dark:text-slate-400">// Security SAST Guard Interceptor ready.</div>
               <div class="text-black dark:text-slate-200 font-semibold">Click a preset above or enter shell instruction to evaluate firewall rules.</div>
             </div>
 
@@ -565,7 +565,7 @@ def get_user_account(user_id):
               <thead class="bg-black dark:bg-obsidian-950 text-white text-xs uppercase border-b-2 border-black dark:border-white/20">
                 <tr>
                   <th scope="col" class="py-4 px-6 font-bold">Capability</th>
-                  <th scope="col" class="py-4 px-6 text-white dark:text-brand-emerald font-black">Security SAST Guard v0.4.2</th>
+                  <th scope="col" class="py-4 px-6 text-white dark:text-brand-emerald font-black">Security SAST Guard</th>
                   <th scope="col" class="py-4 px-6 font-bold">SonarQube / Snyk</th>
                   <th scope="col" class="py-4 px-6 font-bold">Semgrep</th>
                 </tr>
@@ -609,13 +609,13 @@ def get_user_account(user_id):
         
         <div class="text-center mb-10">
           <span class="px-3 py-1 bg-black dark:bg-brand-emerald/20 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-emerald/40">AUTOMATED SUITE</span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Install Plugin v0.4.2</h2>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Install Plugin</h2>
         </div>
 
         <div class="brutal-card rounded-2xl overflow-hidden">
           <div class="bg-black text-white px-6 py-3.5 flex items-center justify-between font-mono text-xs border-b-2 border-black dark:border-white/20">
             <div class="flex items-center gap-3">
-              <button onclick="switchTab('install')" id="tab-install" class="px-4 py-1.5 rounded brutal-btn-alt font-bold uppercase text-xs">1. Install v0.4.2</button>
+              <button onclick="switchTab('install')" id="tab-install" class="px-4 py-1.5 rounded brutal-btn-alt font-bold uppercase text-xs">1. Install</button>
               <button onclick="switchTab('update')" id="tab-update" class="px-4 py-1.5 rounded text-white hover:underline font-bold text-xs">2. Update</button>
               <button onclick="switchTab('remove')" id="tab-remove" class="px-4 py-1.5 rounded text-white hover:underline font-bold text-xs">3. Remove</button>
             </div>
@@ -624,7 +624,7 @@ def get_user_account(user_id):
 
           <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-900">
             <div id="content-install" class="space-y-4">
-              <div class="text-slate-700 dark:text-slate-300 font-bold">// Downloads v0.4.2 release ZIP, extracts, and configures Antigravity CLI plugin</div>
+              <div class="text-slate-700 dark:text-slate-300 font-bold">// Downloads release ZIP, extracts, and configures Antigravity CLI plugin</div>
               <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 flex items-center justify-between text-black dark:text-brand-emerald font-bold gap-3">
                 <code id="code-install" class="overflow-x-auto">Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"; .\install.ps1</code>
                 <button onclick="copySnippet('code-install')" class="ml-2 px-4 py-2 rounded brutal-btn text-xs font-bold whitespace-nowrap">Copy</button>
@@ -665,7 +665,7 @@ def get_user_account(user_id):
           </div>
           <div>
             <h3 id="modal-title" class="font-display font-black text-xl text-white">53 Security SAST Rules Database</h3>
-            <p class="text-xs text-slate-300">Plugin v0.4.2 Threat Vectors</p>
+            <p class="text-xs text-slate-300">Plugin Threat Vectors</p>
           </div>
         </div>
         <button onclick="closeRulesModal()" class="w-8 h-8 rounded bg-white text-black dark:bg-white/10 dark:text-white font-bold flex items-center justify-center" aria-label="Close rules explorer modal">✕</button>
@@ -699,7 +699,7 @@ def get_user_account(user_id):
         <div class="w-8 h-8 rounded bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center font-bold">
           <i class="ph-bold ph-shield-check text-lg"></i>
         </div>
-        <span class="font-display font-black text-black dark:text-white text-base">Security SAST Guard <span data-version-text>v0.4.2</span></span>
+        <span class="font-display font-black text-black dark:text-white text-base">Security SAST Guard</span>
         <span class="text-slate-700 dark:text-slate-400">• Release-Please Tagged • MIT License</span>
       </div>
 
