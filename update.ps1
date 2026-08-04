@@ -48,16 +48,19 @@ if (Test-Path $ProfilePath) {
 Write-Host "Fetching latest release information using GitHub CLI..."
 try {
     Write-Progress -Activity "Updating Security SAST Guard" -Status "Downloading latest release" -PercentComplete 20
-    # Download zip and checksums using gh CLI (handles authentication automatically)
-    gh release download --repo "$RepoOwner/$RepoName" --pattern "*.zip" --dir $TempDir
-    gh release download --repo "$RepoOwner/$RepoName" --pattern "checksums.txt" --dir $TempDir
-    
-    # Get the downloaded zip file path
-    $ZipPath = (Get-ChildItem -Path $TempDir -Filter "*.zip" | Select-Object -First 1).FullName
+    $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
+    $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
+    $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
+    if (-not $ZipAsset) { throw "No plugin ZIP asset found in the latest release." }
+    Write-Host "Found release: $($Release.tag_name)" -ForegroundColor Green
+    Invoke-WebRequest -Uri $ZipAsset.browser_download_url -OutFile (Join-Path $TempDir $ZipAsset.name)
+    if ($ChecksumAsset) { Invoke-WebRequest -Uri $ChecksumAsset.browser_download_url -OutFile (Join-Path $TempDir $ChecksumAsset.name) }
+    $ZipPath = Join-Path $TempDir $ZipAsset.name
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
 
     if (Test-Path $ChecksumPath) {
         Write-Progress -Activity "Updating Security SAST Guard" -Status "Verifying package integrity" -PercentComplete 45
+        $ExpectedHashLine = Get-Content $ChecksumPath | Where-Object { $_ -match [regex]::Escape((Split-Path $ZipPath -Leaf)) } | Select-Object -First 1
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
             $ActualHash = (Get-FileHash -Path $ZipPath -Algorithm SHA256).Hash.ToUpper()

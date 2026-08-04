@@ -1032,11 +1032,38 @@ def get_user_account(user_id):
       });
     }
 
+    function showCopyToast() {
+      const toast = document.getElementById('copy-toast');
+      toast.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      clearTimeout(window.copyToastTimer);
+      window.copyToastTimer = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
+      }, 2200);
+    }
+
     function copySnippet(id) {
+      const button = event.currentTarget;
       navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => {
-        alert("PowerShell snippet copied!");
+        const originalLabel = button.innerHTML;
+        button.innerHTML = '<i class="ph-bold ph-check"></i> Copied';
+        button.classList.add('!bg-brand-emerald', '!text-black');
+        showCopyToast();
+        setTimeout(() => {
+          button.innerHTML = originalLabel;
+          button.classList.remove('!bg-brand-emerald', '!text-black');
+        }, 1800);
       });
     }
   </script>
+
+  <div id="copy-toast" role="status" aria-live="polite"
+    class="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 translate-y-4 items-center gap-3 rounded-xl border-2 border-black bg-brand-emerald px-5 py-3 font-mono text-xs font-black text-black opacity-0 shadow-[5px_5px_0_#000] pointer-events-none transition-all duration-200">
+    <span class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-black bg-black text-brand-emerald">
+      <i class="ph-bold ph-check text-xs"></i>
+    </span>
+    <span>PowerShell command copied</span>
+  </div>
 </body>
 </html>
