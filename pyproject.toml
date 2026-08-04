@@ -25,6 +25,7 @@ exclude = [
     "__pycache__",
     "build",
     "dist",
+    "docs",
 ]
 
 [tool.ruff.lint]
