@@ -73,8 +73,5 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - name: Enable Auto-merge for Release PR
-        if: ${{ steps.release.outputs.pr }}
-        run: gh pr merge --auto --merge "${{ fromJson(steps.release.outputs.pr).number }}" --repo ${{ github.repository }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # NOTE: Release PRs created by release-please must be merged MANUALLY by the repo owner.
+      # Auto-merge is intentionally disabled to avoid uncontrolled version bumps.
