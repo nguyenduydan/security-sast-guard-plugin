@@ -6,7 +6,14 @@ Sau mỗi lần sửa code, gọi `/sast-audit file <path>` để xác nhận ze
 
 ## Release & Git Flow (Conventional Commits)
 
-- **Sử dụng Conventional Commits có Scope:** Mọi commit message phải tuân thủ chuẩn Conventional Commits và **BẮT BUỘC phải có scope (phạm vi)** để làm rõ module nào đang được sửa (VD: `fix(sast-status): ...`, `feat(firewall): ...`, `chore(release): ...`, `docs(gemini): ...`).
+- **Sử dụng Conventional Commits có Scope:** Mọi commit message BẮT BUỘC tuân thủ chuẩn và có scope. Định nghĩa các loại commit phải được áp dụng khắt khe:
+  - `feat`: **CHỈ DÙNG** khi thực sự thêm một tính năng mới vào mã nguồn lõi (làm thay đổi logic hoạt động của sản phẩm). Tuyệt đối không dùng `feat` cho các sửa đổi nhỏ, thêm tài liệu, hoặc chỉnh sửa script phụ trợ. (Gây nhảy Minor Version).
+  - `fix`: Khi sửa một lỗi (bug) trong mã nguồn hoặc script hiện tại. (Gây nhảy Patch Version).
+  - `docs`: Khi thêm/sửa tài liệu (`.md`, bình luận code, thiết kế spec). KHÔNG kích hoạt Release mới.
+  - `chore`: Các tác vụ bảo trì, dọn dẹp, update thư viện, chỉnh sửa config CI/CD mà không ảnh hưởng tới logic ứng dụng. KHÔNG kích hoạt Release mới.
+  - `refactor`: Viết lại code nhưng không thay đổi hành vi hiện tại (không thêm tính năng, không sửa lỗi).
+  - `style`: Sửa định dạng code (khoảng trắng, dấu phẩy...), không ảnh hưởng logic.
+  - `test`: Thêm hoặc sửa các bài kiểm thử (unit test).
 - **Không đánh Tag thủ công:** Repository sử dụng `release-please` để quản lý phiên bản tự động. Tuyệt đối **KHÔNG** tự ý chạy `git tag` hoặc tạo nhánh `release/vX.Y.Z` thủ công trừ khi có yêu cầu đặc biệt từ user.
 - **Không tự ý sửa file version (plugin.json, package.json):** `release-please` sẽ tự động tạo Pull Request nâng version và cập nhật Changelog dựa trên lịch sử commit. Không tự tiện sửa version trong file config để tránh hạ cấp version (downgrade) so với tag mới nhất trên GitHub.
 ## Quy Trình Làm Việc Bắt Buộc (Agent Git Workflow)
