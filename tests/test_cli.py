@@ -26,3 +26,13 @@ def test_dispatcher_unknown_command(capsys: CaptureFixture[str]) -> None:
     assert code == 1
     captured = capsys.readouterr()
     assert "Unknown command: unknown_action" in captured.out
+
+
+def test_dispatcher_scan_command(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_file = tmp_path / "test.html"
+    test_file.write_text('<input onfocus="alert(1)">', encoding="utf-8")
+    code = main(["scan", str(test_file)])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "SAST Audit completed." in captured.out
+    assert "Detailed report saved to:" in captured.out

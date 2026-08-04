@@ -1,9 +1,132 @@
-"""Markdown to JSON converter script for SAST rules."""
+"""Markdown to JSON rule converter script for SAST rules."""
+
+import json
+import re
+from pathlib import Path
+from typing import Any
 
 
-def main():
-    """Convert markdown rules to JSON format."""
-    print("Markdown converter script loaded")
+def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
+    """Parse a single Markdown rule file into structured SAST rule dictionaries."""
+    path = Path(file_path)
+    if not path.exists():
+        return []
+
+    content = path.read_text(encoding="utf-8")
+    rules: list[dict[str, Any]] = []
+
+    # Extract Title and ID
+    title_match = re.search(r"##\s*\[(.*?)\]\s*(.*)", content)
+    rule_id = (
+        title_match.group(1).replace(":", "_").replace(" ", "_")
+        if title_match
+        else path.stem
+    )
+    name = title_match.group(2).strip() if title_match else path.stem
+
+    # Extract Severity
+    severity = "High"
+    if "🔴 Critical" in content or "Critical" in content:
+        severity = "Critical"
+    elif "🟡 Medium" in content or "Medium" in content:
+        severity = "Medium"
+    elif "🟢 Low" in content or "Low" in content:
+        severity = "Low"
+
+    # Extract Grep/Regex Patterns
+    patterns: list[str] = []
+    code_blocks = re.findall(r"```(?:bash|regex|python)?\n(.*?)```", content, re.DOTALL)
+    for block in code_blocks:
+        for line in block.splitlines():
+            line_str = line.strip()
+            if not line_str or line_str.startswith("#"):
+                continue
+
+            if "git grep" in line_str:
+                grep_matches = re.findall(r'["\']([^"\']+)["\']', line_str)
+                for match in grep_matches:
+                    if match.startswith("*") or match.startswith("."):
+                        continue
+                    patterns.append(
+                        match if match.startswith("(?i)") else re.escape(match)
+                    )
+            else:
+                patterns.append(
+                    line_str if line_str.startswith("(?i)") else re.escape(line_str)
+                )
+
+    if patterns:
+        rules.append(
+            {
+                "id": rule_id,
+                "name": name,
+                "description": f"Imported rule from {path.name}",
+                "category": path.parent.name,
+                "severity": severity,
+                "patterns": patterns,
+            }
+        )
+
+    return rules
+
+
+def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> int:
+    """Sync Markdown rules from source directory into target JSON file."""
+    source_path = Path(source_dir)
+    target_path = Path(target_json)
+
+    existing_rules: list[dict[str, Any]] = []
+    if target_path.exists():
+        try:
+            existing_rules = json.loads(target_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            existing_rules = []
+
+    rule_map = {r["id"]: r for r in existing_rules}
+
+    # Add explicit XSS Event and Access Control rules
+    rule_map["XSS_INLINE_EVENT"] = {
+        "id": "XSS_INLINE_EVENT",
+        "name": "Cross-Site Scripting Inline Event Attributes (CWE-79)",
+        "description": (
+            "Detects inline JavaScript event attributes like onfocus=, onerror="
+        ),
+        "category": "owasp-web-2021",
+        "severity": "High",
+        "patterns": [
+            r"(?i)on(focus|error|load|click|mouseover|submit|keydown)\s*=\s*[\"'].*?[\"']"
+        ],
+    }
+    rule_map["BROKEN_ACCESS_CONTROL"] = {
+        "id": "BROKEN_ACCESS_CONTROL",
+        "name": "Unvalidated Privilege Parameter Tampering (CWE-639 / CWE-269)",
+        "description": "Detects unvalidated role or privilege parameter assignments",
+        "category": "owasp-web-2021",
+        "severity": "Critical",
+        "patterns": [
+            r"(?i)(role|privilege|is_admin)\s*=\s*(req|request|params|query|GET|POST)[\.\[]",
+            r"(?i)request\.(getParameter|query|args)\s*\(\s*[\"'](role|admin|privilege)[\"']\s*\)",
+        ],
+    }
+
+    if source_path.exists():
+        for md_file in source_path.rglob("*.md"):
+            for rule in parse_md_rules(str(md_file)):
+                rule_map[rule["id"]] = rule
+
+    final_rules = list(rule_map.values())
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    target_path.write_text(
+        json.dumps(final_rules, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    return len(final_rules)
+
+
+def main() -> None:
+    """Run rule synchronization from external Markdown rules repository."""
+    source_rules_dir = r"D:\AI\tools\mcp-agent-audit\api-security-audit\rules"
+    count = sync_rules(source_rules_dir)
+    print(f"Successfully synced {count} SAST rules.")
 
 
 if __name__ == "__main__":
