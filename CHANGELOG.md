@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.9](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.8...v0.5.9) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* **remove:** avoid deleting plugin from active directory ([e96fea7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e96fea7f3775d8b005e38de31b93a669a2fcdf37))
+
 ## [0.5.8](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.7...v0.5.8) (2026-08-04)
 
 
