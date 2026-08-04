@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="banner.png" alt="Security SAST Guard banner" width="100%">
+
 # 🛡️ SECURITY SAST GUARD PLUGIN
 **Zero-Trust Enterprise SAST & Real-time Command Firewall**
 *Engineered for Google Antigravity & Gemini CLI Ecosystems*
