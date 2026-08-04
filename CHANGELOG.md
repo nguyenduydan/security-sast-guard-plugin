@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.1.0...v0.2.0) (2026-08-04)
+
+
+### 🚀 Features & SAST Security Rules
+
+* tuning improvements for firewall, sast scanner, and delivery ([#8](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/8)) ([1fa4862](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1fa4862dab24586405f013194bd61ff6fa5c9dd7))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** comprehensively resolve pylint and mypy errors across codebase ([#12](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/12)) ([d39597f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d39597f1349b9d43e4fbc861e960736cf3bf89b2))
+* force version bump for release-please ([c39a442](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c39a4421362d93d1793223e790522d68ae9160f5))
+* **release-please:** migrate config to v4 schema ([5a9a60a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5a9a60a26cff0392199de27288f2f8e335b29e11))
+* **release-please:** migrate config to v4 schema ([4bb5944](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4bb59448f651dc7b2ce7ba5a42cc5e6924e10b37))
+* **release:** force trigger release-please to bump version ([4b65a27](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4b65a2794edfdc24438f2e29e6b08cb46c0d9e80))
+* **release:** sync plugin version and setup release-please config ([d102df6](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d102df64a6775dd9da16d2376dd5ef7068feedf7))
+* reset release-please branch state ([dfebbfe](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/dfebbfef5d7be7405026ef4af506165c1b71daba))
+* **sast-status:** optimize skill and update gemini workflows ([b03d917](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b03d91709557f08d9fa6add39a2ace4cb57cc7dd))
+* **sast-status:** optimize skill to prevent unnecessary file reading ([25b022b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/25b022be785a3d6c2fc0fa71ac66d538294c39f5))
+
+
+### 📝 Documentation
+
+* add release and git flow rules to GEMINI.md ([a003292](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a0032928cbbd3a1ccc2cc301bb35f8e75810abe5))
+* consolidate SECURITY.md into .github folder ([#7](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/7)) ([68d9b70](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/68d9b70a98ae4ef39d652e1b2b44a9aca46dce22))
+* **gemini:** detail agent git workflow ([4970317](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/497031766f922ad4176d2ed675d5e2bd778f22d6))
+* **gemini:** enforce testing and linting before commit ([72baaba](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/72baabab96b2a153cce131424104c3d46f2020ef))
+* **gemini:** require scope in conventional commits ([1be0e22](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1be0e22c3caeff09b01183643b6e91f12b02ca06))
+* modernize and redesign README with security aesthetic and packaging guide ([#5](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/5)) ([2c9ec29](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2c9ec29fcac8c9ccef5f78f750f1915fc2bd6a1f))
+* rewrite security policy and ignore .superpowers ([#6](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/6)) ([00954e7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/00954e794e3f9abd59a04de4224cb1596daa293e))
+* **superpowers:** add release-please v4 migration design ([9d7d0ef](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9d7d0ef687c3c6e8ae211b81a24a5eb2a7870df9))
+* **superpowers:** add release-please v4 migration plan ([b59cc89](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b59cc89168c6c3621e5d4f1854a0b5d2730feabc))
+
+
+### 🎨 Code Style & Formatting
+
+* fix ruff linter line length issues in domain modules ([32686a0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/32686a0b01760e45b642930b56b6ef24ae6dd5fc))
+
 ## [0.1.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/security-sast-guard-v0.0.1...security-sast-guard-v0.1.0) (2026-08-03)
 
 
