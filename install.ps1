@@ -29,7 +29,7 @@ if (Test-Path $InstallDir) {
     exit 1
 }
 
-Write-Host "Fetching latest release information using GitHub CLI..."
+Write-Host "Fetching latest release information from GitHub API..."
 
 $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString())
 New-Item -ItemType Directory -Path $TempDir | Out-Null

@@ -44,7 +44,7 @@ if (Test-Path $ProfilePath) {
     $HasProfile = $true
 }
 
-Write-Host "Fetching latest release information using GitHub CLI..."
+Write-Host "Fetching latest release information from GitHub API..."
 try {
     Write-Progress -Activity "Updating Security SAST Guard" -Status "Downloading latest release" -PercentComplete 20
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
