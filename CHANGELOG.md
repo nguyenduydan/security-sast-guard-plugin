@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.10...v0.6.0) (2026-08-04)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **cli:** add status command to display security profile ([aaeb59f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/aaeb59fffdf55b8736693da40cd34a54c1051f7a))
+* **cli:** add status command to display security profile ([06b7a80](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/06b7a8037c5cfebdb77f34d7402765eec9946def))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** add pytest dependency to pylint workflow and disable import-error ([f2f857e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f2f857e0fe1fab6c82e547ff1ae29e7706739500))
+
+
+### 🎨 Code Style & Formatting
+
+* **cli:** fix code formatting and trailing newlines for CI quality gate ([fa09c96](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/fa09c96b1ca609b424ddc847f7559ae954f41889))
+
+
+### Maintenance & Tooling
+
+* **ui:** update ui ([f1b03be](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f1b03beb5e630c80fca357c55e531dd3e50d03a2))
+
 ## [0.5.10](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.5.9...v0.5.10) (2026-08-04)
 
 
