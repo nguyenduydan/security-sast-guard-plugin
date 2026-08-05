@@ -1,7 +1,11 @@
-# Global Code Owners
-* @nguyenduydan
+# CODEOWNERS for Security SAST Guard Plugin
 
-# Security Rules & Domain Owners
+# Require review from repository maintainers for security-critical files and rules
 /rules/ @nguyenduydan
-/src/domain/ @nguyenduydan
-/.github/workflows/ @nguyenduydan
+/hooks/ @nguyenduydan
+/profile.json @nguyenduydan
+/.profile.sha256 @nguyenduydan
+/plugin.json @nguyenduydan
+/gemini-extension.json @nguyenduydan
+/.github/ @nguyenduydan
+/src/infrastructure/integrity_checker.py @nguyenduydan
