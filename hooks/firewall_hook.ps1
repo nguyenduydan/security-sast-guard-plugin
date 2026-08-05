@@ -7,8 +7,9 @@ $ErrorActionPreference = "Stop"
 
 try {
     # 1. Check Profile & Checksum Integrity (Fail-Closed Guard)
-    $ProfilePath = Join-Path $PSScriptRoot "..\profile.json"
-    $ChecksumPath = Join-Path $PSScriptRoot "..\.profile.sha256"
+    $RepoRoot = Split-Path $PSScriptRoot -Parent
+    $ProfilePath = Join-Path $RepoRoot "profile.json"
+    $ChecksumPath = Join-Path $RepoRoot ".profile.sha256"
 
     if (-not (Test-Path $ProfilePath)) {
         Write-Output "DENY"
