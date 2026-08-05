@@ -91,6 +91,7 @@ def _build_remediation_summary(findings: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
 def _substitute_placeholders(
     template: str,
     target_path: str,
@@ -150,7 +151,9 @@ def _substitute_placeholders(
     return content
 
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
 def generate_markdown_report(
+
     findings: list[dict[str, Any]],
     output_dir: str = "reports",
     target_path: str = ".",
