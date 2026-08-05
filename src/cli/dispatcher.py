@@ -3,27 +3,23 @@
 import sys
 from collections.abc import Sequence
 
-from src.domain.sast_scanner import SASTScanner
-from src.infrastructure.profile_loader import ProfileLoader
-from src.infrastructure.report_generator import generate_markdown_report
+from src.application.audit_service import AuditService
 
 
 def _print_status() -> int:
-    profile = ProfileLoader().load("profile.json")
-    firewall = profile.get("command_firewall_overlay", {})
-    deny_rules = firewall.get("deny", [])
-    confirm_rules = firewall.get("confirm", [])
+    service = AuditService()
+    status = service.get_status()
 
     print("SAST Security & Firewall Guard Status")
     print("=====================================")
-    print(f"Project ID     : {profile.get('project_id', 'unknown')}")
-    print(f"Stack          : {profile.get('stack', 'unknown')}")
-    print(f"Mode           : {profile.get('mode', 'strict')}")
-    print(f"Audit Level    : {profile.get('audit_level', 'full')}")
-    print(f"SAST Level     : {profile.get('sast_level', 'ultra')}")
+    print(f"Project ID     : {status['project_id']}")
+    print(f"Stack          : {status['stack']}")
+    print(f"Mode           : {status['mode']}")
+    print(f"Audit Level    : {status['audit_level']}")
+    print(f"SAST Level     : {status['sast_level']}")
     print("Command Firewall Overlay:")
-    print(f"  - Deny Rules   : {len(deny_rules)}")
-    print(f"  - Confirm Rules: {len(confirm_rules)}")
+    print(f"  - Deny Rules   : {status['deny_count']}")
+    print(f"  - Confirm Rules: {status['confirm_count']}")
     return 0
 
 
@@ -39,9 +35,8 @@ def main(args: Sequence[str] | None = None) -> int:
 
     if command in ("scan", "audit"):
         target_path = args[1] if len(args) > 1 else "."
-        scanner = SASTScanner()
-        findings = scanner.scan(target_path)
-        _, summary = generate_markdown_report(findings)
+        service = AuditService()
+        _, _, summary = service.run_audit(target_path)
         print(summary)
         return 0
 
