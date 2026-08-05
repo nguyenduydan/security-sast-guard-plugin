@@ -536,6 +536,7 @@
     "description": "Detects inline JavaScript event attributes like onfocus=, onerror=",
     "category": "owasp-web-2021",
     "severity": "High",
+    "action": "Block",
     "patterns": [
       "(?i)on(focus|error|load|click|mouseover|submit|keydown)\\s*=\\s*[\\\"'].*?[\\\"']"
     ]
@@ -546,6 +547,7 @@
     "description": "Detects unvalidated role or privilege parameter assignments",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "(?i)(role|privilege|is_admin)\\s*=\\s*(req|request|params|query|GET|POST)[\\.\\[]",
       "(?i)request\\.(getParameter|query|args)\\s*\\(\\s*[\\\"'](role|admin|privilege)[\\\"']\\s*\\)"
@@ -557,6 +559,7 @@
     "description": "Imported rule from cwe_top25_rules.md",
     "category": "cwe-sans-top25",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "unsafe\\\\b\\\\\\|fixed\\\\s\\*\\(\\\\\\|Marshal\\\\\\.\\\\\\|stackalloc\\\\\\|IntPtr\\\\\\|NativeMemory",
       "innerHTML\\\\s\\*=\\\\\\|Response\\\\\\.Write\\\\\\|\\\\\\.html\\(\\\\\\|dangerouslySetInnerHTML\\\\\\|v\\-html\\\\\\|Html\\\\\\.Raw\\(",
@@ -712,6 +715,7 @@
     "description": "Imported rule from nist_key_controls.md",
     "category": "nist-800-53",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "CreateUser\\\\\\|DisableUser\\\\\\|DeleteUser\\\\\\|LockAccount\\\\\\|IsActive\\\\\\|IsEnabled\\\\\\|AccountStatus",
       "Authorize\\\\\\|HasPermission\\\\\\|IsInRole\\\\\\|CheckPermission\\\\\\|CanAccess\\\\\\|Forbidden\\\\\\|AccessDenied",
@@ -784,6 +788,7 @@
     "description": "Imported rule from API10_ThirdParty.md",
     "category": "owasp-api-2023",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "HttpClient\\\\\\|WebClient\\\\\\|HttpWebRequest\\\\\\|axios\\\\\\.\\\\\\|fetch\\(\\\\\\|http\\\\\\.get\\\\\\|http\\\\\\.post\\\\\\|RestClient\\\\\\|RestSharp",
       "JsonConvert\\\\\\.Deserialize\\\\\\|JsonSerializer\\\\\\.Deserialize\\\\\\|JSON\\\\\\.parse\\\\\\|\\\\\\.json\\(\\)",
@@ -800,6 +805,7 @@
     "description": "Imported rule from API1_BOLA.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "GET\\ /api/projects/123\\ \\ →\\ Xem\\ project\\ của\\ mình\\ ✅",
       "GET\\ /api/projects/456\\ \\ →\\ Xem\\ project\\ của\\ đơn\\ vị\\ khác\\ ❌\\ \\(nếu\\ không\\ có\\ kiểm\\ tra\\)",
@@ -841,6 +847,7 @@
     "description": "Imported rule from API2_BrokenAuth.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "SecretKey\\\\s\\*=\\\\s\\*\\\\",
       "\\\\\\|apiKey\\\\s\\*=\\\\s\\*\\\\",
@@ -894,6 +901,7 @@
     "description": "Imported rule from API3_MassAssignment.md",
     "category": "owasp-api-2023",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "return\\ Ok\\(\\.\\*entity\\\\\\|return\\ Ok\\(\\.\\*model\\\\\\|return\\ Json\\(\\.\\*obj\\\\\\|res\\\\\\.json\\(\\.\\*user\\\\b\\\\\\|res\\\\\\.json\\(\\.\\*entity",
       "password\\\\\\|passwordhash\\\\\\|salt\\\\\\|secretkey\\\\\\|privatekey\\\\\\|connectionstring\\\\\\|internalNote",
@@ -921,6 +929,7 @@
     "description": "Imported rule from API4_RateLimit.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "RateLimit\\\\\\|ThrottleAttribute\\\\\\|slowDown\\\\\\|rateLimit\\\\\\|RequestLimit",
       "PageSize\\\\\\|pageSize\\\\\\|PageIndex\\\\\\|\\\\\\.Skip\\(\\\\\\|\\\\\\.Take\\(\\\\\\|LIMIT\\\\\\|TOP\\\\s\\\\\\+\\[0\\-9\\]\\\\\\|\\\\\\.page\\\\b",
@@ -1049,6 +1058,7 @@
     "description": "Imported rule from API5_FunctionAuth.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "Delete\\\\\\|Remove\\\\\\|Approve\\\\\\|Reject\\\\\\|Export\\\\\\|Import\\\\\\|Admin\\\\\\|Reset\\\\\\|Revoke\\\\\\|BulkUpdate",
       "\\\\\\[Authorize\\.\\*Role\\\\\\|RequireRole\\\\\\|HasRole\\\\\\|IsInRole\\\\\\|role\\.\\*admin\\\\\\|checkPermission",
@@ -1085,6 +1095,7 @@
     "description": "Imported rule from API6_BusinessFlow.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "✅\\ Luồng\\ hợp\\ lệ:",
       "Draft\\ →\\ Submitted\\ →\\ UnderReview\\ →\\ Approved/Rejected",
@@ -1122,6 +1133,7 @@
     "description": "Imported rule from API7_SSRF.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "POST\\ /api/webhook\\ \\ \\{\\ \"callbackUrl\":\\ \"http://169\\.254\\.169\\.254/latest/meta\\-data/\"\\ \\}",
       "→\\ Server\\ gọi\\ AWS\\ metadata\\ →\\ lộ\\ credentials\\ cloud",
@@ -1146,6 +1158,7 @@
     "description": "Imported rule from API8_Misconfiguration.md",
     "category": "owasp-api-2023",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "Access\\-Control\\-Allow\\-Origin\\\\\\|EnableCors\\\\\\|cors\\\\b\\\\\\|AllowAnyOrigin\\\\\\|WithOrigins\\\\\\|AllowCredentials",
       "Web\\.config",
@@ -1196,6 +1209,7 @@
     "description": "Imported rule from API9_Inventory.md",
     "category": "owasp-api-2023",
     "severity": "Low",
+    "action": "Allow",
     "patterns": [
       "\\\\",
       "\\\\\\|\\\\",
@@ -1216,6 +1230,7 @@
     "description": "Imported rule from A01_BrokenAccessControl.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "Request\\\\\\.QueryString\\\\\\[\\\\",
       "\\\\\\]\\\\\\|Request\\\\\\.Form\\\\\\[\\\\",
@@ -1254,6 +1269,7 @@
     "description": "Imported rule from A02_CryptoFailures.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "MD5\\\\b\\\\\\|SHA1\\\\b\\\\\\|SHA\\-1\\\\\\|DES\\\\b\\\\\\|3DES\\\\\\|TripleDES\\\\\\|RC4\\\\\\|HMACMD5\\\\\\|HMACSHA1\\\\b",
       "password\\.\\*=\\.\\*\\\\\\|\\\\\\.password\\\\s\\*=\\\\\\|pwd\\\\s\\*=\\\\\\|pass\\\\s\\*=\\\\\\|SavePassword\\\\\\|StorePassword",
@@ -1278,6 +1294,7 @@
     "description": "Imported rule from A03_Injection.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "\\\\",
       "INSERT\\.\\*\\\\\\+\\\\\\|\\\\",
@@ -1332,6 +1349,7 @@
     "description": "Imported rule from A04_InsecureDesign.md",
     "category": "owasp-web-2021",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "ForgotPassword\\\\\\|ResetPassword\\\\\\|SendOtp\\\\\\|GenerateOtp\\\\\\|OtpExpir",
       "Status\\\\\\|State\\\\\\|Workflow\\\\\\|\\\\\\.Status\\\\s\\*=\\\\\\|ChangeStatus",
@@ -1364,6 +1382,7 @@
     "description": "Imported rule from A05_SecurityMisconfiguration.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "debug=\\\\",
       "\\\\\\|customErrors\\.\\*Off\\\\\\|trace\\.\\*enabled\\.\\*true",
@@ -1408,6 +1427,7 @@
     "description": "Imported rule from A06_VulnerableComponents.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "git\\ ls\\-files\\ \"packages\\.config\"",
       "git\\ ls\\-files\\ \"\\*\\.csproj\"",
@@ -1469,6 +1489,7 @@
     "description": "Imported rule from A07_AuthFailures.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "Session\\\\\\.Timeout\\\\\\|sessionState\\.\\*timeout\\\\\\|session\\\\\\.maxAge\\\\\\|cookie\\.\\*expire\\\\\\|SlidingExpiration",
       "Web\\.config",
@@ -1491,6 +1512,7 @@
     "description": "Imported rule from A08_DataIntegrityFailures.md",
     "category": "owasp-web-2021",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "BinaryFormatter\\\\\\|ObjectStateFormatter\\\\\\|NetDataContractSerializer\\\\\\|JavaScriptSerializer\\\\\\|XmlSerializer",
       "JsonConvert\\\\\\.Deserialize\\.\\*Request\\\\\\|JSON\\\\\\.parse\\.\\*localStorage\\\\\\|eval\\(",
@@ -1512,6 +1534,7 @@
     "description": "Imported rule from A09_LoggingFailures.md",
     "category": "owasp-web-2021",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "ILogger\\\\\\|Logger\\\\\\|log4net\\\\\\|NLog\\\\\\|Serilog\\\\\\|EventLog\\\\\\|Console\\\\\\.Write\\\\\\|Trace\\\\\\.\\\\\\|Debug\\\\\\.",
       "LoginFailed\\\\\\|Unauthorized\\\\\\|Forbidden\\\\\\|AuthFail\\\\\\|InvalidToken\\\\\\|LogSecurity\\\\\\|AuditLog",
@@ -1530,6 +1553,7 @@
     "description": "Imported rule from A10_SSRF.md",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "ImportUrl\\\\\\|FetchUrl\\\\\\|DownloadFromUrl\\\\\\|imageUrl\\\\\\|avatarUrl\\\\\\|feedUrl\\\\\\|rssUrl\\\\\\|webhookUrl",
       "proxy\\\\\\|preview\\\\\\|thumbnail\\\\\\|screenshot\\\\\\|render\\.\\*url\\\\\\|htmltopdf\\\\\\|puppeteer\\\\\\|phantom",
@@ -1546,6 +1570,7 @@
     "description": "Imported rule from WEB10_RaceCondition.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "balance\\\\\\|Balance\\\\\\|credit\\\\\\|Credit\\\\\\|wallet\\\\\\|Wallet",
       "quantity\\\\\\|Quantity\\\\\\|stock\\\\\\|Stock\\\\\\|inventory\\\\\\|Inventory",
@@ -1574,6 +1599,7 @@
     "description": "Imported rule from WEB11_SourceFileExposure.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "hiddenSegments\\\\\\|requestFiltering\\\\\\|denyUrlSequences\\\\\\|fileExtensions",
       "Web\\.config",
@@ -1613,6 +1639,7 @@
     "description": "Imported rule from WEB1_HTTPSecurityHeaders.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "X\\-Frame\\-Options\\\\\\|X\\-Content\\-Type\\-Options\\\\\\|Content\\-Security\\-Policy\\\\\\|Strict\\-Transport\\-Security\\\\\\|Referrer\\-Policy\\\\\\|Permissions\\-Policy",
       "Web\\.config",
@@ -1630,6 +1657,7 @@
     "description": "Imported rule from WEB2_CSRF_Clickjacking.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "Attacker\\ tạo\\ trang:\\ <img\\ src=\"https://yourapp\\.com/api/transfer\\?to=hacker\\&amount=1000000\">",
       "→\\ Khi\\ user\\ truy\\ cập\\ trang\\ đó\\ →\\ browser\\ tự\\ gửi\\ request\\ kèm\\ cookie\\ →\\ Chuyển\\ tiền\\ thành\\ công",
@@ -1655,6 +1683,7 @@
     "description": "Imported rule from WEB3_FrontendSecurity.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "innerHTML\\\\s\\*=\\\\\\|outerHTML\\\\s\\*=\\\\\\|document\\\\\\.write\\(\\\\\\|\\\\\\.insertAdjacentHTML\\(\\\\\\|\\\\\\.html\\(",
       "eval\\(\\\\\\|new\\ Function\\(\\\\\\|setTimeout\\.\\*string\\\\\\|setInterval\\.\\*string",
@@ -1680,6 +1709,7 @@
     "description": "Imported rule from WEB4_FileUploadSecurity.md",
     "category": "web-app-specific",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "HttpPostedFile\\\\\\|IFormFile\\\\\\|MultipartFormData\\\\\\|Request\\\\\\.Files\\\\\\|Upload\\\\\\|multer\\\\\\|busboy\\\\\\|formidable",
       "\\\\\\.Extension\\\\b\\\\\\|Path\\\\\\.GetExtension\\\\\\|\\\\\\.endsWith\\.\\*\\\\\\.\\\\\\|fileType\\\\\\|allowedExt\\\\\\|whitelist\\.\\*ext",
@@ -1724,6 +1754,7 @@
     "description": "Imported rule from WEB5_ErrorHandling.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "Exception\\\\\\.ToString\\\\\\|\\\\\\.StackTrace\\\\\\|\\\\\\.InnerException\\\\b\\\\\\|ex\\\\\\.Message\\.\\*response\\\\\\|catch\\.\\*return\\.\\*ex\\\\b",
       "customErrors\\\\\\|mode=\\\\",
@@ -1752,6 +1783,7 @@
     "description": "Imported rule from WEB6_WebFormsASPNET.md",
     "category": "web-app-specific",
     "severity": "Medium",
+    "action": "Warn",
     "patterns": [
       "enableViewStateMac\\.\\*false\\\\\\|EnableViewStateMac\\.\\*=\\.\\*false\\\\\\|ViewStateEncryptionMode",
       "Web\\.config",
@@ -1787,6 +1819,7 @@
     "description": "Imported rule from WEB7_ThirdPartyDashboards.md",
     "category": "web-app-specific",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "Hangfire\\\\\\|BackgroundJob\\\\\\.\\\\\\|RecurringJob\\\\\\.\\\\\\|IBackgroundJobClient\\\\\\|UseHangfire\\\\\\|MapHangfireDashboard",
       "DashboardOptions\\\\\\|HangfireDashboard\\\\\\|MapHangfireDashboard\\\\\\|UseHangfireDashboard\\\\\\|IDashboardAuthorizationFilter",
@@ -1814,6 +1847,7 @@
     "description": "Imported rule from WEB8_SensitiveActionReauth.md",
     "category": "web-app-specific",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "🔴\\ Critical\\ —\\ Bắt\\ buộc\\ phải\\ re\\-auth:",
       "✗\\ Đổi\\ email\\ đăng\\ nhập\\ /\\ email\\ nhận\\ 2FA",
@@ -1856,6 +1890,7 @@
     "description": "Imported rule from WEB9_CORSMisconfiguration.md",
     "category": "web-app-specific",
     "severity": "Critical",
+    "action": "Block",
     "patterns": [
       "AllowAnyOrigin\\\\\\|AllowCredentials\\\\\\|AllowAnyHeader\\\\\\|AllowAnyMethod",
       "WithOrigins\\\\\\|SetIsOriginAllowed\\\\\\|AddCors\\\\\\|UseCors\\\\\\|EnableCors\\\\\\|AddPolicy",
