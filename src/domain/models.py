@@ -1,10 +1,10 @@
 """Domain models for Security SAST Guard."""
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class FirewallDecision(str, Enum):
+class FirewallDecision(StrEnum):
     """Firewall verdict enum."""
 
     ALLOW = "ALLOW"
@@ -12,7 +12,7 @@ class FirewallDecision(str, Enum):
     DENY = "DENY"
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     """Finding severity enum."""
 
     LOW = "LOW"

@@ -11,9 +11,9 @@ DEFAULT_TEMPLATE_PATH = (
 DEFAULT_FALLBACK_TEMPLATE = """# 🛡️ SAST Security Audit Report
 
 > [!IMPORTANT]
-> **Audit Date:** {{DATE}}  
-> **Target Path:** `{{TARGET_PATH}}`  
-> **Total Vulnerabilities:** `{{TOTAL_COUNT}}`  
+> **Audit Date:** {{DATE}}
+> **Target Path:** `{{TARGET_PATH}}`
+> **Total Vulnerabilities:** `{{TOTAL_COUNT}}`
 
 ---
 
