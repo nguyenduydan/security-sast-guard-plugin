@@ -22,13 +22,12 @@ class ProfileLoader:
         if not file_path.exists():
             return {}
 
-        if verify_integrity:
+        if verify_integrity and Path(checksum_path).exists():
             hash_path = Path(checksum_path)
-            if hash_path.exists():
-                if not IntegrityChecker.verify_integrity(file_path, hash_path):
-                    raise SecurityIntegrityError(
-                        f"Security profile integrity check failed for '{path}'. File may have been tampered with."
-                    )
+            if not IntegrityChecker.verify_integrity(file_path, hash_path):
+                raise SecurityIntegrityError(
+                    f"Security profile integrity check failed for '{path}'."
+                )
 
         try:
             with open(file_path, encoding="utf-8") as f:

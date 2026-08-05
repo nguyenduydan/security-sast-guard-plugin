@@ -5,7 +5,7 @@ from pathlib import Path
 from src.infrastructure.report_generator import generate_markdown_report
 
 
-def test_generate_markdown_report(tmp_path: Path):
+def test_generate_markdown_report(tmp_path: Path) -> None:
     findings = [
         {
             "rule_id": "XSS_INLINE_EVENT",
@@ -41,3 +41,30 @@ def test_generate_markdown_report(tmp_path: Path):
     assert "Critical: 1" in summary
     assert "High: 1" in summary
     assert "file://" in summary
+
+
+def test_generate_markdown_report_custom_template(tmp_path: Path) -> None:
+    custom_tmpl = tmp_path / "custom.md"
+    custom_tmpl.write_text("CUSTOM REPORT: {{TOTAL_COUNT}} findings in {{TARGET_PATH}}\n{{FINDINGS_TABLE}}", encoding="utf-8")
+
+    findings = [
+        {
+            "rule_id": "TEST_RULE",
+            "path": "test.py",
+            "line": 1,
+            "line_content": "eval(x)",
+            "severity": "High",
+            "scope": "global",
+        }
+    ]
+
+    report_file, _ = generate_markdown_report(
+        findings,
+        output_dir=str(tmp_path),
+        target_path="src/test.py",
+        template_path=custom_tmpl,
+    )
+
+    content = Path(report_file).read_text(encoding="utf-8")
+    assert "CUSTOM REPORT: 1 findings in src/test.py" in content
+    assert "TEST_RULE" in content
