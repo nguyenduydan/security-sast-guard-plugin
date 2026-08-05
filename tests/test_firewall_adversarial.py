@@ -22,9 +22,7 @@ def run_firewall_hook(
         "-CommandText",
         command_text,
     ]
-    result = subprocess.run(
-        cmd, capture_output=True, text=True, cwd=cwd, check=False
-    )
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd, check=False)
     output = result.stdout.strip()
     return output, result.returncode
 
@@ -84,9 +82,7 @@ def test_firewall_tamper_detection(tmp_path: Path) -> None:
     fake_sha = "0000000000000000000000000000000000000000000000000000000000000000"
     sha_file.write_text(fake_sha, encoding="ascii")
 
-    out, code = run_firewall_hook(
-        "git status", cwd=tmp_path, hook_path=temp_hook_file
-    )
+    out, code = run_firewall_hook("git status", cwd=tmp_path, hook_path=temp_hook_file)
     assert code == 1
     assert out == "DENY"
 
