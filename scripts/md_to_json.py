@@ -33,6 +33,17 @@ def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
     elif "🟢 Low" in content or "Low" in content:
         severity = "Low"
 
+    # Extract Action
+    action = "Block"
+    if "Action:" in content:
+        action_match = re.search(
+            r"\*\*Action:\*\*\s*(Block|Warn|Allow)", content, re.IGNORECASE
+        )
+        if action_match:
+            action = action_match.group(1).capitalize()
+    elif severity in ("Medium", "Low"):
+        action = "Warn" if severity == "Medium" else "Allow"
+
     # Extract Grep/Regex Patterns
     patterns: list[str] = []
     code_blocks = re.findall(r"```(?:bash|regex|python)?\n(.*?)```", content, re.DOTALL)
@@ -63,6 +74,7 @@ def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
                 "description": f"Imported rule from {path.name}",
                 "category": path.parent.name,
                 "severity": severity,
+                "action": action,
                 "patterns": patterns,
             }
         )
@@ -93,6 +105,7 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
         ),
         "category": "owasp-web-2021",
         "severity": "High",
+        "action": "Block",
         "patterns": [
             r"(?i)on(focus|error|load|click|mouseover|submit|keydown)\s*=\s*[\"'].*?[\"']"
         ],
@@ -103,6 +116,7 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
         "description": "Detects unvalidated role or privilege parameter assignments",
         "category": "owasp-web-2021",
         "severity": "Critical",
+        "action": "Block",
         "patterns": [
             r"(?i)(role|privilege|is_admin)\s*=\s*(req|request|params|query|GET|POST)[\.\[]",
             r"(?i)request\.(getParameter|query|args)\s*\(\s*[\"'](role|admin|privilege)[\"']\s*\)",
