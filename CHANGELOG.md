@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.8.0...v0.9.0) (2026-08-05)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **domain:** add action field to Finding domain model ([f33f3fa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f33f3fa9b34f78d70375cb3ccc56f1f26eac231e))
+* **rules:** add destructive git command firewall and SAST rules ([2034352](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/20343528c46f9bf0c9306843b7ccb92fabf35629))
+* **sast:** extract action metadata from markdown rules ([5b411d5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5b411d558f9e9d03cdc9efbb447958c190f266b1))
+* **sast:** map rule action to finding dataclass in SASTScanner ([89d006a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/89d006a7f40659a4898a4290b7c4af733323d0da))
+
+
+### 🐛 Bug Fixes
+
+* **mypy:** add mypy_path to pyproject.toml to resolve module imports ([9d04fa9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9d04fa981fa3a197fb5da71f6aedc3cf622f0f4e))
+
+
+### 🎨 Code Style & Formatting
+
+* **lint:** resolve pylint warnings and trailing whitespace ([4dda628](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4dda62808b59d68f5e005da06bb21c9790ecb21b))
+* **lint:** resolve pylint warnings in git_helper, report_generator, and tests ([5b3806b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5b3806b7635f102f4be542e7db4e72ef47689fdc))
+* **ruff:** format git_helper.py and report_generator.py ([c506245](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c50624573aa893717e011216aa19f887ba0e7840))
+* **ruff:** format models.py to fix formatting CI check ([1032490](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1032490a6d71f67a3ef1498baa98002d97f13679))
+
+
+### Maintenance & Tooling
+
+* **sast:** commit plans, specs, and helper modules ([e79b983](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e79b9833f980249aa65e30fdfab0b452286dd646))
+
 ## [0.8.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.7.0...v0.8.0) (2026-08-05)
 
 
