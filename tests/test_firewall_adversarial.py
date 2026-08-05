@@ -22,7 +22,9 @@ def run_firewall_hook(
         "-CommandText",
         command_text,
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd, check=False)
+    result = subprocess.run(  # noqa: S603
+        cmd, capture_output=True, text=True, cwd=cwd, check=False
+    )
     output = result.stdout.strip()
     return output, result.returncode
 
