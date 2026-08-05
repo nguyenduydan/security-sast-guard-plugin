@@ -6,45 +6,8 @@ from pathlib import Path
 from typing import Any
 
 
-def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
-    """Parse a single Markdown rule file into structured SAST rule dictionaries."""
-    path = Path(file_path)
-    if not path.exists():
-        return []
-
-    content = path.read_text(encoding="utf-8")
-    rules: list[dict[str, Any]] = []
-
-    # Extract Title and ID
-    title_match = re.search(r"##\s*\[(.*?)\]\s*(.*)", content)
-    rule_id = (
-        title_match.group(1).replace(":", "_").replace(" ", "_")
-        if title_match
-        else path.stem
-    )
-    name = title_match.group(2).strip() if title_match else path.stem
-
-    # Extract Severity
-    severity = "High"
-    if "🔴 Critical" in content or "Critical" in content:
-        severity = "Critical"
-    elif "🟡 Medium" in content or "Medium" in content:
-        severity = "Medium"
-    elif "🟢 Low" in content or "Low" in content:
-        severity = "Low"
-
-    # Extract Action
-    action = "Block"
-    if "Action:" in content:
-        action_match = re.search(
-            r"\*\*Action:\*\*\s*(Block|Warn|Allow)", content, re.IGNORECASE
-        )
-        if action_match:
-            action = action_match.group(1).capitalize()
-    elif severity in ("Medium", "Low"):
-        action = "Warn" if severity == "Medium" else "Allow"
-
-    # Extract Grep/Regex Patterns
+def _extract_patterns(content: str) -> list[str]:
+    """Extract grep/regex patterns from markdown code blocks."""
     patterns: list[str] = []
     code_blocks = re.findall(r"```(?:bash|regex|python)?\n(.*?)```", content, re.DOTALL)
     for block in code_blocks:
@@ -56,30 +19,65 @@ def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
             if "git grep" in line_str:
                 grep_matches = re.findall(r'["\']([^"\']+)["\']', line_str)
                 for match in grep_matches:
-                    if match.startswith("*") or match.startswith("."):
-                        continue
-                    patterns.append(
-                        match if match.startswith("(?i)") else re.escape(match)
-                    )
+                    if not (match.startswith("*") or match.startswith(".")):
+                        patterns.append(
+                            match if match.startswith("(?i)") else re.escape(match)
+                        )
             else:
                 patterns.append(
                     line_str if line_str.startswith("(?i)") else re.escape(line_str)
                 )
+    return patterns
 
-    if patterns:
-        rules.append(
-            {
-                "id": rule_id,
-                "name": name,
-                "description": f"Imported rule from {path.name}",
-                "category": path.parent.name,
-                "severity": severity,
-                "action": action,
-                "patterns": patterns,
-            }
+
+def parse_md_rules(file_path: str) -> list[dict[str, Any]]:
+    """Parse a single Markdown rule file into structured SAST rule dictionaries."""
+    path = Path(file_path)
+    if not path.exists():
+        return []
+
+    content = path.read_text(encoding="utf-8")
+    title_match = re.search(r"##\s*\[(.*?)\]\s*(.*)", content)
+    rule_id = (
+        title_match.group(1).replace(":", "_").replace(" ", "_")
+        if title_match
+        else path.stem
+    )
+    name = title_match.group(2).strip() if title_match else path.stem
+
+    severity = "High"
+    if "🔴 Critical" in content or "Critical" in content:
+        severity = "Critical"
+    elif "🟡 Medium" in content or "Medium" in content:
+        severity = "Medium"
+    elif "🟢 Low" in content or "Low" in content:
+        severity = "Low"
+
+    action = "Block"
+    if "Action:" in content:
+        action_match = re.search(
+            r"\*\*Action:\*\*\s*(Block|Warn|Allow)", content, re.IGNORECASE
         )
+        if action_match:
+            action = action_match.group(1).capitalize()
+    elif severity in ("Medium", "Low"):
+        action = "Warn" if severity == "Medium" else "Allow"
 
-    return rules
+    patterns = _extract_patterns(content)
+    if not patterns:
+        return []
+
+    return [
+        {
+            "id": rule_id,
+            "name": name,
+            "description": f"Imported rule from {path.name}",
+            "category": path.parent.name,
+            "severity": severity,
+            "action": action,
+            "patterns": patterns,
+        }
+    ]
 
 
 def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> int:

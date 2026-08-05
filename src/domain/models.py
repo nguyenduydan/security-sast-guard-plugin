@@ -21,6 +21,7 @@ class Severity(StrEnum):
     CRITICAL = "CRITICAL"
 
 
+# pylint: disable=too-many-instance-attributes
 @dataclass(frozen=True)
 class Finding:
     """Represents a SAST rule violation finding."""
