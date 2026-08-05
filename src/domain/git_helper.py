@@ -60,5 +60,4 @@ class GitHelper:
             except (OSError, ValueError):
                 continue
 
-
         return list(changed_files)

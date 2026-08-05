@@ -153,7 +153,6 @@ def _substitute_placeholders(
 
 # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
 def generate_markdown_report(
-
     findings: list[dict[str, Any]],
     output_dir: str = "reports",
     target_path: str = ".",
