@@ -91,6 +91,33 @@ def _build_remediation_summary(findings: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _substitute_placeholders(
+    template: str,
+    target_path: str,
+    findings: list[dict[str, Any]],
+    counts: dict[str, int],
+) -> str:
+    substitutions = {
+        "{{DATE}}": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "{{TARGET_PATH}}": target_path,
+        "{{TOTAL_COUNT}}": str(len(findings)),
+        "{{CRITICAL_COUNT}}": str(counts["critical"]),
+        "{{HIGH_COUNT}}": str(counts["high"]),
+        "{{MEDIUM_COUNT}}": str(counts["medium"]),
+        "{{LOW_COUNT}}": str(counts["low"]),
+        "{{CRITICAL_STATUS}}": "⚠️ Action Required" if counts["critical"] > 0 else "OK",
+        "{{HIGH_STATUS}}": "⚠️ Action Required" if counts["high"] > 0 else "OK",
+        "{{MEDIUM_STATUS}}": "Review Recommended" if counts["medium"] > 0 else "OK",
+        "{{LOW_STATUS}}": "Info" if counts["low"] > 0 else "OK",
+        "{{FINDINGS_TABLE}}": _build_findings_table(findings),
+        "{{REMEDIATION_SUMMARY}}": _build_remediation_summary(findings),
+    }
+    content = template
+    for key, val in substitutions.items():
+        content = content.replace(key, val)
+    return content
+
+
 def generate_markdown_report(
     findings: list[dict[str, Any]],
     output_dir: str = "reports",
@@ -105,40 +132,16 @@ def generate_markdown_report(
     report_file = target_dir / f"sast_audit_report_{timestamp}.md"
     counts = _count_severities(findings)
 
-    # Load template
     tmpl_file = Path(template_path) if template_path else DEFAULT_TEMPLATE_PATH
-    if tmpl_file.exists():
-        template_content = tmpl_file.read_text(encoding="utf-8")
-    else:
-        template_content = DEFAULT_FALLBACK_TEMPLATE
-
-    crit_status = "⚠️ Action Required" if counts["critical"] > 0 else "OK"
-    high_status = "⚠️ Action Required" if counts["high"] > 0 else "OK"
-    med_status = "Review Recommended" if counts["medium"] > 0 else "OK"
-    low_status = "Info" if counts["low"] > 0 else "OK"
-
-    table_md = _build_findings_table(findings)
-    remediation_md = _build_remediation_summary(findings)
-
-    # Perform substitutions
-    report_content = (
-        template_content.replace(
-            "{{DATE}}", datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        )
-        .replace("{{TARGET_PATH}}", target_path)
-        .replace("{{TOTAL_COUNT}}", str(len(findings)))
-        .replace("{{CRITICAL_COUNT}}", str(counts["critical"]))
-        .replace("{{HIGH_COUNT}}", str(counts["high"]))
-        .replace("{{MEDIUM_COUNT}}", str(counts["medium"]))
-        .replace("{{LOW_COUNT}}", str(counts["low"]))
-        .replace("{{CRITICAL_STATUS}}", crit_status)
-        .replace("{{HIGH_STATUS}}", high_status)
-        .replace("{{MEDIUM_STATUS}}", med_status)
-        .replace("{{LOW_STATUS}}", low_status)
-        .replace("{{FINDINGS_TABLE}}", table_md)
-        .replace("{{REMEDIATION_SUMMARY}}", remediation_md)
+    template_content = (
+        tmpl_file.read_text(encoding="utf-8")
+        if tmpl_file.exists()
+        else DEFAULT_FALLBACK_TEMPLATE
     )
 
+    report_content = _substitute_placeholders(
+        template_content, target_path, findings, counts
+    )
     report_file.write_text(report_content, encoding="utf-8")
 
     file_uri = report_file.resolve().as_uri()
