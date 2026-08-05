@@ -36,7 +36,6 @@ class Finding:
     action: str = "Block"
 
 
-
 @dataclass(frozen=True)
 class SecurityProfile:
     """Security profile domain model."""
