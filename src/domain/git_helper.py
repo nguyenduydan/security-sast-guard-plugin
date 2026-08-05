@@ -48,14 +48,17 @@ class GitHelper:
                     text=True,
                     check=False,
                 )
-                if res.returncode == 0:
-                    for line in res.stdout.splitlines():
-                        rel_path = line.strip()
-                        if rel_path:
-                            full_path = (target_dir / rel_path).resolve()
-                            if full_path.exists() and full_path.is_file():
-                                changed_files.add(full_path)
+                if res.returncode != 0:
+                    continue
+                for line in res.stdout.splitlines():
+                    rel_path = line.strip()
+                    if not rel_path:
+                        continue
+                    full_path = (target_dir / rel_path).resolve()
+                    if full_path.is_file():
+                        changed_files.add(full_path)
             except (OSError, ValueError):
                 continue
+
 
         return list(changed_files)

@@ -11,7 +11,7 @@ from src.domain.sast_scanner import SASTScanner
 def test_git_helper_detection(tmp_path: Path) -> None:
     # Non-git directory should return False
     assert GitHelper.is_git_repo(tmp_path) is False
-    assert GitHelper.get_changed_files(tmp_path) == []
+    assert not GitHelper.get_changed_files(tmp_path)
 
 
 def test_ai_verifier_false_positives() -> None:
