@@ -1,11 +1,17 @@
 """SAST Scanner domain component."""
 
 import json
+import os
 import re
+import time
 from pathlib import Path
 from typing import Any
 
+from .ai_verifier import AIVerifier
 from .context_extractor import extract_context
+from .git_helper import GitHelper
+from .ignore_filter import IgnoreFilter
+from .models import Finding
 
 
 class SASTScanner:
@@ -15,11 +21,13 @@ class SASTScanner:
         self,
         profile_path: str = "profile.json",
         rules_path: str = "rules/sast_rules.json",
+        rules: list[dict[str, Any]] | None = None,
     ):
         self.profile_path = profile_path
         self.rules_path = rules_path
         self.mode = "strict"
-        self._rules_cache: list[dict[str, Any]] | None = None
+        self._rules_cache: list[dict[str, Any]] | None = rules
+        self.ai_verifier = AIVerifier()
         self._load_profile()
 
     def _load_profile(self) -> None:
@@ -122,20 +130,23 @@ class SASTScanner:
                 continue
         return False
 
-    def _detect_matches(self, path: str) -> list[dict[str, Any]]:
-        """Match target file content against loaded SAST rules."""
-        file_path = Path(path)
-        if not file_path.exists():
-            return []
+    def _detect_matches_file(
+        self, file_path: Path, rules: list[dict[str, Any]]
+    ) -> tuple[list[dict[str, Any]], int]:
+        """Match single file content against loaded SAST rules.
 
-        rules = self._load_rules()
+        Returns (findings, line_count).
+        """
         findings: list[dict[str, Any]] = []
 
         try:
             with open(file_path, encoding="utf-8", errors="replace") as f:
                 lines = f.readlines()
         except OSError:
-            return []
+            return [], 0
+
+        line_count = len(lines)
+        str_path = str(file_path)
 
         for line_idx, raw_line in enumerate(lines, 1):
             line_content = raw_line.rstrip("\r\n")
@@ -146,7 +157,7 @@ class SASTScanner:
 
             for rule in rules:
                 if self._rule_matches_line(line_content, rule):
-                    ctx = extract_context(path, line_idx)
+                    ctx = extract_context(str_path, line_idx)
                     if ctx.get("is_safe_context"):
                         continue
 
@@ -154,49 +165,191 @@ class SASTScanner:
                         {
                             "rule_id": rule.get("id", "UNKNOWN"),
                             "rule_name": rule.get("name", "Unknown Rule"),
-                            "path": path,
+                            "path": str_path,
                             "line": line_idx,
                             "line_content": ctx.get("line_content", line_content),
                             "severity": rule.get("severity", "MEDIUM"),
                             "scope": ctx.get("scope", "global"),
+                            "action": rule.get("action", "Block"),
                         }
                     )
 
+        return findings, line_count
+
+    def scan_with_metadata(
+        self,
+        path: str,
+        interactive: bool = False,
+        incremental: bool = False,
+    ) -> dict[str, Any]:
+        """Scan file or directory with full metadata tracking."""
+        start_time = time.perf_counter()
+        target_path = Path(path).resolve()
+
+        rules = self._load_rules()
+        raw_findings: list[dict[str, Any]] = []
+
+        scanned_files = 0
+        ignored_files = 0
+        total_lines = 0
+
+        root_dir = target_path if target_path.is_dir() else target_path.parent
+        ignore_filter = IgnoreFilter(root_dir=root_dir)
+
+        if not target_path.exists():
+            duration = time.perf_counter() - start_time
+            return {
+                "findings": [],
+                "metadata": {
+                    "scanned_files": 0,
+                    "ignored_files": 0,
+                    "total_lines": 0,
+                    "rules_applied": len(rules),
+                    "false_positives_filtered": 0,
+                    "incremental_mode": False,
+                    "duration_seconds": round(duration, 3),
+                },
+            }
+
+        files_to_scan: list[Path] = []
+        is_incremental = False
+
+        if target_path.is_file():
+            files_to_scan = [target_path]
+        elif incremental and GitHelper.is_git_repo(target_path):
+            git_files = GitHelper.get_changed_files(target_path)
+            if git_files:
+                is_incremental = True
+                files_to_scan = git_files
+
+        if not files_to_scan and target_path.is_dir():
+            # Perform top-down os.walk with early directory pruning
+            for root, dirs, files in os.walk(target_path):
+                pruned_dirs = [d for d in dirs if ignore_filter.should_ignore_dir(d)]
+                ignored_files += len(pruned_dirs)
+                dirs[:] = [d for d in dirs if not ignore_filter.should_ignore_dir(d)]
+                for file_name in files:
+                    file_p = Path(root) / file_name
+                    if ignore_filter.should_ignore(file_p):
+                        ignored_files += 1
+                    else:
+                        files_to_scan.append(file_p)
+
+        for file_path in files_to_scan:
+            if target_path.is_file() and ignore_filter.should_ignore(file_path):
+                ignored_files += 1
+                continue
+
+            matches = self._detect_matches(str(file_path))
+            try:
+                with open(file_path, encoding="utf-8", errors="replace") as f:
+                    lines_count = len(f.readlines())
+            except OSError:
+                lines_count = 0
+
+            scanned_files += 1
+            total_lines += lines_count
+
+            if interactive and matches:
+                for match in matches:
+                    rule_name = (
+                        match.get("rule_name")
+                        or match.get("rule_id")
+                        or match.get("rule", "Unknown")
+                    )
+                    line_no = match.get("line", 0)
+                    severity = match.get("severity", "MEDIUM")
+                    line_content = match.get("line_content", "")
+                    scope = match.get("scope", "global")
+
+                    msg = (
+                        f"[SAST WARNING] Potential {rule_name} at "
+                        f"`{file_path}:{line_no}`."
+                    )
+                    print(msg)
+                    print(f"- Severity: {severity}")
+                    print(f"- Line: `{str(line_content).strip()}`")
+                    print(f"- Scope: `{scope}`")
+
+                    if self.mode == "draft" and str(severity).upper() in (
+                        "MEDIUM",
+                        "LOW",
+                    ):
+                        print(
+                            ">> [DRAFT MODE] Auto-allowing low/medium severity finding "
+                            "to preserve vibe."
+                        )
+                        continue
+
+                    prompt_msg = (
+                        "? Is this context safe? (Reply Y to allow, N to block): "
+                    )
+                    answer = input(prompt_msg).strip().upper()
+                    if answer != "Y":
+                        raw_findings.append(match)
+            else:
+                raw_findings.extend(matches)
+
+        # Stage 2: AI Context Verification Gate (Filter False Positives)
+        verified_findings, fp_count = self.ai_verifier.filter_false_positives(
+            raw_findings
+        )
+
+        duration = time.perf_counter() - start_time
+        metadata = {
+            "scanned_files": scanned_files,
+            "ignored_files": ignored_files,
+            "total_lines": total_lines,
+            "rules_applied": len(rules),
+            "false_positives_filtered": fp_count,
+            "incremental_mode": is_incremental,
+            "duration_seconds": round(duration, 3),
+        }
+
+        return {
+            "findings": verified_findings,
+            "metadata": metadata,
+        }
+
+    def _detect_matches(self, path: str) -> list[dict[str, Any]]:
+        """Match target file content against loaded SAST rules (legacy helper)."""
+        file_path = Path(path)
+        if not file_path.exists() or file_path.is_dir():
+            return []
+        rules = self._load_rules()
+        findings, _ = self._detect_matches_file(file_path, rules)
         return findings
 
     def scan(self, path: str, interactive: bool = False) -> list[dict[str, Any]]:
-        """Scan specified file path for SAST rule matches."""
-        matches = self._detect_matches(path)
-        if not interactive:
-            return matches
+        """Scan specified file or directory path for SAST rule matches."""
+        result = self.scan_with_metadata(path, interactive=interactive)
+        findings: list[dict[str, Any]] = result["findings"]
+        return findings
 
-        violations: list[dict[str, Any]] = []
-        for match in matches:
-            rule_name = (
-                match.get("rule_name")
-                or match.get("rule_id")
-                or match.get("rule", "Unknown")
-            )
-            line_no = match.get("line", 0)
-            severity = match.get("severity", "MEDIUM")
-            line_content = match.get("line_content", "")
-            scope = match.get("scope", "global")
+    def scan_code(self, code: str, filename: str = "sample.py") -> list[Finding]:
+        """Scan code string directly and return list of Finding domain objects."""
+        rules = self._load_rules()
+        findings: list[Finding] = []
+        lines = code.splitlines()
 
-            print(f"[SAST WARNING] Potential {rule_name} at `{path}:{line_no}`.")
-            print(f"- Severity: {severity}")
-            print(f"- Line: `{str(line_content).strip()}`")
-            print(f"- Scope: `{scope}`")
-
-            if self.mode == "draft" and str(severity).upper() in ("MEDIUM", "LOW"):
-                print(
-                    ">> [DRAFT MODE] Auto-allowing low/medium severity finding "
-                    "to preserve vibe."
-                )
+        for line_idx, raw_line in enumerate(lines, 1):
+            line_content = raw_line.rstrip("\r\n")
+            stripped = line_content.strip()
+            if stripped.startswith("#") or stripped.startswith("//"):
                 continue
 
-            prompt_msg = "? Is this context safe? (Reply Y to allow, N to block): "
-            answer = input(prompt_msg).strip().upper()
-            if answer != "Y":
-                violations.append(match)
-
-        return violations
+            for rule in rules:
+                if self._rule_matches_line(line_content, rule):
+                    findings.append(
+                        Finding(
+                            rule_id=rule.get("id", "UNKNOWN"),
+                            rule_name=rule.get("name", "Unknown Rule"),
+                            path=filename,
+                            line=line_idx,
+                            line_content=line_content,
+                            severity=rule.get("severity", "MEDIUM"),
+                            scope="global",
+                            action=rule.get("action", "Block"),
+                        )
+                    )
+        return findings
