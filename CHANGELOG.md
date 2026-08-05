@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.7.0...v0.8.0) (2026-08-05)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **security:** implement anti-bypass firewall, integrity checker, and clean architecture ([8433a83](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8433a83db59b4f3ba14cf6c6bc508fb572afa1af))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** satisfy ruff linter UP042, W291, and S603 rules ([3466046](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/346604617dd3be4097b245cb2c9236f6177e2d2e))
+* **firewall:** strongly type tokens and errors arrays for pwsh 7 AST parser compatibility ([3f5fd1b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3f5fd1b6f677c04d20fac4ffd1effcdebc2bcfbf))
+* **firewall:** type AST parser reference arrays ([52d239a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/52d239a72a6ed6ef1270b636348577c9f7c1c0b9))
+* **firewall:** use Split-Path -Parent for cross-platform profile path resolution in pwsh ([83774e5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/83774e5be391398c87be092057a0cc6bd245cbaa))
+* **quality:** polish CI quality checks, ruff formatting, and report generator ([9ebd063](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9ebd063b9b7f4cdab310d28d3f91da1c2aea8d35))
+* **quality:** polish line length and format for CI quality gate ([a104ea4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a104ea4fa63869be29f178b1aeca8e88e394bb8d))
+* stop tracking .profile.sha256, normalize profile.json to LF ([dcdad30](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/dcdad30c696e8400c40c4d9ceebe1f5cd5601277))
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **quality:** resolve R0914 too-many-locals in report_generator to reach 10.00/10 pylint rating ([1c218fc](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1c218fc3ce42f3a0f60970bb78579f862079f002))
+
+
+### 📝 Documentation
+
+* **index:** redesign navigation to 100% opaque floating cyber-hud dock ([501144a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/501144ac71258bf43846bb637b400e21ead0139a))
+
 ## [0.7.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.6.0...v0.7.0) (2026-08-04)
 
 
