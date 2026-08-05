@@ -176,6 +176,7 @@ class SASTScanner:
 
         return findings, line_count
 
+    # pylint: disable=too-many-locals,too-many-branches,too-many-statements
     def scan_with_metadata(
         self,
         path: str,

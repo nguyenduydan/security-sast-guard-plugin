@@ -71,4 +71,3 @@ def test_parse_md_rules_with_action(tmp_path: Path) -> None:
     assert rules[0]["id"] == "RULE_01"
     assert rules[0]["severity"] == "Medium"
     assert rules[0]["action"] == "Warn"
-
