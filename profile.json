@@ -39,8 +39,13 @@
       "dd\\s+if=",
       "mkfs\\.",
       "fdisk\\s+",
-      "parted\\s+"
+      "parted\\s+",
+      "git\\s+reset\\s+--hard",
+      "git\\s+checkout\\s+--?\\s+\\.",
+      "git\\s+clean\\s+-[a-z]*f[a-z]*",
+      "git\\s+push\\s+.*--force"
     ],
+
     "confirm": [
       "Remove-Item",
       "rmdir",
