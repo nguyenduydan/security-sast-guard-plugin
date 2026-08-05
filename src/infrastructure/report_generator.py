@@ -96,7 +96,33 @@ def _substitute_placeholders(
     target_path: str,
     findings: list[dict[str, Any]],
     counts: dict[str, int],
+    metadata: dict[str, Any] | None = None,
+    audit_level: str = "full",
 ) -> str:
+    meta = metadata or {}
+    scanned_files = meta.get("scanned_files", "N/A")
+    ignored_files = meta.get("ignored_files", "N/A")
+    total_lines = meta.get("total_lines", "N/A")
+    duration = meta.get("duration_seconds", "N/A")
+    rules_applied = meta.get("rules_applied", "N/A")
+    fp_filtered = meta.get("false_positives_filtered", 0)
+    inc_mode = "ON (Git Diff)" if meta.get("incremental_mode") else "OFF (Full Walk)"
+
+    metadata_block = f"""
+## 🔍 Audit Metadata & Transparency
+| Metric | Value |
+|---|---|
+| 📂 **Target Path** | `{target_path}` |
+| 🛡️ **Active Audit Level** | `{str(audit_level).upper()}` |
+| ⚡ **Scan Mode** | `{inc_mode}` |
+| 📄 **Scanned Files** | `{scanned_files}` |
+| 🚫 **Ignored Files** | `{ignored_files}` |
+| 📝 **Lines Analyzed** | `{total_lines}` |
+| 🤖 **AI False-Positives Filtered** | `{fp_filtered}` |
+| ⚙️ **Rules Applied** | `{rules_applied}` |
+| ⏱️ **Scan Duration** | `{duration}s` |
+"""
+
     substitutions = {
         "{{DATE}}": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "{{TARGET_PATH}}": target_path,
@@ -115,6 +141,12 @@ def _substitute_placeholders(
     content = template
     for key, val in substitutions.items():
         content = content.replace(key, val)
+
+    if "## 🔍 Detailed Findings" in content:
+        content = content.replace(
+            "## 🔍 Detailed Findings",
+            f"{metadata_block}\n---\n\n## 🔍 Detailed Findings",
+        )
     return content
 
 
@@ -123,6 +155,8 @@ def generate_markdown_report(
     output_dir: str = "reports",
     target_path: str = ".",
     template_path: str | Path | None = None,
+    metadata: dict[str, Any] | None = None,
+    audit_level: str = "full",
 ) -> tuple[str, str]:
     """Generate Markdown report file for SAST findings using template."""
     target_dir = Path(output_dir)
@@ -140,13 +174,20 @@ def generate_markdown_report(
     )
 
     report_content = _substitute_placeholders(
-        template_content, target_path, findings, counts
+        template_content, target_path, findings, counts, metadata, audit_level
     )
     report_file.write_text(report_content, encoding="utf-8")
 
     file_uri = report_file.resolve().as_uri()
+    meta = metadata or {}
+    scanned_count = meta.get("scanned_files", 0)
+    lines_count = meta.get("total_lines", 0)
+    duration_val = meta.get("duration_seconds", 0)
+    scanned_str = (
+        f" [Scanned {scanned_count} files, {lines_count} lines in {duration_val}s]"
+    )
     summary = (
-        f"SAST Audit completed. Total: {len(findings)} findings "
+        f"SAST Audit completed.{scanned_str} Total: {len(findings)} findings "
         f"(Critical: {counts['critical']}, High: {counts['high']}, "
         f"Medium: {counts['medium']}, Low: {counts['low']}).\n"
         f"Detailed report saved to: [{report_file.name}]({file_uri})"
