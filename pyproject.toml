@@ -57,6 +57,7 @@ line-ending = "auto"
 # ==========================================
 [tool.mypy]
 python_version = "3.12"
+mypy_path = [".", "src"]
 strict = true
 warn_return_any = true
 warn_unused_configs = true
