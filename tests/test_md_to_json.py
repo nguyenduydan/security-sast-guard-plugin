@@ -49,3 +49,26 @@ test_pattern_123
     assert "XSS_INLINE_EVENT" in rule_ids
     assert "BROKEN_ACCESS_CONTROL" in rule_ids
     assert "TEST01" in rule_ids
+
+
+def test_parse_md_rules_with_action(tmp_path: Path) -> None:
+    rule_md = tmp_path / "test_rule.md"
+    rule_md.write_text(
+        """
+## [RULE_01] Custom Warning Rule
+**Severity:** 🟡 Medium
+**Action:** Warn
+
+```regex
+(?i)warning_pattern
+```
+""".strip(),
+        encoding="utf-8",
+    )
+
+    rules = parse_md_rules(str(rule_md))
+    assert len(rules) == 1
+    assert rules[0]["id"] == "RULE_01"
+    assert rules[0]["severity"] == "Medium"
+    assert rules[0]["action"] == "Warn"
+
