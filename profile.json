@@ -3,7 +3,6 @@
   "stack": "python-security",
   "mode": "draft",
   "audit_level": "full",
-  "sast_level": "ultra",
   "command_firewall_overlay": {
     "deny": [
       "rm\\s+-[rRfF]{1,3}\\s+[/~]",
@@ -42,10 +41,25 @@
       "parted\\s+",
       "git\\s+reset\\s+--hard",
       "git\\s+checkout\\s+--?\\s+\\.",
-      "git\\s+clean\\s+-[a-z]*f[a-z]*",
-      "git\\s+push\\s+.*--force"
+      "git\\s+push\\s+.*--force",
+      "Format-Volume",
+      "Clear-Disk",
+      "Initialize-Disk",
+      "Remove-Partition",
+      "New-Partition",
+      "Set-Partition",
+      "Resize-Partition",
+      "Set-MpPreference",
+      "Add-MpPreference",
+      "Disable-NetFirewallRule",
+      "Set-NetFirewallProfile",
+      "Invoke-Command",
+      "Enter-PSSession",
+      "Remove-Item\\s+.*-Recurse",
+      "Stop-Computer",
+      "Restart-Computer",
+      "Stop-Service\\s+.*-Force"
     ],
-
     "confirm": [
       "Remove-Item",
       "rmdir",

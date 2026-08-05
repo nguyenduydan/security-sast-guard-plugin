@@ -64,6 +64,39 @@ def test_firewall_standard_commands() -> None:
     assert out_deny == "DENY"
 
 
+def test_firewall_disk_format_commands() -> None:
+    """Test DENY verdict on disk format and partition removal commands."""
+    out_cmd_format, _ = run_firewall_hook("format D: /fs:NTFS /q /v:Data")
+    assert out_cmd_format == "DENY"
+
+    cmd_fmt = (
+        "Format-Volume -DriveLetter D -FileSystem NTFS "
+        '-NewFileSystemLabel "Data" -Confirm:$false'
+    )
+    out_format_vol, _ = run_firewall_hook(cmd_fmt)
+    assert out_format_vol == "DENY"
+
+    out_clear_disk, _ = run_firewall_hook("Clear-Disk -Number 1 -RemoveData")
+    assert out_clear_disk == "DENY"
+
+
+def test_firewall_advanced_security_deny_rules() -> None:
+    """Test DENY verdict on defender bypass and remote execution."""
+    out_mp, _ = run_firewall_hook("Set-MpPreference -DisableRealtimeMonitoring $true")
+    assert out_mp == "DENY"
+
+    out_fw, _ = run_firewall_hook("Disable-NetFirewallRule -DisplayName RuleName")
+    assert out_fw == "DENY"
+
+    out_icmd, _ = run_firewall_hook(
+        "Invoke-Command -ComputerName Server -ScriptBlock { Get-Process }"
+    )
+    assert out_icmd == "DENY"
+
+    out_rm_rec, _ = run_firewall_hook("Remove-Item -Path C:\\Windows -Recurse -Force")
+    assert out_rm_rec == "DENY"
+
+
 def test_firewall_deobfuscation_carets_backticks() -> None:
     """Test deobfuscation of CMD carets and PowerShell backticks."""
 

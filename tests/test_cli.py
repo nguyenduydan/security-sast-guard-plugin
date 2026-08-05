@@ -36,3 +36,18 @@ def test_dispatcher_scan_command(capsys: CaptureFixture[str], tmp_path) -> None:
     captured = capsys.readouterr()
     assert "SAST Audit completed." in captured.out
     assert "Detailed report saved to:" in captured.out
+
+
+def test_dispatcher_level_command(capsys: CaptureFixture[str]) -> None:
+    code = main(["level"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "Current Audit Level:" in captured.out
+
+    code_set = main(["level", "lite"])
+    assert code_set == 0
+    captured_set = capsys.readouterr()
+    assert "Audit level successfully set to 'lite'." in captured_set.out
+
+    # Reset back to full for consistency
+    main(["level", "full"])
