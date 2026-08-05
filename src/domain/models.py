@@ -32,6 +32,8 @@ class Finding:
     line_content: str
     severity: str
     scope: str = "global"
+    action: str = "Block"
+
 
 
 @dataclass(frozen=True)
