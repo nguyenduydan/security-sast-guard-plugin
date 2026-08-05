@@ -44,6 +44,5 @@ class SecurityProfile:
     stack: str
     mode: str
     audit_level: str
-    sast_level: str
     deny_rules: tuple[str, ...]
     confirm_rules: tuple[str, ...]

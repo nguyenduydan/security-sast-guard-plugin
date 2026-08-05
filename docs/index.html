@@ -457,10 +457,10 @@
             <span class="font-bold text-black dark:text-slate-200 mr-2">Preset Commands:</span>
             <button onclick="simulateCommand('rm -rf /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">rm -rf /</button>
             <button onclick="simulateCommand('r^m^ -r^f /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">r^m^ -r^f (Obfuscated)</button>
+            <button onclick="simulateCommand('Format-Volume -DriveLetter D -FileSystem NTFS')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Format-Volume D</button>
+            <button onclick="simulateCommand('Set-MpPreference -DisableRealtimeMonitoring $true')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Disable Defender</button>
             <button onclick="simulateCommand('powershell -enc cm0gLXJmIC8=')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Base64 Payload</button>
-            <button onclick="simulateCommand('Remove-Item C:\\Windows\\System32 -Recurse')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Remove-Item System32</button>
             <button onclick="simulateCommand('git push origin main --force')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">git push --force</button>
-            <button onclick="simulateCommand('/sast-audit file src/main.py')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">/sast-audit file</button>
           </div>
 
           <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-950 space-y-4 min-h-[280px] max-h-[400px] overflow-y-auto terminal-scrollbar flex flex-col justify-between">
@@ -1068,7 +1068,24 @@ def get_user_account(user_id):
       let icon = "ph-check-circle";
       let reason = "Verified clean execution trajectory.";
 
-      if (lower.includes('rm -rf /') || lower.includes('format c:') || lower.includes('reg delete') || lower.includes('mkfs') || isBase64Deny) {
+      const isDeny = lower.includes('rm -rf') ||
+                     lower.includes('format') ||
+                     lower.includes('clear-disk') ||
+                     lower.includes('initialize-disk') ||
+                     lower.includes('remove-partition') ||
+                     lower.includes('set-mppreference') ||
+                     lower.includes('add-mppreference') ||
+                     lower.includes('disable-netfirewallrule') ||
+                     lower.includes('set-netfirewallprofile') ||
+                     lower.includes('invoke-command') ||
+                     lower.includes('enter-pssession') ||
+                     lower.includes('reg delete') ||
+                     lower.includes('mkfs') ||
+                     lower.includes('stop-computer') ||
+                     lower.includes('restart-computer') ||
+                     isBase64Deny;
+
+      if (isDeny) {
         status = "DENY";
         statusClass = "bg-black dark:bg-rose-500 text-white dark:text-obsidian-950";
         icon = "ph-x-circle";
