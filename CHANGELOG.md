@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.9.0...v0.10.0) (2026-08-05)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **security:** comprehensive firewall deny rules, unified audit level, and interactive docs ([59f4eee](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/59f4eee06015f287ad91f13d7787d321e41a599d))
+
 ## [0.9.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.8.0...v0.9.0) (2026-08-05)
 
 
