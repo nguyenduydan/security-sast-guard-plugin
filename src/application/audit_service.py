@@ -17,8 +17,16 @@ class AuditService:
 
     def run_audit(self, target_path: str) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
-        findings = self.scanner.scan(target_path)
-        report_md, summary = generate_markdown_report(findings)
+        res = self.scanner.scan_with_metadata(target_path)
+        findings = res["findings"]
+        metadata = res["metadata"]
+        audit_level = self.profile.get("audit_level", "full")
+        report_md, summary = generate_markdown_report(
+            findings,
+            target_path=target_path,
+            metadata=metadata,
+            audit_level=audit_level,
+        )
         return findings, report_md, summary
 
     def get_status(self) -> dict[str, Any]:
