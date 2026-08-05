@@ -16,7 +16,7 @@ class AuditService:
         self.scanner = SASTScanner(profile_path=profile_path)
 
     def run_audit(self, target_path: str) -> tuple[list[dict[str, Any]], str, str]:
-        """Execute SAST audit on target path and return (findings, report_markdown, summary)."""
+        """Execute SAST audit on target path and return findings and report."""
         findings = self.scanner.scan(target_path)
         report_md, summary = generate_markdown_report(findings)
         return findings, report_md, summary

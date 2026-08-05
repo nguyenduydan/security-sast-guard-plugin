@@ -2,6 +2,7 @@
 
 import tempfile
 from pathlib import Path
+
 import pytest
 
 from src.domain.exceptions import SecurityIntegrityError
