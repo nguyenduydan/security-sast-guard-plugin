@@ -45,7 +45,11 @@ def test_generate_markdown_report(tmp_path: Path) -> None:
 
 def test_generate_markdown_report_custom_template(tmp_path: Path) -> None:
     custom_tmpl = tmp_path / "custom.md"
-    custom_tmpl.write_text("CUSTOM REPORT: {{TOTAL_COUNT}} findings in {{TARGET_PATH}}\n{{FINDINGS_TABLE}}", encoding="utf-8")
+    custom_tmpl.write_text(
+        "CUSTOM REPORT: {{TOTAL_COUNT}} findings in"
+        " {{TARGET_PATH}}\n{{FINDINGS_TABLE}}",
+        encoding="utf-8",
+    )
 
     findings = [
         {

@@ -4,7 +4,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-DEFAULT_TEMPLATE_PATH = Path(__file__).parent.parent.parent / "templates" / "report_template.md"
+DEFAULT_TEMPLATE_PATH = (
+    Path(__file__).parent.parent.parent / "templates" / "report_template.md"
+)
 
 DEFAULT_FALLBACK_TEMPLATE = """# 🛡️ SAST Security Audit Report
 
@@ -64,7 +66,9 @@ def _build_findings_table(findings: list[dict[str, Any]]) -> str:
         location = f"{f.get('path', 'unknown')}:{f.get('line', 0)}"
         severity = f.get("severity", "Medium")
         scope = f.get("scope", "global")
-        lines.append(f"| `{rule_id}` | `{location}` | **{severity}** | `{snippet}` | `{scope}` |")
+        lines.append(
+            f"| `{rule_id}` | `{location}` | **{severity}** | `{snippet}` | `{scope}` |"
+        )
     return "\n".join(lines)
 
 
@@ -72,11 +76,17 @@ def _build_remediation_summary(findings: list[dict[str, Any]]) -> str:
     if not findings:
         return "No remediation required."
 
-    rules = sorted(list({f.get("rule_id", "UNKNOWN") for f in findings}))
+    rules = sorted({f.get("rule_id", "UNKNOWN") for f in findings})
     lines = [
-        "1. **Review High-Risk Snippets:** Prioritize fixing Critical and High severity findings immediately.",
+        (
+            "1. **Review High-Risk Snippets:** Prioritize fixing Critical and High"
+            " severity findings immediately."
+        ),
         "2. **Rule Violations Detected:** " + ", ".join(f"`{r}`" for r in rules),
-        "3. **OWASP Best Practice:** Sanitize user input, strip dangerous inline event handlers, and enforce strict parameter validation.",
+        (
+            "3. **OWASP Best Practice:** Sanitize user input, strip dangerous"
+            " inline event handlers, and enforce strict parameter validation."
+        ),
     ]
     return "\n".join(lines)
 
@@ -112,7 +122,9 @@ def generate_markdown_report(
 
     # Perform substitutions
     report_content = (
-        template_content.replace("{{DATE}}", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        template_content.replace(
+            "{{DATE}}", datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
         .replace("{{TARGET_PATH}}", target_path)
         .replace("{{TOTAL_COUNT}}", str(len(findings)))
         .replace("{{CRITICAL_COUNT}}", str(counts["critical"]))
