@@ -140,8 +140,8 @@ try {
     if (-not $matchedDeny) {
         foreach ($candidate in $textsToTest) {
             if ([string]::IsNullOrWhiteSpace($candidate)) { continue }
-            $tokens = [System.Management.Automation.Language.Token[]]@()
-            $errors = [System.Management.Automation.Language.ParseError[]]@()
+            [System.Management.Automation.Language.Token[]]$tokens = @()
+            [System.Management.Automation.Language.ParseError[]]$errors = @()
             try {
                 $ast = [System.Management.Automation.Language.Parser]::ParseInput($candidate, [ref]$tokens, [ref]$errors)
                 if ($ast) {
