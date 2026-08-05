@@ -1,11 +1,31 @@
 """Adversarial unit tests for Anti-Bypass & Tamper Resistance in Command Firewall."""
 
 import base64
+import shutil
 import subprocess
 from pathlib import Path
 
+import pytest
+
 HOOK_PATH = Path(__file__).parent.parent / "hooks" / "firewall_hook.ps1"
 REPO_ROOT = Path(__file__).parent.parent
+
+
+def find_powershell() -> str | None:
+    """Dynamically locate PowerShell executable across Windows and Linux CI runners."""
+    for exe in ["powershell.exe", "pwsh", "powershell"]:
+        found = shutil.which(exe)
+        if found:
+            return found
+    return None
+
+
+POWERSHELL_EXE = find_powershell()
+
+pytestmark = pytest.mark.skipif(
+    POWERSHELL_EXE is None,
+    reason="PowerShell executable (powershell.exe or pwsh) not found on system",
+)
 
 
 def run_firewall_hook(
@@ -13,7 +33,7 @@ def run_firewall_hook(
 ) -> tuple[str, int]:
     """Run firewall_hook.ps1 with specified command string."""
     cmd = [
-        "powershell.exe",
+        POWERSHELL_EXE or "powershell.exe",
         "-NoProfile",
         "-ExecutionPolicy",
         "Bypass",
