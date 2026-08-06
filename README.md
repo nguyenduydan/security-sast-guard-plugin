@@ -122,9 +122,9 @@ flowchart TD
 
 ---
 
-## 🎮 Slash Commands Reference
+## 🎮 Slash Commands & CLI Reference
 
-Integrate seamlessly into your chat environment using the following slash commands:
+### 🤖 AI Slash Commands (Chat UI)
 
 | Slash Command | Syntax | Description |
 | :--- | :--- | :--- |
@@ -134,6 +134,16 @@ Integrate seamlessly into your chat environment using the following slash comman
 | 🧱 `/sast-firewall` | `/sast-firewall <command>` | Manually tests a shell command against the Firewall overlay rules. |
 | 📊 `/sast-status` | `/sast-status` | Displays security profile card, loaded rule counts, and pattern statistics. |
 | 🆘 `/sast-help` | `/sast-help` | Displays quick reference cheatsheet for SAST Guard plugin options. |
+
+### 💻 CLI Directives (Terminal Entrypoint)
+
+| CLI Subcommand | Syntax | Description |
+| :--- | :--- | :--- |
+| 📊 `status` | `python control_plane.py status` | Displays profile status, checksum integrity, and active SAST rules. |
+| ℹ️ `version` | `python control_plane.py version` | Displays plugin version (`v0.10.1`), Python runtime, and platform info. |
+| 🧱 `firewall` | `python control_plane.py firewall <command>` | Evaluates command against firewall rules (`ALLOW` \| `CONFIRM` \| `DENY`). |
+| 🎚️ `level` | `python control_plane.py level [lite\|full\|ultra]` | Displays or updates active SAST audit strictness level. |
+| 🔍 `scan` | `python control_plane.py scan [path]` | Scans target path and generates Markdown vulnerability audit report. |
 
 ---
 
