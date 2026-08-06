@@ -51,7 +51,7 @@ class AIVerifier:
             rule_id = str(f.get("rule_id", ""))
             line_content = str(f.get("line_content", ""))
             path = str(f.get("path", ""))
-            file_ext = path.split(".")[-1] if "." in path else ""
+            file_ext = path.rsplit(".", maxsplit=1)[-1] if "." in path else ""
 
             key = self.cache.compute_key(rule_id, line_content, file_ext)
             cached_res = self.cache.get(key)

@@ -10,6 +10,7 @@ from typing import Any
 
 from src.application.audit_service import AuditService
 from src.infrastructure.profile_loader import ProfileLoader
+from src.mcp.server import MCPServer
 
 
 def _print_status() -> int:
@@ -149,13 +150,12 @@ def _handle_init() -> int:
 
 def _handle_mcp_server() -> int:
     """Run Stdio JSON-RPC MCP Server."""
-    from src.mcp.server import MCPServer
-
     server = MCPServer()
     server.run()
     return 0
 
 
+# pylint: disable=too-many-return-statements
 def dispatch(args: list[str]) -> int:
     """Dispatch command line arguments to appropriate handler."""
     command = args[0].lower() if args else "status"

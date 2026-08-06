@@ -1,5 +1,6 @@
 """SAST Audit Markdown Report Generator component."""
 
+import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -205,8 +206,6 @@ def generate_json_report(
     audit_level: str = "full",
 ) -> tuple[str, str]:
     """Generate JSON report file for SAST findings."""
-    import json
-
     target_dir = Path(output_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
 
