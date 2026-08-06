@@ -199,20 +199,50 @@
         </h1>
 
         <!-- Subtext -->
-        <p class="text-slate-800 dark:text-slate-300 text-lg md:text-xl max-w-3xl font-medium leading-relaxed mb-10">
-          Intercept dangerous shell commands before execution and audit code against 53 OWASP and CWE threat standards automatically in under 50ms.
+        <p class="text-slate-800 dark:text-slate-300 text-lg md:text-xl max-w-3xl font-medium leading-relaxed mb-8">
+          Protect your operating system from destructive shell commands (<code class="bg-black dark:bg-obsidian-900 text-white dark:text-brand-emerald px-2 py-0.5 rounded font-mono text-sm">rm -rf</code>, <code class="bg-black dark:bg-obsidian-900 text-white dark:text-brand-cyan px-2 py-0.5 rounded font-mono text-sm">format C:</code>, obfuscated payloads) while auditing AI-generated code against 53 OWASP and CWE threat standards in real-time.
         </p>
 
-        <!-- CTAs -->
-        <div id="hero-ctas" class="flex flex-wrap items-center gap-4 mb-16 font-display font-black">
-          <a href="#install" class="px-8 py-4 rounded-xl brutal-btn text-base uppercase tracking-wider flex items-center gap-2.5">
-            <i class="ph-bold ph-terminal-window text-xl"></i>
-            Install in PowerShell
+        <!-- Quick One-Line Install Command Widget -->
+        <div class="max-w-3xl mb-10 brutal-card rounded-2xl bg-white dark:bg-obsidian-900 p-4 font-mono text-xs shadow-brutal">
+          <div class="flex items-center justify-between text-slate-700 dark:text-slate-400 font-bold mb-2">
+            <span class="flex items-center gap-2"><i class="ph-bold ph-terminal-window text-base text-brand-emerald"></i> Quick Install (PowerShell Terminal):</span>
+            <span class="text-[10px] uppercase bg-black/10 dark:bg-brand-emerald/20 text-black dark:text-brand-emerald px-2 py-0.5 rounded">Cyber TUI Suite</span>
+          </div>
+          <div class="flex items-center justify-between bg-slate-100 dark:bg-obsidian-950 p-3 rounded-xl border border-black/20 dark:border-white/10 gap-3">
+            <code id="code-hero-install" class="text-black dark:text-brand-emerald font-bold overflow-x-auto text-xs">Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"; .\install.ps1</code>
+            <button onclick="copySnippet('code-hero-install')" class="shrink-0 px-4 py-2 rounded brutal-btn text-xs font-bold uppercase whitespace-nowrap">
+              <i class="ph-bold ph-copy"></i> Copy
+            </button>
+          </div>
+        </div>
+
+        <!-- CTAs & 4 Enterprise Badges -->
+        <div id="hero-ctas" class="flex flex-wrap items-center gap-4 mb-14 font-display font-black">
+          <a href="#install" class="px-7 py-3.5 rounded-xl brutal-btn text-sm uppercase tracking-wider flex items-center gap-2">
+            <i class="ph-bold ph-download-simple text-lg"></i>
+            Install Suite
           </a>
-          <button onclick="openRulesModal()" class="px-8 py-4 rounded-xl brutal-btn-alt text-base uppercase tracking-wider flex items-center gap-2.5">
-            <i class="ph-bold ph-shield-check text-xl"></i>
+          <button onclick="openRulesModal()" class="px-7 py-3.5 rounded-xl brutal-btn-alt text-sm uppercase tracking-wider flex items-center gap-2">
+            <i class="ph-bold ph-shield-check text-lg"></i>
             Explore 53 SAST Rules
           </button>
+
+          <!-- 4 Pillars Quick Badges -->
+          <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+            <span class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-500/30 flex items-center gap-1.5">
+              <i class="ph-bold ph-shield"></i> PreCommand Firewall
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 font-bold border border-cyan-500/30 flex items-center gap-1.5">
+              <i class="ph-bold ph-cpu"></i> Antigravity 2.0 Stdio MCP
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-purple-500/15 text-purple-800 dark:text-purple-300 font-bold border border-purple-500/30 flex items-center gap-1.5">
+              <i class="ph-bold ph-folder-user"></i> .sast Cascade Profile
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold border border-amber-500/30 flex items-center gap-1.5">
+              <i class="ph-bold ph-brain"></i> SHA-256 AI Cache
+            </span>
+          </div>
         </div>
 
         <!-- KEY METRICS CARDS (DUAL LIGHT & DARK STYLED) -->
