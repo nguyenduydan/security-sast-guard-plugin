@@ -235,18 +235,18 @@ table, tr, td, th {
 }
 
 @media (min-width: 640px) {
-  #cyber-dock:not(:hover) {
+  #cyber-dock-wrapper:not(:hover) #cyber-dock {
     gap: 0.375rem !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
     box-shadow: 4px 4px 0px 0px #000000 !important;
   }
 
-  .dark #cyber-dock:not(:hover) {
+  .dark #cyber-dock-wrapper:not(:hover) #cyber-dock {
     box-shadow: 4px 4px 0px 0px #ffffff !important;
   }
 
-  #cyber-dock:not(:hover) .dock-item:not(.nav-link-active):not(.dock-always-visible) {
+  #cyber-dock-wrapper:not(:hover) #cyber-dock .dock-item:not(.nav-link-active):not(.dock-always-visible) {
     max-width: 0px !important;
     opacity: 0 !important;
     padding-left: 0px !important;
@@ -257,7 +257,7 @@ table, tr, td, th {
     pointer-events: none !important;
   }
   
-  #cyber-dock:not(:hover) .dock-divider {
+  #cyber-dock-wrapper:not(:hover) #cyber-dock .dock-divider {
     max-width: 0px !important;
     opacity: 0 !important;
     margin-left: -0.1875rem !important;
