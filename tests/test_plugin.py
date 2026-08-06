@@ -7,7 +7,7 @@ REPO_ROOT = Path(__file__).parent.parent
 
 
 def test_plugin_json_schema_and_version() -> None:
-    """Verify plugin.json exists, contains required fields, and matches extension manifest."""
+    """Verify plugin.json schema fields and version sync with extension."""
     plugin_path = REPO_ROOT / "plugin.json"
     ext_path = REPO_ROOT / "gemini-extension.json"
 
@@ -27,7 +27,5 @@ def test_plugin_json_schema_and_version() -> None:
     assert len(plugin_data["skills"]) > 0
 
     # Verify version synchronization
-    msg = (
-        f"Version mismatch: {plugin_data['version']} vs {ext_data['version']}"
-    )
+    msg = f"Version mismatch: {plugin_data['version']} vs {ext_data['version']}"
     assert plugin_data["version"] == ext_data["version"], msg
