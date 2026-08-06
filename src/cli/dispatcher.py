@@ -109,7 +109,8 @@ def _handle_level(args: list[str]) -> int:
             print(f"Audit level successfully set to '{target_level.lower()}'.")
             return 0
         print(
-            f"Error: Invalid level '{target_level}'. Valid options: lite, full, ultra."
+            f"Error: Invalid level '{target_level}'. "
+            "Valid options: lite, full, ultra."
         )
         return 1
     status = service.get_status()
