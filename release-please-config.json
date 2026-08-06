@@ -8,6 +8,11 @@
           "type": "json",
           "path": "plugin.json",
           "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "gemini-extension.json",
+          "jsonpath": "$.version"
         }
       ],
       "changelog-sections": [
