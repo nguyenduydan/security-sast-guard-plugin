@@ -246,6 +246,38 @@ table, tr, td, th {
   }
 }
 
+/* Scroll To Top Button Custom Aesthetic Styling */
+.scroll-to-top-cta {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 2px 2px 0px 0px #000000 !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark .scroll-to-top-cta {
+  background: #090d16 !important;
+  color: #10b981 !important;
+  border: 2px solid #10b981 !important;
+  box-shadow: 2px 2px 0px 0px #10b981 !important;
+}
+
+.scroll-to-top-cta:hover {
+  background: #10b981 !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+  transform: translateY(-2px) scale(1.08) !important;
+  box-shadow: 3px 3px 0px 0px #000000 !important;
+}
+
+.dark .scroll-to-top-cta:hover {
+  background: #10b981 !important;
+  color: #040711 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) scale(1.08) !important;
+  box-shadow: 3px 3px 0px 0px #ffffff !important;
+}
+
 /* WCAG Focus Rings */
 a:focus-visible,
 button:focus-visible,
