@@ -732,57 +732,146 @@ def get_user_account(user_id):
         </div>
 
     <!-- PLUGIN USAGE GUIDE -->
-    <section id="usage" class="py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+    <section id="usage" class="py-24 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-          <span class="px-3 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">PLUGIN USAGE GUIDE</span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Use Security SAST Guard</h2>
-          <p class="text-slate-700 dark:text-slate-300 text-base max-w-2xl mx-auto mt-2 font-medium">
-            Run security audits, inspect rules, and test commands directly from your Antigravity or Gemini CLI workspace.
+        
+        <div class="text-center mb-14">
+          <span class="px-3.5 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">COMMAND REFERENCE v1.0.0</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase tracking-tight">Plugin Usage & Controls</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mt-2 font-medium">
+            Execute security audits, initialize project profiles, launch Stdio MCP Server, and test firewall rules in real-time.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="brutal-card rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-5">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-brand-emerald border-2 border-black"><i class="ph-bold ph-shield-check text-xl"></i></span>
-              <h3 class="font-display font-black text-xl uppercase text-black dark:text-white">Audit Code</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Column 1: AI Chat Slash Commands -->
+          <div class="brutal-card rounded-2xl p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-black dark:border-white/20">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold border-2 border-black">
+                    <i class="ph-bold ph-robot"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white">AI Chat Slash Commands</h3>
+                    <span class="font-mono text-xs text-slate-600 dark:text-slate-400 font-bold">Antigravity Chat & Gemini CLI</span>
+                  </div>
+                </div>
+                <span class="px-3 py-1 bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 font-mono text-xs font-extrabold rounded uppercase">Interactive</span>
+              </div>
+
+              <p class="text-sm font-medium text-slate-800 dark:text-slate-200 mb-6 leading-relaxed">
+                Slash commands integrated directly into AI assistant sessions for fast security audits and rule management:
+              </p>
+
+              <div class="space-y-4 font-mono text-xs">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
+                    <code>🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit. Outputs Markdown and JSON reports.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
+                    <code>🚀 /sast-init</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Creates project-local <code class="text-slate-900 dark:text-white font-bold">.sast/profile.json</code> security profile.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-brand-violet font-bold text-sm">
+                    <code>🎚️ /sast-audit-level [lite|full|ultra]</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Sets active audit strictness level for project or global workspace.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-amber-500 font-bold text-sm">
+                    <code>🧱 /sast-firewall &lt;command&gt;</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Evaluates shell command safety (<code class="text-emerald-500 font-bold">ALLOW</code> | <code class="text-amber-500 font-bold">CONFIRM</code> | <code class="text-rose-500 font-bold">DENY</code>).</div>
+                </div>
+              </div>
             </div>
-            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-5">Scan a file, codebase, API, or web target against the active SAST profile.</p>
-            <code class="block rounded-xl bg-black text-brand-emerald p-4 font-mono text-xs leading-6">/sast-audit file src/main.py<br>/sast-audit codebase .</code>
           </div>
 
-          <div class="brutal-card rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-5">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-brand-cyan border-2 border-black"><i class="ph-bold ph-sliders-horizontal text-xl"></i></span>
-              <h3 class="font-display font-black text-xl uppercase text-black dark:text-white">Choose Profile</h3>
+          <!-- Column 2: CLI Control Plane & Stdio MCP Server -->
+          <div class="brutal-card rounded-2xl p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-black dark:border-white/20">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold border-2 border-black">
+                    <i class="ph-bold ph-terminal-window"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white">CLI Plane & MCP Server</h3>
+                    <span class="font-mono text-xs text-slate-600 dark:text-slate-400 font-bold">Terminal Scripting & IDE Integration</span>
+                  </div>
+                </div>
+                <span class="px-3 py-1 bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 font-mono text-xs font-extrabold rounded uppercase">Direct CLI</span>
+              </div>
+
+              <p class="text-sm font-medium text-slate-800 dark:text-slate-200 mb-6 leading-relaxed">
+                Direct terminal invocation and Stdio JSON-RPC MCP Server for IDE extensions:
+              </p>
+
+              <div class="space-y-4 font-mono text-xs">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
+                    <code>🔌 python control_plane.py mcp-server</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Launches Stdio JSON-RPC MCP Server exposing 5 IDE tools.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
+                    <code>⚙️ python control_plane.py init</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Generates project-local <code class="text-slate-900 dark:text-white font-bold">.sast/profile.json</code> profile.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-brand-violet font-bold text-sm">
+                    <code>🔍 python control_plane.py scan [path] --format json</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Runs audit with dual Markdown (<code class="text-slate-900 dark:text-white font-bold">.md</code>) and JSON (<code class="text-slate-900 dark:text-white font-bold">.json</code>) output.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-rose-400 font-bold text-sm">
+                    <code>📊 python control_plane.py status</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Displays active profile status, SAST rule counts, and checksum verification.</div>
+                </div>
+              </div>
             </div>
-            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-5">Tune audit depth for fast checks or full security reviews.</p>
-            <code class="block rounded-xl bg-black text-brand-cyan p-4 font-mono text-xs leading-6">/sast-audit-level lite<br>/sast-audit-level full<br>/sast-audit-level ultra</code>
           </div>
 
-          <div class="brutal-card rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-5">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-black text-brand-violet border-2 border-black"><i class="ph-bold ph-terminal-window text-xl"></i></span>
-              <h3 class="font-display font-black text-xl uppercase text-black dark:text-white">Inspect & Test</h3>
+        </div>
+
+        <!-- RECOMMENDED ENTERPRISE WORKFLOW -->
+        <div class="mt-10 brutal-card rounded-2xl p-8 bg-white dark:bg-obsidian-950">
+          <div class="flex flex-wrap items-center justify-between gap-6">
+            <div class="max-w-2xl">
+              <div class="font-mono text-xs font-black uppercase text-brand-emerald mb-2 flex items-center gap-2">
+                <i class="ph-bold ph-shield-check text-base"></i> Recommended v1.0.0 Production Workflow
+              </div>
+              <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white mb-2">Init Project → Real-Time Intercept → AI Cache Scan</h3>
+              <p class="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                Initialize project profile via <code class="bg-slate-100 dark:bg-obsidian-900 px-2 py-0.5 rounded font-mono font-bold text-black dark:text-brand-emerald">/sast-init</code>. The PreCommand Firewall interceptor blocks destructive terminal execution while SHA-256 AI response caching eliminates duplicate scan latencies.
+              </p>
             </div>
-            <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-5">Review loaded rules, firewall decisions, and plugin health.</p>
-            <code class="block rounded-xl bg-black text-brand-violet p-4 font-mono text-xs leading-6">/sast-status<br>/sast-rules sync .<br>/sast-firewall &lt;command&gt;<br>/sast-help</code>
+
+            <div class="font-mono text-xs bg-slate-100 dark:bg-obsidian-900 text-black dark:text-brand-emerald rounded-xl p-5 border-2 border-black dark:border-white/20 space-y-2 shrink-0">
+              <div class="font-bold"><span class="text-brand-cyan">01</span> /sast-init (Create .sast/profile.json)</div>
+              <div class="font-bold"><span class="text-brand-cyan">02</span> PreCommand Intercept (De-obfuscate & Block)</div>
+              <div class="font-bold"><span class="text-brand-cyan">03</span> PostWrite Auto-Scan (SHA-256 24h AI Cache)</div>
+            </div>
           </div>
         </div>
 
-        <div class="mt-8 brutal-card rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-          <div class="md:col-span-2">
-            <div class="font-mono text-xs font-black uppercase text-brand-cyan mb-2">Recommended workflow</div>
-            <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white mb-2">Scan → Review → Fix → Verify</h3>
-            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Start with a targeted audit, review the flagged context, apply the fix, then run the audit again before committing.</p>
-          </div>
-          <div class="font-mono text-xs bg-black text-brand-emerald rounded-xl p-5 leading-7 border-2 border-black">
-            <div><span class="text-brand-cyan">01</span> /sast-audit file path</div>
-            <div><span class="text-brand-cyan">02</span> inspect findings</div>
-            <div><span class="text-brand-cyan">03</span> fix and re-run</div>
-          </div>
-        </div>
       </div>
     </section>
 
