@@ -113,7 +113,7 @@
   <!-- TOP BRANDING ANCHOR (LEFT LOGO & RIGHT QUICK CONTROLS) -->
   <header id="top-branding" class="fixed top-5 left-6 right-6 z-40 flex items-center justify-between pointer-events-none">
     <!-- Top Left Logo Badge -->
-    <a href="#" class="pointer-events-auto flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-obsidian-900/90 border-2 border-black dark:border-white/15 shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_rgba(16,185,129,0.3)] backdrop-blur-xl group hover:scale-105 transition-transform">
+    <a href="#" class="pointer-events-auto flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-obsidian-900/90 border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#fff] backdrop-blur-xl group hover:scale-105 transition-transform">
       <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center font-bold overflow-hidden border border-black dark:border-brand-emerald">
         <img src="./logo.png" alt="Security SAST Guard Logo" class="w-7 h-7 group-hover:rotate-12 transition-transform" />
       </div>
@@ -123,9 +123,9 @@
 
     <!-- Top Right Quick Controls -->
     <div class="pointer-events-auto flex items-center gap-2 font-mono">
-      <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-9 h-9 rounded-full brutal-btn-alt text-xs font-bold flex items-center justify-center hover:rotate-12 transition-transform shadow-[3px_3px_0px_0px_#000]" title="Toggle Light/Dark Theme">
+      <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-9 h-9 rounded-full brutal-btn-alt text-xs font-bold flex items-center justify-center hover:rotate-12 transition-transform shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#fff]" title="Toggle Light/Dark Theme">
       </button>
-      <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="w-9 h-9 rounded-full brutal-btn-alt text-xs font-bold flex items-center justify-center hover:scale-110 transition-transform shadow-[3px_3px_0px_0px_#000]" title="GitHub Repository">
+      <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="w-9 h-9 rounded-full brutal-btn-alt text-xs font-bold flex items-center justify-center hover:scale-110 transition-transform shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#fff]" title="GitHub Repository">
         <i class="ph-bold ph-github-logo text-base"></i>
       </a>
     </div>
@@ -133,7 +133,7 @@
 
   <!-- FLOATING CYBER-HUD BOTTOM DOCK (100% OPAQUE NEO-BRUTALIST DESIGN) -->
   <div class="fixed bottom-6 sm:bottom-8 left-0 right-0 z-50 pointer-events-none px-2 sm:px-4 flex justify-center">
-    <nav id="cyber-dock" class="pointer-events-auto max-w-5xl w-fit mx-auto px-3 sm:px-4 py-2 rounded-full bg-white dark:bg-obsidian-900 text-black dark:text-white border-3 border-black dark:border-white/20 shadow-[5px_5px_0px_0px_#000] dark:shadow-[5px_5px_0px_0px_rgba(16,185,129,0.4)] flex items-center flex-nowrap gap-1 sm:gap-2 overflow-x-auto terminal-scrollbar transition-all duration-300">
+    <nav id="cyber-dock" class="pointer-events-auto max-w-5xl w-fit mx-auto px-3 sm:px-4 py-2 rounded-full bg-white dark:bg-obsidian-900 text-black dark:text-white border-3 border-black dark:border-white shadow-[5px_5px_0px_0px_#000] dark:shadow-[5px_5px_0px_0px_#fff] flex items-center flex-nowrap gap-1 sm:gap-2 overflow-x-auto terminal-scrollbar transition-all duration-300">
       
       <!-- Dock Items -->
       <a href="#firewall" data-nav-section="firewall" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1.2 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-black text-xs">
