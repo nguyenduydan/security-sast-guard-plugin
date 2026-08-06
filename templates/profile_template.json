@@ -1,0 +1,27 @@
+{
+  "profile_name": "project_local",
+  "audit_strictness": {
+    "level": "full"
+  },
+  "rules": {
+    "enabled_categories": [
+      "OWASP API 2023",
+      "OWASP Web 2021",
+      "CWE Top 25",
+      "NIST 800-53",
+      "Web App Specific"
+    ]
+  },
+  "command_firewall_overlay": {
+    "deny": [
+      "Remove-Item.*-Recurse.*-Force",
+      "rm\\s+-rf\\s+/",
+      "format\\s+[a-zA-Z]:"
+    ],
+    "confirm": [
+      "pip\\s+install",
+      "npm\\s+install",
+      "git\\s+push.*--force"
+    ]
+  }
+}

@@ -3,7 +3,13 @@
     "PreCommandExecute": [
       {
         "type": "command",
-        "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${PLUGIN_ROOT}/hooks/firewall_hook.ps1\" -CommandText \"${COMMAND}\""
+        "command": "python \"${PLUGIN_ROOT}/hooks/firewall_hook.py\" \"${COMMAND}\""
+      }
+    ],
+    "PostToolCallExecute": [
+      {
+        "type": "command",
+        "command": "python \"${PLUGIN_ROOT}/hooks/post_write_hook.py\" \"${FILE_PATH}\""
       }
     ]
   }

@@ -194,5 +194,41 @@ def generate_markdown_report(
         f"Medium: {counts['medium']}, Low: {counts['low']}).\n"
         f"Detailed report saved to: [{report_file.name}]({file_uri})"
     )
+    return str(report_file), summary
 
+
+def generate_json_report(
+    findings: list[dict[str, Any]],
+    output_dir: str = "reports",
+    target_path: str = ".",
+    metadata: dict[str, Any] | None = None,
+    audit_level: str = "full",
+) -> tuple[str, str]:
+    """Generate JSON report file for SAST findings."""
+    import json
+
+    target_dir = Path(output_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    report_file = target_dir / f"sast_audit_report_{timestamp}.json"
+    counts = _count_severities(findings)
+
+    data = {
+        "timestamp": datetime.now().isoformat(),
+        "target_path": target_path,
+        "audit_level": audit_level,
+        "summary": counts,
+        "findings_count": len(findings),
+        "metadata": metadata or {},
+        "findings": findings,
+    }
+
+    report_file.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    file_uri = report_file.resolve().as_uri()
+
+    summary = (
+        f"SAST Audit completed. Total: {len(findings)} findings.\n"
+        f"JSON report saved to: [{report_file.name}]({file_uri})"
+    )
     return str(report_file), summary
