@@ -564,3 +564,19 @@ function escapeHtml(text) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }
+
+/* --------------------------------------------------------------------------
+   8. Global Window Event Handler Expositions
+   -------------------------------------------------------------------------- */
+window.toggleTheme = toggleTheme;
+window.selectStep = selectStep;
+window.toggleWorkflowAutoPlay = toggleWorkflowAutoPlay;
+window.simulateCommand = simulateCommand;
+window.handleCustomCommand = handleCustomCommand;
+window.openRulesModal = openRulesModal;
+window.closeRulesModal = closeRulesModal;
+window.setCategory = setCategory;
+window.filterRules = filterRules;
+window.switchTab = switchTab;
+window.copySnippet = copySnippet;
+window.showCopyToast = showCopyToast;
