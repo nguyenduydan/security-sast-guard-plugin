@@ -1,106 +1,159 @@
-﻿$ErrorActionPreference = "Stop"
-
+$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-function Write-Stage {
-    param([string]$Message, [int]$Percent)
-    $width = 30
+# Configure Console Output Encoding for UTF-8 Symbols
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# ==============================================================================
+# TUI Helper Functions (Cyber / Neo-Brutalist Theme)
+# ==============================================================================
+
+function Write-CyberHeader {
+    param([string]$Title, [string]$SubTitle)
+    Clear-Host
+    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
+    Write-Host "║  ███████╗ █████╗ ███████╗████████╗                                   ║" -ForegroundColor Cyan
+    Write-Host "║  ██╔════╝██╔══██╗██╔════╝╚══██╔══╝   SECURITY SAST GUARD             ║" -ForegroundColor Cyan
+    Write-Host "║  ███████╗███████║███████╗   ██║      Zero-Trust Shield               ║" -ForegroundColor Cyan
+    Write-Host "║  ╚════██║██╔══██║╚════██║   ██║                                      ║" -ForegroundColor Cyan
+    Write-Host ("║  ███████║██║  ██║███████║   ██║      {0,-31} ║" -f $Title.ToUpper()) -ForegroundColor Cyan
+    Write-Host "║  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝                                      ║" -ForegroundColor Cyan
+    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+    if ($SubTitle) {
+        Write-Host " [i] $SubTitle" -ForegroundColor Gray
+    }
+    Write-Host ""
+}
+
+function Write-CyberStep {
+    param([int]$Step, [int]$TotalSteps, [string]$Message, [int]$Percent)
+    $width = 25
     $filled = [math]::Floor($width * $Percent / 100)
     $bar = ("█" * $filled) + ("░" * ($width - $filled))
-    $line = "[$bar] $Percent% $Message"
-    Write-Host ("`r{0,-90}" -f $line) -NoNewline -ForegroundColor Cyan
+    $statusLine = ("`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message)
+    Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
-function Write-StageDone { param([string]$Message); Write-Host ("`r{0,-90}" -f "[OK] $Message") -ForegroundColor Green }
+
+function Write-CyberPass {
+    param([string]$Message)
+    $chk = [char]0x2713
+    Write-Host ("`r [$chk] {0,-70}" -f $Message) -ForegroundColor Green
+}
+
+function Write-CyberWarn {
+    param([string]$Message)
+    Write-Host ("`r [!] {0,-70}" -f $Message) -ForegroundColor Yellow
+}
+
+function Write-CyberFail {
+    param([string]$Message)
+    $cross = [char]0x2717
+    Write-Host ""
+    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Red
+    Write-Host ("║  [$cross] INSTALLATION FAILED                                             ║") -ForegroundColor Red
+    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor Red
+    Write-Host ("║  Error: {0,-60} ║" -f $Message) -ForegroundColor Red
+    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Red
+    Write-Host ""
+}
+
+function Write-CyberSuccessCard {
+    param([string]$TargetDir, [string]$Version)
+    $chk = [char]0x2713
+    Write-Host ""
+    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
+    Write-Host ("║  [$chk] INSTALLATION SUCCESSFUL                                         ║") -ForegroundColor Green
+    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
+    Write-Host ("║  Target Directory : {0,-48} ║" -f $TargetDir) -ForegroundColor White
+    Write-Host ("║  Installed Version: {0,-48} ║" -f $Version) -ForegroundColor White
+    Write-Host ("║  Status           : {0,-48} ║" -f "Active and Ready") -ForegroundColor Green
+    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
+    Write-Host "║  Quick Commands:                                                     ║" -ForegroundColor White
+    Write-Host "║   * In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      ║" -ForegroundColor Gray
+    Write-Host "║   * In Terminal   : 'python control_plane.py status'                 ║" -ForegroundColor Gray
+    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
+    Write-Host ""
+}
+
+# ==============================================================================
+# Installation Main Flow
+# ==============================================================================
 
 $PluginName = "security-sast-guard"
 $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
-Clear-Host
-Write-Host "==============================================" -ForegroundColor DarkCyan
-$SastLogo = @(
-    "███████╗ █████╗ ███████╗████████╗",
-    "██╔════╝██╔══██╗██╔════╝╚══██╔══╝",
-    "███████╗███████║███████╗   ██║   ",
-    "╚════██║██╔══██║╚════██║   ██║   ",
-    "███████║██║  ██║███████║   ██║   ",
-    "╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   "
-)
-foreach ($Line in $SastLogo) {
-    Write-Host $Line -ForegroundColor Cyan
-}
-Write-Host "          SECURITY SAST GUARD" -ForegroundColor White
-Write-Host "              INSTALLER" -ForegroundColor DarkCyan
-Write-Host "==============================================" -ForegroundColor DarkCyan
-Write-Host "Target: $InstallDir" -ForegroundColor Gray
-Write-Host ""
+Write-CyberHeader -Title "Installer v0.10.1" -SubTitle "Target: $InstallDir"
 
 if (Test-Path $InstallDir) {
-    Write-Host "Plugin is already installed at $InstallDir" -ForegroundColor Yellow
-    Write-Host "Please use 'update.ps1' to update it, or 'remove.ps1' to uninstall." -ForegroundColor Yellow
+    Write-CyberWarn "Plugin is already installed at $InstallDir"
+    Write-Host " [i] Use 'update.ps1' to update or 'remove.ps1' to uninstall." -ForegroundColor Yellow
+    Write-Host ""
     exit 1
 }
-
-Write-Host "Fetching latest release information from GitHub API..."
 
 $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString())
 New-Item -ItemType Directory -Path $TempDir | Out-Null
 $ExtractPath = Join-Path $TempDir "extracted"
 
 try {
-    Write-Stage "Downloading latest release" 20
+    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Fetching GitHub release..." -Percent 15
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
+
     if (-not $ZipAsset) {
-        Write-Host "No release ZIP asset found; falling back to GitHub source archive." -ForegroundColor Yellow
+        Write-CyberWarn "Release ZIP asset not found; falling back to source archive."
         $ZipAsset = [pscustomobject]@{
             name = "$($Release.tag_name).zip"
             browser_download_url = $Release.zipball_url
         }
     }
-    Write-Host "Found release: $($Release.tag_name)" -ForegroundColor Green
+    Write-CyberPass "Found latest release: $($Release.tag_name)"
+
+    Write-CyberStep -Step 2 -TotalSteps 4 -Message "Downloading release archive..." -Percent 40
     Invoke-WebRequest -Uri $ZipAsset.browser_download_url -OutFile (Join-Path $TempDir $ZipAsset.name)
-    if ($ChecksumAsset) { Invoke-WebRequest -Uri $ChecksumAsset.browser_download_url -OutFile (Join-Path $TempDir $ChecksumAsset.name) }
+    if ($ChecksumAsset) {
+        Invoke-WebRequest -Uri $ChecksumAsset.browser_download_url -OutFile (Join-Path $TempDir $ChecksumAsset.name)
+    }
     $ZipPath = Join-Path $TempDir $ZipAsset.name
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
+    Write-CyberPass "Downloaded release package"
 
+    Write-CyberStep -Step 3 -TotalSteps 4 -Message "Verifying SHA-256 checksum..." -Percent 65
     if (Test-Path $ChecksumPath) {
-        Write-Stage "Verifying package integrity" 45
         $ExpectedHashLine = Get-Content $ChecksumPath | Where-Object { $_ -match [regex]::Escape((Split-Path $ZipPath -Leaf)) } | Select-Object -First 1
         if ($ExpectedHashLine) {
             $ExpectedHash = ($ExpectedHashLine -split '\s+')[0].ToUpper()
             $ActualHash = (Get-FileHash -Path $ZipPath -Algorithm SHA256).Hash.ToUpper()
             if ($ExpectedHash -ne $ActualHash) {
-                throw "Checksum mismatch! Expected: $ExpectedHash, Actual: $ActualHash. The file might be corrupted or compromised."
+                throw "Checksum mismatch! Expected: $ExpectedHash, Actual: $ActualHash"
             }
-            Write-Host "Checksum verified successfully." -ForegroundColor Green
+            Write-CyberPass "Package integrity verified (SHA-256 Match)"
         }
+    } else {
+        Write-CyberPass "Package checksum step skipped (checksums.txt unavailable)"
     }
 
-    Write-Stage "Extracting runtime files" 70
+    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying plugin files..." -Percent 90
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
-
-    # GitHub zipballs have a single root folder containing the repo name and commit hash
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
-    Write-Host "Installing to $InstallDir ..."
-    # Create parent plugins directory if not exists
     $PluginsDir = Split-Path $InstallDir
     if (-not (Test-Path $PluginsDir)) {
         New-Item -ItemType Directory -Path $PluginsDir | Out-Null
     }
 
     Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
-    Write-StageDone "Installation complete"
+    Write-CyberPass "Deployed runtime files to target location"
 
-    Write-Host ""
-    Write-Host "Installation successful!" -ForegroundColor Green
-    Write-Host "Plugin installed at: $InstallDir" -ForegroundColor Green
+    Write-CyberSuccessCard -TargetDir $InstallDir -Version $($Release.tag_name)
+} catch {
+    Write-CyberFail -Message $_.Exception.Message
+    exit 1
 } finally {
     if (Test-Path $TempDir) {
         Remove-Item -Path $TempDir -Recurse -Force
     }
 }
-
