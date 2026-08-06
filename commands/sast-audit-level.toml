@@ -1,0 +1,3 @@
+[command]
+name = "sast-audit-level"
+description = "Set or view SAST audit level (lite | full | ultra)"
