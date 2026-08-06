@@ -162,6 +162,37 @@ table, tr, td, th {
   color: #000000 !important;
 }
 
+/* Standout Cyber CTA Button for Install */
+.dock-install-cta {
+  background: #10b981 !important;
+  color: #040711 !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 3px 3px 0px 0px #000000 !important;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.dark .dock-install-cta {
+  background: #10b981 !important;
+  color: #040711 !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 3px 3px 0px 0px #ffffff !important;
+}
+
+.dock-install-cta:hover {
+  background: #000000 !important;
+  color: #10b981 !important;
+  transform: scale(1.08) translate(-1px, -1px) !important;
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+.dark .dock-install-cta:hover {
+  background: #ffffff !important;
+  color: #040711 !important;
+  border-color: #ffffff !important;
+  transform: scale(1.08) translate(-1px, -1px) !important;
+  box-shadow: 4px 4px 0px 0px #ffffff !important;
+}
+
 /* --------------------------------------------------------------------------
    Cyber Dock Collapsed (Idle) vs Expanded (Hover) HUD Behavior
    -------------------------------------------------------------------------- */
