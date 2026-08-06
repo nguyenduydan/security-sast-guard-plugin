@@ -20,6 +20,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Verify Manifest Version Consistency
+        run: |
+          python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version'], f'Mismatch: {p[\"version\"]} vs {e[\"version\"]}'"
+
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
