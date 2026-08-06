@@ -89,9 +89,7 @@ class AuditService:
         self._reload_profile()
         firewall = self.profile.get("command_firewall_overlay", {})
 
-        # Reset scanner cache to ensure fresh rule count
-        self.scanner._rules_cache = None
-        sast_rules = self.scanner._load_rules()
+        sast_rules = self.scanner.get_rules(force_reload=True)
 
         checksum_path = self.profile_path.parent / ".profile.sha256"
         checksum_valid = False
@@ -110,4 +108,3 @@ class AuditService:
             "sast_rules_count": len(sast_rules),
             "checksum_valid": checksum_valid,
         }
-

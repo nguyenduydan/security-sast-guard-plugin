@@ -2,6 +2,7 @@
 
 from pytest import CaptureFixture
 
+from src.application.audit_service import AuditService
 from src.cli.dispatcher import main
 from src.infrastructure.profile_loader import ProfileLoader
 
@@ -61,8 +62,6 @@ def test_dispatcher_level_command(capsys: CaptureFixture[str]) -> None:
 
 
 def test_audit_service_status_dynamic_reload() -> None:
-    from src.application.audit_service import AuditService
-
     service = AuditService()
     service.set_audit_level("ultra")
     status = service.get_status()
@@ -72,4 +71,3 @@ def test_audit_service_status_dynamic_reload() -> None:
 
     # Reset back to full
     service.set_audit_level("full")
-

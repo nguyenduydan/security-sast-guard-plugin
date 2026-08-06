@@ -62,6 +62,12 @@ class SASTScanner:
 
         return self._rules_cache or []
 
+    def get_rules(self, force_reload: bool = False) -> list[dict[str, Any]]:
+        """Return loaded SAST rules, optionally forcing a reload from disk."""
+        if force_reload:
+            self._rules_cache = None
+        return self._load_rules()
+
     def _is_valid_pattern(self, pattern: str) -> bool:
         """Check if a regex pattern is valid and not a markdown junk pattern."""
         if not pattern:
