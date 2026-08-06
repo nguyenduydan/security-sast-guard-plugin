@@ -5,6 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.10.1...v1.0.0) (2026-08-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core:** Complete architectural upgrade to v1.0.0 including cross-platform FirewallEngine, Stdio MCP Server for Antigravity 2.0, Multi-project profile resolution, and AI response caching.
+
+### 🚀 Features & SAST Security Rules
+
+* **core:** major release v1.0.0 with cross-platform firewall, mcp server, and multi-project support ([8049ee5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8049ee5df8299ae185daeb147dc6b40ee73016b4))
+* **dock:** implement proximity hover zone wrapper so dock expands when cursor approaches ([7993aac](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7993aac680a42b6ddc08cc07a71665ce440d51d6))
+* **dock:** implement smart HUD dock collapse on idle and expand on hover ([3e573ce](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3e573ce82fb1ba91f06a9f0fe3094b3060429e6e))
+* **ui:** add high-tech cyber grid patterns and ambient glow orbs to enrich page background ([2e2c75d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2e2c75db00b95dbe8b18f7039ec60cb88bac7804))
+* **ui:** add scroll-to-top button with smooth scrolling and dynamic visibility ([674231b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/674231bc809c743b01ed656369ea60fdd9421a6f))
+* **ui:** redesign Hero section with high-impact headline, fresh slogan, animated badges, and terminal demo CTA ([5affc93](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5affc9385ad8c9832a45c3a62be6a3fd4d5ee7a8))
+
+
+### 🐛 Bug Fixes
+
+* **cli:** add firewall and version command handlers to CLI dispatcher ([359548f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/359548f754cee6a4a3c05ab86c8050f5ab740566))
+* **cli:** add firewall and version command handlers to CLI dispatcher ([c821399](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c82139936d45914dc2df794ee28fd1e6f390d973))
+* **dock:** detach collapsed items from flex flow using position absolute to eliminate asymmetrical whitespace ([bf2bf66](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bf2bf66a3d5a4735644dcadef9c11a87ca238690))
+* **hooks:** implement functional audit hook and add missing sast-audit-level command definition ([706c60a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/706c60aba23c71b1c9d32b8f4fad1c99ea07c785))
+* **hooks:** implement functional audit hook and add missing sast-audit-level command definition ([b8cf0e7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b8cf0e7a741d816e74e953f3027023d2b581db6d))
+* **js:** bind all interactive event handlers to window object ([f9b0091](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f9b0091ff38ec6e58c732bbd39f66c3af9017f30))
+* **linter:** achieve 10.00/10 pylint score and 0 mypy errors ([d10d12e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d10d12e1ffbe126e1ca8ee6dbb730a9369d8221b))
+* **manifest:** synchronize version to 0.10.0 and add CI version check ([cab0919](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/cab0919d22437f8ce171e178e699440e1cff5fc9))
+* **manifest:** synchronize version to 0.10.0 and add CI version check ([1cb6ad1](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1cb6ad1c8d9430f2f86870133c6f9026246419d6))
+* **nav:** add scroll-margin-top and refine Capabilities heading to prevent overscrolling ([8f650eb](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8f650ebe17de4a7fac4b8df89c35d920ed8db5de))
+* **ui:** reorder workflow section to match dock sequence and pre-populate step 1 HTML ([c5a0031](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c5a00314f053ff6fa66e0984a498f664ea55dd4e))
+
+
+### ⚡ Performance Improvements
+
+* **dock:** implement 60fps hardware-accelerated cubic-bezier transition engine for silk-smooth dock expansion ([24dbf7c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/24dbf7c9df188dd0d8541911a31d16b0fb8905c3))
+
+
+### 📦 Build System & Dependencies
+
+* **ci:** add gemini-extension.json to release-please extra-files ([684dd4d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/684dd4ddd0b3cab651db7cdcdd420162479e43cd))
+
+
+### 📝 Documentation
+
+* **plans:** add SP-1 critical fixes implementation plan ([e174150](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e174150275d4641786aa3df2048685e91af785de))
+* **specs:** add production readiness design spec for 5 sub-projects ([03c0c88](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/03c0c88264d9268323726e5f84ef4f1419b86082))
+* synchronize version badges and CLI references across README and landing page ([be1e177](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/be1e177e2863492199562a1ec353180a3e7ad34f))
+* **ui:** enhance landing page hero with quick install widget and 4 pillars badges ([3473707](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3473707b30506b74d12278e71c7813b6f7c2d69a))
+* **ui:** extract CSS and JS into docs/style and add animated workflow step demonstrator ([03084b8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/03084b82cb57bd5cc7dcb2df0436ba25a0cb2da8))
+* **ui:** overhaul usage section with v1.0.0 commands, larger typography, and MCP server reference ([771537a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/771537a7632e6117539bbe6be607eef19e8e73e4))
+* update README and landing page with v1.0.0 features, MCP integration, and architecture ([06b5f7f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/06b5f7fe89ba517cd290e3e1a1b93bcac113d447))
+
+
+### 🎨 Code Style & Formatting
+
+* **dock:** fix cyber-dock border class to valid Tailwind border-2 class ([d611e84](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d611e84aba0b63139a4bf416f1f28eef649d2777))
+* **dock:** increase flex gap and item padding so Audit and Capabilities have distinct separation ([7bd2635](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7bd2635574b07da05346b2302d4e44b753f61f01))
+* **dock:** keep dock shadow constant at 4px without size expansion on hover ([dd1075f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/dd1075fc9eb7c2673496f1d7b3bfdbcc85c7f885))
+* **dock:** optimize Cyber Dock layout flex-nowrap to prevent Install button overflow ([5e27e71](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5e27e7150a41789d098da2ff45acfb9204aa5c9e))
+* **dock:** redesign INSTALL button with high-contrast emerald CTA styling and icon ([ddcb5e3](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ddcb5e3e57ac4e9d4f1bafc752490618d7ff945d))
+* **dock:** replace display:none with smooth max-width and opacity spring transition for dock expansion ([2d482e4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2d482e4aed5c676528fb866d7294763a6395c895))
+* **hero:** center-align hero badges, headline, subtext slogan, and CTA buttons ([7598485](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/75984858351f66957413770547015b8b85bf197e))
+* **layout:** add min-h-[85vh] and vertical centering across main sections to prevent next section overlap ([9320dcf](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9320dcf2315308c733887ac368afa1762f9ca16f))
+* **linter:** fix ruff check and formatting warnings ([9234e11](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9234e1147aca6dd905893af96f5551f4370d635e))
+* **linter:** fix ruff check and formatting warnings ([2dc9999](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2dc9999c2e7ead6ce1255ca547e117264fd28d45))
+* **theme:** add smooth cubic-bezier fluid dark mode transition engine and icon spin animation ([e525d10](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e525d104baa9850c12db45cd0134d7d9e284f626))
+* **theme:** replace green dark shadows with crisp solid white shadows and dark backgrounds ([861d6b9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/861d6b9ee12c43ebf6ba7ff24b201cab96a9a60c))
+* **tui:** optimize ASCII character padding and encoding compatibility for PowerShell scripts ([6369f16](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/6369f16a813e7c294db12d54e094e3e2780255b7))
+* **tui:** optimize ASCII character padding and encoding compatibility for PowerShell scripts ([40d08d5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/40d08d5bf95062efbb5f8c4b0c2bbf99b0747da6))
+* **tui:** restore Cyber/Neo-Brutalist TUI with UTF-8 BOM encoding ([62003e0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/62003e0fc95a2749a5949a3d16d9940c5709943f))
+* **tui:** restore Cyber/Neo-Brutalist TUI with UTF-8 BOM encoding ([6d99cbe](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/6d99cbe95e4a09775efd1027e8ff6aaaffe150d2))
+* **tui:** upgrade install, update, and remove scripts with Cyber/Neo-Brutalist TUI ([236f52d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/236f52d46c4be9b4a29e51c1aaafdca726e5a090))
+* **tui:** upgrade install, update, and remove scripts with Cyber/Neo-Brutalist TUI ([d5e2569](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d5e2569034eb227dabfe3fe2dd7bdb5ac4c06ab7))
+* **ui:** enforce pure white text color on all green background elements ([a0aafae](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a0aafae3fc970c9f32617b5b6b90446ac81d85bc))
+* **ui:** reduce padding on cyber-dock, metrics, bento grid, and workflow cards for a sleek layout ([8249275](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/82492755482f129c38a00395bcf3a372a47ce454))
+* **ui:** refine scroll-to-top button styling with harmonious colors and reduced 2px shadow ([b02210a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b02210aa94c5880f60da6ab4da3d77aec95956a2))
+
 ## [0.10.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.10.0...v0.10.1) (2026-08-06)
 
 
