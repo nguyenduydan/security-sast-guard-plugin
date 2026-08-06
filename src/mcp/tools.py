@@ -18,7 +18,7 @@ class MCPToolHandlers:
 
     def handle_sast_scan_file(self, file_path: str) -> dict[str, Any]:
         """Scan a single file."""
-        report_file, findings, summary = self.audit_service.run_audit(
+        findings, report_file, summary = self.audit_service.run_audit(
             target_path=file_path
         )
         return {
@@ -28,12 +28,12 @@ class MCPToolHandlers:
             "summary": summary,
             "findings": [
                 {
-                    "rule_id": f.rule_id,
-                    "rule_name": f.rule_name,
-                    "severity": f.severity,
-                    "file_path": f.file_path,
-                    "line_number": f.line_number,
-                    "action": f.action,
+                    "rule_id": f.get("rule_id", ""),
+                    "rule_name": f.get("rule_name", ""),
+                    "severity": f.get("severity", ""),
+                    "file_path": f.get("path", ""),
+                    "line_number": f.get("line", 0),
+                    "action": f.get("action", "Block"),
                 }
                 for f in findings
             ],
@@ -42,7 +42,7 @@ class MCPToolHandlers:
     def handle_sast_scan_diff(self) -> dict[str, Any]:
         """Scan modified git files."""
         # For simplicity, default target CWD
-        report_file, findings, summary = self.audit_service.run_audit(target_path=".")
+        findings, report_file, summary = self.audit_service.run_audit(target_path=".")
         return {
             "status": "success",
             "report_file": str(report_file),

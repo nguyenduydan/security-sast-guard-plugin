@@ -14,8 +14,13 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from src.domain.firewall_engine import FirewallEngine  # noqa: E402
-from src.infrastructure.profile_loader import ProfileLoader  # noqa: E402
+# pylint: disable=wrong-import-position
+from src.domain.firewall_engine import (  # noqa: E402
+    FirewallEngine,
+)
+from src.infrastructure.profile_loader import (  # noqa: E402
+    ProfileLoader,  # pylint: disable=wrong-import-position
+)
 
 
 def main() -> int:
@@ -31,13 +36,14 @@ def main() -> int:
         return 0
 
     loader = ProfileLoader()
-    profile = loader.load_profile()
-    if profile is None:
+    profile = loader.load()
+    if not profile:
         print("DENY: Missing or corrupted profile configuration.")
         return 1
 
-    deny_rules = profile.command_firewall_overlay.get("deny", [])
-    confirm_rules = profile.command_firewall_overlay.get("confirm", [])
+    overlay = profile.get("command_firewall_overlay", {})
+    deny_rules = overlay.get("deny", [])
+    confirm_rules = overlay.get("confirm", [])
 
     engine = FirewallEngine(deny_rules=deny_rules, confirm_rules=confirm_rules)
     verdict = engine.evaluate(cmd_text)
