@@ -221,7 +221,7 @@
         <img src="./logo.png" alt="Security SAST Guard Logo" class="w-7 h-7 group-hover:rotate-12 transition-transform" />
       </div>
       <span class="font-display font-black text-xs md:text-sm uppercase tracking-tight text-black dark:text-white whitespace-nowrap">SAST GUARD</span>
-      <span id="ver-badge-nav" class="px-2 py-0.5 rounded-full bg-black/5 dark:bg-brand-emerald/15 text-black dark:text-brand-emerald font-mono font-bold text-[10px] border border-black/20 dark:border-brand-emerald/30" data-version-text>v0.4.2</span>
+      <span id="ver-badge-nav" class="px-2 py-0.5 rounded-full bg-black/5 dark:bg-brand-emerald/15 text-black dark:text-brand-emerald font-mono font-bold text-[10px] border border-black/20 dark:border-brand-emerald/30" data-version-text>v0.10.1</span>
     </a>
 
     <!-- Top Right Quick Controls -->
@@ -347,7 +347,7 @@
             <div class="brutal-card p-6 rounded-2xl flex items-center justify-between">
               <div>
                 <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Release Version</div>
-                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1" data-version-text>v0.4.2</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1" data-version-text>v0.10.1</div>
                 <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Release-Please Tagged</div>
               </div>
               <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-violet text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
@@ -814,7 +814,7 @@ def get_user_account(user_id):
 
       <div class="flex items-center gap-6 text-black dark:text-slate-300 font-bold">
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="hover:underline flex items-center gap-1.5"><i class="ph-bold ph-github-logo"></i> GitHub</a>
-        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v0.4.2</span></a>
+        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v0.10.1</span></a>
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin/blob/main/LICENSE" target="_blank" class="hover:underline">LICENSE</a>
       </div>
     </div>
@@ -894,7 +894,7 @@ def get_user_account(user_id):
 
     // GitHub Live Version Sync Engine
     // Fetches latest release tag from GitHub API and updates ALL version badges
-    const FALLBACK_VERSION = 'v0.4.2';
+    const FALLBACK_VERSION = 'v0.10.1';
     const GITHUB_REPO = 'nguyenduydan/security-sast-guard-plugin';
 
     async function syncVersionFromGitHub() {
