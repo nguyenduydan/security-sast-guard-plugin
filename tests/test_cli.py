@@ -49,5 +49,27 @@ def test_dispatcher_level_command(capsys: CaptureFixture[str]) -> None:
     captured_set = capsys.readouterr()
     assert "Audit level successfully set to 'lite'." in captured_set.out
 
+    code_status = main(["status"])
+    assert code_status == 0
+    captured_status = capsys.readouterr()
+    assert "Audit Level    : lite" in captured_status.out
+    assert "SAST Scan Rules:" in captured_status.out
+    assert "Integrity      :" in captured_status.out
+
     # Reset back to full for consistency
     main(["level", "full"])
+
+
+def test_audit_service_status_dynamic_reload() -> None:
+    from src.application.audit_service import AuditService
+
+    service = AuditService()
+    service.set_audit_level("ultra")
+    status = service.get_status()
+    assert status["audit_level"] == "ultra"
+    assert "sast_rules_count" in status
+    assert "checksum_valid" in status
+
+    # Reset back to full
+    service.set_audit_level("full")
+

@@ -136,10 +136,70 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
 
 def main() -> None:
     """Run rule synchronization from external Markdown rules repository."""
-    source_rules_dir = r"D:\AI\tools\mcp-agent-audit\api-security-audit\rules"
-    count = sync_rules(source_rules_dir)
-    print(f"Successfully synced {count} SAST rules.")
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Convert Markdown SAST rules to JSON.")
+    parser.add_argument(
+        "--dir",
+        type=str,
+        default="",
+        help="Directory containing Markdown rule files",
+    )
+    parser.add_argument(
+        "--input",
+        type=str,
+        default="",
+        help="Single Markdown rule file to add/parse",
+    )
+    parser.add_argument(
+        "--target",
+        type=str,
+        default="rules/sast_rules.json",
+        help="Target JSON file path for compiled rules",
+    )
+
+    args = parser.parse_args()
+
+    target_path = Path(args.target)
+    if not target_path.is_absolute() and not target_path.exists():
+        repo_root = Path(__file__).parents[1]
+        target_path = repo_root / args.target
+
+    if args.input:
+        rules = parse_md_rules(args.input)
+        if not rules:
+            print(f"No valid rules found in '{args.input}'.")
+            return
+        existing_rules: list[dict[str, Any]] = []
+        if target_path.exists():
+            try:
+                existing_rules = json.loads(target_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                existing_rules = []
+        rule_map = {r["id"]: r for r in existing_rules}
+        for r in rules:
+            rule_map[r["id"]] = r
+        final_rules = list(rule_map.values())
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        target_path.write_text(
+            json.dumps(final_rules, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        print(f"Successfully added rule(s) from '{args.input}'. Total active rules: {len(final_rules)}.")
+        return
+
+    source_dir = args.dir
+    if not source_dir:
+        # Fallback to internal rules/ directory if it exists, or external repo
+        local_rules_dir = Path(__file__).parents[1] / "rules"
+        if local_rules_dir.exists():
+            source_dir = str(local_rules_dir)
+        else:
+            source_dir = r"D:\AI\tools\mcp-agent-audit\api-security-audit\rules"
+
+    count = sync_rules(source_dir, target_json=str(target_path))
+    print(f"Successfully synced {count} SAST rules into '{target_path.name}'.")
 
 
 if __name__ == "__main__":
     main()
+

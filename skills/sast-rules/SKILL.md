@@ -7,4 +7,8 @@ Convert Markdown rules to `sast_rules.json`.
 
 Syntax: `/sast-rules add <file.md>` | `/sast-rules sync <dir>`
 
-Execution: Run `md_to_json.py` (`--input` or `--dir`) silently via tool call. Do not display python command string or create async background task. Directly report summary (rules added/updated/skipped, total count). Warn if missing ```regex``` blocks.
+Execution:
+- If executed with `add <file.md>`, run `run_command` with `python "${PLUGIN_ROOT}/scripts/md_to_json.py" --input "<file.md>"`.
+- If executed with `sync <dir>`, run `run_command` with `python "${PLUGIN_ROOT}/scripts/md_to_json.py" --dir "<dir>"`.
+- If executed without arguments, run `run_command` with `python "${PLUGIN_ROOT}/scripts/md_to_json.py"`.
+Directly report summary output. Warn if missing ```regex``` blocks.
