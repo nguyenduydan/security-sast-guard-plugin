@@ -84,8 +84,8 @@ function updateThemeIcon() {
   if (!btn) return;
   const isDark = document.documentElement.classList.contains("dark");
   btn.innerHTML = isDark
-    ? '<i class="ph-bold ph-sun text-emerald-400 text-lg"></i>'
-    : '<i class="ph-bold ph-moon-stars text-slate-800 text-lg"></i>';
+    ? '<i class="ph-bold ph-sun text-amber-400 text-lg inline-block theme-icon-spin"></i>'
+    : '<i class="ph-bold ph-moon-stars text-slate-800 text-lg inline-block theme-icon-spin"></i>';
 }
 
 /* --------------------------------------------------------------------------
