@@ -178,22 +178,12 @@ table, tr, td, th {
     display: none !important;
   }
 
-  #cyber-dock:not(:hover) {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    box-shadow: 4px 4px 0px 0px #000000;
+  #cyber-dock {
+    box-shadow: 4px 4px 0px 0px #000000 !important;
   }
 
-  .dark #cyber-dock:not(:hover) {
-    box-shadow: 4px 4px 0px 0px #ffffff;
-  }
-  
-  #cyber-dock:hover {
-    box-shadow: 6px 6px 0px 0px #000000;
-  }
-
-  .dark #cyber-dock:hover {
-    box-shadow: 6px 6px 0px 0px #ffffff;
+  .dark #cyber-dock {
+    box-shadow: 4px 4px 0px 0px #ffffff !important;
   }
 }
 
