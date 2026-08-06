@@ -54,8 +54,48 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initDockObserver();
   initWorkflowVisualizer();
+  initScrollToTop();
   fetchLatestRelease();
 });
+
+/* --------------------------------------------------------------------------
+   8. Scroll To Top Engine
+   -------------------------------------------------------------------------- */
+function initScrollToTop() {
+  const btn = document.getElementById("scroll-to-top-btn");
+  if (!btn) return;
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      btn.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+      btn.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
+    } else {
+      btn.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
+      btn.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+    }
+  });
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* --------------------------------------------------------------------------
+   9. Global Window Event Handler Expositions
+   -------------------------------------------------------------------------- */
+window.toggleTheme = toggleTheme;
+window.selectStep = selectStep;
+window.toggleWorkflowAutoPlay = toggleWorkflowAutoPlay;
+window.simulateCommand = simulateCommand;
+window.handleCustomCommand = handleCustomCommand;
+window.openRulesModal = openRulesModal;
+window.closeRulesModal = closeRulesModal;
+window.setCategory = setCategory;
+window.filterRules = filterRules;
+window.switchTab = switchTab;
+window.copySnippet = copySnippet;
+window.showCopyToast = showCopyToast;
+window.scrollToTop = scrollToTop;
 
 /* --------------------------------------------------------------------------
    1. Theme Management (Light / Dark Neo-Brutalist Toggle)
