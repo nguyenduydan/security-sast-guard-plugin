@@ -71,7 +71,7 @@ table, tr, td, th {
 }
 
 /* --------------------------------------------------------------------------
-   Neo-Brutalist Light / Dark Styling
+   Neo-Brutalist Light / Dark Styling (Crisp White/Black Shadows)
    -------------------------------------------------------------------------- */
 .brutal-card {
   background: #ffffff;
@@ -81,9 +81,9 @@ table, tr, td, th {
 }
 
 .dark .brutal-card {
-  background: #0d1424;
-  border: 2px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 4px 4px 0px 0px rgba(16, 185, 129, 0.35);
+  background: #060913;
+  border: 2px solid #ffffff;
+  box-shadow: 4px 4px 0px 0px #ffffff;
 }
 
 .brutal-card:hover {
@@ -92,23 +92,24 @@ table, tr, td, th {
 }
 
 .dark .brutal-card:hover {
-  box-shadow: 6px 6px 0px 0px rgba(16, 185, 129, 0.5);
-  border-color: rgba(16, 185, 129, 0.6);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #ffffff;
+  border-color: #ffffff;
 }
 
 .brutal-btn {
   background: #000000;
   color: #ffffff;
   border: 2px solid #000000;
-  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 3px 0px 0px #000000;
   transition: all 0.15s ease;
 }
 
 .dark .brutal-btn {
-  background: #10b981;
-  color: #040711;
-  border: 2px solid #10b981;
-  box-shadow: 3px 3px 0px 0px rgba(16, 185, 129, 0.4);
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #ffffff;
+  box-shadow: 3px 3px 0px 0px #ffffff;
 }
 
 .brutal-btn:hover {
@@ -117,8 +118,10 @@ table, tr, td, th {
 }
 
 .dark .brutal-btn:hover {
-  background: #34d399;
-  color: #040711;
+  background: #e2e8f0;
+  color: #000000;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px #ffffff;
 }
 
 .brutal-btn-alt {
@@ -130,10 +133,10 @@ table, tr, td, th {
 }
 
 .dark .brutal-btn-alt {
-  background: #141e33;
+  background: #000000;
   color: #ffffff;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 3px 3px 0px 0px rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffffff;
+  box-shadow: 3px 3px 0px 0px #ffffff;
 }
 
 .brutal-btn-alt:hover {
@@ -141,8 +144,10 @@ table, tr, td, th {
 }
 
 .dark .brutal-btn-alt:hover {
-  background: #1e2d4a;
-  border-color: #10b981;
+  background: #1e293b;
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 4px 4px 0px 0px #ffffff;
 }
 
 /* Navigation Links */
@@ -153,8 +158,8 @@ table, tr, td, th {
 }
 
 .dark .nav-link-active {
-  background: #10b981 !important;
-  color: #040711 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
 /* WCAG Focus Rings */
@@ -243,10 +248,10 @@ input:focus-visible {
 }
 
 .dark .step-node-active {
-  background-color: #10b981 !important;
-  color: #040711 !important;
-  border-color: #10b981 !important;
-  box-shadow: 4px 4px 0px 0px rgba(16, 185, 129, 0.6);
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+  box-shadow: 4px 4px 0px 0px #ffffff !important;
 }
 
 .flow-laser-line {
