@@ -191,30 +191,36 @@
       <div class="max-w-6xl mx-auto">
         
         <!-- Eyebrow Badge -->
-        <div class="inline-block px-3.5 py-1 rounded bg-black dark:bg-brand-emerald/10 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider mb-6 border-2 border-black dark:border-brand-emerald/30">
-          ZERO-TRUST SAST GUARD & COMMAND FIREWALL — ACTIVE
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black text-white dark:bg-brand-emerald/15 dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider mb-6 border-2 border-black dark:border-brand-emerald/40 shadow-brutal-sm">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>ANTIGRAVITY 2.0 ZERO-TRUST SECURITY ENGINE</span>
         </div>
 
-        <!-- 2-Line Enforced Heading -->
+        <!-- 2-Line Enforced Eye-Catching Heading -->
         <h1 class="font-display font-black text-4xl sm:text-6xl md:text-7xl text-black dark:text-white tracking-tight leading-[1.08] max-w-5xl mb-6">
-          Real-Time Command Firewall & <br class="hidden sm:inline" />
-          <span class="text-black dark:text-brand-emerald">Zero-Trust AI Security Shield</span>
+          Autonomous Security Gate &amp; <br class="hidden sm:inline" />
+          <span class="bg-black text-emerald-400 dark:bg-brand-emerald dark:text-obsidian-950 px-3.5 py-1 rounded-2xl inline-block mt-2 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+            Command Firewall
+          </span>
+          <span class="text-black dark:text-white font-black"> &amp; SAST Shield</span>
         </h1>
 
-        <!-- Subtext -->
+        <!-- Subtext Slogan -->
         <p class="text-slate-800 dark:text-slate-300 text-lg md:text-xl max-w-3xl font-medium leading-relaxed mb-8">
-          Protect your operating system from destructive shell commands (<code class="bg-black dark:bg-obsidian-900 text-white dark:text-brand-emerald px-2 py-0.5 rounded font-mono text-sm">rm -rf</code>, <code class="bg-black dark:bg-obsidian-900 text-white dark:text-brand-cyan px-2 py-0.5 rounded font-mono text-sm">format C:</code>, obfuscated payloads) while auditing AI-generated code against 53 OWASP and CWE threat standards in real-time.
+          <strong class="text-black dark:text-white font-bold">Intercept threats before code reaches Git.</strong> Protect your system from destructive shell execution (<code class="bg-black dark:bg-obsidian-900 text-emerald-400 px-2 py-0.5 rounded font-mono text-sm font-bold">rm -rf</code>, <code class="bg-black dark:bg-obsidian-900 text-cyan-400 px-2 py-0.5 rounded font-mono text-sm font-bold">Format-Volume</code>, obfuscated carets) while auditing AI-generated code against <strong class="text-emerald-600 dark:text-brand-emerald font-bold">53 OWASP, CWE &amp; NIST rules</strong> powered by <strong class="text-cyan-600 dark:text-brand-cyan font-bold">Antigravity 2.0 Stdio MCP Server</strong>.
         </p>
 
         <!-- Quick One-Line Install Command Widget -->
         <div class="max-w-3xl mb-10 brutal-card rounded-2xl bg-white dark:bg-obsidian-900 p-4 font-mono text-xs shadow-brutal">
           <div class="flex items-center justify-between text-slate-700 dark:text-slate-400 font-bold mb-2">
             <span class="flex items-center gap-2"><i class="ph-bold ph-terminal-window text-base text-brand-emerald"></i> Quick Install (PowerShell Terminal):</span>
-            <span class="text-[10px] uppercase bg-black/10 dark:bg-brand-emerald/20 text-black dark:text-brand-emerald px-2 py-0.5 rounded">Cyber TUI Suite</span>
+            <span class="text-[10px] uppercase bg-emerald-500/20 text-emerald-800 dark:text-brand-emerald px-2 py-0.5 rounded font-bold border border-emerald-500/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> Realtime Active
+            </span>
           </div>
-          <div class="flex items-center justify-between bg-slate-100 dark:bg-obsidian-950 p-3 rounded-xl border border-black/20 dark:border-white/10 gap-3">
+          <div class="flex items-center justify-between bg-slate-100 dark:bg-obsidian-950 p-3 rounded-xl border-2 border-black/20 dark:border-white/20 gap-3">
             <code id="code-hero-install" class="text-black dark:text-brand-emerald font-bold overflow-x-auto text-xs">Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"; .\install.ps1</code>
-            <button onclick="copySnippet('code-hero-install')" class="shrink-0 px-4 py-2 rounded brutal-btn text-xs font-bold uppercase whitespace-nowrap">
+            <button onclick="copySnippet('code-hero-install')" class="shrink-0 px-4 py-2 rounded-lg brutal-btn text-xs font-bold uppercase whitespace-nowrap flex items-center gap-1.5">
               <i class="ph-bold ph-copy"></i> Copy
             </button>
           </div>
@@ -222,28 +228,32 @@
 
         <!-- CTAs & 4 Enterprise Badges -->
         <div id="hero-ctas" class="flex flex-wrap items-center gap-4 mb-14 font-display font-black">
-          <a href="#install" class="px-7 py-3.5 rounded-xl brutal-btn text-sm uppercase tracking-wider flex items-center gap-2">
+          <a href="#install" class="dock-install-cta px-7 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-2 font-black shadow-brutal hover:scale-105 transition-all">
             <i class="ph-bold ph-download-simple text-lg"></i>
             Install Suite
           </a>
-          <button onclick="openRulesModal()" class="px-7 py-3.5 rounded-xl brutal-btn-alt text-sm uppercase tracking-wider flex items-center gap-2">
+          <button onclick="openRulesModal()" class="px-7 py-3.5 rounded-xl brutal-btn-alt text-sm uppercase tracking-wider flex items-center gap-2 font-black shadow-brutal hover:scale-105 transition-all">
             <i class="ph-bold ph-shield-check text-lg"></i>
             Explore 53 SAST Rules
           </button>
+          <a href="#firewall" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-obsidian-900 text-black dark:text-white border-2 border-black dark:border-white/30 text-sm uppercase tracking-wider flex items-center gap-2 font-bold hover:bg-slate-300 dark:hover:bg-obsidian-850 transition-all">
+            <i class="ph-bold ph-play-circle text-lg text-emerald-600 dark:text-brand-emerald"></i>
+            Live Terminal Demo
+          </a>
 
           <!-- 4 Pillars Quick Badges -->
-          <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
-            <span class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-500/30 flex items-center gap-1.5">
-              <i class="ph-bold ph-shield"></i> PreCommand Firewall
+          <div class="w-full mt-2 flex flex-wrap items-center gap-2.5 font-mono text-xs">
+            <span class="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold border-2 border-emerald-500/30 flex items-center gap-1.5 shadow-brutal-sm">
+              <i class="ph-bold ph-shield text-emerald-600 dark:text-emerald-400 text-sm"></i> PreCommand Firewall
             </span>
-            <span class="px-3 py-1.5 rounded-lg bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 font-bold border border-cyan-500/30 flex items-center gap-1.5">
-              <i class="ph-bold ph-cpu"></i> Antigravity 2.0 Stdio MCP
+            <span class="px-3.5 py-1.5 rounded-xl bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 font-bold border-2 border-cyan-500/30 flex items-center gap-1.5 shadow-brutal-sm">
+              <i class="ph-bold ph-cpu text-cyan-600 dark:text-cyan-400 text-sm"></i> Antigravity 2.0 Stdio MCP
             </span>
-            <span class="px-3 py-1.5 rounded-lg bg-purple-500/15 text-purple-800 dark:text-purple-300 font-bold border border-purple-500/30 flex items-center gap-1.5">
-              <i class="ph-bold ph-folder-user"></i> .sast Cascade Profile
+            <span class="px-3.5 py-1.5 rounded-xl bg-purple-500/15 text-purple-800 dark:text-purple-300 font-bold border-2 border-purple-500/30 flex items-center gap-1.5 shadow-brutal-sm">
+              <i class="ph-bold ph-folder-user text-purple-600 dark:text-purple-400 text-sm"></i> .sast Cascade Profile
             </span>
-            <span class="px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold border border-amber-500/30 flex items-center gap-1.5">
-              <i class="ph-bold ph-brain"></i> SHA-256 AI Cache
+            <span class="px-3.5 py-1.5 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold border-2 border-amber-500/30 flex items-center gap-1.5 shadow-brutal-sm">
+              <i class="ph-bold ph-brain text-amber-600 dark:text-amber-400 text-sm"></i> SHA-256 AI Cache
             </span>
           </div>
         </div>
