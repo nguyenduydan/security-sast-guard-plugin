@@ -16,6 +16,31 @@ body {
 }
 
 /* --------------------------------------------------------------------------
+   High-Tech Cyber Grid & Ambient Glow Pattern Engine
+   -------------------------------------------------------------------------- */
+.cyber-grid-pattern {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.dark .cyber-grid-pattern {
+  background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.cyber-dots-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.dark .cyber-dots-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* --------------------------------------------------------------------------
    Smooth Fluid Theme Transition Engine
    -------------------------------------------------------------------------- */
 body,
