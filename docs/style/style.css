@@ -1,0 +1,216 @@
+/* ==========================================================================
+   Security SAST Guard - Neo-Brutalist Design System & Animation Engine
+   ========================================================================== */
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 1.6;
+}
+
+.font-display {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* --------------------------------------------------------------------------
+   Neo-Brutalist Light / Dark Styling
+   -------------------------------------------------------------------------- */
+.brutal-card {
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  transition: all 0.2s ease;
+}
+
+.dark .brutal-card {
+  background: #0d1424;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 4px 4px 0px 0px rgba(16, 185, 129, 0.35);
+}
+
+.brutal-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.dark .brutal-card:hover {
+  box-shadow: 6px 6px 0px 0px rgba(16, 185, 129, 0.5);
+  border-color: rgba(16, 185, 129, 0.6);
+}
+
+.brutal-btn {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.3);
+  transition: all 0.15s ease;
+}
+
+.dark .brutal-btn {
+  background: #10b981;
+  color: #040711;
+  border: 2px solid #10b981;
+  box-shadow: 3px 3px 0px 0px rgba(16, 185, 129, 0.4);
+}
+
+.brutal-btn:hover {
+  background: #1e293b;
+  transform: translate(-1px, -1px);
+}
+
+.dark .brutal-btn:hover {
+  background: #34d399;
+  color: #040711;
+}
+
+.brutal-btn-alt {
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+  transition: all 0.15s ease;
+}
+
+.dark .brutal-btn-alt {
+  background: #141e33;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 3px 3px 0px 0px rgba(255, 255, 255, 0.1);
+}
+
+.brutal-btn-alt:hover {
+  background: #e2e8f0;
+}
+
+.dark .brutal-btn-alt:hover {
+  background: #1e2d4a;
+  border-color: #10b981;
+}
+
+/* Navigation Links */
+.nav-link-active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-radius: 9999px;
+}
+
+.dark .nav-link-active {
+  background: #10b981 !important;
+  color: #040711 !important;
+}
+
+/* WCAG Focus Rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #10b981 !important;
+  outline-offset: 3px !important;
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbars & Selection
+   -------------------------------------------------------------------------- */
+.terminal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-track {
+  background: #040711;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.35);
+  border-radius: 3px;
+}
+
+::selection {
+  background: #10b981;
+  color: #040711;
+}
+
+/* --------------------------------------------------------------------------
+   Step Animation & Pipeline Visualizer Keyframes
+   -------------------------------------------------------------------------- */
+@keyframes pulse-emerald {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes laser-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes step-node-glow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.animate-pulse-emerald {
+  animation: pulse-emerald 2s infinite;
+}
+
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.step-node-active {
+  background-color: #10b981 !important;
+  color: #040711 !important;
+  border-color: #000000 !important;
+  transform: scale(1.05);
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.dark .step-node-active {
+  background-color: #10b981 !important;
+  color: #040711 !important;
+  border-color: #10b981 !important;
+  box-shadow: 4px 4px 0px 0px rgba(16, 185, 129, 0.6);
+}
+
+.flow-laser-line {
+  background: linear-gradient(90deg, #10b981, #06b6d4, #8b5cf6, #10b981);
+  background-size: 200% 200%;
+  animation: laser-flow 2s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility (Prefers Reduced Motion)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
