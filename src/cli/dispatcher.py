@@ -10,12 +10,16 @@ def _print_status() -> int:
     service = AuditService()
     status = service.get_status()
 
+    integrity_str = "VALID" if status.get("checksum_valid") else "UNVERIFIED/MISSING"
+
     print("SAST Security & Firewall Guard Status")
     print("=====================================")
     print(f"Project ID     : {status['project_id']}")
     print(f"Stack          : {status['stack']}")
     print(f"Mode           : {status['mode']}")
     print(f"Audit Level    : {status['audit_level']}")
+    print(f"Integrity      : {integrity_str}")
+    print(f"SAST Scan Rules: {status.get('sast_rules_count', 0)} active rules")
     print("Command Firewall Overlay:")
     print(f"  - Deny Rules   : {status['deny_count']}")
     print(f"  - Confirm Rules: {status['confirm_count']}")
