@@ -228,29 +228,37 @@ table, tr, td, th {
 }
 
 @media (min-width: 640px) {
-  #cyber-dock:not(:hover) .dock-item:not(.nav-link-active):not(.dock-always-visible) {
-    max-width: 0px !important;
-    opacity: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    pointer-events: none !important;
-  }
-  
-  #cyber-dock:not(:hover) .dock-divider {
-    max-width: 0px !important;
-    opacity: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  #cyber-dock {
+  #cyber-dock:not(:hover) {
+    gap: 0.5rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
     box-shadow: 4px 4px 0px 0px #000000 !important;
   }
 
-  .dark #cyber-dock {
+  .dark #cyber-dock:not(:hover) {
     box-shadow: 4px 4px 0px 0px #ffffff !important;
+  }
+
+  #cyber-dock:not(:hover) .dock-item:not(.nav-link-active):not(.dock-always-visible) {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  #cyber-dock:not(:hover) .dock-divider {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
 
