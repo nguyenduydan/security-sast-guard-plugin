@@ -135,6 +135,12 @@ function initDockObserver() {
   const sections = document.querySelectorAll("section[id]");
   const navItems = document.querySelectorAll(".dock-item");
 
+  const activeExists = Array.from(navItems).some((item) => item.classList.contains("nav-link-active"));
+  if (!activeExists && navItems.length > 0) {
+    const firstItem = document.querySelector('.dock-item[data-nav-section="firewall"]');
+    if (firstItem) firstItem.classList.add("nav-link-active");
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
