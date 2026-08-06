@@ -1,9 +1,15 @@
 """Dispatcher CLI module."""
 
+import json
+import platform
+import re
 import sys
 from collections.abc import Sequence
+from pathlib import Path
+from typing import Any
 
 from src.application.audit_service import AuditService
+from src.infrastructure.profile_loader import ProfileLoader
 
 
 def _print_status() -> int:
@@ -26,41 +32,129 @@ def _print_status() -> int:
     return 0
 
 
-def main(args: Sequence[str] | None = None) -> int:
-    """Main CLI entrypoint."""
-    if args is None:
-        args = sys.argv[1:]
+def _handle_version() -> int:
+    """Display plugin version, Python runtime version, and platform information."""
+    version = "0.10.1"
+    plugin_path = Path("plugin.json")
+    if not plugin_path.exists():
+        plugin_path = Path(__file__).parents[2] / "plugin.json"
+    if plugin_path.exists():
+        try:
+            with open(plugin_path, encoding="utf-8") as f:
+                data: dict[str, Any] = json.load(f)
+                version = str(data.get("version", version))
+        except (json.JSONDecodeError, OSError):
+            pass
 
+    py_version = platform.python_version()
+    plat_info = platform.platform()
+
+    print(f"Security SAST Guard v{version}")
+    print(f"Python: {py_version}")
+    print(f"Platform: {plat_info}")
+    return 0
+
+
+def _handle_firewall(args: list[str]) -> int:
+    """Evaluate command string against security firewall overlay rules."""
+    loader = ProfileLoader()
+    profile_path = Path("profile.json")
+    if not profile_path.exists():
+        profile_path = Path(__file__).parents[2] / "profile.json"
+
+    profile = loader.load(str(profile_path))
+    if not profile:
+        print("DENY: Missing or corrupted profile configuration.")
+        return 1
+
+    if not args:
+        print("Usage: control_plane.py firewall <command_string>")
+        return 1
+
+    cmd_text = " ".join(args).strip()
+    if not cmd_text:
+        print("Usage: control_plane.py firewall <command_string>")
+        return 1
+
+    overlay: dict[str, Any] = profile.get("command_firewall_overlay", {})
+    deny_rules: list[str] = overlay.get("deny", [])
+    confirm_rules: list[str] = overlay.get("confirm", [])
+
+    for pattern in deny_rules:
+        try:
+            if re.search(pattern, cmd_text, re.IGNORECASE):
+                print(f"DENY: Dangerous pattern matched: '{pattern}'")
+                return 0
+        except re.error:
+            continue
+
+    for pattern in confirm_rules:
+        try:
+            if re.search(pattern, cmd_text, re.IGNORECASE):
+                print(f"CONFIRM: Potentially risky pattern matched: '{pattern}'")
+                return 0
+        except re.error:
+            continue
+
+    print("ALLOW: Command verified safe by firewall.")
+    return 0
+
+
+def _handle_level(args: list[str]) -> int:
+    """Handle level / set-level subcommand."""
+    service = AuditService()
+    if args:
+        target_level = args[0]
+        if service.set_audit_level(target_level):
+            print(f"Audit level successfully set to '{target_level.lower()}'.")
+            return 0
+        print(
+            f"Error: Invalid level '{target_level}'. "
+            "Valid options: lite, full, ultra."
+        )
+        return 1
+    status = service.get_status()
+    print(f"Current Audit Level: {status['audit_level']}")
+    return 0
+
+
+def _handle_scan(args: list[str]) -> int:
+    """Handle scan / audit subcommand."""
+    target_path = args[0] if args else "."
+    service = AuditService()
+    _, _, summary = service.run_audit(target_path)
+    print(summary)
+    return 0
+
+
+def dispatch(args: list[str]) -> int:
+    """Dispatch command line arguments to appropriate handler."""
     command = args[0].lower() if args else "status"
 
     if command == "status":
         return _print_status()
 
+    if command == "version":
+        return _handle_version()
+
+    if command == "firewall":
+        return _handle_firewall(args[1:])
+
     if command in ("level", "set-level"):
-        service = AuditService()
-        if len(args) > 1:
-            target_level = args[1]
-            if service.set_audit_level(target_level):
-                print(f"Audit level successfully set to '{target_level.lower()}'.")
-                return 0
-            print(
-                f"Error: Invalid level '{target_level}'. "
-                "Valid options: lite, full, ultra."
-            )
-            return 1
-        status = service.get_status()
-        print(f"Current Audit Level: {status['audit_level']}")
-        return 0
+        return _handle_level(args[1:])
 
     if command in ("scan", "audit"):
-        target_path = args[1] if len(args) > 1 else "."
-        service = AuditService()
-        _, _, summary = service.run_audit(target_path)
-        print(summary)
-        return 0
+        return _handle_scan(args[1:])
 
     print(f"Unknown command: {command}")
     return 1
+
+
+def main(args: Sequence[str] | None = None) -> int:
+    """Main CLI entrypoint."""
+    if args is None:
+        args = sys.argv[1:]
+    return dispatch(list(args))
 
 
 if __name__ == "__main__":
