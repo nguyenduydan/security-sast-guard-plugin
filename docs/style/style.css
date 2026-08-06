@@ -202,34 +202,41 @@ table, tr, td, th {
 }
 
 /* --------------------------------------------------------------------------
-   Cyber Dock Smooth Fluid HUD Expansion Engine
+   60FPS Ultra-Smooth Fluid Cyber Dock Expansion Engine
    -------------------------------------------------------------------------- */
 #cyber-dock {
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              gap 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: width, padding, gap;
 }
 
 .dock-item {
-  transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              padding 0.35s ease,
-              margin 0.35s ease,
-              transform 0.2s ease !important;
-  max-width: 180px;
+  transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease-out,
+              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  max-width: 150px;
   opacity: 1;
   overflow: hidden;
   white-space: nowrap;
+  will-change: max-width, opacity, padding, margin;
 }
 
 .dock-divider {
-  transition: opacity 0.3s ease, max-width 0.35s ease, margin 0.35s ease !important;
-  max-width: 10px;
+  transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease-out,
+              margin 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  max-width: 4px;
   opacity: 1;
   overflow: hidden;
+  will-change: max-width, opacity, margin;
 }
 
 @media (min-width: 640px) {
   #cyber-dock:not(:hover) {
-    gap: 0.5rem !important;
+    gap: 0.375rem !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
     box-shadow: 4px 4px 0px 0px #000000 !important;
@@ -240,25 +247,23 @@ table, tr, td, th {
   }
 
   #cyber-dock:not(:hover) .dock-item:not(.nav-link-active):not(.dock-always-visible) {
-    position: absolute !important;
+    max-width: 0px !important;
     opacity: 0 !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-left: -0.1875rem !important;
+    margin-right: -0.1875rem !important;
+    border: none !important;
     pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
   
   #cyber-dock:not(:hover) .dock-divider {
-    position: absolute !important;
+    max-width: 0px !important;
     opacity: 0 !important;
+    margin-left: -0.1875rem !important;
+    margin-right: -0.1875rem !important;
+    border: none !important;
     pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 }
 
