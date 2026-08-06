@@ -150,7 +150,7 @@ table, tr, td, th {
   box-shadow: 4px 4px 0px 0px #ffffff;
 }
 
-/* Navigation Links */
+/* Navigation Links & Dock States */
 .nav-link-active {
   background: #000000 !important;
   color: #ffffff !important;
@@ -160,6 +160,41 @@ table, tr, td, th {
 .dark .nav-link-active {
   background: #ffffff !important;
   color: #000000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Cyber Dock Collapsed (Idle) vs Expanded (Hover) HUD Behavior
+   -------------------------------------------------------------------------- */
+#cyber-dock {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 640px) {
+  #cyber-dock:not(:hover) .dock-item:not(.nav-link-active):not(.dock-always-visible) {
+    display: none !important;
+  }
+  
+  #cyber-dock:not(:hover) .dock-divider {
+    display: none !important;
+  }
+
+  #cyber-dock:not(:hover) {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    box-shadow: 4px 4px 0px 0px #000000;
+  }
+
+  .dark #cyber-dock:not(:hover) {
+    box-shadow: 4px 4px 0px 0px #ffffff;
+  }
+  
+  #cyber-dock:hover {
+    box-shadow: 6px 6px 0px 0px #000000;
+  }
+
+  .dark #cyber-dock:hover {
+    box-shadow: 6px 6px 0px 0px #ffffff;
+  }
 }
 
 /* WCAG Focus Rings */
