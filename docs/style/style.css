@@ -2,6 +2,14 @@
    Security SAST Guard - Neo-Brutalist Design System & Animation Engine
    ========================================================================== */
 
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 3.5rem;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   line-height: 1.6;
