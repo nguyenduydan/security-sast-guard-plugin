@@ -4,8 +4,62 @@
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  transition: background-color 0.2s ease, color 0.2s ease;
   line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Smooth Fluid Theme Transition Engine
+   -------------------------------------------------------------------------- */
+body,
+header,
+nav,
+section,
+div,
+span,
+h1, h2, h3, h4, h5, h6,
+p,
+a,
+button,
+code,
+pre,
+input,
+table, tr, td, th {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Theme Toggle Button Micro-Animation */
+#theme-toggle-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+#theme-toggle-btn:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+#theme-toggle-btn:active {
+  transform: scale(0.92);
+}
+
+.theme-icon-spin {
+  animation: theme-icon-rotate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes theme-icon-rotate {
+  0% {
+    transform: rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
 }
 
 .font-display {
