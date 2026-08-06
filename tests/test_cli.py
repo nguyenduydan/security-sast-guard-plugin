@@ -71,3 +71,26 @@ def test_audit_service_status_dynamic_reload() -> None:
 
     # Reset back to full
     service.set_audit_level("full")
+
+
+def test_cli_version_command(capsys: CaptureFixture[str]) -> None:
+    code = main(["version"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "Security SAST Guard v" in captured.out
+    assert "Python:" in captured.out
+    assert "Platform:" in captured.out
+
+
+def test_cli_firewall_command_deny(capsys: CaptureFixture[str]) -> None:
+    code = main(["firewall", "Remove-Item -Recurse -Force C:\\Windows"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "DENY" in captured.out or "CONFIRM" in captured.out
+
+
+def test_cli_firewall_command_allow(capsys: CaptureFixture[str]) -> None:
+    code = main(["firewall", "git status"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "ALLOW" in captured.out
