@@ -1,7 +1,12 @@
-﻿$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+# Configure Console Output Encoding for UTF-8 Symbols
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# ==============================================================================
+# TUI Helper Functions (Cyber / Neo-Brutalist Theme)
+# ==============================================================================
 
 function Write-CyberHeader {
     param([string]$Title, [string]$SubTitle)
@@ -11,9 +16,7 @@ function Write-CyberHeader {
     Write-Host "║  ██╔════╝██╔══██╗██╔════╝╚══██╔══╝   SECURITY SAST GUARD             ║" -ForegroundColor Cyan
     Write-Host "║  ███████╗███████║███████╗   ██║      Zero-Trust Shield               ║" -ForegroundColor Cyan
     Write-Host "║  ╚════██║██╔══██║╚════██║   ██║                                      ║" -ForegroundColor Cyan
-    $t = if ($Title) { $Title.ToUpper() } else { "INSTALLER v0.10.1" }
-    $tStr = "║  ███████║██║  ██║███████║   ██║      {0,-31} ║" -f $t
-    Write-Host $tStr -ForegroundColor Cyan
+    Write-Host ("║  ███████║██║  ██║███████║   ██║      {0,-31} ║" -f $Title.ToUpper()) -ForegroundColor Cyan
     Write-Host "║  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝                                      ║" -ForegroundColor Cyan
     Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
     if ($SubTitle) {
@@ -27,50 +30,47 @@ function Write-CyberStep {
     $width = 25
     $filled = [math]::Floor($width * $Percent / 100)
     $bar = ("█" * $filled) + ("░" * ($width - $filled))
-    $statusLine = "`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message
+    $statusLine = ("`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message)
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
 
 function Write-CyberPass {
     param([string]$Message)
-    $passLine = "`r [✓] {0,-70}" -f $Message
-    Write-Host $passLine -ForegroundColor Green
+    $chk = [char]0x2713
+    Write-Host ("`r [$chk] {0,-70}" -f $Message) -ForegroundColor Green
 }
 
 function Write-CyberWarn {
     param([string]$Message)
-    $warnLine = "`r [!] {0,-70}" -f $Message
-    Write-Host $warnLine -ForegroundColor Yellow
+    Write-Host ("`r [!] {0,-70}" -f $Message) -ForegroundColor Yellow
 }
 
 function Write-CyberFail {
     param([string]$Message)
+    $cross = [char]0x2717
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "║  [✗] INSTALLATION FAILED                                             ║" -ForegroundColor Red
+    Write-Host ("║  [$cross] INSTALLATION FAILED                                             ║") -ForegroundColor Red
     Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor Red
-    $errLine = "║  Error: {0,-60} ║" -f $Message
-    Write-Host $errLine -ForegroundColor Red
+    Write-Host ("║  Error: {0,-60} ║" -f $Message) -ForegroundColor Red
     Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Red
     Write-Host ""
 }
 
 function Write-CyberSuccessCard {
     param([string]$TargetDir, [string]$Version)
+    $chk = [char]0x2713
     Write-Host ""
     Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "║  [✓] INSTALLATION SUCCESSFUL                                         ║" -ForegroundColor Green
+    Write-Host ("║  [$chk] INSTALLATION SUCCESSFUL                                         ║") -ForegroundColor Green
     Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
-    $targetLine = "║  Target Directory : {0,-48} ║" -f $TargetDir
-    $versionLine = "║  Installed Version: {0,-48} ║" -f $Version
-    $statusLine = "║  Status           : {0,-48} ║" -f "Active and Ready"
-    Write-Host $targetLine -ForegroundColor White
-    Write-Host $versionLine -ForegroundColor White
-    Write-Host $statusLine -ForegroundColor Green
+    Write-Host ("║  Target Directory : {0,-48} ║" -f $TargetDir) -ForegroundColor White
+    Write-Host ("║  Installed Version: {0,-48} ║" -f $Version) -ForegroundColor White
+    Write-Host ("║  Status           : {0,-48} ║" -f "Active and Ready") -ForegroundColor Green
     Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
     Write-Host "║  Quick Commands:                                                     ║" -ForegroundColor White
-    Write-Host "║   • In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      ║" -ForegroundColor Gray
-    Write-Host "║   • In Terminal   : 'python control_plane.py status'                 ║" -ForegroundColor Gray
+    Write-Host "║   * In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      ║" -ForegroundColor Gray
+    Write-Host "║   * In Terminal   : 'python control_plane.py status'                 ║" -ForegroundColor Gray
     Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
 }
