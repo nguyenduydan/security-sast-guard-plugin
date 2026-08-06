@@ -1,5 +1,6 @@
 """Markdown to JSON rule converter script for SAST rules."""
 
+import argparse
 import json
 import re
 from pathlib import Path
@@ -136,8 +137,6 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
 
 def main() -> None:
     """Run rule synchronization from external Markdown rules repository."""
-    import argparse
-
     parser = argparse.ArgumentParser(description="Convert Markdown SAST rules to JSON.")
     parser.add_argument(
         "--dir",
@@ -184,7 +183,10 @@ def main() -> None:
         target_path.write_text(
             json.dumps(final_rules, indent=2, ensure_ascii=False), encoding="utf-8"
         )
-        print(f"Successfully added rule(s) from '{args.input}'. Total active rules: {len(final_rules)}.")
+        print(
+            f"Successfully added rule(s) from '{args.input}'. "
+            f"Total active rules: {len(final_rules)}."
+        )
         return
 
     source_dir = args.dir
@@ -202,4 +204,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
