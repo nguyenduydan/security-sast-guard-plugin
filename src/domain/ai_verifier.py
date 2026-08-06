@@ -2,6 +2,8 @@
 
 from typing import Any
 
+from src.domain.ai_cache import AICache
+
 KNOWN_SANITIZERS: set[str] = {
     "dompurify",
     "sanitize",
@@ -32,6 +34,9 @@ SQL_MARKERS: list[str] = ["?", "%s", "$1", ":1", "bindparam", "execute("]
 class AIVerifier:
     """Evaluates candidate findings and eliminates false positives based on context."""
 
+    def __init__(self, cache: AICache | None = None) -> None:
+        self.cache = cache or AICache()
+
     def filter_false_positives(
         self, findings: list[dict[str, Any]]
     ) -> tuple[list[dict[str, Any]], int]:
@@ -43,10 +48,27 @@ class AIVerifier:
         fp_count = 0
 
         for f in findings:
+            rule_id = str(f.get("rule_id", ""))
+            line_content = str(f.get("line_content", ""))
+            path = str(f.get("path", ""))
+            file_ext = path.split(".")[-1] if "." in path else ""
+
+            key = self.cache.compute_key(rule_id, line_content, file_ext)
+            cached_res = self.cache.get(key)
+
+            if cached_res is not None:
+                if not cached_res:
+                    fp_count += 1
+                else:
+                    verified.append(f)
+                continue
+
             if self.is_false_positive(f):
                 fp_count += 1
+                self.cache.set(key, False)
             else:
                 verified.append(f)
+                self.cache.set(key, True)
 
         return verified, fp_count
 

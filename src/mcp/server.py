@@ -1,0 +1,106 @@
+"""Stdio JSON-RPC MCP Server implementation."""
+
+from __future__ import annotations
+
+import json
+import sys
+from typing import Any
+
+from src.mcp.schemas import TOOLS_SCHEMAS
+from src.mcp.tools import MCPToolHandlers
+
+
+class MCPServer:
+    """Stdio JSON-RPC MCP Server for Antigravity 2.0."""
+
+    def __init__(self) -> None:
+        self.handlers = MCPToolHandlers()
+
+    def run(self) -> None:
+        """Run standard I/O JSON-RPC loop."""
+        for line in sys.stdin:
+            line = line.strip()
+            if not line:
+                continue
+
+            try:
+                request = json.loads(line)
+                response = self.handle_request(request)
+                if response is not None:
+                    sys.stdout.write(json.dumps(response) + "\n")
+                    sys.stdout.flush()
+            except Exception as err:  # pylint: disable=broad-exception-caught
+                err_resp = {
+                    "jsonrpc": "2.0",
+                    "id": None,
+                    "error": {"code": -32603, "message": str(err)},
+                }
+                sys.stdout.write(json.dumps(err_resp) + "\n")
+                sys.stdout.flush()
+
+    def handle_request(self, req: dict[str, Any]) -> dict[str, Any] | None:
+        """Process incoming JSON-RPC request."""
+        req_id = req.get("id")
+        method = req.get("method")
+        params = req.get("params", {})
+
+        if method == "initialize":
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {
+                    "protocolVersion": "2024-11-05",
+                    "capabilities": {"tools": {}},
+                    "serverInfo": {
+                        "name": "security-sast-guard",
+                        "version": "1.0.0",
+                    },
+                },
+            }
+
+        if method == "tools/list":
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"tools": TOOLS_SCHEMAS},
+            }
+
+        if method == "tools/call":
+            tool_name = params.get("name")
+            arguments = params.get("arguments", {})
+            result = self.execute_tool(tool_name, arguments)
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {
+                    "content": [{"type": "text", "text": json.dumps(result, indent=2)}]
+                },
+            }
+
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "error": {"code": -32601, "message": f"Method '{method}' not found"},
+        }
+
+    def execute_tool(
+        self, tool_name: str | None, args: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Dispatch tool name to handler function."""
+        if tool_name == "sast_scan_file":
+            return self.handlers.handle_sast_scan_file(args.get("file_path", "."))
+        if tool_name == "sast_scan_diff":
+            return self.handlers.handle_sast_scan_diff()
+        if tool_name == "sast_check_command":
+            return self.handlers.handle_sast_check_command(args.get("command", ""))
+        if tool_name == "sast_get_status":
+            return self.handlers.handle_sast_get_status()
+        if tool_name == "sast_set_level":
+            return self.handlers.handle_sast_set_level(args.get("level", "full"))
+
+        return {"error": f"Unknown tool name: {tool_name}"}
+
+
+if __name__ == "__main__":
+    server = MCPServer()
+    server.run()

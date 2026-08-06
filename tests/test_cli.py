@@ -94,3 +94,12 @@ def test_cli_firewall_command_allow(capsys: CaptureFixture[str]) -> None:
     assert code == 0
     captured = capsys.readouterr()
     assert "ALLOW" in captured.out
+
+
+def test_cli_init_command(capsys: CaptureFixture[str], tmp_path, monkeypatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    code = main(["init"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "Successfully initialized project profile" in captured.out
+    assert (tmp_path / ".sast" / "profile.json").exists()

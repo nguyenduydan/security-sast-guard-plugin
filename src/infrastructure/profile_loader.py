@@ -6,6 +6,7 @@ from typing import Any
 
 from src.domain.exceptions import SecurityIntegrityError
 from src.infrastructure.integrity_checker import IntegrityChecker
+from src.infrastructure.profile_resolver import ProfileResolver
 
 
 class ProfileLoader:
@@ -19,6 +20,9 @@ class ProfileLoader:
     ) -> dict[str, Any]:
         """Load security profile configuration from path."""
         file_path = Path(path)
+        if path == "profile.json":
+            file_path = ProfileResolver.resolve_profile_path()
+
         if not file_path.exists():
             return {}
 

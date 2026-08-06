@@ -126,6 +126,36 @@ def _handle_scan(args: list[str]) -> int:
     return 0
 
 
+def _handle_init() -> int:
+    """Initialize project-local .sast/profile.json configuration."""
+    sast_dir = Path(".sast")
+    sast_dir.mkdir(exist_ok=True)
+    profile_file = sast_dir / "profile.json"
+
+    if profile_file.exists():
+        print(f"Project profile already exists at {profile_file}")
+        return 0
+
+    tmpl_file = Path(__file__).parents[2] / "templates" / "profile_template.json"
+    if tmpl_file.exists():
+        content = tmpl_file.read_text(encoding="utf-8")
+    else:
+        content = '{\n  "profile_name": "project_local"\n}\n'
+
+    profile_file.write_text(content, encoding="utf-8")
+    print(f"Successfully initialized project profile at {profile_file}")
+    return 0
+
+
+def _handle_mcp_server() -> int:
+    """Run Stdio JSON-RPC MCP Server."""
+    from src.mcp.server import MCPServer
+
+    server = MCPServer()
+    server.run()
+    return 0
+
+
 def dispatch(args: list[str]) -> int:
     """Dispatch command line arguments to appropriate handler."""
     command = args[0].lower() if args else "status"
@@ -144,6 +174,12 @@ def dispatch(args: list[str]) -> int:
 
     if command in ("scan", "audit"):
         return _handle_scan(args[1:])
+
+    if command == "init":
+        return _handle_init()
+
+    if command in ("mcp-server", "mcp"):
+        return _handle_mcp_server()
 
     print(f"Unknown command: {command}")
     return 1

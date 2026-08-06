@@ -1,0 +1,3 @@
+[command]
+name = "sast-init"
+description = "Initialize project-local .sast/profile.json configuration"
