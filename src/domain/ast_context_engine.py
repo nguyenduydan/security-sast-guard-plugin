@@ -29,9 +29,9 @@ class ASTContextEngine:
         stripped = line_content.strip()
 
         # HTML / ASPX Inline Event & Attribute Detection
+        if re.search(r"(?i)\bon[a-z]+\s*=", stripped):
+            return "html-inline-event"
         if file_path.endswith((".html", ".htm", ".aspx", ".ascx")):
-            if re.search(r"(?i)\bon[a-z]+\s*=", stripped):
-                return "html-inline-event"
             if "<" in stripped and ">" in stripped and "=" in stripped:
                 return "html-attribute"
 
