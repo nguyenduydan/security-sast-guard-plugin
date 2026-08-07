@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.3...v1.2.4) (2026-08-07)
+
+
+### 🐛 Bug Fixes
+
+* **mcp:** write mcp_config.json as utf8 without bom to prevent json parse errors ([d08a912](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d08a912c4ba0a63613b689a4c3a1ad682a2b6573))
+
 ## [1.2.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.2...v1.2.3) (2026-08-07)
 
 
