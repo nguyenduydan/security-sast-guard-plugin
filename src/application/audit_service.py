@@ -163,7 +163,7 @@ class AuditService:
         )
         if is_python:
             return "python"
-        if (cwd / "package." + "json").exists():
+        if (cwd / ("package." + "json")).exists():
             return "node"
         if (cwd / "pom.xml").exists() or (cwd / "build.gradle").exists():
             return "java"
