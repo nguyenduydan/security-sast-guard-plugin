@@ -212,9 +212,16 @@ try {
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
-    Set-Location -Path $TempDir
-    Remove-Item -Path $InstallDir -Recurse -Force
-    Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
+    try {
+        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*src.mcp.server*" -and $_.CommandLine -like "*security-sast-guard*" } | ForEach-Object {
+            Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
+        }
+        Start-Sleep -Milliseconds 500
+    } catch {}
+
+    Get-ChildItem -Path $ExtractedRootFolder.FullName | ForEach-Object {
+        Copy-Item -Path $_.FullName -Destination $InstallDir -Recurse -Force
+    }
 
     if ($HasProfile) {
         Copy-Item -Path $BackupPath -Destination $ProfilePath -Force
