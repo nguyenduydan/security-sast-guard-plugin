@@ -1,10 +1,11 @@
-﻿param(
+param(
     [switch]$Ascii,
     [switch]$Quiet
 )
 
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
+$global:ProgressPreference = "SilentlyContinue"
 
 try {
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -357,7 +358,13 @@ try {
     }
 
     Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying plugin files and registering MCP server..." -Percent 75
-    Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
+    $global:ProgressPreference = "SilentlyContinue"
+    try {
+        Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($ZipPath, $ExtractPath)
+    } catch {
+        Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
+    }
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
     $PluginsDir = Split-Path $InstallDir
