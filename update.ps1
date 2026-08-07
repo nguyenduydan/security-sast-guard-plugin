@@ -118,8 +118,11 @@ function Register-MCPServer {
         $JsonObj | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue ([PSCustomObject]@{}) -Force
     }
 
+    $PyCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if ($PyCmd) { $PyCmd = $PyCmd.Replace("\", "/") } else { $PyCmd = "python" }
+
     $ServerConfig = [PSCustomObject]@{
-        command = "python"
+        command = $PyCmd
         args    = @("-m", "src.mcp.server")
         cwd     = $NormPath
         env     = [PSCustomObject]@{ PYTHONPATH = $NormPath }
