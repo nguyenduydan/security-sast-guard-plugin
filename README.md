@@ -3,12 +3,12 @@
 <img src="banner.png" alt="Security SAST Guard banner" width="100%">
 
 # 🛡️ SECURITY SAST GUARD PLUGIN
-**Zero-Trust Enterprise SAST & Real-time Command Firewall (v1.0.0)**
+**Zero-Trust Enterprise SAST & Real-time Command Firewall**
 *Engineered for Google Antigravity 2.0 & Gemini CLI Ecosystems*
 
 [![CI Quality Gate](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml)
 [![Release Status](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml)
-[![Version](https://img.shields.io/badge/version-1.0.0-10b981.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/releases/tag/v1.0.0)
+[![Latest Release](https://img.shields.io/github/v/release/nguyenduydan/security-sast-guard-plugin?color=10b981)](https://github.com/nguyenduydan/security-sast-guard-plugin/releases)
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
 [![MCP Server](https://img.shields.io/badge/MCP-Stdio%20Server-violet.svg)](#-antigravity-20-stdio-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -21,17 +21,17 @@
 
 ## 🕵️‍♂️ About Security SAST Guard
 
-**Security SAST Guard v1.0.0** is your automated, zero-trust security co-pilot for Google Antigravity & Gemini CLI. It works stealthily behind the scenes to keep your local machine safe from destructive shell commands, while auditing AI-generated code against OWASP and CWE standards in real-time.
+**Security SAST Guard** is your automated, zero-trust security co-pilot for Google Antigravity & Gemini CLI. It works stealthily behind the scenes to keep your local machine safe from destructive shell commands, while auditing AI-generated code against OWASP and CWE standards in real-time.
 
 > *"Empower your AI without compromising your system's integrity."*
 
 ---
 
-## 🚨 What's New in v1.0.0 Major Release
+## 🔥 Core Security Features
 
-### 🌐 1. Pure Python Cross-Platform FirewallEngine & Auto-Hooks
-- **Anti-Bypass Deobfuscation:** Detects and strips caret obfuscation (`c^m^d`), PowerShell backticks (``c`m`d``), and automatically decodes Base64 payloads (`cm0gLXJmIC8=` -> `rm -rf /`).
-- **Cross-Platform Compatibility:** Native POSIX bash (`hooks/firewall_hook.sh`) and Windows PowerShell launcher supporting Linux, macOS, and Windows.
+### 🌐 1. Real-Time Command Firewall & Anti-Bypass Deobfuscation
+- **Anti-Bypass Engine:** Detects and strips caret obfuscation (`c^m^d`), PowerShell backticks (``c`m`d``), and automatically decodes Base64 payloads (`cm0gLXJmIC8=` -> `rm -rf /`).
+- **Cross-Platform Protection:** Native POSIX bash (`hooks/firewall_hook.sh`) and Windows PowerShell hooks for Linux, macOS, and Windows environments.
 - **PostToolCall Auto-Scan Hook:** `PostToolCallExecute` hook (`hooks/post_write_hook.py`) automatically audits files written or modified by AI agents.
 
 ### 🔌 2. Native Stdio MCP Server for Antigravity 2.0
@@ -45,18 +45,18 @@ Exposes 8 Stdio JSON-RPC MCP tools for seamless IDE integration:
 7. **`sast_init()`**: Initializes project-local `.sast/profile.json` security profile.
 8. **`sast_get_help()`**: Retrieves quick reference usage documentation.
 
-
-### 🗂️ 3. Multi-Project Profile Resolver & `/sast-init`
+### 🗂️ 3. Multi-Project Profile Resolver & Custom Rule Sync
 - **Priority Cascade Resolution:** Loads profile settings in order: `.sast/profile.json` (CWD) ➔ `.sast/profile.json` (Git Root) ➔ Global Plugin `profile.json`.
-- **Project Initialization:** Slash command `/sast-init` (or `python control_plane.py init`) generates project-specific security rules.
+- **Project Initialization:** Slash command `/sast-init` (or `sast init`) generates project-specific security rules.
 
 ### 🤖 4. AI Response Cache (SHA-256) & Dual Report Formats
 - **SHA-256 Cache:** Local cache (`~/.sast/ai_cache.json`) with 24h TTL eliminates redundant LLM verification calls.
 - **Dual Output Formats:** Supports both Markdown (`.md`) and JSON (`.json`) report generation (`--format json`).
 
-### 🎨 5. Cyber / Neo-Brutalist TUI & Interactive Docs Site
+### 🎨 5. Cyber / Neo-Brutalist TUI & Interactive Documentation
 - **PowerShell Cyber TUI:** `install.ps1`, `update.ps1`, and `remove.ps1` feature Cyber/Neo-Brutalist ASCII headers, block progress bars (`[████████░░░]`), and UTF-8 BOM encoding for perfect encoding compatibility.
-- **Interactive Landing Page:** Updated [`docs/index.html`](docs/index.html) with separate CSS/JS assets ([`docs/style/style.css`](docs/style/style.css), [`docs/style/app.js`](docs/style/app.js)), live 5-step workflow animation, and 53 SAST rules explorer.
+- **Interactive Landing Page:** Updated [`docs/index.html`](docs/index.html) with separate CSS/JS assets, live workflow animation, and 53 SAST rules explorer.
+
 
 ---
 
@@ -67,7 +67,7 @@ We provide an automated, Cyber-TUI PowerShell suite to install, update, and remo
 > **Note:** Run these scripts directly in your PowerShell terminal.
 
 ### 📥 1. Install
-Fetches the latest `v1.0.0` release from GitHub, extracts it, and registers the plugin in your Antigravity environment.
+Fetches the latest release from GitHub, extracts it, and registers the plugin in your Antigravity environment.
 ```powershell
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"
 .\install.ps1
@@ -99,7 +99,8 @@ flowchart TD
         MCPClient["MCP Stdio Client"]
     end
 
-    subgraph SecurityGuard["Security SAST Guard v1.0.0 Core"]
+    subgraph SecurityGuard["Security SAST Guard Core"]
+
         Firewall["FirewallEngine (Deobfuscation + Regex)"]
         Scanner["SAST Scanning Engine"]
         MCPServer["Stdio MCP Server"]
@@ -169,7 +170,7 @@ For complete integration details and tool schemas, read [`docs/MCP_INTEGRATION.m
 | :--- | :--- | :--- |
 | 📊 `status` | `sast status` *(or `python control_plane.py status`)* | Displays plugin version, project ID, tech stack, operation mode, and rule counts. |
 | 🎛️ `mode` | `sast mode [strict\|draft]` | Sets operation mode (`strict` \| `draft`). |
-| ℹ️ `version` | `sast version` | Displays plugin version (`v1.0.0`), Python runtime, and platform info. |
+| ℹ️ `version` | `sast version` | Displays plugin version, Python runtime, and platform info. |
 | 🧱 `firewall` | `sast firewall <command>` | Evaluates command against firewall rules with de-obfuscation. |
 | 🚀 `init` | `sast init` | Creates project-local `.sast/profile.json` template. |
 | 🔌 `mcp-server` | `sast mcp-server` | Runs Stdio JSON-RPC MCP Server for IDEs. |
@@ -205,6 +206,7 @@ We welcome security researchers and community contributors! Please read our [CON
 ---
 
 <div align="center">
-  <b>Protected by Security SAST Guard v1.0.0</b><br>
+  <b>Protected by Security SAST Guard</b><br>
   Distributed under the <a href="LICENSE">MIT License</a>.
 </div>
+
