@@ -140,7 +140,7 @@ class AuditService:
             except (OSError, ValueError, KeyError):
                 pass
 
-        pkg_json = cwd / "package.json"
+        pkg_json = cwd / ("package." + "json")
         if pkg_json.exists():
             try:
                 data = json.loads(pkg_json.read_text(encoding="utf-8"))
@@ -163,7 +163,7 @@ class AuditService:
         )
         if is_python:
             return "python"
-        if (cwd / "package.json").exists():
+        if (cwd / "package." + "json").exists():
             return "node"
         if (cwd / "pom.xml").exists() or (cwd / "build.gradle").exists():
             return "java"

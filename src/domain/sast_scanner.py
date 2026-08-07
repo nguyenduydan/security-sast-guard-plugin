@@ -77,17 +77,10 @@ class SASTScanner:
             return False
 
         # Trivial single-character or punctuation junk patterns
+        if len(stripped.replace("\\", "")) <= 1:
+            return False
+
         if stripped in (
-            r"\ ",
-            r"\)",
-            r"\(",
-            r"\\",
-            r"\/",
-            r" ",
-            ")",
-            "(",
-            "\\",
-            "/",
             "-",
             "--",
             "---",
@@ -95,14 +88,6 @@ class SASTScanner:
             ">",
             "<",
             "=",
-            '"',
-            "'",
-            ":",
-            ";",
-            ",",
-            ".",
-            "!",
-            "?",
         ):
             return False
 

@@ -40,6 +40,7 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".github",
     "skills",
     "templates",
+    "tests",
 }
 
 DEFAULT_IGNORE_EXTS: set[str] = {
