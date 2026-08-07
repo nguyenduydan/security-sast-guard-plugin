@@ -82,8 +82,10 @@ def test_ignore_filter_system_dirs(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / ".aiops" / "decisions.jsonl") is True
     assert filter_inst.should_ignore(tmp_path / ".sast" / "profile.json") is True
     assert filter_inst.should_ignore(tmp_path / ".superpowers" / "config.yaml") is True
-    assert filter_inst.should_ignore(tmp_path / ".github" / "workflows" / "ci.yml") is True
-    assert filter_inst.should_ignore(tmp_path / "skills" / "sast-audit" / "SKILL.md") is True
+    github_ci = tmp_path / ".github" / "workflows" / "ci.yml"
+    assert filter_inst.should_ignore(github_ci) is True
+    skills_md = tmp_path / "skills" / "sast-audit" / "SKILL.md"
+    assert filter_inst.should_ignore(skills_md) is True
     assert filter_inst.should_ignore(tmp_path / "coverage" / "report.html") is True
     # Source code must NOT be ignored
     assert filter_inst.should_ignore(tmp_path / "src" / "engine.py") is False
