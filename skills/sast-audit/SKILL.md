@@ -14,5 +14,5 @@ Types:
 - `web`: Web App security rules.
 
 Execution:
-- `file` / `diff` type: Run synchronously via tool call, hide python command, report finding summary.
-- `codebase` / large audit: Run silently as background task (`run_command` async), inform task ID, monitor status, and output concise report upon completion.
+- `file` / `diff` type: Call Native MCP tool `sast_scan_file` when available. If fallback to `run_command` is required, MUST specify descriptive `toolAction="Scanning File Security"` and `toolSummary="SAST Security Audit"` for clean UI rendering.
+- `codebase` / large audit: Run silently as background task (`run_command` async with descriptive `toolAction="Auditing Codebase Security"` and `toolSummary="Codebase SAST Audit"`), inform task ID, monitor status, and output concise report upon completion.
