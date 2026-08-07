@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.7...v1.3.0) (2026-08-07)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **tui:** integrate responsive console theme, ascii fallback, and duration timer ([d25c7ee](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d25c7eed8d57a67e26652b27bac214158990ba07))
+
+
+### 🐛 Bug Fixes
+
+* **tui:** resolve Windows PowerShell string interpolation parser error ([c512d52](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c512d52522895c0c6ac4848b0d477a14e41d4904))
+
 ## [1.2.7](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.6...v1.2.7) (2026-08-07)
 
 
