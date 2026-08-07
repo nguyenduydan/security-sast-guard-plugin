@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.7](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.6...v1.2.7) (2026-08-07)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **tui:** redesign installer and updater scripts with real-time TUI ([7fc63db](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7fc63dbf270213add2e1c4828997ab4137d92af5))
+
 ## [1.2.6](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.5...v1.2.6) (2026-08-07)
 
 
