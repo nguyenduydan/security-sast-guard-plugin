@@ -5,14 +5,12 @@
   "author": "Antigravity Security Team",
   "main": "control_plane.py",
   "skills": [
-    "sast-rules",
-    "sast-firewall",
     "sast-audit",
     "sast-status",
     "sast-init",
     "sast-mode",
-    "sast-help",
     "sast-audit-level"
   ]
 }
+
 

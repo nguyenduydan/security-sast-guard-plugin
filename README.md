@@ -156,13 +156,11 @@ For complete integration details and tool schemas, read [`docs/MCP_INTEGRATION.m
 | Slash Command | Syntax | Description |
 | :--- | :--- | :--- |
 | 🛡️ `/sast-audit` | `/sast-audit <file\|codebase\|api\|web> <path>` | Triggers static vulnerability audit. Outputs Markdown and JSON reports. |
+| 📊 `/sast-status` | `/sast-status` | Displays plugin version, project ID, tech stack, operation mode, and active rules. |
 | 🚀 `/sast-init` | `/sast-init` | Initializes project-local `.sast/profile.json` security profile. |
 | 🎛️ `/sast-mode` | `/sast-mode [strict\|draft]` | Toggles operation mode (`strict`: full enforcement, `draft`: auto-allow low/medium). |
 | 🎚️ `/sast-audit-level`| `/sast-audit-level [lite\|full\|ultra]` | Sets active audit strictness (`lite`: Critical, `full`: OWASP Top10, `ultra`: All + CWE/NIST). |
-| ⚙️ `/sast-rules` | `/sast-rules <add\|sync> <path>` | Compiles Markdown rule definitions into JSON pattern rules. |
-| 🧱 `/sast-firewall` | `/sast-firewall <command>` | Evaluates shell command against Firewall rules (`ALLOW` \| `CONFIRM` \| `DENY`). |
-| 📊 `/sast-status` | `/sast-status` | Displays plugin version, project ID, tech stack, operation mode, and active rules. |
-| 🆘 `/sast-help` | `/sast-help` | Displays quick reference cheatsheet for SAST Guard options. |
+
 
 ### 💻 CLI Subcommands (Terminal Entrypoint & `sast` Runner)
 
