@@ -44,7 +44,17 @@ class MCPServer:
         return get_plugin_version()
 
     def handle_request(self, req: dict[str, Any]) -> dict[str, Any] | None:
-        """Process incoming JSON-RPC request."""
+        """Process incoming JSON-RPC request.
+
+        JSON-RPC 2.0 distinguishes requests (have 'id') from notifications
+        (no 'id' key at all). Notifications MUST NOT receive a response —
+        sending one corrupts the stdio stream and breaks subsequent calls
+        such as tools/list.
+        """
+        # Notifications have no 'id' key (absent, not null) — silently ignore
+        if "id" not in req:
+            return None
+
         req_id = req.get("id")
         method = req.get("method")
         params = req.get("params", {})
