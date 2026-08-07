@@ -53,5 +53,3 @@ def test_mcp_tool_handlers_new_tools() -> None:
     assert res_mode["active_mode"] == "draft"
 
     handlers.handle_sast_set_mode("strict")
-
-
