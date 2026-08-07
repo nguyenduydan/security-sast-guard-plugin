@@ -214,7 +214,11 @@ class SASTScanner:
                                 "line": line_idx,
                                 "line_content": ctx.get("line_content", line_content),
                                 "severity": rule.get("severity", "MEDIUM"),
-                                "scope": scope if scope != "global" else ctx.get("scope", "global"),
+                                "scope": (
+                                    scope
+                                    if scope != "global"
+                                    else ctx.get("scope", "global")
+                                ),
                                 "action": rule.get("action", "Block"),
                             }
                         )

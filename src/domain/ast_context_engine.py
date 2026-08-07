@@ -1,7 +1,7 @@
 """AST Context Engine for node-level scope resolution."""
 
-from html.parser import HTMLParser
 import re
+from html.parser import HTMLParser
 
 
 class HTMLASPXParser(HTMLParser):
@@ -31,17 +31,20 @@ class ASTContextEngine:
         # HTML / ASPX Inline Event & Attribute Detection
         if re.search(r"(?i)\bon[a-z]+\s*=", stripped):
             return "html-inline-event"
-        if file_path.endswith((".html", ".htm", ".aspx", ".ascx")):
-            if "<" in stripped and ">" in stripped and "=" in stripped:
-                return "html-attribute"
+        if (
+            file_path.endswith((".html", ".htm", ".aspx", ".ascx"))
+            and "<" in stripped
+            and ">" in stripped
+            and "=" in stripped
+        ):
+            return "html-attribute"
 
         # JS / TS RegExp method vs Dangerous Sink Detection
-        if file_path.endswith((".js", ".ts", ".jsx", ".tsx", ".aspx", ".html")):
-            if (
-                re.search(r"\.[a-zA-Z0-9_$]+\.exec\s*\(", stripped)
-                or "filenameRegex.exec" in stripped
-            ):
-                return "client-js-regex"
+        if file_path.endswith((".js", ".ts", ".jsx", ".tsx", ".aspx", ".html")) and (
+            re.search(r"\.[a-zA-Z0-9_$]+\.exec\s*\(", stripped)
+            or "filenameRegex.exec" in stripped
+        ):
+            return "client-js-regex"
 
         # Server-side Backend Code Scope
         if file_path.endswith((".py", ".cs", ".java", ".php", ".rb")):
