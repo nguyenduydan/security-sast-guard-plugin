@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.1.1...v1.2.0) (2026-08-07)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **mcp:** auto register MCP server in installer scripts and improve skill fallback UI labels ([0022252](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/00222523d9e80b7df7bee835cd3f43b22bc449e8))
+
+
+### 🐛 Bug Fixes
+
+* **mcp:** add PYTHONPATH env var to MCP server config to resolve src module not found error ([7fc2c65](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7fc2c65b987ee20a77f7a11c486665132c40c7a9))
+* **mcp:** silently ignore JSON-RPC notifications to fix tools/list invalid request error ([5911838](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5911838a5dd4f5d1f30cb025552d6eba3dadd969))
+* **scanner:** exclude doc/text extensions and system dirs from SAST scan to eliminate false positives ([6a2b120](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/6a2b120a53fa0bad5e23bfe12025b20565564226))
+
+
+### 🎨 Code Style & Formatting
+
+* **tests:** fix ruff E501 line-too-long in test_ignore_filter.py ([4d12905](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4d1290594ed40ef84fa4c536ca496f4ec684e9f2))
+
 ## [1.1.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.1.0...v1.1.1) (2026-08-07)
 
 
