@@ -1,21 +1,35 @@
-﻿$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
+$cCheck  = [char]0x2713
+$cCross  = [char]0x2717
+$cBullet = [char]0x2022
+$cFull   = [char]0x2588
+$cLight  = [char]0x2591
+
+$bTL = [char]0x2554
+$bTR = [char]0x2557
+$bBL = [char]0x255A
+$bBR = [char]0x255D
+$bH  = [char]0x2550
+$bV  = [char]0x2551
+$bML = [char]0x2560
+$bMR = [char]0x2563
+
+$bH70 = "$bH" * 70
+
 function Write-CyberHeader {
     param([string]$Title, [string]$SubTitle)
     Clear-Host
-    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
-    Write-Host "║  ███████╗ █████╗ ███████╗████████╗                                   ║" -ForegroundColor Cyan
-    Write-Host "║  ██╔════╝██╔══██╗██╔════╝╚══██╔══╝   SECURITY SAST GUARD             ║" -ForegroundColor Cyan
-    Write-Host "║  ███████╗███████║███████╗   ██║      Zero-Trust Shield               ║" -ForegroundColor Cyan
-    Write-Host "║  ╚════██║██╔══██║╚════██║   ██║                                      ║" -ForegroundColor Cyan
+    Write-Host "$bTL$bH70$bTR" -ForegroundColor DarkCyan
+    Write-Host "$bV  === SECURITY SAST GUARD ===                                       $bV" -ForegroundColor Cyan
+    Write-Host "$bV  Zero-Trust Shield for AI Coding Assistants                       $bV" -ForegroundColor Cyan
     $t = if ($Title) { $Title.ToUpper() } else { "UNINSTALLER v0.10.1" }
-    $tStr = "║  ███████║██║  ██║███████║   ██║      {0,-31} ║" -f $t
+    $tStr = "$bV  {0,-67} $bV" -f $t
     Write-Host $tStr -ForegroundColor Cyan
-    Write-Host "║  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝                                      ║" -ForegroundColor Cyan
-    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+    Write-Host "$bBL$bH70$bBR" -ForegroundColor DarkCyan
     if ($SubTitle) {
         Write-Host " [i] $SubTitle" -ForegroundColor Gray
     }
@@ -26,14 +40,14 @@ function Write-CyberStep {
     param([int]$Step, [int]$TotalSteps, [string]$Message, [int]$Percent)
     $width = 25
     $filled = [math]::Floor($width * $Percent / 100)
-    $bar = ("█" * $filled) + ("░" * ($width - $filled))
+    $bar = ("$cFull" * $filled) + ("$cLight" * ($width - $filled))
     $statusLine = "`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
 
 function Write-CyberPass {
     param([string]$Message)
-    $passLine = "`r [✓] {0,-70}" -f $Message
+    $passLine = "`r [$cCheck] {0,-70}" -f $Message
     Write-Host $passLine -ForegroundColor Green
 }
 
@@ -46,26 +60,26 @@ function Write-CyberWarn {
 function Write-CyberFail {
     param([string]$Message)
     Write-Host ""
-    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "║  [✗] REMOVAL FAILED                                                  ║" -ForegroundColor Red
-    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor Red
-    $errLine = "║  Error: {0,-60} ║" -f $Message
+    Write-Host "$bTL$bH70$bTR" -ForegroundColor Red
+    Write-Host "$bV  [$cCross] REMOVAL FAILED                                                  $bV" -ForegroundColor Red
+    Write-Host "$bML$bH70$bMR" -ForegroundColor Red
+    $errLine = "$bV  Error: {0,-60} $bV" -f $Message
     Write-Host $errLine -ForegroundColor Red
-    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Red
+    Write-Host "$bBL$bH70$bBR" -ForegroundColor Red
     Write-Host ""
 }
 
 function Write-CyberRemovalSuccessCard {
     param([string]$TargetDir)
     Write-Host ""
-    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Yellow
-    Write-Host "║  [✓] REMOVAL SUCCESSFUL                                              ║" -ForegroundColor Yellow
-    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkYellow
-    $targetLine = "║  Removed Directory: {0,-48} ║" -f $TargetDir
-    $statusLine = "║  Status           : {0,-48} ║" -f "Uninstalled"
+    Write-Host "$bTL$bH70$bTR" -ForegroundColor Yellow
+    Write-Host "$bV  [$cCheck] REMOVAL SUCCESSFUL                                              $bV" -ForegroundColor Yellow
+    Write-Host "$bML$bH70$bMR" -ForegroundColor DarkYellow
+    $targetLine = "$bV  Removed Directory: {0,-48} $bV" -f $TargetDir
+    $statusLine = "$bV  Status           : {0,-48} $bV" -f "Uninstalled"
     Write-Host $targetLine -ForegroundColor White
     Write-Host $statusLine -ForegroundColor Gray
-    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Yellow
+    Write-Host "$bBL$bH70$bBR" -ForegroundColor Yellow
     Write-Host ""
 }
 
