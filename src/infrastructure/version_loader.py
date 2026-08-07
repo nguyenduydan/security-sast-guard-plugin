@@ -25,7 +25,7 @@ def get_plugin_version() -> str:
         try:
             for line in pyproject.read_text(encoding="utf-8").splitlines():
                 if line.strip().startswith("version ="):
-                    ver = line.split("=", 1)[1].strip().strip('"\'')
+                    ver = line.split("=", 1)[1].strip().strip("\"'")
                     if ver:
                         return ver
         except OSError:

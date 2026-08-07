@@ -87,7 +87,6 @@ class MCPToolHandlers:
             "confirm_count": status.get("confirm_count", 0),
         }
 
-
     def handle_sast_set_level(self, level: str) -> dict[str, Any]:
         """Set active audit level."""
         success = self.audit_service.set_audit_level(level)
@@ -136,7 +135,6 @@ class MCPToolHandlers:
             "status": "success",
             "message": f"SAST rules synced successfully. Target dir: '{target}'",
         }
-
 
     def handle_sast_get_help(self) -> dict[str, Any]:
         """Get SAST Guard help and usage documentation."""

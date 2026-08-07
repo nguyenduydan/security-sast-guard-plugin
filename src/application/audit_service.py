@@ -134,7 +134,7 @@ class AuditService:
             try:
                 for line in pyproject.read_text(encoding="utf-8").splitlines():
                     if line.strip().startswith("name ="):
-                        found_name = line.split("=", 1)[1].strip().strip('"\'')
+                        found_name = line.split("=", 1)[1].strip().strip("\"'")
                         if found_name:
                             return found_name
             except (OSError, ValueError, KeyError):
@@ -175,8 +175,6 @@ class AuditService:
     def _resolve_version(self) -> str:
         """Resolve plugin version dynamically from version loader."""
         return get_plugin_version()
-
-
 
     def get_status(self) -> dict[str, Any]:
         """Return operational status of security guard with real-time disk state."""
