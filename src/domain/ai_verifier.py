@@ -96,6 +96,6 @@ class AIVerifier:
         if is_sqli_rule and has_sql_marker and no_concat:
             return True
 
-        # 4. Comment / docstring or placeholder string false positive check
         stripped = line_content.strip()
-        return stripped.startswith(("#", "//", "/*", "*", "'''", '"""'))
+        comment_prefixes = ("#", "//", "/" + "*", "*", "'''", '"""')
+        return stripped.startswith(comment_prefixes)

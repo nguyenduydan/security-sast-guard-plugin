@@ -104,5 +104,5 @@ def test_ignore_filter_should_ignore_dir_new_entries(tmp_path: Path) -> None:
     assert filter_inst.should_ignore_dir("coverage") is True
     assert filter_inst.should_ignore_dir("skills") is True
     assert filter_inst.should_ignore_dir("templates") is True
+    assert filter_inst.should_ignore_dir("tests") is True
     assert filter_inst.should_ignore_dir("src") is False
-    assert filter_inst.should_ignore_dir("tests") is False
