@@ -35,12 +35,16 @@
 - **PostToolCall Auto-Scan Hook:** `PostToolCallExecute` hook (`hooks/post_write_hook.py`) automatically audits files written or modified by AI agents.
 
 ### 🔌 2. Native Stdio MCP Server for Antigravity 2.0
-Exposes 5 Stdio JSON-RPC MCP tools for seamless IDE integration:
+Exposes 8 Stdio JSON-RPC MCP tools for seamless IDE integration:
 1. **`sast_scan_file(file_path)`**: Audits target source file for vulnerabilities.
 2. **`sast_scan_diff()`**: Scans uncommitted git changes in the workspace.
 3. **`sast_check_command(command)`**: Evaluates shell command safety (`ALLOW` | `CONFIRM` | `DENY`).
-4. **`sast_get_status()`**: Retrieves loaded profile status, rule counts, and strictness level.
+4. **`sast_get_status()`**: Retrieves plugin version, project ID, tech stack, operation mode, and active rules.
 5. **`sast_set_level(level)`**: Updates active audit level (`lite`, `full`, `ultra`).
+6. **`sast_set_mode(mode)`**: Updates active operation mode (`strict`, `draft`).
+7. **`sast_init()`**: Initializes project-local `.sast/profile.json` security profile.
+8. **`sast_get_help()`**: Retrieves quick reference usage documentation.
+
 
 ### 🗂️ 3. Multi-Project Profile Resolver & `/sast-init`
 - **Priority Cascade Resolution:** Loads profile settings in order: `.sast/profile.json` (CWD) ➔ `.sast/profile.json` (Git Root) ➔ Global Plugin `profile.json`.
@@ -152,23 +156,26 @@ For complete integration details and tool schemas, read [`docs/MCP_INTEGRATION.m
 | :--- | :--- | :--- |
 | 🛡️ `/sast-audit` | `/sast-audit <file\|codebase\|api\|web> <path>` | Triggers static vulnerability audit. Outputs Markdown and JSON reports. |
 | 🚀 `/sast-init` | `/sast-init` | Initializes project-local `.sast/profile.json` security profile. |
+| 🎛️ `/sast-mode` | `/sast-mode [strict\|draft]` | Toggles operation mode (`strict`: full enforcement, `draft`: auto-allow low/medium). |
 | 🎚️ `/sast-audit-level`| `/sast-audit-level [lite\|full\|ultra]` | Sets active audit strictness (`lite`: Critical, `full`: OWASP Top10, `ultra`: All + CWE/NIST). |
 | ⚙️ `/sast-rules` | `/sast-rules <add\|sync> <path>` | Compiles Markdown rule definitions into JSON pattern rules. |
 | 🧱 `/sast-firewall` | `/sast-firewall <command>` | Evaluates shell command against Firewall rules (`ALLOW` \| `CONFIRM` \| `DENY`). |
-| 📊 `/sast-status` | `/sast-status` | Displays profile status card, loaded rule counts, and checksum integrity. |
+| 📊 `/sast-status` | `/sast-status` | Displays plugin version, project ID, tech stack, operation mode, and active rules. |
 | 🆘 `/sast-help` | `/sast-help` | Displays quick reference cheatsheet for SAST Guard options. |
 
-### 💻 CLI Subcommands (Terminal Entrypoint)
+### 💻 CLI Subcommands (Terminal Entrypoint & `sast` Runner)
 
 | CLI Subcommand | Syntax | Description |
 | :--- | :--- | :--- |
-| 📊 `status` | `python control_plane.py status` | Displays profile status, checksum integrity, and active SAST rules. |
-| ℹ️ `version` | `python control_plane.py version` | Displays plugin version (`v1.0.0`), Python runtime, and platform info. |
-| 🧱 `firewall` | `python control_plane.py firewall <command>` | Evaluates command against firewall rules with de-obfuscation. |
-| 🚀 `init` | `python control_plane.py init` | Creates project-local `.sast/profile.json` template. |
-| 🔌 `mcp-server` | `python control_plane.py mcp-server` | Runs Stdio JSON-RPC MCP Server for IDEs. |
-| 🎚️ `level` | `python control_plane.py level [lite\|full\|ultra]` | Updates active SAST audit strictness level. |
-| 🔍 `scan` | `python control_plane.py scan [path] [--format json]` | Scans target path and generates audit report. |
+| 📊 `status` | `sast status` *(or `python control_plane.py status`)* | Displays plugin version, project ID, tech stack, operation mode, and rule counts. |
+| 🎛️ `mode` | `sast mode [strict\|draft]` | Sets operation mode (`strict` \| `draft`). |
+| ℹ️ `version` | `sast version` | Displays plugin version (`v1.0.0`), Python runtime, and platform info. |
+| 🧱 `firewall` | `sast firewall <command>` | Evaluates command against firewall rules with de-obfuscation. |
+| 🚀 `init` | `sast init` | Creates project-local `.sast/profile.json` template. |
+| 🔌 `mcp-server` | `sast mcp-server` | Runs Stdio JSON-RPC MCP Server for IDEs. |
+| 🎚️ `level` | `sast level [lite\|full\|ultra]` | Updates active SAST audit strictness level. |
+| 🔍 `scan` | `sast scan [path] [--format json]` | Scans target path and generates audit report. |
+
 
 ---
 
