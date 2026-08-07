@@ -49,3 +49,12 @@ def test_preceding_comment_suppression():
     """
     findings = scanner.scan_code(code, "test.js")
     assert len(findings) == 0
+
+
+def test_ast_scope_filtering_prevents_false_positive():
+    """Verify AST scope filtering prevents false positives like regex.exec in JS."""
+    scanner = SASTScanner()
+    code = 'var matches = filenameRegex.exec(disposition);'
+    findings = scanner.scan_code(code, "download.js")
+    assert len([f for f in findings if f.rule_id == "RCE_RISK"]) == 0
+

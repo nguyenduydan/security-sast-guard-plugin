@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .ai_verifier import AIVerifier
+from .ast_context_engine import ASTContextEngine
 from .context_extractor import extract_context
 from .git_helper import GitHelper
 from .ignore_filter import IgnoreFilter
@@ -28,6 +29,7 @@ class SASTScanner:
         self.mode = "strict"
         self._rules_cache: list[dict[str, Any]] | None = rules
         self.ai_verifier = AIVerifier()
+        self.ast_engine = ASTContextEngine()
         self._load_profile()
 
     def _load_profile(self) -> None:
@@ -183,7 +185,19 @@ class SASTScanner:
             )
 
             if not is_comment_only:
+                scope = self.ast_engine.resolve_scope(str_path, line_idx, line_content)
                 for rule in rules:
+                    excluded_scopes = rule.get("excluded_scopes", [])
+                    if excluded_scopes and scope in excluded_scopes:
+                        continue
+                    target_scopes = rule.get("target_scopes", [])
+                    if (
+                        target_scopes
+                        and scope not in target_scopes
+                        and scope != "global"
+                    ):
+                        continue
+
                     rule_id = rule.get("id", "UNKNOWN")
                     if self._rule_matches_line(line_content, rule):
                         if self._is_suppressed(line_content, prev_line, rule_id):
@@ -200,7 +214,7 @@ class SASTScanner:
                                 "line": line_idx,
                                 "line_content": ctx.get("line_content", line_content),
                                 "severity": rule.get("severity", "MEDIUM"),
-                                "scope": ctx.get("scope", "global"),
+                                "scope": scope if scope != "global" else ctx.get("scope", "global"),
                                 "action": rule.get("action", "Block"),
                             }
                         )
@@ -360,6 +374,7 @@ class SASTScanner:
         findings: list[dict[str, Any]] = result["findings"]
         return findings
 
+    # pylint: disable=too-many-locals
     def scan_code(self, code: str, filename: str = "sample.py") -> list[Finding]:
         """Scan code string directly and return list of Finding domain objects."""
         rules = self._load_rules()
@@ -379,7 +394,19 @@ class SASTScanner:
             )
 
             if not is_comment_only:
+                scope = self.ast_engine.resolve_scope(filename, line_idx, line_content)
                 for rule in rules:
+                    excluded_scopes = rule.get("excluded_scopes", [])
+                    if excluded_scopes and scope in excluded_scopes:
+                        continue
+                    target_scopes = rule.get("target_scopes", [])
+                    if (
+                        target_scopes
+                        and scope not in target_scopes
+                        and scope != "global"
+                    ):
+                        continue
+
                     rule_id = rule.get("id", "UNKNOWN")
                     if self._rule_matches_line(line_content, rule):
                         if self._is_suppressed(line_content, prev_line, rule_id):
@@ -392,7 +419,7 @@ class SASTScanner:
                                 line=line_idx,
                                 line_content=line_content,
                                 severity=rule.get("severity", "MEDIUM"),
-                                scope="global",
+                                scope=scope,
                                 action=rule.get("action", "Block"),
                             )
                         )
