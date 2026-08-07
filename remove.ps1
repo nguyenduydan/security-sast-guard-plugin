@@ -1,10 +1,11 @@
-﻿param(
+param(
     [switch]$Ascii,
     [switch]$Quiet
 )
 
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
+$global:ProgressPreference = "SilentlyContinue"
 
 try {
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
