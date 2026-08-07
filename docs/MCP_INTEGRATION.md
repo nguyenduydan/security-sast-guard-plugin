@@ -11,8 +11,13 @@ Security SAST Guard provides a native **Model Context Protocol (MCP)** server ov
 | 🛡️ `sast_scan_file` | `file_path: string` | Scans a single target file for OWASP/CWE vulnerabilities. |
 | 🔍 `sast_scan_diff` | *None* | Scans modified git files in current workspace. |
 | 🧱 `sast_check_command` | `command: string` | Tests command safety against Firewall overlay rules (`ALLOW`, `CONFIRM`, `DENY`). |
-| 📊 `sast_get_status` | *None* | Returns active strictness level, rule category counts, and profile integrity status. |
+| 📊 `sast_get_status` | *None* | Returns plugin version, project ID, tech stack, operation mode, and active rules. |
 | 🎚️ `sast_set_level` | `level: string` | Sets active strictness level (`lite`, `full`, or `ultra`). |
+| 🎛️ `sast_set_mode` | `mode: string` | Sets active operation mode (`strict` or `draft`). |
+| 🚀 `sast_init` | *None* | Initializes project-local `.sast/profile.json` security profile. |
+| ⚙️ `sast_sync_rules` | `rules_dir?: string` | Syncs custom Markdown rule definitions into project profile. |
+| 🆘 `sast_get_help` | *None* | Returns quick reference documentation card. |
+
 
 ---
 
