@@ -121,6 +121,41 @@ class SASTScanner:
                 continue
         return False
 
+    @staticmethod
+    def _is_suppressed(
+        line_content: str,
+        prev_line_content: str | None,
+        rule_id: str,
+    ) -> bool:
+        """Check if finding for rule_id is suppressed on current or prev line."""
+        suppression_pattern = re.compile(
+            r"(?:#|//|/\*|<!--)\s*sast-(?:ignore|disable|allow)(?:\s*([a-zA-Z0-9_,\s-]*))?",
+            re.IGNORECASE,
+        )
+
+        def line_suppresses(text: str) -> bool:
+            for match in suppression_pattern.finditer(text):
+                targets_str = match.group(1)
+                if not targets_str or not targets_str.strip():
+                    return True
+                targets = [
+                    t.strip().upper()
+                    for t in re.split(r"[,;|\s]+", targets_str)
+                    if t.strip()
+                ]
+                if rule_id.upper() in targets or "ALL" in targets:
+                    return True
+            return False
+
+        if line_suppresses(line_content):
+            return True
+
+        if prev_line_content and line_suppresses(prev_line_content):
+            return True
+
+        return False
+
+    # pylint: disable=too-many-locals
     def _detect_matches_file(
         self, file_path: Path, rules: list[dict[str, Any]]
     ) -> tuple[list[dict[str, Any]], int]:
@@ -138,32 +173,43 @@ class SASTScanner:
 
         line_count = len(lines)
         str_path = str(file_path)
+        prev_line: str | None = None
 
         for line_idx, raw_line in enumerate(lines, 1):
             line_content = raw_line.rstrip("\r\n")
             stripped = line_content.strip()
 
-            if stripped.startswith("#") or stripped.startswith("//"):
-                continue
+            is_comment_only = (
+                stripped.startswith("#")
+                or stripped.startswith("//")
+                or stripped.startswith("/*")  # sast-ignore WILDCARD_PATH
+                or stripped.startswith("<!--")
+            )
 
-            for rule in rules:
-                if self._rule_matches_line(line_content, rule):
-                    ctx = extract_context(str_path, line_idx)
-                    if ctx.get("is_safe_context"):
-                        continue
+            if not is_comment_only:
+                for rule in rules:
+                    rule_id = rule.get("id", "UNKNOWN")
+                    if self._rule_matches_line(line_content, rule):
+                        if self._is_suppressed(line_content, prev_line, rule_id):
+                            continue
+                        ctx = extract_context(str_path, line_idx)
+                        if ctx.get("is_safe_context"):
+                            continue
 
-                    findings.append(
-                        {
-                            "rule_id": rule.get("id", "UNKNOWN"),
-                            "rule_name": rule.get("name", "Unknown Rule"),
-                            "path": str_path,
-                            "line": line_idx,
-                            "line_content": ctx.get("line_content", line_content),
-                            "severity": rule.get("severity", "MEDIUM"),
-                            "scope": ctx.get("scope", "global"),
-                            "action": rule.get("action", "Block"),
-                        }
-                    )
+                        findings.append(
+                            {
+                                "rule_id": rule_id,
+                                "rule_name": rule.get("name", "Unknown Rule"),
+                                "path": str_path,
+                                "line": line_idx,
+                                "line_content": ctx.get("line_content", line_content),
+                                "severity": rule.get("severity", "MEDIUM"),
+                                "scope": ctx.get("scope", "global"),
+                                "action": rule.get("action", "Block"),
+                            }
+                        )
+
+            prev_line = line_content
 
         return findings, line_count
 
@@ -324,24 +370,35 @@ class SASTScanner:
         findings: list[Finding] = []
         lines = code.splitlines()
 
+        prev_line: str | None = None
         for line_idx, raw_line in enumerate(lines, 1):
             line_content = raw_line.rstrip("\r\n")
             stripped = line_content.strip()
-            if stripped.startswith("#") or stripped.startswith("//"):
-                continue
 
-            for rule in rules:
-                if self._rule_matches_line(line_content, rule):
-                    findings.append(
-                        Finding(
-                            rule_id=rule.get("id", "UNKNOWN"),
-                            rule_name=rule.get("name", "Unknown Rule"),
-                            path=filename,
-                            line=line_idx,
-                            line_content=line_content,
-                            severity=rule.get("severity", "MEDIUM"),
-                            scope="global",
-                            action=rule.get("action", "Block"),
+            is_comment_only = (
+                stripped.startswith("#")
+                or stripped.startswith("//")
+                or stripped.startswith("/*")  # sast-ignore WILDCARD_PATH
+                or stripped.startswith("<!--")
+            )
+
+            if not is_comment_only:
+                for rule in rules:
+                    rule_id = rule.get("id", "UNKNOWN")
+                    if self._rule_matches_line(line_content, rule):
+                        if self._is_suppressed(line_content, prev_line, rule_id):
+                            continue
+                        findings.append(
+                            Finding(
+                                rule_id=rule_id,
+                                rule_name=rule.get("name", "Unknown Rule"),
+                                path=filename,
+                                line=line_idx,
+                                line_content=line_content,
+                                severity=rule.get("severity", "MEDIUM"),
+                                scope="global",
+                                action=rule.get("action", "Block"),
+                            )
                         )
-                    )
+            prev_line = line_content
         return findings
