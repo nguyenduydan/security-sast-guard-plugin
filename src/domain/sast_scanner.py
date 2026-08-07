@@ -147,13 +147,9 @@ class SASTScanner:
                     return True
             return False
 
-        if line_suppresses(line_content):
-            return True
-
-        if prev_line_content and line_suppresses(prev_line_content):
-            return True
-
-        return False
+        return line_suppresses(line_content) or bool(
+            prev_line_content and line_suppresses(prev_line_content)
+        )
 
     # pylint: disable=too-many-locals
     def _detect_matches_file(
