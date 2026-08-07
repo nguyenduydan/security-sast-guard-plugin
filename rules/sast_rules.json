@@ -5,6 +5,13 @@
     "description": "Khớp các hành vi thực thi câu lệnh shell tùy ý hoặc đánh giá mã nguồn (eval, exec, subprocess, os.system).",
     "category": "owasp-web-2021",
     "severity": "Critical",
+    "target_scopes": [
+      "server-code",
+      "node-process-sink"
+    ],
+    "excluded_scopes": [
+      "client-js-regex"
+    ],
     "patterns": [
       "eval\\s*\\(",
       "(?<![\\w.])exec\\s*\\(",
@@ -123,6 +130,11 @@
     "description": "Phát hiện xuất dữ liệu trực tiếp ra giao diện web mà không mã hóa HTML.",
     "category": "web-app-specific",
     "severity": "High",
+    "target_scopes": [
+      "html-attribute",
+      "client-js-sink",
+      "server-code"
+    ],
     "patterns": [
       "(?i)Response\\.Write\\s*\\(",
       "(?i)Html\\.Raw\\s*\\(",
@@ -538,6 +550,10 @@
     "category": "owasp-web-2021",
     "severity": "High",
     "action": "Block",
+    "target_scopes": [
+      "html-inline-event",
+      "html-attribute"
+    ],
     "patterns": [
       "(?i)on(focus|error|load|click|mouseover|submit|keydown)\\s*=\\s*[\\\"'].*?[\\\"']"
     ]
