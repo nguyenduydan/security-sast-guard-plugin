@@ -151,15 +151,19 @@ For complete integration details and tool schemas, read [`docs/MCP_INTEGRATION.m
 
 ## 🎮 Slash Commands & CLI Reference
 
-### 🤖 AI Slash Commands (Chat UI)
+### 🤖 AI Slash Commands (Chat UI & Interactive Grill Modal)
+
+> 💡 **Interactive Grill UI Modal**: Executing any slash command without arguments automatically opens an interactive GUI modal (`ask_question`) in Antigravity for seamless button selection!
 
 | Slash Command | Syntax | Description |
 | :--- | :--- | :--- |
-| 🛡️ `/sast-audit` | `/sast-audit <file\|codebase\|api\|web> <path>` | Triggers static vulnerability audit. Outputs Markdown and JSON reports. |
+| 🛡️ `/sast-audit` | `/sast-audit [type] [path]` | Triggers static vulnerability audit. Omit params to launch Grill UI modal (diff, file, codebase, api, web). Reads active audit level from `profile.json`. |
 | 📊 `/sast-status` | `/sast-status` | Displays plugin version, project ID, tech stack, operation mode, and active rules. |
 | 🚀 `/sast-init` | `/sast-init` | Initializes project-local `.sast/profile.json` security profile. |
-| 🎛️ `/sast-mode` | `/sast-mode [strict\|draft]` | Toggles operation mode (`strict`: full enforcement, `draft`: auto-allow low/medium). |
-| 🎚️ `/sast-audit-level`| `/sast-audit-level [lite\|full\|ultra]` | Sets active audit strictness (`lite`: Critical, `full`: OWASP Top10, `ultra`: All + CWE/NIST). |
+| 🎛️ `/sast-mode` | `/sast-mode [strict\|draft]` | Toggles operation mode (`strict`: full enforcement, `draft`: auto-allow). Omit params for Grill UI modal. |
+| 🎚️ `/sast-audit-level`| `/sast-audit-level [lite\|full\|ultra]` | Sets active audit strictness (`lite`: Critical, `full`: OWASP Top10, `ultra`: All + CWE/NIST). Omit params for Grill UI modal. |
+| 🛠️ `/sast-rules` | `/sast-rules [sync\|add\|status]` | Manages SAST rule definitions. Omit params for Grill UI modal. |
+
 
 
 ### 💻 CLI Subcommands (Terminal Entrypoint & `sast` Runner)

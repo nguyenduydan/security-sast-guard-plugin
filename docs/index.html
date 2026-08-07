@@ -787,9 +787,9 @@ def get_user_account(user_id):
               <div class="space-y-4 font-mono text-xs">
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
-                    <code>🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
+                    <code>🛡️ /sast-audit [type] [path]</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit. Outputs Markdown and JSON reports.</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit using level from profile.json. Omit arguments to launch interactive Grill UI modal.</div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
@@ -810,15 +810,23 @@ def get_user_account(user_id):
                   <div class="flex items-center justify-between text-black dark:text-emerald-400 font-bold text-sm">
                     <code>🎛️ /sast-mode [strict|draft]</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Switches operation mode (<code class="text-emerald-500 font-bold">strict</code>: full enforcement, <code class="text-amber-500 font-bold">draft</code>: auto-allow low/medium).</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Switches operation mode (<code class="text-emerald-500 font-bold">strict</code>: full enforcement, <code class="text-amber-500 font-bold">draft</code>: auto-allow). Omit args for Grill UI modal.</div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-violet font-bold text-sm">
                     <code>🎚️ /sast-audit-level [lite|full|ultra]</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Sets active audit strictness level for project or global workspace.</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Sets active audit strictness level for project or workspace. Omit args for Grill UI modal.</div>
                 </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-amber-400 font-bold text-sm">
+                    <code>🛠️ /sast-rules [sync|add|status]</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Manages active SAST rules. Omit args to launch Grill UI modal.</div>
+                </div>
+
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 Plugin này tự động chạy Command Firewall ở background (PreCommandExecute hook).
 
-Sau mỗi lần sửa code, gọi `/sast-audit file <path>` để xác nhận zero lỗ hổng OWASP/CWE.
+Sau mỗi lần sửa code, gọi `/sast-audit` (hoặc mở Grill UI tương tác qua `ask_question`) để xác nhận zero lỗ hổng OWASP/CWE theo level cài đặt trong profile.json.
 
 ## Release & Git Flow (Conventional Commits)
 
