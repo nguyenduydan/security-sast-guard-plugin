@@ -7,8 +7,6 @@ from src.infrastructure.integrity_checker import IntegrityChecker
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.profile_resolver import ProfileResolver
 from src.infrastructure.report_generator import generate_markdown_report
-
-
 from src.infrastructure.version_loader import get_plugin_version
 
 
@@ -123,8 +121,9 @@ class AuditService:
             return False
 
     def _resolve_project_id(self) -> str:
-        """Resolve project_id from profile, manifest file, or workspace directory name."""
+        """Resolve project_id from profile, manifest, or workspace directory name."""
         pid = str(self.profile.get("project_id", "")).strip()
+
         ignored_placeholders = ("project_local", "unknown", "auto", "")
         if pid and pid.lower() not in ignored_placeholders:
             return pid

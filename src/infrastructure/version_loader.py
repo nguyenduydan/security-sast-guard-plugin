@@ -15,7 +15,7 @@ def get_plugin_version() -> str:
         try:
             with open(plugin_json, encoding="utf-8") as f:
                 data = json.load(f)
-                if "version" in data and data["version"]:
+                if data.get("version"):
                     return str(data["version"])
         except (json.JSONDecodeError, OSError):
             pass

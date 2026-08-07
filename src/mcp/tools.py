@@ -10,7 +10,6 @@ from src.domain.firewall_engine import FirewallEngine
 from src.infrastructure.profile_loader import ProfileLoader
 
 
-
 class MCPToolHandlers:
     """Class exposing handlers for all registered MCP tools."""
 
@@ -132,10 +131,12 @@ class MCPToolHandlers:
 
     def handle_sast_sync_rules(self, rules_dir: str = "") -> dict[str, Any]:
         """Sync custom rules to project profile."""
+        target = rules_dir or "default"
         return {
             "status": "success",
-            "message": f"SAST rules synced successfully. Target dir: '{rules_dir or 'default'}'",
+            "message": f"SAST rules synced successfully. Target dir: '{target}'",
         }
+
 
     def handle_sast_get_help(self) -> dict[str, Any]:
         """Get SAST Guard help and usage documentation."""
