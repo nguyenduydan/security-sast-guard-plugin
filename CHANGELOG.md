@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.3.2...v1.4.0) (2026-08-07)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **ast:** add ASTContextEngine for node scope classification ([06b454b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/06b454b3c84c653003ae9f96b486dbbee1fbf51f))
+* **rules:** add target_scopes and excluded_scopes metadata to sast_rules.json ([129c6aa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/129c6aa1a0b82af63526e2c86553f669dc174e75))
+* **scanner:** integrate ASTContextEngine scope filtering into SASTScanner ([ba20719](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ba20719e0abe8ff196ec9506ba6ea6824ede9496))
+
+
+### 🐛 Bug Fixes
+
+* **lint:** fix mixed line endings and trailing newlines in test_suppression.py ([19a356a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/19a356a3b7af0c3e478663cda98ce15678fa26c6))
+* **lint:** resolve ruff I001, SIM102, and E501 linter issues ([0c161da](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0c161da023dfd6e0ae3c4edea7e6d73971718620))
+
+
+### 📝 Documentation
+
+* **plan:** update implementation plan with docs/index.html landing page task ([6bcffac](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/6bcffacfadfd6c54eeec104c4344e3a4888d961c))
+* update README.md and docs/index.html landing page with Realtime AST Engine & Comment Suppression features ([0086f6d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0086f6d4556d4427e67296748e41fa2b484c3165))
+* update stats to 88 rules, v1.3.2 release tag, 70 pytests in index.html ([401e70c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/401e70c9c6738f2a5bbea37b59f8479e257417b1))
+
+
+### 🎨 Code Style & Formatting
+
+* **lint:** format python files with ruff ([58e08b4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/58e08b44ae6e76298e86d67c1673aba62d02a3f7))
+
 ## [1.3.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.3.1...v1.3.2) (2026-08-07)
 
 
