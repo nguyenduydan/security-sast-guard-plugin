@@ -57,4 +57,3 @@ def test_ast_scope_filtering_prevents_false_positive():
     code = 'var matches = filenameRegex.exec(disposition);'
     findings = scanner.scan_code(code, "download.js")
     assert len([f for f in findings if f.rule_id == "RCE_RISK"]) == 0
-
