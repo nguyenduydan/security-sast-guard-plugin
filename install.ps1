@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -75,6 +75,46 @@ function Write-CyberSuccessCard {
     Write-Host ""
 }
 
+function Register-MCPServer {
+    param([string]$InstallDir)
+    $ConfigDir = Join-Path $HOME ".gemini\config"
+    if (-not (Test-Path $ConfigDir)) {
+        New-Item -ItemType Directory -Path $ConfigDir | Out-Null
+    }
+    $ConfigFile = Join-Path $ConfigDir "mcp_config.json"
+    $NormPath = $InstallDir.Replace("\", "/")
+
+    $JsonObj = $null
+    if (Test-Path $ConfigFile) {
+        try {
+            $JsonObj = Get-Content -Path $ConfigFile -Raw | ConvertFrom-Json
+        } catch {
+            Write-CyberWarn "Could not parse existing mcp_config.json; creating new configuration."
+        }
+    }
+    if (-not $JsonObj) {
+        $JsonObj = [PSCustomObject]@{ mcpServers = [PSCustomObject]@{} }
+    }
+    if (-not $JsonObj.mcpServers) {
+        $JsonObj | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue ([PSCustomObject]@{}) -Force
+    }
+
+    $ServerConfig = [PSCustomObject]@{
+        command = "python"
+        args    = @("-m", "src.mcp.server")
+        cwd     = $NormPath
+    }
+
+    if ($JsonObj.mcpServers.PSObject.Properties['security-sast-guard']) {
+        $JsonObj.mcpServers.'security-sast-guard' = $ServerConfig
+    } else {
+        $JsonObj.mcpServers | Add-Member -NotePropertyName "security-sast-guard" -NotePropertyValue $ServerConfig -Force
+    }
+
+    $JsonObj | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigFile -Encoding UTF8
+    Write-CyberPass "Registered MCP Server 'security-sast-guard' in $ConfigFile"
+}
+
 # ==============================================================================
 # Installation Main Flow
 # ==============================================================================
@@ -136,7 +176,7 @@ try {
         Write-CyberPass "Package checksum step skipped (checksums.txt unavailable)"
     }
 
-    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying plugin files..." -Percent 90
+    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying plugin files & registering MCP server..." -Percent 90
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
@@ -148,11 +188,18 @@ try {
     Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
     Write-CyberPass "Deployed runtime files to target location"
 
+    Register-MCPServer -InstallDir $InstallDir
+
     Write-CyberSuccessCard -TargetDir $InstallDir -Version $($Release.tag_name)
 } catch {
     Write-CyberFail -Message $_.Exception.Message
     exit 1
 } finally {
+    if (Test-Path $TempDir) {
+        Remove-Item -Path $TempDir -Recurse -Force
+    }
+}
+
     if (Test-Path $TempDir) {
         Remove-Item -Path $TempDir -Recurse -Force
     }

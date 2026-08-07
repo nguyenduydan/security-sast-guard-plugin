@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -76,6 +76,46 @@ function Write-CyberSuccessCard {
     Write-Host "║   • In Terminal   : 'python control_plane.py status'                 ║" -ForegroundColor Gray
     Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
+}
+
+function Register-MCPServer {
+    param([string]$InstallDir)
+    $ConfigDir = Join-Path $HOME ".gemini\config"
+    if (-not (Test-Path $ConfigDir)) {
+        New-Item -ItemType Directory -Path $ConfigDir | Out-Null
+    }
+    $ConfigFile = Join-Path $ConfigDir "mcp_config.json"
+    $NormPath = $InstallDir.Replace("\", "/")
+
+    $JsonObj = $null
+    if (Test-Path $ConfigFile) {
+        try {
+            $JsonObj = Get-Content -Path $ConfigFile -Raw | ConvertFrom-Json
+        } catch {
+            Write-CyberWarn "Could not parse existing mcp_config.json; creating new configuration."
+        }
+    }
+    if (-not $JsonObj) {
+        $JsonObj = [PSCustomObject]@{ mcpServers = [PSCustomObject]@{} }
+    }
+    if (-not $JsonObj.mcpServers) {
+        $JsonObj | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue ([PSCustomObject]@{}) -Force
+    }
+
+    $ServerConfig = [PSCustomObject]@{
+        command = "python"
+        args    = @("-m", "src.mcp.server")
+        cwd     = $NormPath
+    }
+
+    if ($JsonObj.mcpServers.PSObject.Properties['security-sast-guard']) {
+        $JsonObj.mcpServers.'security-sast-guard' = $ServerConfig
+    } else {
+        $JsonObj.mcpServers | Add-Member -NotePropertyName "security-sast-guard" -NotePropertyValue $ServerConfig -Force
+    }
+
+    $JsonObj | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigFile -Encoding UTF8
+    Write-CyberPass "Registered MCP Server 'security-sast-guard' in $ConfigFile"
 }
 
 # ==============================================================================
@@ -162,6 +202,8 @@ try {
     } else {
         Write-CyberPass "Installed default configuration profile.json"
     }
+
+    Register-MCPServer -InstallDir $InstallDir
 
     Write-CyberSuccessCard -TargetDir $InstallDir -Version $($Release.tag_name) -RestoredProfile $HasProfile
 } catch {
