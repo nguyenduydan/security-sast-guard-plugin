@@ -106,6 +106,7 @@ function Register-MCPServer {
         command = "python"
         args    = @("-m", "src.mcp.server")
         cwd     = $NormPath
+        env     = [PSCustomObject]@{ PYTHONPATH = $NormPath }
     }
 
     if ($JsonObj.mcpServers.PSObject.Properties['security-sast-guard']) {
