@@ -57,6 +57,14 @@ Exposes 8 Stdio JSON-RPC MCP tools for seamless IDE integration:
 - **PowerShell Cyber TUI:** `install.ps1`, `update.ps1`, and `remove.ps1` feature Cyber/Neo-Brutalist ASCII headers, block progress bars (`[████████░░░]`), and UTF-8 BOM encoding for perfect encoding compatibility.
 - **Interactive Landing Page:** Updated [`docs/index.html`](docs/index.html) with separate CSS/JS assets, live workflow animation, and 53 SAST rules explorer.
 
+### 🌳 6. Dual-Guard Real-Time AST Engine & Inline Comment Suppression
+- **Dual-Guard Node Scope Resolution:** Contextual AST parsing automatically categorizes code structures into precise node scopes before applying security rules:
+  - `html-inline-event`: Intercepts and audits inline HTML event handlers (`onclick`, `onerror`, `onload`).
+  - `client-js-regex`: Validates client-side JavaScript regexes and DOM manipulation logic.
+  - `server-code`: Audits backend server logic (Python, Node.js, etc.) for high-severity vulnerability patterns.
+- **Inline Comment Suppression Engine:** Supports granular inline annotations for rule suppression and false-positive filtering:
+  - `sast-ignore`: Suppresses specified SAST rule checks for individual lines (`# sast-ignore [RULE_ID]` or `// sast-ignore [RULE_ID]`).
+  - `sast-disable` / `sast-enable`: Disables and re-enables specific rules across multi-line code blocks.
 
 ---
 

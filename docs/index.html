@@ -51,6 +51,7 @@
       "featureList": [
         "Real-time command interception",
         "Audits against 53 SAST rules",
+        "Dual-Guard Real-Time AST Scope Engine & Comment Suppression",
         "Zero-trust architecture",
         "Integration with Gemini CLI and Google Antigravity",
         "Dual-theme neo-brutalist user interface"
@@ -548,6 +549,54 @@ def get_user_account(user_id):
                 <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Pytest 100% Coverage</li>
                 <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Detect-Secrets Baseline</li>
               </ul>
+            </div>
+          </div>
+
+          <!-- Feature Card: Real-Time AST Node Scope & Comment Suppression Engine -->
+          <div class="brutal-card rounded-2xl p-6 md:col-span-3 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-violet text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
+                  <i class="ph-bold ph-tree-structure"></i>
+                </div>
+                <span class="px-3 py-1 rounded bg-purple-500/20 text-purple-800 dark:text-brand-violet font-mono text-xs font-bold uppercase border border-purple-500/30">
+                  REAL-TIME AST GUARD
+                </span>
+              </div>
+
+              <h3 class="font-display font-black text-2xl text-black dark:text-white mb-3">Real-Time AST Node Scope &amp; Comment Suppression Engine</h3>
+              <p class="text-slate-800 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
+                Dual-Guard contextual parsing engine resolves precise node execution scopes and supports line-level or block-level comment suppressions:
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1.5">
+                  <div class="text-black dark:text-brand-emerald font-bold text-sm flex items-center gap-1.5">
+                    <i class="ph-bold ph-code text-base"></i> Scope Resolution
+                  </div>
+                  <p class="text-slate-700 dark:text-slate-400 text-[11px] leading-normal">
+                    Accurate node scope categorization: <code class="bg-slate-200 dark:bg-obsidian-850 px-1 py-0.5 rounded font-bold text-emerald-600 dark:text-brand-emerald">html-inline-event</code>, <code class="bg-slate-200 dark:bg-obsidian-850 px-1 py-0.5 rounded font-bold text-cyan-600 dark:text-brand-cyan">client-js-regex</code>, and <code class="bg-slate-200 dark:bg-obsidian-850 px-1 py-0.5 rounded font-bold text-purple-600 dark:text-brand-violet">server-code</code>.
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1.5">
+                  <div class="text-black dark:text-brand-cyan font-bold text-sm flex items-center gap-1.5">
+                    <i class="ph-bold ph-chat-slash text-base"></i> Line Suppression
+                  </div>
+                  <p class="text-slate-700 dark:text-slate-400 text-[11px] leading-normal">
+                    Single line override annotations: <code class="bg-slate-200 dark:bg-obsidian-850 px-1 py-0.5 rounded font-bold text-cyan-600 dark:text-brand-cyan">sast-ignore [RULE_ID]</code> in Python (<code class="text-slate-500">#</code>) or JS/C-style (<code class="text-slate-500">//</code>) comments.
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1.5">
+                  <div class="text-black dark:text-brand-violet font-bold text-sm flex items-center gap-1.5">
+                    <i class="ph-bold ph-shield-slash text-base"></i> Block Suppression
+                  </div>
+                  <p class="text-slate-700 dark:text-slate-400 text-[11px] leading-normal">
+                    Multi-line block directives: toggle suppression ranges with <code class="bg-slate-200 dark:bg-obsidian-850 px-1 py-0.5 rounded font-bold text-purple-600 dark:text-brand-violet">sast-disable [RULE]</code> and re-enable with <code class="bg-slate-200 dark:bg-obsidian-850 px-1 py-0.5 rounded font-bold text-purple-600 dark:text-brand-violet">sast-enable [RULE]</code>.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
