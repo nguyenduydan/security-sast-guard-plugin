@@ -4,35 +4,60 @@ import fnmatch
 from pathlib import Path
 
 DEFAULT_IGNORE_DIRS: set[str] = {
+    # VCS
     ".git",
     ".hg",
     ".svn",
+    # Dependencies
     "node_modules",
     "vendor",
     ".venv",
     "venv",
     "env",
+    # Cache / build artefacts
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
     ".ruff_cache",
-    ".idea",
-    ".vscode",
     "dist",
     "build",
     "out",
     "target",
     ".next",
     ".nuxt",
+    "coverage",
+    "site",
+    # IDE
+    ".idea",
+    ".vscode",
+    # Plugin system / internal tool directories (not executable source)
+    "reports",
+    "docs",
+    ".aiops",
+    ".sast",
+    ".superpowers",
+    ".system_generated",
+    ".github",
+    "skills",
+    "templates",
 }
 
 DEFAULT_IGNORE_EXTS: set[str] = {
+    # Images / media
     ".png",
     ".jpg",
     ".jpeg",
     ".gif",
     ".ico",
     ".svg",
+    ".mp3",
+    ".mp4",
+    # Fonts
+    ".woff",
+    ".woff2",
+    ".ttf",
+    ".eot",
+    # Archives / binaries
     ".pdf",
     ".zip",
     ".tar",
@@ -43,16 +68,19 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".dll",
     ".so",
     ".dylib",
-    ".woff",
-    ".woff2",
-    ".ttf",
-    ".eot",
-    ".mp3",
-    ".mp4",
+    # Compiled / generated
     ".pyc",
     ".pyo",
+    ".map",
+    # Databases
     ".db",
     ".sqlite",
+    # Documentation & plain text (non-executable — main source of false positives)
+    ".md",
+    ".markdown",
+    ".rst",
+    ".txt",
+    ".log",
 }
 
 DEFAULT_IGNORE_FILES: set[str] = {

@@ -33,8 +33,8 @@ def test_ignore_filter_custom_sastignore(tmp_path: Path) -> None:
 
     filter_inst = IgnoreFilter(root_dir=tmp_path)
     assert filter_inst.should_ignore(tmp_path / "test.tmp") is True
-    assert filter_inst.should_ignore(tmp_path / "secret_folder" / "data.txt") is True
-    assert filter_inst.should_ignore(tmp_path / "normal.txt") is False
+    assert filter_inst.should_ignore(tmp_path / "secret_folder" / "data.py") is True
+    assert filter_inst.should_ignore(tmp_path / "normal.py") is False
 
 
 def test_scanner_with_metadata_and_recursive_directory(tmp_path: Path) -> None:
@@ -57,3 +57,50 @@ def test_scanner_with_metadata_and_recursive_directory(tmp_path: Path) -> None:
     assert meta["ignored_files"] == 1
     assert meta["total_lines"] == 1
     assert meta["duration_seconds"] >= 0
+
+
+def test_ignore_filter_doc_extensions(tmp_path: Path) -> None:
+    """Documentation and plain-text files must be ignored to prevent false positives."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    assert filter_inst.should_ignore(tmp_path / "README.md") is True
+    assert filter_inst.should_ignore(tmp_path / "CHANGELOG.md") is True
+    assert filter_inst.should_ignore(tmp_path / "guide.markdown") is True
+    assert filter_inst.should_ignore(tmp_path / "spec.rst") is True
+    assert filter_inst.should_ignore(tmp_path / "notes" / "todo.txt") is True
+    assert filter_inst.should_ignore(tmp_path / "logs" / "server.log") is True
+    assert filter_inst.should_ignore(tmp_path / "dist" / "bundle.map") is True
+    # Python source must NOT be ignored
+    assert filter_inst.should_ignore(tmp_path / "src" / "app.py") is False
+
+
+def test_ignore_filter_system_dirs(tmp_path: Path) -> None:
+    """Internal plugin/tool directories must be ignored to prevent false positives."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    assert filter_inst.should_ignore(tmp_path / "reports" / "sast_audit.md") is True
+    assert filter_inst.should_ignore(tmp_path / ".aiops" / "decisions.jsonl") is True
+    assert filter_inst.should_ignore(tmp_path / ".sast" / "profile.json") is True
+    assert filter_inst.should_ignore(tmp_path / ".superpowers" / "config.yaml") is True
+    assert filter_inst.should_ignore(tmp_path / ".github" / "workflows" / "ci.yml") is True
+    assert filter_inst.should_ignore(tmp_path / "skills" / "sast-audit" / "SKILL.md") is True
+    assert filter_inst.should_ignore(tmp_path / "coverage" / "report.html") is True
+    # Source code must NOT be ignored
+    assert filter_inst.should_ignore(tmp_path / "src" / "engine.py") is False
+
+
+def test_ignore_filter_should_ignore_dir_new_entries(tmp_path: Path) -> None:
+    """should_ignore_dir must prune new system directories during tree traversal."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    assert filter_inst.should_ignore_dir("reports") is True
+    assert filter_inst.should_ignore_dir("docs") is True
+    assert filter_inst.should_ignore_dir(".aiops") is True
+    assert filter_inst.should_ignore_dir(".sast") is True
+    assert filter_inst.should_ignore_dir(".superpowers") is True
+    assert filter_inst.should_ignore_dir(".github") is True
+    assert filter_inst.should_ignore_dir("coverage") is True
+    assert filter_inst.should_ignore_dir("skills") is True
+    assert filter_inst.should_ignore_dir("templates") is True
+    assert filter_inst.should_ignore_dir("src") is False
+    assert filter_inst.should_ignore_dir("tests") is False
