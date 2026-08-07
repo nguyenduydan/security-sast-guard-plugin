@@ -1,5 +1,9 @@
 {
+  "project_id": "auto",
+  "stack": "auto",
+
   "profile_name": "project_local",
+
   "audit_strictness": {
     "level": "full"
   },

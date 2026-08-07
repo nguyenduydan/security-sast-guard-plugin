@@ -9,7 +9,10 @@
     "sast-firewall",
     "sast-audit",
     "sast-status",
+    "sast-init",
+    "sast-mode",
     "sast-help",
     "sast-audit-level"
   ]
 }
+

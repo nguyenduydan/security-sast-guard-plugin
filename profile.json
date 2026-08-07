@@ -2,7 +2,7 @@
   "project_id": "security-sast-guard",
   "stack": "python-security",
   "mode": "draft",
-  "audit_level": "full",
+  "audit_level": "ultra",
   "command_firewall_overlay": {
     "deny": [
       "rm\\s+-[rRfF]{1,3}\\s+[/~]",

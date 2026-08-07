@@ -33,4 +33,25 @@ def test_mcp_server_tools_list() -> None:
     resp = server.handle_request(req)
     assert resp is not None
     tools = resp["result"]["tools"]
-    assert len(tools) >= 5
+    assert len(tools) >= 8
+
+
+def test_mcp_tool_handlers_new_tools() -> None:
+    handlers = MCPToolHandlers()
+    res_init = handlers.handle_sast_init()
+    assert res_init["status"] == "success"
+
+    res_sync = handlers.handle_sast_sync_rules()
+    assert res_sync["status"] == "success"
+
+    res_help = handlers.handle_sast_get_help()
+    assert res_help["status"] == "success"
+    assert len(res_help["skills"]) > 0
+
+    res_mode = handlers.handle_sast_set_mode("draft")
+    assert res_mode["status"] == "success"
+    assert res_mode["active_mode"] == "draft"
+
+    handlers.handle_sast_set_mode("strict")
+
+

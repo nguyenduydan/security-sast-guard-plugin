@@ -55,7 +55,8 @@ def test_dispatcher_level_command(capsys: CaptureFixture[str]) -> None:
     captured_status = capsys.readouterr()
     assert "Audit Level    : lite" in captured_status.out
     assert "SAST Scan Rules:" in captured_status.out
-    assert "Integrity      :" in captured_status.out
+    assert "Version        :" in captured_status.out
+
 
     # Reset back to full for consistency
     main(["level", "full"])
