@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.0.0...v1.1.0) (2026-08-07)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **mcp:** add native mcp tools, sast-mode command, and clean cli runners ([b82d8c7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b82d8c731ec0e7e046653ea353538d1c29e087c6))
+* **ui:** streamline slash commands array in plugin.json to 5 essential user-facing skills ([d1b494f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d1b494f767e5b36e5da21674a58eae60ca7ce3e0))
+
+
+### 🐛 Bug Fixes
+
+* **linter:** resolve all ruff check linter formatting and line length errors ([d9aba9b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d9aba9b45fb05f3df974af40d9335c40825d1813))
+* **test:** remove trailing newlines in test_mcp_tools.py to reach 10.00/10 pylint score ([e2ccfe9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e2ccfe9f758ccadac21d732bbdeaee8631e040eb))
+
+
+### 📝 Documentation
+
+* **mcp:** update documentation for native mcp tools, sast-mode command, and clean cli runners ([491ad9e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/491ad9edf496d9a79eaf96188e69f34334d3b7a0))
+* **readme:** strip version-specific release notes and hardcoded version strings ([ad57661](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ad576612bcc92e11ef141fdff6e437a9649838af))
+* **web:** update interactive landing page and mcp integration guide for native mcp tools and sast-mode ([1f5ca32](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1f5ca3215f2ee5046afa8311c6bed60abc78f352))
+
+
+### 🎨 Code Style & Formatting
+
+* **ruff:** format python files to pass ruff format --check ([c7090a0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c7090a06b633b869c1a2199310567a984fd96c38))
+
 ## [1.0.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v0.10.1...v1.0.0) (2026-08-06)
 
 
