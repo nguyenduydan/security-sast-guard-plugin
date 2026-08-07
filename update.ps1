@@ -3,19 +3,33 @@ $ProgressPreference = "SilentlyContinue"
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
+$cCheck  = [char]0x2713
+$cCross  = [char]0x2717
+$cBullet = [char]0x2022
+$cFull   = [char]0x2588
+$cLight  = [char]0x2591
+
+$bTL = [char]0x2554
+$bTR = [char]0x2557
+$bBL = [char]0x255A
+$bBR = [char]0x255D
+$bH  = [char]0x2550
+$bV  = [char]0x2551
+$bML = [char]0x2560
+$bMR = [char]0x2563
+
+$bH70 = "$bH" * 70
+
 function Write-CyberHeader {
     param([string]$Title, [string]$SubTitle)
     Clear-Host
-    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
-    Write-Host "║  ███████╗ █████╗ ███████╗████████╗                                   ║" -ForegroundColor Cyan
-    Write-Host "║  ██╔════╝██╔══██╗██╔════╝╚══██╔══╝   SECURITY SAST GUARD             ║" -ForegroundColor Cyan
-    Write-Host "║  ███████╗███████║███████╗   ██║      Zero-Trust Shield               ║" -ForegroundColor Cyan
-    Write-Host "║  ╚════██║██╔══██║╚════██║   ██║                                      ║" -ForegroundColor Cyan
+    Write-Host "$bTL$bH70$bTR" -ForegroundColor DarkCyan
+    Write-Host "$bV  === SECURITY SAST GUARD ===                                       $bV" -ForegroundColor Cyan
+    Write-Host "$bV  Zero-Trust Shield for AI Coding Assistants                       $bV" -ForegroundColor Cyan
     $t = if ($Title) { $Title.ToUpper() } else { "UPDATER v0.10.1" }
-    $tStr = "║  ███████║██║  ██║███████║   ██║      {0,-31} ║" -f $t
+    $tStr = "$bV  {0,-67} $bV" -f $t
     Write-Host $tStr -ForegroundColor Cyan
-    Write-Host "║  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝                                      ║" -ForegroundColor Cyan
-    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+    Write-Host "$bBL$bH70$bBR" -ForegroundColor DarkCyan
     if ($SubTitle) {
         Write-Host " [i] $SubTitle" -ForegroundColor Gray
     }
@@ -26,14 +40,14 @@ function Write-CyberStep {
     param([int]$Step, [int]$TotalSteps, [string]$Message, [int]$Percent)
     $width = 25
     $filled = [math]::Floor($width * $Percent / 100)
-    $bar = ("█" * $filled) + ("░" * ($width - $filled))
+    $bar = ("$cFull" * $filled) + ("$cLight" * ($width - $filled))
     $statusLine = "`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
 
 function Write-CyberPass {
     param([string]$Message)
-    $passLine = "`r [✓] {0,-70}" -f $Message
+    $passLine = "`r [$cCheck] {0,-70}" -f $Message
     Write-Host $passLine -ForegroundColor Green
 }
 
@@ -46,35 +60,37 @@ function Write-CyberWarn {
 function Write-CyberFail {
     param([string]$Message)
     Write-Host ""
-    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "║  [✗] UPDATE FAILED                                                   ║" -ForegroundColor Red
-    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor Red
-    $errLine = "║  Error: {0,-60} ║" -f $Message
+    Write-Host "$bTL$bH70$bTR" -ForegroundColor Red
+    Write-Host "$bV  [$cCross] UPDATE FAILED                                                   $bV" -ForegroundColor Red
+    Write-Host "$bML$bH70$bMR" -ForegroundColor Red
+    $errLine = "$bV  Error: {0,-60} $bV" -f $Message
     Write-Host $errLine -ForegroundColor Red
-    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Red
+    Write-Host "$bBL$bH70$bBR" -ForegroundColor Red
     Write-Host ""
 }
 
 function Write-CyberSuccessCard {
     param([string]$TargetDir, [string]$Version, [bool]$RestoredProfile)
     Write-Host ""
-    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "║  [✓] UPDATE SUCCESSFUL                                               ║" -ForegroundColor Green
-    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
-    $targetLine = "║  Target Directory : {0,-48} ║" -f $TargetDir
-    $versionLine = "║  Updated Version  : {0,-48} ║" -f $Version
+    Write-Host "$bTL$bH70$bTR" -ForegroundColor Green
+    Write-Host "$bV  [$cCheck] UPDATE SUCCESSFUL                                               $bV" -ForegroundColor Green
+    Write-Host "$bML$bH70$bMR" -ForegroundColor DarkGreen
+    $targetLine = "$bV  Target Directory : {0,-48} $bV" -f $TargetDir
+    $versionLine = "$bV  Updated Version  : {0,-48} $bV" -f $Version
     $profileStatus = if ($RestoredProfile) { "Preserved and Restored" } else { "Fresh Default Profile" }
-    $profileLine = "║  User Profile     : {0,-48} ║" -f $profileStatus
-    $statusLine = "║  Status           : {0,-48} ║" -f "Active and Ready"
+    $profileLine = "$bV  User Profile     : {0,-48} $bV" -f $profileStatus
+    $statusLine = "$bV  Status           : {0,-48} $bV" -f "Active and Ready"
     Write-Host $targetLine -ForegroundColor White
     Write-Host $versionLine -ForegroundColor White
     Write-Host $profileLine -ForegroundColor White
     Write-Host $statusLine -ForegroundColor Green
-    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
-    Write-Host "║  Quick Commands:                                                     ║" -ForegroundColor White
-    Write-Host "║   • In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      ║" -ForegroundColor Gray
-    Write-Host "║   • In Terminal   : 'python control_plane.py status'                 ║" -ForegroundColor Gray
-    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
+    Write-Host "$bML$bH70$bMR" -ForegroundColor DarkGreen
+    Write-Host "$bV  Quick Commands:                                                     $bV" -ForegroundColor White
+    $cmdLine = "$bV   $cBullet In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      $bV"
+    Write-Host $cmdLine -ForegroundColor Gray
+    $termLine = "$bV   $cBullet In Terminal   : 'python control_plane.py status'                 $bV"
+    Write-Host $termLine -ForegroundColor Gray
+    Write-Host "$bBL$bH70$bBR" -ForegroundColor Green
     Write-Host ""
 }
 
