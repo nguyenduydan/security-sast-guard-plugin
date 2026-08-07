@@ -131,7 +131,9 @@ function Register-MCPServer {
         $JsonObj.mcpServers | Add-Member -NotePropertyName "security-sast-guard" -NotePropertyValue $ServerConfig -Force
     }
 
-    $JsonObj | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigFile -Encoding UTF8
+    $JsonStr = $JsonObj | ConvertTo-Json -Depth 10
+    $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($ConfigFile, $JsonStr, $Utf8NoBom)
     Write-CyberPass "Registered MCP Server 'security-sast-guard' in $ConfigFile"
 }
 
