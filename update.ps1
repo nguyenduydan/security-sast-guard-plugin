@@ -6,92 +6,142 @@ $ProgressPreference = "SilentlyContinue"
 $cCheck  = [char]0x2713
 $cCross  = [char]0x2717
 $cBullet = [char]0x2022
-$cFull   = [char]0x2588
-$cLight  = [char]0x2591
 
-$bTL = [char]0x2554
-$bTR = [char]0x2557
-$bBL = [char]0x255A
-$bBR = [char]0x255D
-$bH  = [char]0x2550
-$bV  = [char]0x2551
-$bML = [char]0x2560
-$bMR = [char]0x2563
+$bTL = [char]0x256D # ╭
+$bTR = [char]0x256E # ╮
+$bBL = [char]0x2570 # ╰
+$bBR = [char]0x256F # ╯
+$bH  = [char]0x2500 # ─
+$bV  = [char]0x2502 # │
+$bML = [char]0x251C # ├
+$bMR = [char]0x2524 # ┤
 
-$bH70 = "$bH" * 70
+function Format-BoxLine {
+    param([string]$Label, [string]$Value, [int]$Width = 73)
+    $avail = $Width - $Label.Length
+    if ($avail -lt 5) { $avail = 5 }
+    $valStr = $Value
+    if ($valStr.Length -gt $avail) {
+        $valStr = "..." + $valStr.Substring($valStr.Length - ($avail - 3))
+    }
+    $padded = "$Label$valStr".PadRight($Width)
+    return "$bV$padded$bV"
+}
 
 function Write-CyberHeader {
-    param([string]$Title, [string]$SubTitle)
+    param([string]$TargetDir)
     Clear-Host
-    Write-Host "$bTL$bH70$bTR" -ForegroundColor DarkCyan
-    Write-Host "$bV  === SECURITY SAST GUARD ===                                       $bV" -ForegroundColor Cyan
-    Write-Host "$bV  Zero-Trust Shield for AI Coding Assistants                       $bV" -ForegroundColor Cyan
-    $t = if ($Title) { $Title.ToUpper() } else { "UPDATER v0.10.1" }
-    $tStr = "$bV  {0,-67} $bV" -f $t
-    Write-Host $tStr -ForegroundColor Cyan
-    Write-Host "$bBL$bH70$bBR" -ForegroundColor DarkCyan
-    if ($SubTitle) {
-        Write-Host " [i] $SubTitle" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host " ⚡ SECURITY SAST GUARD  │  Zero-Trust Shield for AI Coding Assistants" -ForegroundColor Cyan
+    Write-Host " ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkCyan
+    if ($TargetDir) {
+        Write-Host "  Target : $TargetDir" -ForegroundColor Gray
     }
     Write-Host ""
 }
 
 function Write-CyberStep {
     param([int]$Step, [int]$TotalSteps, [string]$Message, [int]$Percent)
-    $width = 25
+    $width = 20
     $filled = [math]::Floor($width * $Percent / 100)
-    $bar = ("$cFull" * $filled) + ("$cLight" * ($width - $filled))
-    $statusLine = "`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message
+    if ($filled -lt 0) { $filled = 0 }
+    if ($filled -gt $width) { $filled = $width }
+    $bar = ("▰" * $filled) + ("▱" * ($width - $filled))
+    $statusLine = "`r  ⏳ [Step $Step/$TotalSteps]  $bar  {0,3}%  │ {1}" -f $Percent, $Message
+    $statusLine = $statusLine.PadRight(85)
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
 
 function Write-CyberPass {
     param([string]$Message)
-    $passLine = "`r [$cCheck] {0,-70}" -f $Message
+    $passLine = "`r  $cCheck  {0}" -f $Message
+    $passLine = $passLine.PadRight(85)
     Write-Host $passLine -ForegroundColor Green
 }
 
 function Write-CyberWarn {
     param([string]$Message)
-    $warnLine = "`r [!] {0,-70}" -f $Message
+    $warnLine = "`r  !  {0}" -f $Message
+    $warnLine = $warnLine.PadRight(85)
     Write-Host $warnLine -ForegroundColor Yellow
 }
 
 function Write-CyberFail {
     param([string]$Message)
     Write-Host ""
-    Write-Host "$bTL$bH70$bTR" -ForegroundColor Red
-    Write-Host "$bV  [$cCross] UPDATE FAILED                                                   $bV" -ForegroundColor Red
-    Write-Host "$bML$bH70$bMR" -ForegroundColor Red
-    $errLine = "$bV  Error: {0,-60} $bV" -f $Message
-    Write-Host $errLine -ForegroundColor Red
-    Write-Host "$bBL$bH70$bBR" -ForegroundColor Red
+    $h = "$bH" * 73
+    Write-Host "$bTL$h$bTR" -ForegroundColor Red
+    $line1 = "$bV  $cCross UPDATE FAILED".PadRight(74) + "$bV"
+    Write-Host $line1 -ForegroundColor Red
+    Write-Host "$bML$h$bMR" -ForegroundColor Red
+    $errStr = Format-BoxLine -Label "  Error: " -Value $Message -Width 73
+    Write-Host $errStr -ForegroundColor Red
+    Write-Host "$bBL$h$bBR" -ForegroundColor Red
     Write-Host ""
 }
 
 function Write-CyberSuccessCard {
     param([string]$TargetDir, [string]$Version, [bool]$RestoredProfile)
     Write-Host ""
-    Write-Host "$bTL$bH70$bTR" -ForegroundColor Green
-    Write-Host "$bV  [$cCheck] UPDATE SUCCESSFUL                                               $bV" -ForegroundColor Green
-    Write-Host "$bML$bH70$bMR" -ForegroundColor DarkGreen
-    $targetLine = "$bV  Target Directory : {0,-48} $bV" -f $TargetDir
-    $versionLine = "$bV  Updated Version  : {0,-48} $bV" -f $Version
+    $h = "$bH" * 73
+    Write-Host "$bTL$h$bTR" -ForegroundColor Green
+    $headerLine = "$bV  $cCheck UPDATE SUCCESSFUL".PadRight(74) + "$bV"
+    Write-Host $headerLine -ForegroundColor Green
+    Write-Host "$bML$h$bMR" -ForegroundColor DarkGreen
+
+    Write-Host (Format-BoxLine -Label "  Target Directory : " -Value $TargetDir -Width 73) -ForegroundColor White
+    Write-Host (Format-BoxLine -Label "  Updated Version  : " -Value $Version -Width 73) -ForegroundColor White
     $profileStatus = if ($RestoredProfile) { "Preserved and Restored" } else { "Fresh Default Profile" }
-    $profileLine = "$bV  User Profile     : {0,-48} $bV" -f $profileStatus
-    $statusLine = "$bV  Status           : {0,-48} $bV" -f "Active and Ready"
-    Write-Host $targetLine -ForegroundColor White
-    Write-Host $versionLine -ForegroundColor White
-    Write-Host $profileLine -ForegroundColor White
-    Write-Host $statusLine -ForegroundColor Green
-    Write-Host "$bML$bH70$bMR" -ForegroundColor DarkGreen
-    Write-Host "$bV  Quick Commands:                                                     $bV" -ForegroundColor White
-    $cmdLine = "$bV   $cBullet In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      $bV"
-    Write-Host $cmdLine -ForegroundColor Gray
-    $termLine = "$bV   $cBullet In Terminal   : 'python control_plane.py status'                 $bV"
-    Write-Host $termLine -ForegroundColor Gray
-    Write-Host "$bBL$bH70$bBR" -ForegroundColor Green
+    Write-Host (Format-BoxLine -Label "  User Profile     : " -Value $profileStatus -Width 73) -ForegroundColor White
+    Write-Host (Format-BoxLine -Label "  Status           : " -Value "Active and Ready" -Width 73) -ForegroundColor Green
+    
+    Write-Host "$bML$h$bMR" -ForegroundColor DarkGreen
+    Write-Host ("$bV  Quick Commands:".PadRight(74) + "$bV") -ForegroundColor White
+    Write-Host ("$bV   $cBullet In AI Chat UI : '/sast-status' or '/sast-audit file <path>'".PadRight(74) + "$bV") -ForegroundColor Gray
+    Write-Host ("$bV   $cBullet In Terminal   : 'python control_plane.py status'".PadRight(74) + "$bV") -ForegroundColor Gray
+    Write-Host "$bBL$h$bBR" -ForegroundColor Green
     Write-Host ""
+}
+
+function Download-FileWithProgress {
+    param(
+        [string]$Url,
+        [string]$OutputFile,
+        [int]$Step,
+        [int]$TotalSteps,
+        [string]$Message,
+        [int]$BasePercent,
+        [int]$WeightPercent
+    )
+    $req = [System.Net.HttpWebRequest]::Create($Url)
+    $req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    $res = $req.GetResponse()
+    $totalBytes = $res.ContentLength
+    $inStream = $res.GetResponseStream()
+    $outStream = [System.IO.File]::Create($OutputFile)
+    $buffer = New-Object byte[] 65536
+    $downloaded = 0
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+
+    try {
+        while (($read = $inStream.Read($buffer, 0, $buffer.Length)) -gt 0) {
+            $outStream.Write($buffer, 0, $read)
+            $downloaded += $read
+            if ($sw.ElapsedMilliseconds -gt 80 -or $downloaded -eq $totalBytes) {
+                $sw.Restart()
+                $stepPct = if ($totalBytes -gt 0) { [math]::Min(100, [math]::Floor(($downloaded / $totalBytes) * 100)) } else { 50 }
+                $overallPct = [math]::Min(99, $BasePercent + [math]::Floor($stepPct * ($WeightPercent / 100)))
+                $mbDownloaded = [math]::Round($downloaded / 1MB, 2)
+                $mbTotal = if ($totalBytes -gt 0) { [math]::Round($totalBytes / 1MB, 2) } else { 0 }
+                $sizeStr = if ($mbTotal -gt 0) { " ($mbDownloaded MB / $mbTotal MB)" } else { " ($mbDownloaded MB)" }
+                Write-CyberStep -Step $Step -TotalSteps $TotalSteps -Message "$Message$sizeStr" -Percent $overallPct
+            }
+        }
+    } finally {
+        $outStream.Close()
+        $inStream.Close()
+        $res.Close()
+    }
 }
 
 function Register-MCPServer {
@@ -149,11 +199,11 @@ $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
-Write-CyberHeader -Title "Updater v0.10.1" -SubTitle "Target: $InstallDir"
+Write-CyberHeader -TargetDir $InstallDir
 
 if (-not (Test-Path $InstallDir)) {
     Write-CyberWarn "Plugin is not installed at $InstallDir"
-    Write-Host " [i] Use 'install.ps1' to install first." -ForegroundColor Yellow
+    Write-Host "  [i] Use 'install.ps1' to install first." -ForegroundColor Yellow
     Write-Host ""
     exit 1
 }
@@ -172,7 +222,7 @@ if (Test-Path $ProfilePath) {
 }
 
 try {
-    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Backing up user config and fetching release..." -Percent 15
+    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Backing up config & checking release..." -Percent 10
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
@@ -186,13 +236,14 @@ try {
     }
     Write-CyberPass "User profile backed up and found release: $($Release.tag_name)"
 
-    Write-CyberStep -Step 2 -TotalSteps 4 -Message "Downloading release archive..." -Percent 40
-    Invoke-WebRequest -Uri $ZipAsset.browser_download_url -OutFile (Join-Path $TempDir $ZipAsset.name)
-    if ($ChecksumAsset) {
-        Invoke-WebRequest -Uri $ChecksumAsset.browser_download_url -OutFile (Join-Path $TempDir $ChecksumAsset.name)
-    }
     $ZipPath = Join-Path $TempDir $ZipAsset.name
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
+
+    Download-FileWithProgress -Url $ZipAsset.browser_download_url -OutputFile $ZipPath -Step 2 -TotalSteps 4 -Message "Downloading release archive" -BasePercent 25 -WeightPercent 35
+
+    if ($ChecksumAsset) {
+        Download-FileWithProgress -Url $ChecksumAsset.browser_download_url -OutputFile $ChecksumPath -Step 2 -TotalSteps 4 -Message "Downloading checksum file" -BasePercent 60 -WeightPercent 5
+    }
     Write-CyberPass "Downloaded latest release package"
 
     Write-CyberStep -Step 3 -TotalSteps 4 -Message "Verifying SHA-256 checksum..." -Percent 65
@@ -210,7 +261,7 @@ try {
         Write-CyberPass "Package checksum step skipped (checksums.txt unavailable)"
     }
 
-    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Replacing runtime files and restoring profile..." -Percent 90
+    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Replacing runtime files and restoring profile..." -Percent 75
     Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
@@ -221,8 +272,15 @@ try {
         Start-Sleep -Milliseconds 500
     } catch {}
 
+    $filesToCopy = Get-ChildItem -Path $ExtractedRootFolder.FullName -Recurse
+    $totalFiles = [math]::Max(1, $filesToCopy.Count)
+    $copiedCount = 0
+
     Get-ChildItem -Path $ExtractedRootFolder.FullName | ForEach-Object {
         Copy-Item -Path $_.FullName -Destination $InstallDir -Recurse -Force
+        $copiedCount++
+        $copyPct = 75 + [math]::Floor(($copiedCount / $totalFiles) * 20)
+        Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying runtime files ($copiedCount/$totalFiles)..." -Percent $copyPct
     }
 
     if ($HasProfile) {

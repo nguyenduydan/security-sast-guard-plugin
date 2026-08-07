@@ -6,80 +6,92 @@ $ProgressPreference = "SilentlyContinue"
 $cCheck  = [char]0x2713
 $cCross  = [char]0x2717
 $cBullet = [char]0x2022
-$cFull   = [char]0x2588
-$cLight  = [char]0x2591
 
-$bTL = [char]0x2554
-$bTR = [char]0x2557
-$bBL = [char]0x255A
-$bBR = [char]0x255D
-$bH  = [char]0x2550
-$bV  = [char]0x2551
-$bML = [char]0x2560
-$bMR = [char]0x2563
+$bTL = [char]0x256D # ╭
+$bTR = [char]0x256E # ╮
+$bBL = [char]0x2570 # ╰
+$bBR = [char]0x256F # ╯
+$bH  = [char]0x2500 # ─
+$bV  = [char]0x2502 # │
+$bML = [char]0x251C # ├
+$bMR = [char]0x2524 # ┤
 
-$bH70 = "$bH" * 70
+function Format-BoxLine {
+    param([string]$Label, [string]$Value, [int]$Width = 73)
+    $avail = $Width - $Label.Length
+    if ($avail -lt 5) { $avail = 5 }
+    $valStr = $Value
+    if ($valStr.Length -gt $avail) {
+        $valStr = "..." + $valStr.Substring($valStr.Length - ($avail - 3))
+    }
+    $padded = "$Label$valStr".PadRight($Width)
+    return "$bV$padded$bV"
+}
 
 function Write-CyberHeader {
-    param([string]$Title, [string]$SubTitle)
+    param([string]$TargetDir)
     Clear-Host
-    Write-Host "$bTL$bH70$bTR" -ForegroundColor DarkCyan
-    Write-Host "$bV  === SECURITY SAST GUARD ===                                       $bV" -ForegroundColor Cyan
-    Write-Host "$bV  Zero-Trust Shield for AI Coding Assistants                       $bV" -ForegroundColor Cyan
-    $t = if ($Title) { $Title.ToUpper() } else { "UNINSTALLER v0.10.1" }
-    $tStr = "$bV  {0,-67} $bV" -f $t
-    Write-Host $tStr -ForegroundColor Cyan
-    Write-Host "$bBL$bH70$bBR" -ForegroundColor DarkCyan
-    if ($SubTitle) {
-        Write-Host " [i] $SubTitle" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host " ⚡ SECURITY SAST GUARD  │  Zero-Trust Shield for AI Coding Assistants" -ForegroundColor Cyan
+    Write-Host " ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkCyan
+    if ($TargetDir) {
+        Write-Host "  Target : $TargetDir" -ForegroundColor Gray
     }
     Write-Host ""
 }
 
 function Write-CyberStep {
     param([int]$Step, [int]$TotalSteps, [string]$Message, [int]$Percent)
-    $width = 25
+    $width = 20
     $filled = [math]::Floor($width * $Percent / 100)
-    $bar = ("$cFull" * $filled) + ("$cLight" * ($width - $filled))
-    $statusLine = "`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message
+    if ($filled -lt 0) { $filled = 0 }
+    if ($filled -gt $width) { $filled = $width }
+    $bar = ("▰" * $filled) + ("▱" * ($width - $filled))
+    $statusLine = "`r  ⏳ [Step $Step/$TotalSteps]  $bar  {0,3}%  │ {1}" -f $Percent, $Message
+    $statusLine = $statusLine.PadRight(85)
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
 
 function Write-CyberPass {
     param([string]$Message)
-    $passLine = "`r [$cCheck] {0,-70}" -f $Message
+    $passLine = "`r  $cCheck  {0}" -f $Message
+    $passLine = $passLine.PadRight(85)
     Write-Host $passLine -ForegroundColor Green
 }
 
 function Write-CyberWarn {
     param([string]$Message)
-    $warnLine = "`r [!] {0,-70}" -f $Message
+    $warnLine = "`r  !  {0}" -f $Message
+    $warnLine = $warnLine.PadRight(85)
     Write-Host $warnLine -ForegroundColor Yellow
 }
 
 function Write-CyberFail {
     param([string]$Message)
     Write-Host ""
-    Write-Host "$bTL$bH70$bTR" -ForegroundColor Red
-    Write-Host "$bV  [$cCross] REMOVAL FAILED                                                  $bV" -ForegroundColor Red
-    Write-Host "$bML$bH70$bMR" -ForegroundColor Red
-    $errLine = "$bV  Error: {0,-60} $bV" -f $Message
-    Write-Host $errLine -ForegroundColor Red
-    Write-Host "$bBL$bH70$bBR" -ForegroundColor Red
+    $h = "$bH" * 73
+    Write-Host "$bTL$h$bTR" -ForegroundColor Red
+    $line1 = "$bV  $cCross REMOVAL FAILED".PadRight(74) + "$bV"
+    Write-Host $line1 -ForegroundColor Red
+    Write-Host "$bML$h$bMR" -ForegroundColor Red
+    $errStr = Format-BoxLine -Label "  Error: " -Value $Message -Width 73
+    Write-Host $errStr -ForegroundColor Red
+    Write-Host "$bBL$h$bBR" -ForegroundColor Red
     Write-Host ""
 }
 
 function Write-CyberRemovalSuccessCard {
     param([string]$TargetDir)
     Write-Host ""
-    Write-Host "$bTL$bH70$bTR" -ForegroundColor Yellow
-    Write-Host "$bV  [$cCheck] REMOVAL SUCCESSFUL                                              $bV" -ForegroundColor Yellow
-    Write-Host "$bML$bH70$bMR" -ForegroundColor DarkYellow
-    $targetLine = "$bV  Removed Directory: {0,-48} $bV" -f $TargetDir
-    $statusLine = "$bV  Status           : {0,-48} $bV" -f "Uninstalled"
-    Write-Host $targetLine -ForegroundColor White
-    Write-Host $statusLine -ForegroundColor Gray
-    Write-Host "$bBL$bH70$bBR" -ForegroundColor Yellow
+    $h = "$bH" * 73
+    Write-Host "$bTL$h$bTR" -ForegroundColor Yellow
+    $headerLine = "$bV  $cCheck REMOVAL SUCCESSFUL".PadRight(74) + "$bV"
+    Write-Host $headerLine -ForegroundColor Yellow
+    Write-Host "$bML$h$bMR" -ForegroundColor DarkYellow
+
+    Write-Host (Format-BoxLine -Label "  Removed Directory: " -Value $TargetDir -Width 73) -ForegroundColor White
+    Write-Host (Format-BoxLine -Label "  Status           : " -Value "Uninstalled" -Width 73) -ForegroundColor Gray
+    Write-Host "$bBL$h$bBR" -ForegroundColor Yellow
     Write-Host ""
 }
 
@@ -90,16 +102,16 @@ function Write-CyberRemovalSuccessCard {
 $PluginName = "security-sast-guard"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
-Write-CyberHeader -Title "Uninstaller v0.10.1" -SubTitle "Target: $InstallDir"
+Write-CyberHeader -TargetDir $InstallDir
 
 if (-not (Test-Path $InstallDir)) {
     Write-CyberWarn "Plugin is not installed at $InstallDir"
-    Write-Host " [i] Nothing to remove." -ForegroundColor Gray
+    Write-Host "  [i] Nothing to remove." -ForegroundColor Gray
     Write-Host ""
     exit 0
 }
 
-Write-Host " [?] Are you sure you want to remove Security SAST Guard and all its files? [y/N]: " -NoNewline -ForegroundColor Yellow
+Write-Host "  [?] Are you sure you want to remove Security SAST Guard and all its files? [y/N]: " -NoNewline -ForegroundColor Yellow
 $Confirmation = Read-Host
 if ($Confirmation -notmatch "^[Yy]$") {
     Write-Host ""
