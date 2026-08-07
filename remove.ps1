@@ -111,6 +111,14 @@ if ($Confirmation -notmatch "^[Yy]$") {
 try {
     Write-CyberStep -Step 1 -TotalSteps 1 -Message "Removing plugin files and configuration..." -Percent 50
     Set-Location -Path (Split-Path -Path $InstallDir -Parent)
+    
+    try {
+        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*src.mcp.server*" -and $_.CommandLine -like "*security-sast-guard*" } | ForEach-Object {
+            Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
+        }
+        Start-Sleep -Milliseconds 500
+    } catch {}
+
     Remove-Item -Path $InstallDir -Recurse -Force
     Write-CyberPass "Successfully uninstalled plugin files from system"
 
