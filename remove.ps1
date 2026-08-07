@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -6,6 +6,9 @@ $ProgressPreference = "SilentlyContinue"
 $cCheck  = [char]0x2713
 $cCross  = [char]0x2717
 $cBullet = [char]0x2022
+$cZap    = [char]0x26A1
+$cBarF   = [char]0x25B0
+$cBarE   = [char]0x25B1
 
 $bTL = [char]0x256D # ╭
 $bTR = [char]0x256E # ╮
@@ -32,8 +35,8 @@ function Write-CyberHeader {
     param([string]$TargetDir)
     Clear-Host
     Write-Host ""
-    Write-Host " ⚡ SECURITY SAST GUARD  │  Zero-Trust Shield for AI Coding Assistants" -ForegroundColor Cyan
-    Write-Host " ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkCyan
+    Write-Host " $cZap SECURITY SAST GUARD  $bV  Zero-Trust Shield for AI Coding Assistants" -ForegroundColor Cyan
+    Write-Host ("  " + ("$bH" * 73)) -ForegroundColor DarkCyan
     if ($TargetDir) {
         Write-Host "  Target : $TargetDir" -ForegroundColor Gray
     }
@@ -46,8 +49,8 @@ function Write-CyberStep {
     $filled = [math]::Floor($width * $Percent / 100)
     if ($filled -lt 0) { $filled = 0 }
     if ($filled -gt $width) { $filled = $width }
-    $bar = ("▰" * $filled) + ("▱" * ($width - $filled))
-    $statusLine = "`r  ⏳ [Step $Step/$TotalSteps]  $bar  {0,3}%  │ {1}" -f $Percent, $Message
+    $bar = ("$cBarF" * $filled) + ("$cBarE" * ($width - $filled))
+    $statusLine = "`r  ⏳ [Step {0}/{1}]  {2}  {3,3}%  $bV {4}" -f $Step, $TotalSteps, $bar, $Percent, $Message
     $statusLine = $statusLine.PadRight(85)
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
@@ -113,7 +116,7 @@ if (-not (Test-Path $InstallDir)) {
 
 Write-Host "  [?] Are you sure you want to remove Security SAST Guard and all its files? [y/N]: " -NoNewline -ForegroundColor Yellow
 $Confirmation = Read-Host
-if ($Confirmation -notmatch "^[Yy]$") {
+if ($Confirmation -notmatch '^[Yy]$') {
     Write-Host ""
     Write-CyberWarn "Removal cancelled by user."
     Write-Host ""
@@ -125,7 +128,7 @@ try {
     Set-Location -Path (Split-Path -Path $InstallDir -Parent)
     
     try {
-        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*src.mcp.server*" -and $_.CommandLine -like "*security-sast-guard*" } | ForEach-Object {
+        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like '*src.mcp.server*' -and $_.CommandLine -like '*security-sast-guard*' } | ForEach-Object {
             Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
         }
         Start-Sleep -Milliseconds 500

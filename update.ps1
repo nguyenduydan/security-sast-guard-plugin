@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -6,6 +6,9 @@ $ProgressPreference = "SilentlyContinue"
 $cCheck  = [char]0x2713
 $cCross  = [char]0x2717
 $cBullet = [char]0x2022
+$cZap    = [char]0x26A1
+$cBarF   = [char]0x25B0
+$cBarE   = [char]0x25B1
 
 $bTL = [char]0x256D # ╭
 $bTR = [char]0x256E # ╮
@@ -32,8 +35,8 @@ function Write-CyberHeader {
     param([string]$TargetDir)
     Clear-Host
     Write-Host ""
-    Write-Host " ⚡ SECURITY SAST GUARD  │  Zero-Trust Shield for AI Coding Assistants" -ForegroundColor Cyan
-    Write-Host " ─────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkCyan
+    Write-Host " $cZap SECURITY SAST GUARD  $bV  Zero-Trust Shield for AI Coding Assistants" -ForegroundColor Cyan
+    Write-Host ("  " + ("$bH" * 73)) -ForegroundColor DarkCyan
     if ($TargetDir) {
         Write-Host "  Target : $TargetDir" -ForegroundColor Gray
     }
@@ -46,8 +49,8 @@ function Write-CyberStep {
     $filled = [math]::Floor($width * $Percent / 100)
     if ($filled -lt 0) { $filled = 0 }
     if ($filled -gt $width) { $filled = $width }
-    $bar = ("▰" * $filled) + ("▱" * ($width - $filled))
-    $statusLine = "`r  ⏳ [Step $Step/$TotalSteps]  $bar  {0,3}%  │ {1}" -f $Percent, $Message
+    $bar = ("$cBarF" * $filled) + ("$cBarE" * ($width - $filled))
+    $statusLine = "`r  ⏳ [Step {0}/{1}]  {2}  {3,3}%  $bV {4}" -f $Step, $TotalSteps, $bar, $Percent, $Message
     $statusLine = $statusLine.PadRight(85)
     Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
@@ -114,7 +117,7 @@ function Download-FileWithProgress {
         [int]$WeightPercent
     )
     $req = [System.Net.HttpWebRequest]::Create($Url)
-    $req.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    $req.UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     $res = $req.GetResponse()
     $totalBytes = $res.ContentLength
     $inStream = $res.GetResponseStream()
@@ -133,8 +136,14 @@ function Download-FileWithProgress {
                 $overallPct = [math]::Min(99, $BasePercent + [math]::Floor($stepPct * ($WeightPercent / 100)))
                 $mbDownloaded = [math]::Round($downloaded / 1MB, 2)
                 $mbTotal = if ($totalBytes -gt 0) { [math]::Round($totalBytes / 1MB, 2) } else { 0 }
-                $sizeStr = if ($mbTotal -gt 0) { " ($mbDownloaded MB / $mbTotal MB)" } else { " ($mbDownloaded MB)" }
-                Write-CyberStep -Step $Step -TotalSteps $TotalSteps -Message "$Message$sizeStr" -Percent $overallPct
+                $sizeStr = if ($mbTotal -gt 0) {
+                    ' ({0} Megabytes / {1} Megabytes)' -f $mbDownloaded, $mbTotal
+                } else {
+                    ' ({0} Megabytes)' -f $mbDownloaded
+                }
+                $sizeStr = $sizeStr.Replace('Megabytes', 'MB')
+                $statusMsg = $Message + $sizeStr
+                Write-CyberStep -Step $Step -TotalSteps $TotalSteps -Message $statusMsg -Percent $overallPct
             }
         }
     } finally {
@@ -222,7 +231,7 @@ if (Test-Path $ProfilePath) {
 }
 
 try {
-    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Backing up config & checking release..." -Percent 10
+    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Backing up config and checking release..." -Percent 10
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
