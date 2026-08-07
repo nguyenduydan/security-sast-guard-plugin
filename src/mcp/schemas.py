@@ -64,4 +64,51 @@ TOOLS_SCHEMAS: list[dict[str, Any]] = [
             "required": ["level"],
         },
     },
+    {
+        "name": "sast_init",
+        "description": (
+            "Initialize project-local SAST Security profile configuration "
+            "(.sast/profile.json)."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
+        },
+    },
+    {
+        "name": "sast_sync_rules",
+        "description": "Sync or add custom SAST rules to project profile.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "rules_dir": {
+                    "type": "string",
+                    "description": "Optional rules directory path.",
+                }
+            },
+        },
+    },
+    {
+        "name": "sast_get_help",
+        "description": "Get SAST Guard help and usage documentation.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
+        },
+    },
+    {
+        "name": "sast_set_mode",
+        "description": "Set active SAST Guard operation mode (strict | draft).",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "mode": {
+                    "type": "string",
+                    "enum": ["strict", "draft"],
+                    "description": "Desired operation mode.",
+                }
+            },
+            "required": ["mode"],
+        },
+    },
 ]

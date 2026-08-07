@@ -8,4 +8,7 @@ description: Initialize project-local SAST Security profile configuration (.sast
 Initializes project-level security profile configuration in the current working directory.
 
 ## Usage
-Run `python control_plane.py init` to generate `.sast/profile.json` with customizable rules and firewall rules for the project.
+1. Call Native MCP tool `sast_init` when available.
+2. If MCP tools are unavailable, fallback to running `sast init` or `python control_plane.py init`.
+3. Report the result clearly to the user.
+

@@ -53,5 +53,6 @@ ENV/
 .superpowers/
 .aiops/
 reports/
+.sast/
 
-.profile.sha256
+.profile.sha256

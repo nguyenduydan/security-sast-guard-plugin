@@ -6,6 +6,7 @@ import json
 import sys
 from typing import Any
 
+from src.infrastructure.version_loader import get_plugin_version
 from src.mcp.schemas import TOOLS_SCHEMAS
 from src.mcp.tools import MCPToolHandlers
 
@@ -38,6 +39,10 @@ class MCPServer:
                 sys.stdout.write(json.dumps(err_resp) + "\n")
                 sys.stdout.flush()
 
+    def _get_version(self) -> str:
+        """Get plugin version dynamically from version loader."""
+        return get_plugin_version()
+
     def handle_request(self, req: dict[str, Any]) -> dict[str, Any] | None:
         """Process incoming JSON-RPC request."""
         req_id = req.get("id")
@@ -53,7 +58,7 @@ class MCPServer:
                     "capabilities": {"tools": {}},
                     "serverInfo": {
                         "name": "security-sast-guard",
-                        "version": "1.0.0",
+                        "version": self._get_version(),
                     },
                 },
             }
@@ -83,6 +88,7 @@ class MCPServer:
             "error": {"code": -32601, "message": f"Method '{method}' not found"},
         }
 
+    # pylint: disable=too-many-return-statements
     def execute_tool(
         self, tool_name: str | None, args: dict[str, Any]
     ) -> dict[str, Any]:
@@ -97,8 +103,19 @@ class MCPServer:
             return self.handlers.handle_sast_get_status()
         if tool_name == "sast_set_level":
             return self.handlers.handle_sast_set_level(args.get("level", "full"))
+        if tool_name == "sast_init":
+            return self.handlers.handle_sast_init()
+        if tool_name == "sast_sync_rules":
+            return self.handlers.handle_sast_sync_rules(args.get("rules_dir", ""))
+        if tool_name == "sast_get_help":
+            return self.handlers.handle_sast_get_help()
+        if tool_name == "sast_set_mode":
+            return self.handlers.handle_sast_set_mode(args.get("mode", "strict"))
 
         return {"error": f"Unknown tool name: {tool_name}"}
+
+
+
 
 
 if __name__ == "__main__":

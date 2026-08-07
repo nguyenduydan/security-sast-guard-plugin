@@ -1,6 +1,5 @@
 """Dispatcher CLI module."""
 
-import json
 import platform
 import re
 import sys
@@ -10,6 +9,7 @@ from typing import Any
 
 from src.application.audit_service import AuditService
 from src.infrastructure.profile_loader import ProfileLoader
+from src.infrastructure.version_loader import get_plugin_version
 from src.mcp.server import MCPServer
 
 
@@ -17,15 +17,13 @@ def _print_status() -> int:
     service = AuditService()
     status = service.get_status()
 
-    integrity_str = "VALID" if status.get("checksum_valid") else "UNVERIFIED/MISSING"
-
     print("SAST Security & Firewall Guard Status")
     print("=====================================")
+    print(f"Version        : v{status.get('version', '1.0.0')}")
     print(f"Project ID     : {status['project_id']}")
     print(f"Stack          : {status['stack']}")
     print(f"Mode           : {status['mode']}")
     print(f"Audit Level    : {status['audit_level']}")
-    print(f"Integrity      : {integrity_str}")
     print(f"SAST Scan Rules: {status.get('sast_rules_count', 0)} active rules")
     print("Command Firewall Overlay:")
     print(f"  - Deny Rules   : {status['deny_count']}")
@@ -34,19 +32,9 @@ def _print_status() -> int:
 
 
 def _handle_version() -> int:
-    """Display plugin version, Python runtime version, and platform information."""
-    version = "0.10.1"
-    plugin_path = Path("plugin.json")
-    if not plugin_path.exists():
-        plugin_path = Path(__file__).parents[2] / "plugin.json"
-    if plugin_path.exists():
-        try:
-            with open(plugin_path, encoding="utf-8") as f:
-                data: dict[str, Any] = json.load(f)
-                version = str(data.get("version", version))
-        except (json.JSONDecodeError, OSError):
-            pass
 
+    """Display plugin version, Python runtime version, and platform information."""
+    version = get_plugin_version()
     py_version = platform.python_version()
     plat_info = platform.platform()
 
@@ -54,6 +42,7 @@ def _handle_version() -> int:
     print(f"Python: {py_version}")
     print(f"Platform: {plat_info}")
     return 0
+
 
 
 def _handle_firewall(args: list[str]) -> int:
@@ -118,6 +107,23 @@ def _handle_level(args: list[str]) -> int:
     return 0
 
 
+def _handle_mode(args: list[str]) -> int:
+    """Handle mode / set-mode subcommand."""
+    service = AuditService()
+    if args:
+        target_mode = args[0]
+        if service.set_mode(target_mode):
+            print(f"Operation mode successfully set to '{target_mode.lower()}'.")
+            return 0
+        print(
+            f"Error: Invalid mode '{target_mode}'. Valid options: strict, draft."
+        )
+        return 1
+    status = service.get_status()
+    print(f"Current Operation Mode: {status['mode']}")
+    return 0
+
+
 def _handle_scan(args: list[str]) -> int:
     """Handle scan / audit subcommand."""
     target_path = args[0] if args else "."
@@ -171,6 +177,10 @@ def dispatch(args: list[str]) -> int:
 
     if command in ("level", "set-level"):
         return _handle_level(args[1:])
+
+    if command in ("mode", "set-mode"):
+        return _handle_mode(args[1:])
+
 
     if command in ("scan", "audit"):
         return _handle_scan(args[1:])
