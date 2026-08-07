@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.6](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.5...v1.2.6) (2026-08-07)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **skills:** optimize slash commands to use ask_question grill modal UI ([79a147a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/79a147a2e3837fbd4ac1794d398b2ba21da54bb8))
+
 ## [1.2.5](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.4...v1.2.5) (2026-08-07)
 
 
