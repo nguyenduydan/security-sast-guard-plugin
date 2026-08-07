@@ -7,7 +7,8 @@
     "severity": "Critical",
     "patterns": [
       "eval\\s*\\(",
-      "exec\\s*\\(",
+      "(?<![\\w.])exec\\s*\\(",
+      "child_process\\.(exec|execSync|spawn|execFile)\\s*\\(",
       "os\\.(system|popen|spawn|execl|execv)\\s*\\(",
       "shell\\s*=\\s*True",
       "importlib\\.import_module\\s*\\("
