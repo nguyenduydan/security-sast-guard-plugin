@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.5](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.4...v1.2.5) (2026-08-07)
+
+
+### 🐛 Bug Fixes
+
+* **scanner:** fix mypy operator precedence in audit_service.py ([22f35d3](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/22f35d3656c42ba4936a2eabd0ceb0e4c6818756))
+* **scanner:** resolve false positive findings and ignore test fixtures ([129b30a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/129b30a8eb4907921489445c2012f10711282322))
+
 ## [1.2.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.2.3...v1.2.4) (2026-08-07)
 
 
