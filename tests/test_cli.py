@@ -57,7 +57,6 @@ def test_dispatcher_level_command(capsys: CaptureFixture[str]) -> None:
     assert "SAST Scan Rules:" in captured_status.out
     assert "Version        :" in captured_status.out
 
-
     # Reset back to full for consistency
     main(["level", "full"])
 

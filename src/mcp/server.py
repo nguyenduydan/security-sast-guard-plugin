@@ -115,9 +115,6 @@ class MCPServer:
         return {"error": f"Unknown tool name: {tool_name}"}
 
 
-
-
-
 if __name__ == "__main__":
     server = MCPServer()
     server.run()

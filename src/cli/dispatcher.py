@@ -32,7 +32,6 @@ def _print_status() -> int:
 
 
 def _handle_version() -> int:
-
     """Display plugin version, Python runtime version, and platform information."""
     version = get_plugin_version()
     py_version = platform.python_version()
@@ -42,7 +41,6 @@ def _handle_version() -> int:
     print(f"Python: {py_version}")
     print(f"Platform: {plat_info}")
     return 0
-
 
 
 def _handle_firewall(args: list[str]) -> int:
@@ -115,9 +113,7 @@ def _handle_mode(args: list[str]) -> int:
         if service.set_mode(target_mode):
             print(f"Operation mode successfully set to '{target_mode.lower()}'.")
             return 0
-        print(
-            f"Error: Invalid mode '{target_mode}'. Valid options: strict, draft."
-        )
+        print(f"Error: Invalid mode '{target_mode}'. Valid options: strict, draft.")
         return 1
     status = service.get_status()
     print(f"Current Operation Mode: {status['mode']}")
@@ -180,7 +176,6 @@ def dispatch(args: list[str]) -> int:
 
     if command in ("mode", "set-mode"):
         return _handle_mode(args[1:])
-
 
     if command in ("scan", "audit"):
         return _handle_scan(args[1:])
