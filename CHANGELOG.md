@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.3.1...v1.3.2) (2026-08-07)
+
+
+### 🐛 Bug Fixes
+
+* **sast:** refine RCE regex pattern and add inline comment suppression logic ([764d7c0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/764d7c09f1ac76ebd767b8e9d62b47b3e54f439d))
+* **scanner:** simplify inline suppression return condition to fix ruff SIM103 ([39b9ad7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/39b9ad7623b925c91d78d6412268b4a91dbfda91))
+
 ## [1.3.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.3.0...v1.3.1) (2026-08-07)
 
 
