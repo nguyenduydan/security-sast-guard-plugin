@@ -4,7 +4,7 @@ from typing import Any
 from src.domain.ai_cache import AICache
 
 CSHARP_METHOD_REGEX = re.compile(
-    r'''on[a-z]+\s*=\s*["'](?!\s*javascript:)[a-zA-Z0-9_]+["']'''
+    r"""on[a-z]+\s*=\s*["'](?!\s*javascript:)[a-zA-Z0-9_]+["']"""
 )
 KNOWN_SANITIZERS: set[str] = {
     "dompurify",
