@@ -21,76 +21,52 @@
 
 ## 🕵️‍♂️ About Security SAST Guard
 
-**Security SAST Guard** is your automated, zero-trust security co-pilot for Google Antigravity & Gemini CLI. It works stealthily behind the scenes to keep your local machine safe from destructive shell commands, while auditing AI-generated code against OWASP and CWE standards in real-time.
-
-> *"Empower your AI without compromising your system's integrity."*
+**Security SAST Guard** is an automated, zero-trust security co-pilot for Google Antigravity & Gemini CLI environments. It operates continuously in the background to protect your host system from destructive shell commands while performing static application security testing (SAST) on source code against OWASP, CWE, and NIST frameworks.
 
 ---
 
 ## 🔥 Core Security Features
 
 ### 🌐 1. Real-Time Command Firewall & Anti-Bypass Deobfuscation
-- **Anti-Bypass Engine:** Detects and strips caret obfuscation (`c^m^d`), PowerShell backticks (``c`m`d``), and automatically decodes Base64 payloads (`cm0gLXJmIC8=` -> `rm -rf /`).
-- **Cross-Platform Protection:** Native POSIX bash (`hooks/firewall_hook.sh`) and Windows PowerShell hooks for Linux, macOS, and Windows environments.
-- **PostToolCall Auto-Scan Hook:** `PostToolCallExecute` hook (`hooks/post_write_hook.py`) automatically audits files written or modified by AI agents.
+- **Anti-Bypass Engine:** Intercepts, de-obfuscates (strips carets `c^m^d`, PowerShell backticks ``c`m`d``), and decodes Base64 shell payloads (`cm0gLXJmIC8=` -> `rm -rf /`).
+- **Cross-Platform Hooks:** Native bash (`hooks/firewall_hook.sh`) and PowerShell hooks for Linux, macOS, and Windows.
+- **PostToolCall Auto-Scan:** `PostToolCallExecute` hook (`hooks/post_write_hook.py`) automatically audits files generated or edited by AI agents.
 
-### 🔌 2. Native Stdio MCP Server for Antigravity 2.0
-Exposes 8 Stdio JSON-RPC MCP tools for seamless IDE integration:
-1. **`sast_scan_file(file_path)`**: Audits target source file for vulnerabilities.
-2. **`sast_scan_diff()`**: Scans uncommitted git changes in the workspace.
-3. **`sast_check_command(command)`**: Evaluates shell command safety (`ALLOW` | `CONFIRM` | `DENY`).
-4. **`sast_get_status()`**: Retrieves plugin version, project ID, tech stack, operation mode, and active rules.
-5. **`sast_set_level(level)`**: Updates active audit level (`lite`, `full`, `ultra`).
-6. **`sast_set_mode(mode)`**: Updates active operation mode (`strict`, `draft`).
-7. **`sast_init()`**: Initializes project-local `.sast/profile.json` security profile.
-8. **`sast_get_help()`**: Retrieves quick reference usage documentation.
+### 🔌 2. Native Stdio MCP Server & SARIF Exporter
+- **Stdio MCP Server:** Exposes 8 JSON-RPC tools (`sast_scan_file`, `sast_scan_diff`, `sast_check_command`, etc.) for IDE integration.
+- **SARIF 2.1.0 Exporter:** Generates ISO-standard `reports/*.sarif` reports for GitHub Code Scanning and IDE vulnerability highlighting.
 
 ### 🗂️ 3. Multi-Project Profile Resolver & Custom Rule Sync
-- **Priority Cascade Resolution:** Loads profile settings in order: `.sast/profile.json` (CWD) ➔ `.sast/profile.json` (Git Root) ➔ Global Plugin `profile.json`.
-- **Project Initialization:** Slash command `/sast-init` (or `sast init`) generates project-specific security rules.
+- **Cascade Priority:** Resolves configuration order: `.sast/profile.json` (CWD) ➔ `.sast/profile.json` (Git Root) ➔ Global `profile.json`.
+- **Smart Git Base Resolver:** Automatically resolves tracking remote HEAD / `origin/main` / `origin/master` for incremental `sast_scan_diff`.
 
 ### 🤖 4. AI Response Cache (SHA-256) & Dual Report Formats
 - **SHA-256 Cache:** Local cache (`~/.sast/ai_cache.json`) with 24h TTL eliminates redundant LLM verification calls.
-- **Dual Output Formats:** Supports both Markdown (`.md`) and JSON (`.json`) report generation (`--format json`).
+- **Multi-Format Output:** Generates Markdown (`.md`), JSON (`.json`), and SARIF (`.sarif`) audit reports.
 
-### 🎨 5. Cyber / Neo-Brutalist TUI & Interactive Documentation
-- **PowerShell Cyber TUI:** `install.ps1`, `update.ps1`, and `remove.ps1` feature Cyber/Neo-Brutalist ASCII headers, block progress bars (`[████████░░░]`), and UTF-8 BOM encoding for perfect encoding compatibility.
-- **Interactive Landing Page:** Updated [`docs/index.html`](docs/index.html) with separate CSS/JS assets, live workflow animation, and 53 SAST rules explorer.
+### 🎨 5. Cyber TUI & Interactive Landing Page
+- **PowerShell Cyber TUI:** Interactive installation, update, and removal scripts (`install.ps1`, `update.ps1`, `remove.ps1`).
+- **Web Dashboard:** Interactive [`docs/index.html`](docs/index.html) landing page with live workflow animations and security rules explorer.
 
-### 🌳 6. Dual-Guard Real-Time AST Engine & Inline Comment Suppression
-- **Dual-Guard Node Scope Resolution:** Contextual AST parsing automatically categorizes code structures into precise node scopes before applying security rules:
-  - `html-inline-event`: Intercepts and audits inline HTML event handlers (`onclick`, `onerror`, `onload`).
-  - `client-js-regex`: Validates client-side JavaScript regexes and DOM manipulation logic.
-  - `server-code`: Audits backend server logic (Python, Node.js, etc.) for high-severity vulnerability patterns.
-- **Inline Comment Suppression Engine:** Supports granular inline annotations for rule suppression and false-positive filtering:
-  - `sast-ignore`: Suppresses specified SAST rule checks for individual lines (`# sast-ignore [RULE_ID]` or `// sast-ignore [RULE_ID]`).
-  - `sast-disable` / `sast-enable`: Disables and re-enables specific rules across multi-line code blocks.
+### 🌳 6. Dual-Guard Real-Time AST Engine & Remediation Snippets
+- **Dual-Guard AST Node Scope:** Categorizes code into `html-inline-event`, `html-attribute`, `client-js-regex`, and `server-code` (Python, C#, ASP.NET WebForms, Node.js, Java, PHP).
+- **Inline Comment Suppression:** Supports `# sast-ignore [RULE_ID]`, `# sast-disable`, and `# sast-enable`.
+- **Remediation Code Snippets:** Reports include structured code diffs showing vulnerable patterns (`fix_before`) vs secure defense (`fix_after`).
 
 ---
 
 ## ⚡ Installation & Lifecycle Management
 
-We provide an automated, Cyber-TUI PowerShell suite to install, update, and remove the plugin smoothly.
-
-> **Note:** Run these scripts directly in your PowerShell terminal.
-
-### 📥 1. Install
-Fetches the latest release from GitHub, extracts it, and registers the plugin in your Antigravity environment.
 ```powershell
+# Install
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"
 .\install.ps1
-```
 
-### 🔄 2. Update
-Updates the plugin while **automatically backing up and restoring your user profile** (`profile.json`):
-```powershell
+# Update (Backs up & restores profile.json)
 cd $HOME\.gemini\config\plugins\security-sast-guard
 .\update.ps1
-```
 
-### 🗑️ 3. Remove
-Safely uninstalls the plugin and restores original configuration states:
-```powershell
+# Remove
 cd $HOME\.gemini\config\plugins\security-sast-guard
 .\remove.ps1
 ```
@@ -108,7 +84,6 @@ flowchart TD
     end
 
     subgraph SecurityGuard["Security SAST Guard Core"]
-
         Firewall["FirewallEngine (Deobfuscation + Regex)"]
         Scanner["SAST Scanning Engine"]
         MCPServer["Stdio MCP Server"]
@@ -117,7 +92,7 @@ flowchart TD
     end
 
     subgraph Storage["Knowledge Base"]
-        RuleDB[("53 SAST Rules")]
+        RuleDB[("88 SAST Rules")]
         LocalProfile[(".sast/profile.json")]
     end
 
@@ -132,14 +107,14 @@ flowchart TD
     AISkill -->|"Trigger /sast-audit"| Scanner
     Scanner -->|"Match Regex"| RuleDB
     Scanner -->|"Check Cache"| AICache
-    Scanner -->|"Report (MD / JSON)"| AISkill
+    Scanner -->|"Report (MD / JSON / SARIF)"| AISkill
 ```
 
 ---
 
 ## 🔌 Antigravity 2.0 Stdio MCP Server
 
-To enable Security SAST Guard inside **Antigravity 2.0 (IDE)** or any MCP-compatible environment, add the following configuration to your `mcp_config.json`:
+Add to your `mcp_config.json`:
 
 ```json
 {
@@ -153,46 +128,37 @@ To enable Security SAST Guard inside **Antigravity 2.0 (IDE)** or any MCP-compat
 }
 ```
 
-For complete integration details and tool schemas, read [`docs/MCP_INTEGRATION.md`](docs/MCP_INTEGRATION.md).
-
 ---
 
 ## 🎮 Slash Commands & CLI Reference
 
-### 🤖 AI Slash Commands (Chat UI & Interactive Grill Modal)
-
-> 💡 **Interactive Grill UI Modal**: Executing any slash command without arguments automatically opens an interactive GUI modal (`ask_question`) in Antigravity for seamless button selection!
-
+### 🤖 AI Slash Commands
 | Slash Command | Syntax | Description |
 | :--- | :--- | :--- |
-| 🛡️ `/sast-audit` | `/sast-audit [type] [path]` | Triggers static vulnerability audit. Omit params to launch Grill UI modal (diff, file, codebase, api, web). Reads active audit level from `profile.json`. |
-| 📊 `/sast-status` | `/sast-status` | Displays plugin version, project ID, tech stack, operation mode, and active rules. |
+| 🛡️ `/sast-audit` | `/sast-audit [type] [path]` | Triggers static audit (`diff`, `file`, `codebase`, `api`, `web`). Omit params for Grill UI modal. |
+| 📊 `/sast-status` | `/sast-status` | Displays plugin status, operation mode, and active rules count. |
 | 🚀 `/sast-init` | `/sast-init` | Initializes project-local `.sast/profile.json` security profile. |
-| 🎛️ `/sast-mode` | `/sast-mode [strict\|draft]` | Toggles operation mode (`strict`: full enforcement, `draft`: auto-allow). Omit params for Grill UI modal. |
-| 🎚️ `/sast-audit-level`| `/sast-audit-level [lite\|full\|ultra]` | Sets active audit strictness (`lite`: Critical, `full`: OWASP Top10, `ultra`: All + CWE/NIST). Omit params for Grill UI modal. |
-| 🛠️ `/sast-rules` | `/sast-rules [sync\|add\|status]` | Manages SAST rule definitions. Omit params for Grill UI modal. |
+| 🎛️ `/sast-mode` | `/sast-mode [strict\|draft]` | Toggles operation mode (`strict` \| `draft`). |
+| 🎚️ `/sast-audit-level`| `/sast-audit-level [lite\|full\|ultra]` | Sets audit strictness (`lite`, `full`, `ultra`). |
+| 🛠️ `/sast-rules` | `/sast-rules [sync\|add\|status]` | Manages SAST rule definitions. |
 
-
-
-### 💻 CLI Subcommands (Terminal Entrypoint & `sast` Runner)
-
+### 💻 CLI Subcommands
 | CLI Subcommand | Syntax | Description |
 | :--- | :--- | :--- |
-| 📊 `status` | `sast status` *(or `python control_plane.py status`)* | Displays plugin version, project ID, tech stack, operation mode, and rule counts. |
+| 📊 `status` | `sast status` | Displays plugin status and active rule counts. |
 | 🎛️ `mode` | `sast mode [strict\|draft]` | Sets operation mode (`strict` \| `draft`). |
-| ℹ️ `version` | `sast version` | Displays plugin version, Python runtime, and platform info. |
-| 🧱 `firewall` | `sast firewall <command>` | Evaluates command against firewall rules with de-obfuscation. |
-| 🚀 `init` | `sast init` | Creates project-local `.sast/profile.json` template. |
-| 🔌 `mcp-server` | `sast mcp-server` | Runs Stdio JSON-RPC MCP Server for IDEs. |
-| 🎚️ `level` | `sast level [lite\|full\|ultra]` | Updates active SAST audit strictness level. |
-| 🔍 `scan` | `sast scan [path] [--format json]` | Scans target path and generates audit report. |
-
+| ℹ️ `version` | `sast version` | Displays plugin version and runtime info. |
+| 🧱 `firewall` | `sast firewall <command>` | Evaluates command against firewall rules. |
+| 🚀 `init` | `sast init` | Creates project-local `.sast/profile.json`. |
+| 🔌 `mcp-server` | `sast mcp-server` | Runs Stdio JSON-RPC MCP Server. |
+| 🎚️ `level` | `sast level [lite\|full\|ultra]` | Updates active audit strictness level. |
+| 🔍 `scan` | `sast scan [path] [--format json]` | Scans target path and generates report. |
 
 ---
 
 ## 🛡️ SAST Rules Coverage
 
-Security SAST Guard ships with 53 battle-tested rules mapping to top international frameworks:
+Security SAST Guard ships with **88 battle-tested rules** mapping to international security frameworks:
 
 | Threat Category | Count | Coverage Examples |
 | :--- | :---: | :--- |
@@ -201,17 +167,13 @@ Security SAST Guard ships with 53 battle-tested rules mapping to top internation
 | **Web App Specific** | 11 | Race Condition (WEB10), Source File Exposure (WEB11), CORS (WEB9) |
 | **CWE-SANS Top 25** | 12 | SQLi (CWE-89), XSS (CWE-79), Command Injection (CWE-078), Path Traversal (CWE-022) |
 | **NIST 800-53 Controls** | 10 | AC-2 (Account Management), SC-8 (Transmission Integrity), AU-2 (Audit Events) |
+| **ASP.NET & WebForms Security** | 35 | WebForms Event Handlers, Data-Binding Sanitization, ViewState Protection |
 
 ---
 
 ## 🤝 Contributing
 
-We welcome security researchers and community contributors! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide before submitting Pull Requests.
-
-1. Fork the repo and create your feature branch: `git checkout -b feat/my-new-rule`.
-2. Follow Conventional Commits format for your commit messages.
-3. Ensure all CI quality checks pass: `pytest` and `pylint`.
-4. Open a Pull Request using our template.
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide before submitting Pull Requests.
 
 ---
 
@@ -219,4 +181,3 @@ We welcome security researchers and community contributors! Please read our [CON
   <b>Protected by Security SAST Guard</b><br>
   Distributed under the <a href="LICENSE">MIT License</a>.
 </div>
-
