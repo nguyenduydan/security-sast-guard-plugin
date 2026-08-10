@@ -289,7 +289,12 @@ class SASTScanner:
                         files_to_scan.append(file_p)
 
         for file_path in files_to_scan:
-            if target_path.is_file() and ignore_filter.should_ignore(file_path):
+            # Explicit single file targets bypass default extension/path ignore rules
+            if (
+                target_path.is_file()
+                and target_path != file_path
+                and ignore_filter.should_ignore(file_path)
+            ):
                 ignored_files += 1
                 continue
 
