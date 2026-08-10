@@ -182,6 +182,11 @@ def generate_markdown_report(
     report_file.write_text(report_content, encoding="utf-8")
 
     file_uri = report_file.resolve().as_uri()
+    try:
+        rel_path = report_file.resolve().relative_to(Path.cwd()).as_posix()
+    except ValueError:
+        rel_path = report_file.name
+
     meta = metadata or {}
     scanned_count = meta.get("scanned_files", 0)
     lines_count = meta.get("total_lines", 0)
@@ -193,7 +198,7 @@ def generate_markdown_report(
         f"SAST Audit completed.{scanned_str} Total: {len(findings)} findings "
         f"(Critical: {counts['critical']}, High: {counts['high']}, "
         f"Medium: {counts['medium']}, Low: {counts['low']}).\n"
-        f"Detailed report saved to: [{report_file.name}]({file_uri})"
+        f"Detailed report saved to: [{rel_path}]({file_uri})"
     )
     return str(report_file), summary
 
@@ -225,9 +230,13 @@ def generate_json_report(
 
     report_file.write_text(json.dumps(data, indent=2), encoding="utf-8")
     file_uri = report_file.resolve().as_uri()
+    try:
+        rel_path = report_file.resolve().relative_to(Path.cwd()).as_posix()
+    except ValueError:
+        rel_path = report_file.name
 
     summary = (
         f"SAST Audit completed. Total: {len(findings)} findings.\n"
-        f"JSON report saved to: [{report_file.name}]({file_uri})"
+        f"JSON report saved to: [{rel_path}]({file_uri})"
     )
     return str(report_file), summary

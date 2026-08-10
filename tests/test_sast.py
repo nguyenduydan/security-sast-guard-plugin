@@ -53,3 +53,22 @@ def test_sast_scanner_real_regex_detection(tmp_path: Path) -> None:
     assert "BROKEN_ACCESS_CONTROL" in rule_ids
     lines = [r["line"] for r in results]
     assert lines == [1, 2]
+
+
+def test_aspnet_false_positive_filtering(tmp_path: Path) -> None:
+    test_file = tmp_path / "page.aspx"
+    test_file.write_text(
+        '<SweetSoft:ExtraButton ID="btnAdd" runat="server" OnClick="btnAdd_Click" />\n'
+        '<div><%= GetResourceText("Label_Title") %></div>\n'
+        '<input onfocus="eval(location.hash)">\n'
+    )
+
+    scanner = SASTScanner()
+    scanner.mode = "strict"
+
+    results = scanner.scan(str(test_file))
+
+    # Only line 3 (the real malicious JS onfocus) should be detected as finding
+    # Lines 1 & 2 should be filtered out as false positives
+    lines = [r["line"] for r in results]
+    assert lines == [3]
