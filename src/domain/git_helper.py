@@ -61,3 +61,43 @@ class GitHelper:
                 continue
 
         return list(changed_files)
+
+    @staticmethod
+    def get_diff_base(path: Path | str) -> str:
+        """Determine base reference for diff comparison (remote branch or HEAD)."""
+        p = Path(path)
+        target_dir = p if p.is_dir() else p.parent
+        if not GitHelper.is_git_repo(target_dir):
+            return "HEAD"
+
+        # 1. Resolve remote tracking branch via refs/remotes/origin/HEAD
+        try:
+            res = subprocess.run(
+                ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"],  # noqa: S603, S607
+                cwd=str(target_dir),
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if res.returncode == 0 and res.stdout.strip():
+                return res.stdout.strip()
+        except (OSError, ValueError):
+            pass
+
+        # 2. Fallback check for common default remote branches
+        for branch in ["origin/main", "origin/master", "origin/develop"]:
+            try:
+                res = subprocess.run(
+                    ["git", "rev-parse", "--verify", "--quiet", branch],  # noqa: S603, S607
+                    cwd=str(target_dir),
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+                if res.returncode == 0 and res.stdout.strip():
+                    return branch
+            except (OSError, ValueError):
+                continue
+
+        # 3. Default fallback to HEAD
+        return "HEAD"
