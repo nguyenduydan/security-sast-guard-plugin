@@ -34,6 +34,7 @@ class Finding:
     severity: str
     scope: str = "global"
     action: str = "Block"
+    remediation: dict[str, str] | None = None
 
 
 @dataclass(frozen=True)
