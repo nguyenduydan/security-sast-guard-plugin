@@ -1,13 +1,11 @@
-"""Context Extractor Domain Component following SOLID Principles (Strategy Pattern)."""
-
-from abc import ABC, abstractmethod
 import io
 import tokenize
+from abc import ABC, abstractmethod
 from typing import Any
 
 
 class ISafeContextStrategy(ABC):
-    """Abstract Strategy for determining if a line is within a safe context (comment/string)."""
+    """Abstract Strategy for safe context evaluation."""
 
     @abstractmethod
     def is_safe_context(
@@ -47,7 +45,7 @@ class PythonSafeContextStrategy(ISafeContextStrategy):
 
 
 class GenericSafeContextStrategy(ISafeContextStrategy):
-    """Fast in-memory safe context checker for non-Python files (ASP.NET, C#, JS, HTML, etc.)."""
+    """Fast in-memory safe context checker for non-Python files."""
 
     def is_safe_context(
         self, line_content: str, line_number: int, lines: list[str]
@@ -82,7 +80,7 @@ class ContextExtractor:
     def extract_context_from_lines(
         self, lines: list[str], line_number: int, file_path: str
     ) -> dict[str, Any]:
-        """Extract line context, imports, scope, and safety status directly from memory."""
+        """Extract line context and safety status directly from memory."""
         imports: list[str] = []
         scope = "global"
         line_content = lines[line_number - 1] if 0 < line_number <= len(lines) else ""

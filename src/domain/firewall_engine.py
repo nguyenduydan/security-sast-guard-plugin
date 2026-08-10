@@ -6,9 +6,9 @@ Provides cross-platform command safety evaluation, de-obfuscation, and rule chec
 from __future__ import annotations
 
 import base64
+import re
 from dataclasses import dataclass
 from functools import lru_cache
-import re
 from typing import Literal
 
 VerdictType = Literal["ALLOW", "CONFIRM", "DENY"]
