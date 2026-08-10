@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.4...v1.5.5) (2026-08-10)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **firewall:** optimize command firewall anti-bypass and update rules ([196c0b7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/196c0b701cedfd7d3dd72b310c035a38cdcbac48))
+
+
+### 🎨 Code Style & Formatting
+
+* **firewall:** apply ruff formatting ([bd60e56](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bd60e56b28f319dddcc30d02ff43b9f4657edc9e))
+* **firewall:** fix ruff E501 line length limit ([cee951f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/cee951ff3fd5fa96f410bf91d212ea0b7b55315f))
+
 ## [1.5.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.3...v1.5.4) (2026-08-10)
 
 
