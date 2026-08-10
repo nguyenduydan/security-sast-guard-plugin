@@ -1,6 +1,7 @@
 """AST Context Engine for node-level scope resolution."""
 
 import re
+from functools import lru_cache
 from html.parser import HTMLParser
 
 
@@ -23,7 +24,9 @@ class HTMLASPXParser(HTMLParser):
 class ASTContextEngine:
     """Engine for classifying file lines into AST node scopes."""
 
-    def resolve_scope(self, file_path: str, line_number: int, line_content: str) -> str:
+    @staticmethod
+    @lru_cache(maxsize=4096)
+    def resolve_scope(file_path: str, line_number: int, line_content: str) -> str:
         """Resolve node scope for a given line of code."""
         _ = line_number
         stripped = line_content.strip()

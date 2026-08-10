@@ -6,8 +6,9 @@ Provides cross-platform command safety evaluation, de-obfuscation, and rule chec
 from __future__ import annotations
 
 import base64
-import re
 from dataclasses import dataclass
+from functools import lru_cache
+import re
 from typing import Literal
 
 VerdictType = Literal["ALLOW", "CONFIRM", "DENY"]
@@ -32,8 +33,13 @@ class FirewallEngine:
     ) -> None:
         self.deny_rules = deny_rules or []
         self.confirm_rules = confirm_rules or []
+        self._compiled_deny = [re.compile(p, re.IGNORECASE) for p in self.deny_rules]
+        self._compiled_confirm = [
+            re.compile(p, re.IGNORECASE) for p in self.confirm_rules
+        ]
 
     @staticmethod
+    @lru_cache(maxsize=2048)
     def deobfuscate(cmd: str) -> str:
         """Strip de-obfuscation artifacts such as carets and backticks."""
         if not cmd:
@@ -74,21 +80,23 @@ class FirewallEngine:
         cleaned_cmd = self.deobfuscate(cmd_text)
 
         # Check DENY rules first (Fail-Closed)
-        for pattern in self.deny_rules:
-            if re.search(pattern, cleaned_cmd, re.IGNORECASE):
+        for i, pat_obj in enumerate(self._compiled_deny):
+            if pat_obj.search(cleaned_cmd):
+                pattern_str = self.deny_rules[i]
                 return FirewallVerdict(
                     verdict="DENY",
-                    reason=f"Dangerous pattern matched: '{pattern}'",
-                    matched_pattern=pattern,
+                    reason=f"Dangerous pattern matched: '{pattern_str}'",
+                    matched_pattern=pattern_str,
                 )
 
         # Check CONFIRM rules
-        for pattern in self.confirm_rules:
-            if re.search(pattern, cleaned_cmd, re.IGNORECASE):
+        for i, pat_obj in enumerate(self._compiled_confirm):
+            if pat_obj.search(cleaned_cmd):
+                pattern_str = self.confirm_rules[i]
                 return FirewallVerdict(
                     verdict="CONFIRM",
-                    reason=f"Potentially risky pattern matched: '{pattern}'",
-                    matched_pattern=pattern,
+                    reason=f"Potentially risky pattern matched: '{pattern_str}'",
+                    matched_pattern=pattern_str,
                 )
 
         return FirewallVerdict(
