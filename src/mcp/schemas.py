@@ -2,7 +2,34 @@
 
 from __future__ import annotations
 
+from dataclasses import asdict, dataclass
 from typing import Any
+
+
+@dataclass
+class TaintTraceItem:
+    rule_id: str
+    source_file: str
+    source_line: int
+    sink_file: str
+    sink_line: int
+    trace_path: list[dict]
+    confidence: float
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+@dataclass
+class DataflowPathResult:
+    paths: list[dict]
+    total: int
+
+@dataclass
+class TaintContextResult:
+    file: str
+    line: int
+    code_snippet: str
+    taint_info: dict
 
 TOOLS_SCHEMAS: list[dict[str, Any]] = [
     {
