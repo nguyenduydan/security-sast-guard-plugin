@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.3...v1.5.4) (2026-08-10)
+
+
+### 🐛 Bug Fixes
+
+* **scan:** optimize large file scanning performance with in-memory context extraction and pre-compiled rules ([166d745](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/166d7459a0039ef0bdf8cc37f9d0709d6f0ccaa3))
+
+
+### ⚡ Performance Improvements
+
+* **engine:** apply LRU cache and pre-compiled regex arrays for firewall and scope resolution ([69a0ceb](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/69a0ceba8c1d5c12227f33bbda4b875b7f6dad6a))
+
+
+### 🎨 Code Style & Formatting
+
+* **linter:** fix ruff import sorting, line length, SIM105 and SIM110 rules ([df1a482](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/df1a4823256a5d7c6fd053d4d0f089e6066c469a))
+
 ## [1.5.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.2...v1.5.3) (2026-08-10)
 
 
