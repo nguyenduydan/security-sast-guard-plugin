@@ -138,7 +138,12 @@ def test_generate_sarif_report(tmp_path: Path) -> None:
     rules = run["tool"]["driver"]["rules"]
     assert len(rules) == 4
     rule_ids = {r["id"] for r in rules}
-    assert rule_ids == {"CRITICAL_SQLI", "HIGH_XSS", "MED_HARDCODED_KEY", "LOW_INFO_LEAK"}
+    assert rule_ids == {
+        "CRITICAL_SQLI",
+        "HIGH_XSS",
+        "MED_HARDCODED_KEY",
+        "LOW_INFO_LEAK",
+    }
 
     results = run["results"]
     assert len(results) == 4
@@ -152,7 +157,10 @@ def test_generate_sarif_report(tmp_path: Path) -> None:
 
     # Check location & message
     sqli_res = res_map["CRITICAL_SQLI"]
-    assert sqli_res["locations"][0]["physicalLocation"]["artifactLocation"]["uri"] == "db/query.py"
+    assert (
+        sqli_res["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
+        == "db/query.py"
+    )
     assert sqli_res["locations"][0]["physicalLocation"]["region"]["startLine"] == 42
     assert "Unsanitized user input in query" in sqli_res["message"]["text"]
 

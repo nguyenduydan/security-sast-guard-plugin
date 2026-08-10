@@ -113,7 +113,8 @@ def _build_remediation_summary(findings: list[dict[str, Any]]) -> str:
             "1. **Review High-Risk Snippets:** Prioritize fixing Critical and High"
             " severity findings immediately."
         ),
-        "2. **Rule Violations Detected:** " + ", ".join(f"`{r}`" for r in sorted(rules)),
+        "2. **Rule Violations Detected:** "
+        + ", ".join(f"`{r}`" for r in sorted(rules)),
         (
             "3. **OWASP Best Practice:** Sanitize user input, strip dangerous"
             " inline event handlers, and enforce strict parameter validation."
