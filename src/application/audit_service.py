@@ -7,6 +7,7 @@ from src.domain.models import TaintFinding
 from src.domain.sast_scanner import SASTScanner
 from src.domain.symbol_indexer import SymbolIndexer
 from src.domain.taint_tracker import TaintTracker
+from src.domain.call_graph_builder import CallGraphBuilder
 from src.infrastructure.integrity_checker import IntegrityChecker
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.profile_resolver import ProfileResolver
@@ -88,14 +89,16 @@ class AuditService:
 
     # pylint: disable=too-many-locals
     def run_taint_analysis(self, target_path: str) -> list[TaintFinding]:
-        """Run grep-based taint analysis for all taint-enabled rules."""
+        """Run grep-based taint analysis, AST confirmation, and cross-file call graph tracing."""
         taint_rules = self._extract_taint_rules()
         if not taint_rules:
             return []
         repo_path = str(Path(target_path).resolve())
         cache = SymbolCache()
         commit_hash = self._get_commit_hash()
-        findings: list[TaintFinding] = []
+        call_graph = CallGraphBuilder(repo_path)
+        raw_findings: list[TaintFinding] = []
+
         for rule in taint_rules:
             sources = rule.get("sources", [])
             sinks = rule.get("sinks", [])
@@ -111,8 +114,20 @@ class AuditService:
                     symbol_map = indexer.index([source])
                     cache.set(repo_path, [source], commit_hash, symbol_map)
                 tracker = TaintTracker(repo_path)
-                findings.extend(tracker.trace(symbol_map, rule_id, source, sinks))
-        return findings
+                findings = tracker.trace(symbol_map, rule_id, source, sinks)
+                # Phase 3: enrich trace_path with cross-file call chains
+                for finding in findings:
+                    chains = call_graph.trace_to_sinks(
+                        finding.source_file,
+                        list(symbol_map.keys())[0] if symbol_map else "",
+                        sinks,
+                    )
+                    if chains:
+                        # Append cross-file steps to existing trace_path
+                        for chain in chains:
+                            finding.trace_path.extend(chain.steps)
+                raw_findings.extend(findings)
+        return raw_findings
 
     def set_audit_level(self, level: str) -> bool:
         """Set active audit level in profile configuration."""
