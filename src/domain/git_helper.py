@@ -72,8 +72,9 @@ class GitHelper:
 
         # 1. Resolve remote tracking branch via refs/remotes/origin/HEAD
         try:
-            res = subprocess.run(
-                ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"],  # noqa: S603, S607
+            cmd_sym = ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"]
+            res = subprocess.run(  # noqa: S603
+                cmd_sym,
                 cwd=str(target_dir),
                 capture_output=True,
                 text=True,
@@ -87,8 +88,9 @@ class GitHelper:
         # 2. Fallback check for common default remote branches
         for branch in ["origin/main", "origin/master", "origin/develop"]:
             try:
-                res = subprocess.run(
-                    ["git", "rev-parse", "--verify", "--quiet", branch],  # noqa: S603, S607
+                cmd_rev = ["git", "rev-parse", "--verify", "--quiet", branch]
+                res = subprocess.run(  # noqa: S603
+                    cmd_rev,
                     cwd=str(target_dir),
                     capture_output=True,
                     text=True,
