@@ -72,3 +72,17 @@ def test_aspnet_false_positive_filtering(tmp_path: Path) -> None:
     # Lines 1 & 2 should be filtered out as false positives
     lines = [r["line"] for r in results]
     assert lines == [3]
+
+
+def test_single_file_scan_unignored_even_if_default_ignored(tmp_path: Path) -> None:
+    # Create an .aspx file inside a folder named 'docs' (which is default ignored)
+    docs_dir = tmp_path / "docs"
+    docs_dir.mkdir(parents=True, exist_ok=True)
+    test_file = docs_dir / "ExamDetail.aspx"
+    test_file.write_text('<input onfocus="eval(location.hash)">\n')
+
+    scanner = SASTScanner()
+    res = scanner.scan_with_metadata(str(test_file))
+
+    assert res["metadata"]["scanned_files"] == 1
+    assert len(res["findings"]) == 1
