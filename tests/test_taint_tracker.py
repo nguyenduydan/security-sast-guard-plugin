@@ -49,7 +49,7 @@ def test_trace_no_sink_returns_empty():
     symbol_map: SymbolMap = {"user_input": [("views.py", 1)]}
     tracker = TaintTracker(repo)
     findings = tracker.trace(symbol_map, "RULE-001", "request.GET", ["eval"])
-    assert findings == []
+    assert not findings
 
 
 def test_trace_skips_symbol_not_in_sink_line():
@@ -65,4 +65,4 @@ def test_trace_skips_symbol_not_in_sink_line():
     tracker = TaintTracker(repo)
     findings = tracker.trace(symbol_map, "RULE-001", "request.GET", ["cursor.execute"])
     # sink line exists but doesn't contain the tainted symbol
-    assert findings == []
+    assert not findings
