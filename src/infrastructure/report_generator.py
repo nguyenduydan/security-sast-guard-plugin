@@ -73,22 +73,82 @@ def _build_findings_table(findings: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _extract_remediation(finding: Any) -> tuple[str, str] | None:
+    if isinstance(finding, dict):
+        remediation = finding.get("remediation")
+        if isinstance(remediation, dict):
+            before = remediation.get("fix_before")
+            after = remediation.get("fix_after")
+            if before and after:
+                return str(before), str(after)
+        before = finding.get("fix_before")
+        after = finding.get("fix_after")
+        if before and after:
+            return str(before), str(after)
+    elif hasattr(finding, "remediation"):
+        remediation = getattr(finding, "remediation", None)
+        if isinstance(remediation, dict):
+            before = remediation.get("fix_before")
+            after = remediation.get("fix_after")
+            if before and after:
+                return str(before), str(after)
+    return None
+
+
 def _build_remediation_summary(findings: list[dict[str, Any]]) -> str:
     if not findings:
         return "No remediation required."
 
-    rules = sorted({f.get("rule_id", "UNKNOWN") for f in findings})
+    rules: set[str] = set()
+    for f in findings:
+        rid = (
+            f.get("rule_id", "UNKNOWN")
+            if isinstance(f, dict)
+            else getattr(f, "rule_id", "UNKNOWN")
+        )
+        rules.add(rid)
+
     lines = [
         (
             "1. **Review High-Risk Snippets:** Prioritize fixing Critical and High"
             " severity findings immediately."
         ),
-        "2. **Rule Violations Detected:** " + ", ".join(f"`{r}`" for r in rules),
+        "2. **Rule Violations Detected:** " + ", ".join(f"`{r}`" for r in sorted(rules)),
         (
             "3. **OWASP Best Practice:** Sanitize user input, strip dangerous"
             " inline event handlers, and enforce strict parameter validation."
         ),
     ]
+
+    remediation_blocks: list[str] = []
+    seen_rules: set[str] = set()
+
+    for f in findings:
+        rule_id = (
+            f.get("rule_id", "UNKNOWN")
+            if isinstance(f, dict)
+            else getattr(f, "rule_id", "UNKNOWN")
+        )
+        if rule_id in seen_rules:
+            continue
+
+        remed = _extract_remediation(f)
+        if remed:
+            seen_rules.add(rule_id)
+            fix_before, fix_after = remed
+            snippet_block = (
+                f"### 🛠️ Remediation Snippet: `{rule_id}`\n\n"
+                f"**❌ Vulnerable Code (Before):**\n"
+                f"```\n{fix_before}\n```\n\n"
+                f"**✅ Secure Defense (After):**\n"
+                f"```\n{fix_after}\n```"
+            )
+            remediation_blocks.append(snippet_block)
+
+    if remediation_blocks:
+        lines.append("")
+        lines.extend(remediation_blocks)
+
     return "\n".join(lines)
 
 

@@ -108,6 +108,14 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
         "patterns": [
             r"(?i)on(focus|error|load|click|mouseover|submit|keydown)\s*=\s*[\"'].*?[\"']"
         ],
+        "remediation": {
+            "fix_before": '<input onfocus="eval(user_input)">',
+            "fix_after": (
+                '<input id="user-input">\n<script>\n'
+                "document.getElementById('user-input')"
+                ".addEventListener('focus', safeHandler);\n</script>"
+            ),
+        },
     }
     rule_map["BROKEN_ACCESS_CONTROL"] = {
         "id": "BROKEN_ACCESS_CONTROL",
@@ -120,6 +128,10 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
             r"(?i)(role|privilege|is_admin)\s*=\s*(req|request|params|query|GET|POST)[\.\[]",
             r"(?i)request\.(getParameter|query|args)\s*\(\s*[\"'](role|admin|privilege)[\"']\s*\)",
         ],
+        "remediation": {
+            "fix_before": "role = request.query.role",
+            "fix_after": "role = current_user.role  # Enforce session-based RBAC",
+        },
     }
 
     if source_path.exists():

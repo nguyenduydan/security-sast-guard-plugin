@@ -167,3 +167,48 @@ def test_generate_sarif_report_empty(tmp_path: Path) -> None:
     assert data["version"] == "2.1.0"
     assert data["runs"][0]["results"] == []
     assert data["runs"][0]["tool"]["driver"]["rules"] == []
+
+
+def test_generate_markdown_report_with_remediation(tmp_path: Path) -> None:
+    findings = [
+        {
+            "rule_id": "XSS_INLINE_EVENT",
+            "rule_name": "XSS Event Test",
+            "path": "app.html",
+            "line": 5,
+            "line_content": '<input onfocus="alert(1)">',
+            "severity": "High",
+            "scope": "global",
+            "remediation": {
+                "fix_before": '<input onfocus="eval(user_input)">',
+                "fix_after": (
+                    '<input id="user-input">\n<script>\n'
+                    "el.addEventListener('focus', safeHandler);\n"
+                    "</script>"
+                ),
+            },
+        },
+        {
+            "rule_id": "RCE_RISK",
+            "rule_name": "RCE Risk Test",
+            "path": "server.py",
+            "line": 10,
+            "line_content": "os.system(cmd)",
+            "severity": "Critical",
+            "scope": "global",
+            "fix_before": 'os.system("ping " + user_input)',
+            "fix_after": 'subprocess.run(["ping", "-c", "1", user_input], check=True)',
+        },
+    ]
+
+    report_file, _ = generate_markdown_report(findings, output_dir=str(tmp_path))
+
+    assert Path(report_file).exists()
+    content = Path(report_file).read_text(encoding="utf-8")
+
+    assert "❌ Vulnerable Code (Before)" in content
+    assert "✅ Secure Defense (After)" in content
+    assert '<input onfocus="eval(user_input)">' in content
+    assert "safeHandler" in content
+    assert 'os.system("ping " + user_input)' in content
+    assert "subprocess.run" in content

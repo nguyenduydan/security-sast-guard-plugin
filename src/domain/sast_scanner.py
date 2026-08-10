@@ -220,6 +220,7 @@ class SASTScanner:
                                     else ctx.get("scope", "global")
                                 ),
                                 "action": rule.get("action", "Block"),
+                                "remediation": rule.get("remediation"),
                             }
                         )
 
@@ -425,6 +426,7 @@ class SASTScanner:
                                 severity=rule.get("severity", "MEDIUM"),
                                 scope=scope,
                                 action=rule.get("action", "Block"),
+                                remediation=rule.get("remediation"),
                             )
                         )
             prev_line = line_content

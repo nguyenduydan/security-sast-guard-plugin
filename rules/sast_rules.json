@@ -19,7 +19,11 @@
       "os\\.(system|popen|spawn|execl|execv)\\s*\\(",
       "shell\\s*=\\s*True",
       "importlib\\.import_module\\s*\\("
-    ]
+    ],
+    "remediation": {
+      "fix_before": "import os\nos.system(\"ping \" + user_input)",
+      "fix_after": "import subprocess\nsubprocess.run([\"ping\", \"-c\", \"1\", user_input], check=True)"
+    }
   },
   {
     "id": "WILDCARD_PATH",
@@ -46,7 +50,11 @@
       "(?i)(api_key|secret|token|password|passwd|private_key|auth_token)\\s*[:=]\\s*['\"][a-zA-Z0-9_\\-]{8,}['\"]",
       "xox[p|b|o|a]-[0-9]{11,12}-[a-zA-Z0-9]{24}",
       "ghp_[a-zA-Z0-9]{36}"
-    ]
+    ],
+    "remediation": {
+      "fix_before": "API_KEY = \"YOUR_ENV_SECRET_KEY_HERE\"",
+      "fix_after": "import os\nAPI_KEY = os.getenv(\"API_KEY\")"
+    }
   },
   {
     "id": "DESERIALIZATION_RCE",
@@ -59,7 +67,11 @@
       "marshal\\.loads\\s*\\(",
       "yaml\\.unsafe_load\\s*\\(",
       "Loader\\s*=\\s*(UnsafeLoader|Loader)"
-    ]
+    ],
+    "remediation": {
+      "fix_before": "import pickle\ndata = pickle.loads(user_input)",
+      "fix_after": "import json\ndata = json.loads(user_input)"
+    }
   },
   {
     "id": "XXE_RISK",
@@ -70,7 +82,11 @@
     "patterns": [
       "xml\\.etree\\.ElementTree\\.(parse|fromstring)\\s*\\(",
       "lxml\\.etree\\.(parse|fromstring)\\s*\\("
-    ]
+    ],
+    "remediation": {
+      "fix_before": "from lxml import etree\ntree = etree.parse(xml_file)",
+      "fix_after": "from lxml import etree\nparser = etree.XMLParser(resolve_entities=False)\ntree = etree.parse(xml_file, parser=parser)"
+    }
   },
   {
     "id": "PROMPT_INJECTION_VULNERABLE",
@@ -97,7 +113,11 @@
       "https?://0\\.0\\.0\\.0",
       "https?://metadata",
       "https?://[^/]*192\\.168\\."
-    ]
+    ],
+    "remediation": {
+      "fix_before": "import requests\nrequests.get(\"http://127.0.0.1/admin\")",
+      "fix_after": "import requests\nfrom urllib.parse import urlparse\n\nparsed = urlparse(target_url)\nif parsed.hostname not in ALLOWED_HOSTS:\n    raise ValueError(\"Untrusted target host\")\nrequests.get(target_url)"
+    }
   },
   {
     "id": "SKILL_EXFILTRATION",
@@ -556,7 +576,11 @@
     ],
     "patterns": [
       "(?i)on(focus|error|load|click|mouseover|submit|keydown)\\s*=\\s*[\\\"'].*?[\\\"']"
-    ]
+    ],
+    "remediation": {
+      "fix_before": "<input onfocus=\"eval(user_input)\">",
+      "fix_after": "<input id=\"user-input\">\n<script>\ndocument.getElementById('user-input').addEventListener('focus', safeHandler);\n</script>"
+    }
   },
   {
     "id": "BROKEN_ACCESS_CONTROL",
@@ -568,7 +592,11 @@
     "patterns": [
       "(?i)(role|privilege|is_admin)\\s*=\\s*(req|request|params|query|GET|POST)[\\.\\[]",
       "(?i)request\\.(getParameter|query|args)\\s*\\(\\s*[\\\"'](role|admin|privilege)[\\\"']\\s*\\)"
-    ]
+    ],
+    "remediation": {
+      "fix_before": "role = request.query.role",
+      "fix_after": "role = current_user.role  # Enforce session-based RBAC"
+    }
   },
   {
     "id": "cwe_top25_rules",
