@@ -1,5 +1,5 @@
 import pytest
-from mcp.schemas import TaintTraceItem, DataflowPathResult, TaintContextResult
+from src.mcp.schemas import TaintTraceItem, DataflowPathResult, TaintContextResult
 
 def test_taint_trace_item():
     item = TaintTraceItem(
