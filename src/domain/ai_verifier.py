@@ -1,9 +1,11 @@
-"""AI Context Verification Gate for SAST False Positive filtering."""
-
+import re
 from typing import Any
 
 from src.domain.ai_cache import AICache
 
+CSHARP_METHOD_REGEX = re.compile(
+    r'''on[a-z]+\s*=\s*["'](?!\s*javascript:)[a-zA-Z0-9_]+["']'''
+)
 KNOWN_SANITIZERS: set[str] = {
     "dompurify",
     "sanitize",
@@ -29,6 +31,24 @@ TEST_INDICATORS: set[str] = {
 }
 
 SQL_MARKERS: list[str] = ["?", "%s", "$1", ":1", "bindparam", "execute("]
+
+
+def _is_aspnet_false_positive(rule_id: str, line_content: str) -> bool:
+    if "getresourcetext(" in line_content or "getglobalresourceobject(" in line_content:
+        return True
+
+    if rule_id == "XSS_INLINE_EVENT":
+        is_server_tag = (
+            'runat="server"' in line_content
+            or "runat='server'" in line_content
+            or "<asp:" in line_content
+            or "<sweetsoft:" in line_content
+        )
+        has_simple_csharp = bool(CSHARP_METHOD_REGEX.search(line_content))
+        if is_server_tag or has_simple_csharp:
+            return True
+
+    return False
 
 
 class AIVerifier:
@@ -94,6 +114,10 @@ class AIVerifier:
         has_sql_marker = any(p in line_content for p in SQL_MARKERS)
         no_concat = "+" not in line_content
         if is_sqli_rule and has_sql_marker and no_concat:
+            return True
+
+        # 4. ASP.NET WebForms False Positives
+        if _is_aspnet_false_positive(rule_id, line_content):
             return True
 
         stripped = line_content.strip()
