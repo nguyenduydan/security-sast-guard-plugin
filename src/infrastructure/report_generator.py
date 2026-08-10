@@ -223,12 +223,28 @@ def generate_markdown_report(
     audit_level: str = "full",
 ) -> tuple[str, str]:
     """Generate Markdown report file for SAST findings using template."""
+    counts = _count_severities(findings)
+
+    meta = metadata or {}
+    scanned_count = meta.get("scanned_files", 0)
+    lines_count = meta.get("total_lines", 0)
+    duration_val = meta.get("duration_seconds", 0)
+    scanned_str = (
+        f" [Scanned {scanned_count} files, {lines_count} lines in {duration_val}s]"
+    )
+
+    if not findings:
+        summary = (
+            f"SAST Audit completed.{scanned_str} Total: 0 findings "
+            "(Critical: 0, High: 0, Medium: 0, Low: 0)."
+        )
+        return "", summary
+
     target_dir = Path(output_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     report_file = target_dir / f"sast_audit_report_{timestamp}.md"
-    counts = _count_severities(findings)
 
     tmpl_file = Path(template_path) if template_path else DEFAULT_TEMPLATE_PATH
     template_content = (
@@ -248,13 +264,6 @@ def generate_markdown_report(
     except ValueError:
         rel_path = report_file.name
 
-    meta = metadata or {}
-    scanned_count = meta.get("scanned_files", 0)
-    lines_count = meta.get("total_lines", 0)
-    duration_val = meta.get("duration_seconds", 0)
-    scanned_str = (
-        f" [Scanned {scanned_count} files, {lines_count} lines in {duration_val}s]"
-    )
     summary = (
         f"SAST Audit completed.{scanned_str} Total: {len(findings)} findings "
         f"(Critical: {counts['critical']}, High: {counts['high']}, "

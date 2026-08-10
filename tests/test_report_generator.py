@@ -78,6 +78,14 @@ def test_generate_markdown_report_custom_template(tmp_path: Path) -> None:
     assert "TEST_RULE" in content
 
 
+def test_generate_markdown_report_empty(tmp_path: Path) -> None:
+    report_file, summary = generate_markdown_report([], output_dir=str(tmp_path))
+    assert report_file == ""
+    assert not (tmp_path / "sast_audit_report_*.md").exists()
+    assert "Total: 0 findings" in summary
+    assert "Detailed report saved to:" not in summary
+
+
 def test_generate_sarif_report(tmp_path: Path) -> None:
     findings = [
         {
