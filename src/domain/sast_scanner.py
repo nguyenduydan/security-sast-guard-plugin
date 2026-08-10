@@ -205,15 +205,16 @@ class SASTScanner:
             if not is_comment_only:
                 scope = self.ast_engine.resolve_scope(str_path, line_idx, line_content)
                 for rule in rules:
-                    excluded_scopes = rule.get("excluded_scopes", [])
-                    if excluded_scopes and scope in excluded_scopes:
-                        continue
-                    target_scopes = rule.get("target_scopes", [])
+                    target_scopes = rule.get("target_scopes")
                     if (
                         target_scopes
                         and scope not in target_scopes
                         and scope != "global"
                     ):
+                        continue
+
+                    excluded_scopes = rule.get("excluded_scopes")
+                    if excluded_scopes and scope in excluded_scopes:
                         continue
 
                     rule_id = rule.get("id", "UNKNOWN")
