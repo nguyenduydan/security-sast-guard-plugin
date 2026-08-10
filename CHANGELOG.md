@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.4.2...v1.5.0) (2026-08-10)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **git-helper:** implement smart git diff base resolver ([14164c9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/14164c9ce903bd469e4f74b4ca9efff81b0cd6cd))
+* **report:** implement SARIF 2.1.0 report exporter ([569988a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/569988aff535404a92e73fa0526c076030f74cda))
+* **rules:** add remediation snippets to rules and markdown report ([572305d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/572305db31a64924373fe82c092c66495231bccb))
+
+
+### 🎨 Code Style & Formatting
+
+* **lint:** format python files with ruff ([b25d6aa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b25d6aa11cb8a735f8bac7b733e604444db483e4))
+
 ## [1.4.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.4.1...v1.4.2) (2026-08-10)
 
 
