@@ -47,3 +47,34 @@ class SecurityProfile:
     audit_level: str
     deny_rules: tuple[str, ...]
     confirm_rules: tuple[str, ...]
+
+
+# ── Taint Analysis Models ──────────────────────────────────────────────────
+
+# SymbolMap: symbol_name → list of (file_path, line_number) where it appears
+SymbolMap = dict[str, list[tuple[str, int]]]
+
+
+@dataclass(frozen=True)
+class TraceStep:
+    """One hop in a taint flow trace."""
+
+    file: str
+    line: int
+    symbol: str
+    step_type: str  # "source_assignment" | "intermediate_usage" | "sink"
+
+
+@dataclass
+class TaintFinding:
+    """A confirmed source-to-sink taint flow."""
+
+    rule_id: str
+    source_file: str
+    source_line: int
+    source_pattern: str
+    sink_file: str
+    sink_line: int
+    sink_pattern: str
+    trace_path: list[TraceStep]
+    confidence: float  # 0.0 - 1.0
