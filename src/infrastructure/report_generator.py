@@ -240,3 +240,111 @@ def generate_json_report(
         f"JSON report saved to: [{rel_path}]({file_uri})"
     )
     return str(report_file), summary
+
+
+def _map_severity_to_sarif_level(severity: str) -> str:
+    sev = str(severity).lower()
+    if sev in ("critical", "high"):
+        return "error"
+    if sev == "medium":
+        return "warning"
+    return "note"
+
+
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
+def generate_sarif_report(
+    findings: list[dict[str, Any]],
+    output_dir: str = "reports",
+    target_path: str = ".",
+    metadata: dict[str, Any] | None = None,
+    audit_level: str = "full",
+) -> tuple[str, str]:
+    """Generate SARIF 2.1.0 report file for SAST findings."""
+    target_dir = Path(output_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    report_file = target_dir / f"sast_audit_report_{timestamp}.sarif"
+
+    rules_map: dict[str, dict[str, Any]] = {}
+    results: list[dict[str, Any]] = []
+
+    for finding in findings:
+        rule_id = finding.get("rule_id", "UNKNOWN")
+        rule_name = finding.get("rule_name") or rule_id
+        description = finding.get("description") or rule_name
+        severity = finding.get("severity", "Medium")
+        sarif_level = _map_severity_to_sarif_level(severity)
+
+        if rule_id not in rules_map:
+            rules_map[rule_id] = {
+                "id": rule_id,
+                "name": rule_name,
+                "shortDescription": {"text": description},
+                "defaultConfiguration": {"level": sarif_level},
+            }
+
+        msg_text = description
+        if finding.get("line_content"):
+            msg_text += f": {finding['line_content']}"
+
+        file_path = finding.get("path", target_path)
+        line_num = max(1, int(finding.get("line", 1)))
+
+        results.append(
+            {
+                "ruleId": rule_id,
+                "level": sarif_level,
+                "message": {"text": msg_text},
+                "locations": [
+                    {
+                        "physicalLocation": {
+                            "artifactLocation": {"uri": file_path},
+                            "region": {"startLine": line_num},
+                        }
+                    }
+                ],
+            }
+        )
+
+    sarif_data = {
+        "$schema": (
+            "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/"
+            "Schemata/sarif-schema-2.1.0.json"
+        ),
+        "version": "2.1.0",
+        "runs": [
+            {
+                "tool": {
+                    "driver": {
+                        "name": "Security SAST Guard",
+                        "rules": list(rules_map.values()),
+                    }
+                },
+                "invocations": [
+                    {
+                        "executionSuccessful": True,
+                        "properties": {
+                            "auditLevel": audit_level,
+                            "metadata": metadata or {},
+                            "targetPath": target_path,
+                        },
+                    }
+                ],
+                "results": results,
+            }
+        ],
+    }
+
+    report_file.write_text(json.dumps(sarif_data, indent=2), encoding="utf-8")
+    file_uri = report_file.resolve().as_uri()
+    try:
+        rel_path = report_file.resolve().relative_to(Path.cwd()).as_posix()
+    except ValueError:
+        rel_path = report_file.name
+
+    summary = (
+        f"SAST Audit completed. Total: {len(findings)} findings.\n"
+        f"SARIF report saved to: [{rel_path}]({file_uri})"
+    )
+    return str(report_file), summary
