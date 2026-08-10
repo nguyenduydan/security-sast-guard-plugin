@@ -23,10 +23,10 @@
       "taskkill\\s+/f",
       "shutdown\\s+(/s|/r|/h|/t|/a|-s|-r|-h)",
       "wmic\\s+(process|service|os|computersystem)\\s+(delete|call\\s+terminate|call\\s+shutdown)",
-      "Invoke-Expression\\s*\\(",
-      "iex\\s*\\(",
+      "Invoke-Expression(\\s+|\\s*\\()",
+      "iex(\\s+|\\s*\\()",
       "Invoke-WebRequest.*\\|.*Invoke-Expression",
-      "IEX\\s*\\(",
+      "IEX(\\s+|\\s*\\()",
       "Start-Process.*-Verb\\s+RunAs",
       "Set-ExecutionPolicy\\s+(Unrestricted|Bypass|RemoteSigned)",
       "powershell\\s+-enc(oded)?\\s+",
@@ -41,7 +41,10 @@
       "parted\\s+",
       "git\\s+reset\\s+--hard",
       "git\\s+checkout\\s+--?\\s+\\.",
-      "git\\s+push\\s+.*--force",
+      "git\\s+(restore|checkout)\\s+.*((\\s+\\.)|(--staged))",
+      "git\\s+clean\\s+.*-[a-zA-Z]*f",
+      "git\\s+branch\\s+.*-[dD]",
+      "git\\s+push\\s+.*(--force|-f\\b)",
       "Format-Volume",
       "Clear-Disk",
       "Initialize-Disk",
@@ -56,16 +59,18 @@
       "Invoke-Command",
       "Enter-PSSession",
       "Remove-Item\\s+.*-Recurse",
+      "(rd|rmdir)\\s+.*(/s|/q)",
+      "del\\s+.*(/s|/q)",
       "Stop-Computer",
       "Restart-Computer",
       "Stop-Service\\s+.*-Force"
     ],
     "confirm": [
       "Remove-Item",
-      "rmdir",
-      "rd\\s+",
-      "del\\s+",
-      "git\\s+push\\s+--force",
+      "\\brmdir\\b",
+      "\\brd\\s+",
+      "\\bdel\\s+",
+      "git\\s+push\\s+(--force|-f\\b)",
       "pip\\s+install",
       "npm\\s+install",
       "choco\\s+install",
@@ -80,3 +85,4 @@
     ]
   }
 }
+
