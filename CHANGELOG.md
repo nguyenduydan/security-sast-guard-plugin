@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.4.0...v1.4.1) (2026-08-10)
+
+
+### 🐛 Bug Fixes
+
+* **scanner:** resolve report relative url and aspnet false positives ([#87](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/87), [#88](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/88)) ([700b204](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/700b204a65067e16c6e7f1fcba59866a5513e2ec))
+
+
+### 🎨 Code Style & Formatting
+
+* **lint:** format ai_verifier.py with ruff ([a182efc](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a182efc64345121c09b2d3ba7ba27dacae2341c2))
+
 ## [1.4.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.3.2...v1.4.0) (2026-08-07)
 
 
