@@ -1,6 +1,6 @@
 {
   "id": "security-sast-guard",
   "name": "Security SAST Guard",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "SAST Security Guard plugin for Antigravity & Gemini CLI"
 }
