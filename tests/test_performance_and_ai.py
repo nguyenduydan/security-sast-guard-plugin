@@ -1,5 +1,6 @@
 """Tests for GitHelper, AIVerifier, and early directory pruning performance."""
 
+import time
 from pathlib import Path
 
 from src.domain.ai_verifier import AIVerifier
@@ -65,3 +66,26 @@ def test_scanner_with_ai_verifier_integration(tmp_path: Path) -> None:
     assert "findings" in res
     # False positive with DOMPurify sanitization should be filtered out
     assert len(res["findings"]) == 0
+
+
+def test_large_file_scan_performance(tmp_path: Path) -> None:
+    # Generate a large 5,000-line ASPX file with 100 vulnerability patterns
+    large_aspx = tmp_path / "LargeExamDetail.aspx"
+    lines = []
+    for i in range(1, 5001):
+        if i % 50 == 0:
+            lines.append('<input onfocus="eval(location.hash)">\n')
+        else:
+            lines.append(f"<div>Row content {i}</div>\n")
+    large_aspx.write_text("".join(lines), encoding="utf-8")
+
+    scanner = SASTScanner()
+    start = time.perf_counter()
+    res = scanner.scan_with_metadata(str(large_aspx))
+    duration = time.perf_counter() - start
+
+    assert res["metadata"]["scanned_files"] == 1
+    assert res["metadata"]["total_lines"] == 5000
+    assert len(res["findings"]) == 100
+    # Must complete scan of 5,000-line file under 2.0 seconds
+    assert duration < 2.0

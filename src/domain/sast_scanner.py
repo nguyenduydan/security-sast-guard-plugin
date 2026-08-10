@@ -9,7 +9,7 @@ from typing import Any
 
 from .ai_verifier import AIVerifier
 from .ast_context_engine import ASTContextEngine
-from .context_extractor import extract_context
+from .context_extractor import ContextExtractor
 from .git_helper import GitHelper
 from .ignore_filter import IgnoreFilter
 from .models import Finding
@@ -30,6 +30,7 @@ class SASTScanner:
         self._rules_cache: list[dict[str, Any]] | None = rules
         self.ai_verifier = AIVerifier()
         self.ast_engine = ASTContextEngine()
+        self.context_extractor = ContextExtractor()
         self._load_profile()
 
     def _load_profile(self) -> None:
@@ -58,7 +59,17 @@ class SASTScanner:
 
         try:
             with open(rules_file, encoding="utf-8") as f:
-                self._rules_cache = json.load(f)
+                loaded = json.load(f)
+                for r in loaded:
+                    compiled = []
+                    for pat in r.get("patterns", []):
+                        if self._is_valid_pattern(pat):
+                            try:
+                                compiled.append(re.compile(pat))
+                            except re.error:
+                                pass
+                    r["_compiled_patterns"] = compiled
+                self._rules_cache = loaded
         except (json.JSONDecodeError, OSError):
             self._rules_cache = []
 
@@ -113,6 +124,13 @@ class SASTScanner:
         )
 
     def _rule_matches_line(self, line_content: str, rule: dict[str, Any]) -> bool:
+        compiled = rule.get("_compiled_patterns")
+        if compiled is not None:
+            for pat_obj in compiled:
+                if pat_obj.search(line_content):
+                    return True
+            return False
+
         for pattern in rule.get("patterns", []):
             if not self._is_valid_pattern(pattern):
                 continue
@@ -202,7 +220,9 @@ class SASTScanner:
                     if self._rule_matches_line(line_content, rule):
                         if self._is_suppressed(line_content, prev_line, rule_id):
                             continue
-                        ctx = extract_context(str_path, line_idx)
+                        ctx = self.context_extractor.extract_context_from_lines(
+                            lines, line_idx, str_path
+                        )
                         if ctx.get("is_safe_context"):
                             continue
 
