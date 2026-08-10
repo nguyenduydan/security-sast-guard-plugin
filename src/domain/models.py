@@ -78,3 +78,24 @@ class TaintFinding:
     sink_pattern: str
     trace_path: list[TraceStep]
     confidence: float  # 0.0 - 1.0
+
+
+# -- Call Graph Models ------------------------------------------------------
+
+@dataclass(frozen=True)
+class CallEdge:
+    """A directed edge in the call graph: caller ? callee."""
+
+    caller_file: str
+    caller_fn: str
+    callee_file: str
+    callee_fn: str
+
+
+@dataclass
+class CallChain:
+    """A resolved call chain from an entry function to a sink."""
+
+    entry_fn: str
+    steps: list[TraceStep]
+    terminal_sink: str
