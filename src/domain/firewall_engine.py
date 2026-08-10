@@ -126,12 +126,8 @@ class FirewallEngine:
             expanded = re.sub(r"(?i)\berase\b", "Remove-Item", expanded)
 
             # Expand PowerShell flags -r, -rec, -rf, -fr, -f
-            expanded = re.sub(
-                r"(?i)(^|\s)-rf(\s|$)", r"\1-Recurse -Force\2", expanded
-            )
-            expanded = re.sub(
-                r"(?i)(^|\s)-fr(\s|$)", r"\1-Force -Recurse\2", expanded
-            )
+            expanded = re.sub(r"(?i)(^|\s)-rf(\s|$)", r"\1-Recurse -Force\2", expanded)
+            expanded = re.sub(r"(?i)(^|\s)-fr(\s|$)", r"\1-Force -Recurse\2", expanded)
             expanded = re.sub(r"(?i)(^|\s)-r(\s|$)", r"\1-Recurse\2", expanded)
             expanded = re.sub(r"(?i)(^|\s)-rec(\s|$)", r"\1-Recurse\2", expanded)
             expanded = re.sub(r"(?i)(^|\s)-f(\s|$)", r"\1-Force\2", expanded)
@@ -144,7 +140,6 @@ class FirewallEngine:
 
             if expanded and expanded not in candidates:
                 candidates.append(expanded)
-
 
         return candidates
 
@@ -232,7 +227,6 @@ class FirewallEngine:
                 ),
                 matched_pattern=matched_confirm_pattern,
             )
-
 
         return FirewallVerdict(
             verdict="ALLOW",
