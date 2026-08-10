@@ -1,5 +1,6 @@
 """SAST Scanner domain component."""
 
+import contextlib
 import json
 import os
 import re
@@ -64,10 +65,8 @@ class SASTScanner:
                     compiled = []
                     for pat in r.get("patterns", []):
                         if self._is_valid_pattern(pat):
-                            try:
+                            with contextlib.suppress(re.error):
                                 compiled.append(re.compile(pat))
-                            except re.error:
-                                pass
                     r["_compiled_patterns"] = compiled
                 self._rules_cache = loaded
         except (json.JSONDecodeError, OSError):
@@ -126,10 +125,7 @@ class SASTScanner:
     def _rule_matches_line(self, line_content: str, rule: dict[str, Any]) -> bool:
         compiled = rule.get("_compiled_patterns")
         if compiled is not None:
-            for pat_obj in compiled:
-                if pat_obj.search(line_content):
-                    return True
-            return False
+            return any(pat_obj.search(line_content) for pat_obj in compiled)
 
         for pattern in rule.get("patterns", []):
             if not self._is_valid_pattern(pattern):
