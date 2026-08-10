@@ -227,9 +227,12 @@ class FirewallEngine:
         if matched_confirm_pattern:
             return FirewallVerdict(
                 verdict="CONFIRM",
-                reason=f"Potentially risky pattern matched: '{matched_confirm_pattern}'",
+                reason=(
+                    f"Potentially risky pattern matched: '{matched_confirm_pattern}'"
+                ),
                 matched_pattern=matched_confirm_pattern,
             )
+
 
         return FirewallVerdict(
             verdict="ALLOW",
