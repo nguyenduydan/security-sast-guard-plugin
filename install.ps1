@@ -199,8 +199,3 @@ try {
         Remove-Item -Path $TempDir -Recurse -Force
     }
 }
-
-    if (Test-Path $TempDir) {
-        Remove-Item -Path $TempDir -Recurse -Force
-    }
-}
