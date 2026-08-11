@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.5](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.4...v1.8.5) (2026-08-11)
+
+
+### 🐛 Bug Fixes
+
+* **ignore:** refine temp folder ignore matching to prevent ignoring Linux runner /tmp/ root directory ([879ae06](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/879ae06a66e26933d0dba7897963560eb5837dff))
+
+
+### 🎨 Code Style & Formatting
+
+* **format:** format comment spacing in ignore_filter.py for ruff formatter ([5300a39](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5300a39aa48bb27b287fd6382a23282e2090323f))
+* **format:** resolve ruff E501 line length warnings in test_ignore_filter.py ([0da7a6c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0da7a6c6bfa25ba7f8fe0a92ac3c879cc9d565d4))
+* **format:** shorten test assertion lines to comply with strict ruff line-length ([2a0fb25](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2a0fb25e80f5b07f45284d091242b9a39cbab997))
+
+
+### Maintenance & Tooling
+
+* **ignore:** add aspnet build, cache, symbol, and lock file ignore rules ([8709e6f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8709e6f74f24b93d3c115fba8630c8deb0f13b6b))
+* **ignore:** add temp, cache, and library directories across ecosystems to default ignore rules ([4331cbe](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4331cbe2f51b5092949f6e5492bd1d6feb827258))
+* **ignore:** add template and log files/directories to zero-config ignore defaults ([9759ab5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9759ab500a480237b48aba43a4f35b4062f21420))
+
 ## [1.8.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.3...v1.8.4) (2026-08-11)
 
 
