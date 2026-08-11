@@ -161,6 +161,7 @@ def _substitute_placeholders(
     counts: dict[str, int],
     metadata: dict[str, Any] | None = None,
     audit_level: str = "full",
+    ai_analysis: str | None = None,
 ) -> str:
     meta = metadata or {}
     scanned_files = meta.get("scanned_files", "N/A")
@@ -206,9 +207,13 @@ def _substitute_placeholders(
         content = content.replace(key, val)
 
     if "## 🔍 Detailed Findings" in content:
+        if ai_analysis:
+            ai_block = f"## 🤖 AI Security Analysis\n\n{ai_analysis}\n\n---\n\n"
+        else:
+            ai_block = ""
         content = content.replace(
             "## 🔍 Detailed Findings",
-            f"{metadata_block}\n---\n\n## 🔍 Detailed Findings",
+            f"{metadata_block}\n---\n\n{ai_block}## 🔍 Detailed Findings",
         )
     return content
 
@@ -221,6 +226,7 @@ def generate_markdown_report(
     template_path: str | Path | None = None,
     metadata: dict[str, Any] | None = None,
     audit_level: str = "full",
+    ai_analysis: str | None = None,
 ) -> tuple[str, str]:
     """Generate Markdown report file for SAST findings using template."""
     counts = _count_severities(findings)
@@ -238,7 +244,8 @@ def generate_markdown_report(
             f"SAST Audit completed.{scanned_str} Total: 0 findings "
             "(Critical: 0, High: 0, Medium: 0, Low: 0)."
         )
-        return "", summary
+        if not ai_analysis:
+            return "", summary
 
     target_dir = Path(output_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
@@ -254,7 +261,13 @@ def generate_markdown_report(
     )
 
     report_content = _substitute_placeholders(
-        template_content, target_path, findings, counts, metadata, audit_level
+        template_content,
+        target_path,
+        findings,
+        counts,
+        metadata,
+        audit_level,
+        ai_analysis,
     )
     report_file.write_text(report_content, encoding="utf-8")
 

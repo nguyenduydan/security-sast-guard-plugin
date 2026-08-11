@@ -133,6 +133,12 @@ class MCPServer:
             )
         if tool_name == "sast_set_mode":
             return self.handlers.handle_sast_set_mode(args.get("mode", "strict"))
+        if tool_name == "sast_generate_report":
+            return self.handlers.handle_sast_generate_report(
+                args.get("findings", []),
+                args.get("target_path", "."),
+                args.get("ai_analysis", ""),
+            )
 
         return {"error": f"Unknown tool name: {tool_name}"}
 

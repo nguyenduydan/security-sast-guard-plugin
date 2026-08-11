@@ -54,7 +54,7 @@ class AuditService:
         return self.profile
 
     def run_audit(
-        self, target_path: str, verbose: bool = False
+        self, target_path: str, verbose: bool = False, generate_report: bool = True
     ) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
         self._reload_profile()
@@ -62,6 +62,15 @@ class AuditService:
         findings = res["findings"]
         metadata = res["metadata"]
         audit_level = self.profile.get("audit_level", "full")
+
+        if not generate_report:
+            scanned = metadata.get("scanned_files", 0)
+            dur = metadata.get("duration_seconds", 0)
+            summary = (
+                f"Scan complete. {len(findings)} findings in {scanned} files ({dur}s)."
+            )
+            return findings, "", summary
+
         report_md, summary = generate_markdown_report(
             findings,
             target_path=target_path,
