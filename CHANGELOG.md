@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.3...v1.8.4) (2026-08-11)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **tui:** restore full cyber neo-brutalist TUI installer and updater ([e78c0d8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e78c0d86bbe358bfc773470f086a7507ee0ad7d4))
+
 ## [1.8.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.2...v1.8.3) (2026-08-11)
 
 
