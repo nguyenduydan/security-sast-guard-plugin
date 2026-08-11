@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.6.0...v1.6.1) (2026-08-11)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **ci:** restructure github actions workflows with composite action and parallel jobs ([8fdb0ac](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8fdb0ac160c31f1b6c35856b5c5242fc62fc50f3))
+
 ## [1.6.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.6...v1.6.0) (2026-08-11)
 
 
