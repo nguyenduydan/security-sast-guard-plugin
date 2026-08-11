@@ -141,8 +141,12 @@ def test_ignore_filter_aspnet_rules(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "data.mdf") is True
     assert filter_inst.should_ignore(tmp_path / "data_log.ldf") is True
 
-    # Lock files
+    # Lock and Config files
     assert filter_inst.should_ignore(tmp_path / "packages.lock.json") is True
+    assert filter_inst.should_ignore(tmp_path / "Web.config") is True
+    assert filter_inst.should_ignore(tmp_path / "Web.Debug.config") is True
+    assert filter_inst.should_ignore(tmp_path / "Web.Release.config") is True
+    assert filter_inst.should_ignore(tmp_path / "App.config") is True
 
     # ASP.NET C# source code must NOT be ignored
     ctrl_cs = tmp_path / "Controllers" / "HomeController.cs"

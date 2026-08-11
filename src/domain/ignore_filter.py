@@ -137,6 +137,11 @@ DEFAULT_IGNORE_FILES: set[str] = {
     "Cargo.lock",
     "poetry.lock",
     "packages.lock.json",  # NuGet package lock file
+    # ASP.NET / .NET environment config transformation files
+    "web.config",
+    "web.debug.config",
+    "web.release.config",
+    "app.config",
 }
 
 
