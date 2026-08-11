@@ -11,24 +11,24 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     # Dependencies / Libraries (cross-ecosystem)
     "node_modules",
     "vendor",
-    "bower_components", # Frontend legacy package manager
-    "jspm_packages",    # JS package manager
+    "bower_components",  # Frontend legacy package manager
+    "jspm_packages",  # JS package manager
     ".venv",
     "venv",
     "env",
     ".env",
-    "packages",         # NuGet legacy packages directory
-    ".nuget",           # NuGet cache directory
-    ".gradle",          # Gradle cache directory
-    ".m2",              # Maven local repository cache
-    ".cargo",           # Rust cargo cache
-    ".bundle",          # Ruby bundler cache
+    "packages",  # NuGet legacy packages directory
+    ".nuget",  # NuGet cache directory
+    ".gradle",  # Gradle cache directory
+    ".m2",  # Maven local repository cache
+    ".cargo",  # Rust cargo cache
+    ".bundle",  # Ruby bundler cache
     # Temp / Cache / build artefacts & .NET / ASP.NET build output
-    "temp",             # General temporary files directory
-    "tmp",              # General temporary files directory
-    ".tmp",             # Hidden temp directory
-    "cache",            # General cache directory
-    ".cache",           # Hidden system/build cache directory
+    "temp",  # General temporary files directory
+    "tmp",  # General temporary files directory
+    ".tmp",  # Hidden temp directory
+    "cache",  # General cache directory
+    ".cache",  # Hidden system/build cache directory
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
@@ -37,11 +37,11 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "build",
     "out",
     "target",
-    "bin",        # ASP.NET / .NET compiled binaries
-    "obj",        # ASP.NET / .NET intermediate build output
-    "publish",    # ASP.NET publish output directory
-    "App_Data",   # ASP.NET local data / mdf files directory
-    "TestResults",# .NET / MSTest test execution results
+    "bin",  # ASP.NET / .NET compiled binaries
+    "obj",  # ASP.NET / .NET intermediate build output
+    "publish",  # ASP.NET publish output directory
+    "App_Data",  # ASP.NET local data / mdf files directory
+    "TestResults",  # .NET / MSTest test execution results
     ".next",
     ".nuxt",
     "coverage",
@@ -49,7 +49,7 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     # IDE / VS
     ".idea",
     ".vscode",
-    ".vs",        # Visual Studio local cache directory
+    ".vs",  # Visual Studio local cache directory
     # Logs & telemetry
     "logs",
     "log",
@@ -89,24 +89,24 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".rar",
     ".exe",
     ".dll",
-    ".pdb",       # .NET debug symbols
-    ".nupkg",     # NuGet package file
-    ".snupkg",    # NuGet symbol package
+    ".pdb",  # .NET debug symbols
+    ".nupkg",  # NuGet package file
+    ".snupkg",  # NuGet symbol package
     ".so",
     ".dylib",
     # Compiled / generated / Visual Studio user options
     ".pyc",
     ".pyo",
     ".map",
-    ".suo",       # Visual Studio Solution User Options
-    ".user",      # Visual Studio project user settings
+    ".suo",  # Visual Studio Solution User Options
+    ".user",  # Visual Studio project user settings
     ".userossc",
     ".sln.docstates",
     # Databases & ASP.NET data files
     ".db",
     ".sqlite",
-    ".mdf",       # SQL Server Express database file
-    ".ldf",       # SQL Server Express log file
+    ".mdf",  # SQL Server Express database file
+    ".ldf",  # SQL Server Express log file
     # Templates (text/HTML scaffold files — non-executable)
     ".template",
     ".tpl",
