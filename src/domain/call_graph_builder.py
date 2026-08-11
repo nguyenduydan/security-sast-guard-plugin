@@ -34,7 +34,6 @@ _SCAN_EXTENSIONS = {
 }
 
 
-
 class CallGraphBuilder:
     """Builds a cross-file import graph and traces call chains to sinks."""
 

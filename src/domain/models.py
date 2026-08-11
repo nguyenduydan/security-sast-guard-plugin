@@ -82,6 +82,7 @@ class TaintFinding:
 
 # -- Call Graph Models ------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class CallEdge:
     """A directed edge in the call graph: caller ? callee."""

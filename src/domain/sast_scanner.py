@@ -42,7 +42,6 @@ class SASTScanner:
         except FileNotFoundError:
             pass  # Profile file absent: use default strict mode
 
-
     def _get_rules_path(self) -> Path:
         p = Path(self.rules_path)
         if not p.exists():

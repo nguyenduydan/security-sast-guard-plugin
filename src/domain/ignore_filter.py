@@ -116,7 +116,6 @@ class IgnoreFilter:
         except OSError:
             pass  # Custom ignore file absent or unreadable: use defaults only
 
-
     def should_ignore(self, path: Path | str) -> bool:
         """Check if path should be ignored by built-in defaults or custom patterns."""
         p = Path(path)

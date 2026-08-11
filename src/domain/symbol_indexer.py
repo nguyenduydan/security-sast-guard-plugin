@@ -84,7 +84,6 @@ class SymbolIndexer:
         return None
 
     def _iter_code_files(self) -> Iterator[Path]:
-
         """Yield Path objects for all code files in repo, skipping ignored dirs."""
         for path in self.repo_path.rglob("*"):
             if (

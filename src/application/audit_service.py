@@ -209,7 +209,6 @@ class AuditService:
             except (OSError, ValueError, KeyError):
                 pass  # pyproject.toml unreadable: try next resolution strategy
 
-
         pkg_json = cwd / ("package." + "json")
         if pkg_json.exists():
             try:
@@ -218,7 +217,6 @@ class AuditService:
                     return str(data["name"])
             except (OSError, ValueError, KeyError):
                 pass  # package.json unreadable: fall back to directory name
-
 
         return cwd.name
 

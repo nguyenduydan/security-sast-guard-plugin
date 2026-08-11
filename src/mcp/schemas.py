@@ -19,10 +19,12 @@ class TaintTraceItem:
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
+
 @dataclass
 class DataflowPathResult:
     paths: list[dict[str, Any]]
     total: int
+
 
 @dataclass
 class TaintContextResult:
@@ -30,6 +32,7 @@ class TaintContextResult:
     line: int
     code_snippet: str
     taint_info: dict[str, Any]
+
 
 TOOLS_SCHEMAS: list[dict[str, Any]] = [
     {

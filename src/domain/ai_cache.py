@@ -42,7 +42,6 @@ class AICache:
         except OSError:
             pass  # Cache write failure is non-fatal: continue without persisting
 
-
     @staticmethod
     def compute_key(rule_id: str, line_content: str, file_ext: str = "") -> str:
         """Compute deterministic SHA-256 cache key."""
