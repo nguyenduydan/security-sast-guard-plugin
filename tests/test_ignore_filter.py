@@ -105,4 +105,45 @@ def test_ignore_filter_should_ignore_dir_new_entries(tmp_path: Path) -> None:
     assert filter_inst.should_ignore_dir("skills") is True
     assert filter_inst.should_ignore_dir("templates") is True
     assert filter_inst.should_ignore_dir("tests") is True
+    assert filter_inst.should_ignore_dir("bin") is True
+    assert filter_inst.should_ignore_dir("obj") is True
+    assert filter_inst.should_ignore_dir("packages") is True
+    assert filter_inst.should_ignore_dir(".vs") is True
     assert filter_inst.should_ignore_dir("src") is False
+
+
+def test_ignore_filter_aspnet_rules(tmp_path: Path) -> None:
+    """ASP.NET build outputs, cache directories, symbols, and databases must be ignored."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    # Directories
+    assert filter_inst.should_ignore(tmp_path / "bin" / "Debug" / "app.dll") is True
+    assert (
+        filter_inst.should_ignore(
+            tmp_path
+            / "obj"
+            / "Release"
+            / "app.csproj.assemblyInputs.cache"
+        )
+        is True
+    )
+    assert filter_inst.should_ignore(tmp_path / "packages" / "Newtonsoft.Json" / "lib.dll") is True
+    assert filter_inst.should_ignore(tmp_path / ".vs" / "solution" / "v17" / ".suo") is True
+    assert filter_inst.should_ignore(tmp_path / "publish" / "web.config") is True
+    assert filter_inst.should_ignore(tmp_path / "App_Data" / "aspnet.mdf") is True
+    assert filter_inst.should_ignore(tmp_path / "TestResults" / "test.trx") is True
+
+    # File extensions
+    assert filter_inst.should_ignore(tmp_path / "app.pdb") is True
+    assert filter_inst.should_ignore(tmp_path / "package.nupkg") is True
+    assert filter_inst.should_ignore(tmp_path / "app.suo") is True
+    assert filter_inst.should_ignore(tmp_path / "app.user") is True
+    assert filter_inst.should_ignore(tmp_path / "data.mdf") is True
+    assert filter_inst.should_ignore(tmp_path / "data_log.ldf") is True
+
+    # Lock files
+    assert filter_inst.should_ignore(tmp_path / "packages.lock.json") is True
+
+    # ASP.NET C# source code must NOT be ignored
+    assert filter_inst.should_ignore(tmp_path / "Controllers" / "HomeController.cs") is False
+    assert filter_inst.should_ignore(tmp_path / "Program.cs") is False

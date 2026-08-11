@@ -14,7 +14,8 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".venv",
     "venv",
     "env",
-    # Cache / build artefacts
+    "packages",  # NuGet legacy packages directory
+    # Cache / build artefacts & .NET / ASP.NET build output
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
@@ -23,13 +24,19 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "build",
     "out",
     "target",
+    "bin",        # ASP.NET / .NET compiled binaries
+    "obj",        # ASP.NET / .NET intermediate build output
+    "publish",    # ASP.NET publish output directory
+    "App_Data",   # ASP.NET local data / mdf files directory
+    "TestResults",# .NET / MSTest test execution results
     ".next",
     ".nuxt",
     "coverage",
     "site",
-    # IDE
+    # IDE / VS
     ".idea",
     ".vscode",
+    ".vs",        # Visual Studio local cache directory
     # Plugin system / internal tool directories (not executable source)
     "reports",
     "docs",
@@ -58,7 +65,7 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".woff2",
     ".ttf",
     ".eot",
-    # Archives / binaries
+    # Archives / binaries & .NET assemblies / symbols
     ".pdf",
     ".zip",
     ".tar",
@@ -67,15 +74,24 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".rar",
     ".exe",
     ".dll",
+    ".pdb",       # .NET debug symbols
+    ".nupkg",     # NuGet package file
+    ".snupkg",    # NuGet symbol package
     ".so",
     ".dylib",
-    # Compiled / generated
+    # Compiled / generated / Visual Studio user options
     ".pyc",
     ".pyo",
     ".map",
-    # Databases
+    ".suo",       # Visual Studio Solution User Options
+    ".user",      # Visual Studio project user settings
+    ".userossc",
+    ".sln.docstates",
+    # Databases & ASP.NET data files
     ".db",
     ".sqlite",
+    ".mdf",       # SQL Server Express database file
+    ".ldf",       # SQL Server Express log file
     # Documentation & plain text (non-executable — main source of false positives)
     ".md",
     ".markdown",
@@ -90,6 +106,7 @@ DEFAULT_IGNORE_FILES: set[str] = {
     "pnpm-lock.yaml",
     "Cargo.lock",
     "poetry.lock",
+    "packages.lock.json",  # NuGet package lock file
 }
 
 
