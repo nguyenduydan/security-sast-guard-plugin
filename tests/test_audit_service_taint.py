@@ -1,4 +1,6 @@
 # tests/test_audit_service_taint.py
+from unittest.mock import MagicMock, patch
+
 from src.application.audit_service import AuditService
 
 
@@ -12,10 +14,6 @@ def test_run_taint_analysis_returns_list():
 def test_run_taint_analysis_calls_call_graph_builder():
     """run_taint_analysis should call CallGraphBuilder.trace_to_sinks
     for each finding."""
-
-    from unittest.mock import MagicMock, patch
-
-    from src.application.audit_service import AuditService
 
     service = AuditService()
     with patch("src.application.audit_service.CallGraphBuilder") as MockCGB:

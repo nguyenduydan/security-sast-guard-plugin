@@ -77,4 +77,4 @@ def test_trace_to_sinks_no_cross_file_match():
     )
     builder = CallGraphBuilder(repo)
     chains = builder.trace_to_sinks("views.py", "user_input", ["eval"])
-    assert chains == []
+    assert not chains
