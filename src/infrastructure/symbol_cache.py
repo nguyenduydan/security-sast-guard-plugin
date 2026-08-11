@@ -36,7 +36,8 @@ class SymbolCache:
         key = self.make_key(repo_path, sources, commit_hash)
         # Level 1: LRU
         if key in self._lru:
-            return self._lru[key]
+            cached: SymbolMap = self._lru[key]
+            return cached
         # Level 2: file
         data = self._read_file_cache()
         if key in data:
