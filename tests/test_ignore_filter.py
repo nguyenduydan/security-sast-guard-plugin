@@ -147,3 +147,22 @@ def test_ignore_filter_aspnet_rules(tmp_path: Path) -> None:
     # ASP.NET C# source code must NOT be ignored
     assert filter_inst.should_ignore(tmp_path / "Controllers" / "HomeController.cs") is False
     assert filter_inst.should_ignore(tmp_path / "Program.cs") is False
+
+
+def test_ignore_filter_templates_and_logs(tmp_path: Path) -> None:
+    """Template files and log directories/files must be ignored."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    # Log directories and extensions
+    assert filter_inst.should_ignore(tmp_path / "logs" / "app.log") is True
+    assert filter_inst.should_ignore(tmp_path / "log" / "server.out") is True
+    assert filter_inst.should_ignore(tmp_path / "app.err") is True
+    assert filter_inst.should_ignore(tmp_path / "app.bak") is True
+
+    # Template extensions
+    assert filter_inst.should_ignore(tmp_path / "page.template") is True
+    assert filter_inst.should_ignore(tmp_path / "layout.tpl") is True
+    assert filter_inst.should_ignore(tmp_path / "card.tmpl") is True
+    assert filter_inst.should_ignore(tmp_path / "email.mustache") is True
+    assert filter_inst.should_ignore(tmp_path / "view.handlebars") is True
+    assert filter_inst.should_ignore(tmp_path / "item.hbs") is True

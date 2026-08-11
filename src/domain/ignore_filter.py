@@ -37,7 +37,9 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".idea",
     ".vscode",
     ".vs",        # Visual Studio local cache directory
-    # Plugin system / internal tool directories (not executable source)
+    # Logs & telemetry
+    "logs",
+    "log",
     "reports",
     "docs",
     ".aiops",
@@ -92,12 +94,22 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".sqlite",
     ".mdf",       # SQL Server Express database file
     ".ldf",       # SQL Server Express log file
-    # Documentation & plain text (non-executable — main source of false positives)
+    # Templates (text/HTML scaffold files — non-executable)
+    ".template",
+    ".tpl",
+    ".tmpl",
+    ".mustache",
+    ".handlebars",
+    ".hbs",
+    # Documentation, plain text, and log files
     ".md",
     ".markdown",
     ".rst",
     ".txt",
     ".log",
+    ".out",
+    ".err",
+    ".bak",
 }
 
 DEFAULT_IGNORE_FILES: set[str] = {
