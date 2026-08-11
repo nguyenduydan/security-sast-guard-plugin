@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.6.1...v1.7.0) (2026-08-11)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **ci:** implement enterprise security github actions architecture with sha pinning sbom and attestations ([60f4f42](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/60f4f4206091b2f562cf964719c2e1934e4f565a))
+* **security:** complete 100% public repository security hardening with dependabot codeql and dependency review ([b3a60d9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b3a60d9208342fe1426648fd4ec9b06e83fb07fa))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** grant explicit caller permissions in ci and release workflows for reusable workflows ([877ad3a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/877ad3a00262f05cd572d0c241a6d9b1a61c502c))
+* **ci:** inline setup-python steps in reusable workflows for reliable resolution ([2f02e3b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2f02e3bb5571de326b427fda476575ce78e967b9))
+* **ci:** update all action references to official version tags for instant runner resolution ([989c6e2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/989c6e23118da936c903295d243a6f20d02e697f))
+* **ci:** update codeql-action tag to v3 for valid runner resolution ([4679df8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4679df8f3bc6e0dd1552cc5a9b6811b42d0981cb))
+* **cli:** support codebase keyword alias in audit command ([87aa369](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/87aa36934e159b6ff09ca32963670b0b5c0cd71f))
+
+
+### 📦 Build System & Dependencies
+
+* **deps:** bump actions/checkout from v4 to v7 ([e63afb3](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e63afb31d2ee512b063a6ca8db3367288acd232b))
+* **deps:** bump github/codeql-action from 3 to 4 ([e672ecb](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e672ecb80a9f997df8c8999f4bcbed3db0196487))
+
+
+### 🎨 Code Style & Formatting
+
+* **ci:** shorten workflow and job display names for clean github UI ([9e097d9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9e097d9ae4e99e3726331ccc794969787c17a7be))
+
 ## [1.6.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.6.0...v1.6.1) (2026-08-11)
 
 
