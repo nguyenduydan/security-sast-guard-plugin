@@ -14,7 +14,9 @@ def test_trace_step_fields():
 
 
 def test_taint_finding_fields():
-    step = TraceStep(file="app.py", line=10, symbol="x", step_type="source_assignment")
+    step = TraceStep(
+        file="app.py", line=10, symbol="x", step_type="source_assignment"
+    )
     finding = TaintFinding(
         rule_id="RULE-001",
         source_file="app.py",

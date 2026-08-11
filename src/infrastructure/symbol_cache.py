@@ -2,33 +2,10 @@
 
 import hashlib
 import json
-from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
-try:
-    from cachetools import LRUCache
-except ImportError:
-
-    class LRUCache(OrderedDict[str, Any]):  # type: ignore[no-redef]
-        """Fallback LRU cache using OrderedDict if cachetools is not installed."""
-
-        def __init__(self, maxsize: int = 64) -> None:
-            super().__init__()
-            self.maxsize = maxsize
-
-        def __getitem__(self, key: Any) -> Any:
-            val = super().__getitem__(key)
-            self.move_to_end(key)
-            return val
-
-        def __setitem__(self, key: Any, value: Any) -> None:
-            if key in self:
-                self.move_to_end(key)
-            super().__setitem__(key, value)
-            if len(self) > self.maxsize:
-                self.popitem(last=False)
-
+from cachetools import LRUCache
 
 from src.domain.models import SymbolMap
 
@@ -59,8 +36,7 @@ class SymbolCache:
         key = self.make_key(repo_path, sources, commit_hash)
         # Level 1: LRU
         if key in self._lru:
-            cached: SymbolMap = self._lru[key]
-            return cached
+            return self._lru[key]
         # Level 2: file
         data = self._read_file_cache()
         if key in data:
@@ -100,9 +76,6 @@ class SymbolCache:
         if not self._cache_file.exists():
             return {}
         try:
-            data: dict[str, Any] = json.loads(
-                self._cache_file.read_text(encoding="utf-8")
-            )
-            return data
+            return json.loads(self._cache_file.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             return {}

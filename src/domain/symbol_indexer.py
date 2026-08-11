@@ -1,7 +1,6 @@
 """SymbolIndexer: grep-based source assignment finder."""
 
 import re
-from collections.abc import Generator
 from pathlib import Path
 
 from .models import SymbolMap
@@ -89,7 +88,7 @@ class SymbolIndexer:
             return m.group(1)
         return None
 
-    def _iter_code_files(self) -> Generator[Path, None, None]:
+    def _iter_code_files(self):
         """Yield Path objects for all code files in repo, skipping ignored dirs."""
         for path in self.repo_path.rglob("*"):
             if (

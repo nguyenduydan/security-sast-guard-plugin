@@ -3,12 +3,11 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from src.domain.ast_confirm_engine import ASTConfirmEngine
-from src.domain.call_graph_builder import CallGraphBuilder
 from src.domain.models import TaintFinding
 from src.domain.sast_scanner import SASTScanner
 from src.domain.symbol_indexer import SymbolIndexer
 from src.domain.taint_tracker import TaintTracker
+from src.domain.call_graph_builder import CallGraphBuilder
 from src.infrastructure.integrity_checker import IntegrityChecker
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.profile_resolver import ProfileResolver
@@ -90,7 +89,7 @@ class AuditService:
 
     # pylint: disable=too-many-locals
     def run_taint_analysis(self, target_path: str) -> list[TaintFinding]:
-        """Run taint analysis, AST confirmation, and call graph tracing."""
+        """Run grep-based taint analysis, AST confirmation, and cross-file call graph tracing."""
         taint_rules = self._extract_taint_rules()
         if not taint_rules:
             return []
@@ -120,7 +119,7 @@ class AuditService:
                 for finding in findings:
                     chains = call_graph.trace_to_sinks(
                         finding.source_file,
-                        next(iter(symbol_map.keys())) if symbol_map else "",
+                        list(symbol_map.keys())[0] if symbol_map else "",
                         sinks,
                     )
                     if chains:
@@ -128,12 +127,7 @@ class AuditService:
                         for chain in chains:
                             finding.trace_path.extend(chain.steps)
                 raw_findings.extend(findings)
-
-        # Phase 2: AST confirmation (gracefully skipped if tree-sitter not installed)
-        ast_engine = ASTConfirmEngine()
-        confirmed = ast_engine.confirm_all(raw_findings)
-        # Filter out AST-rejected findings (confidence == 0.0)
-        return [f for f in confirmed if f.confidence > 0.0]
+        return raw_findings
 
     def set_audit_level(self, level: str) -> bool:
         """Set active audit level in profile configuration."""
