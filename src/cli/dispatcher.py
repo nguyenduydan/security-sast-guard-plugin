@@ -122,11 +122,14 @@ def _handle_mode(args: list[str]) -> int:
 
 def _handle_scan(args: list[str]) -> int:
     """Handle scan / audit subcommand."""
-    target_path = args[0] if args else "."
+    verbose = "-v" in args or "--verbose" in args
+    clean_args = [a for a in args if a not in ("-v", "--verbose")]
+
+    target_path = clean_args[0] if clean_args else "."
     if target_path.lower() == "codebase":
         target_path = "."
     service = AuditService()
-    _, _, summary = service.run_audit(target_path)
+    _, _, summary = service.run_audit(target_path, verbose=verbose or True)
     print(summary)
     return 0
 

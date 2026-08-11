@@ -251,6 +251,7 @@ class SASTScanner:
         path: str,
         interactive: bool = False,
         incremental: bool = False,
+        verbose: bool = False,
     ) -> dict[str, Any]:
         """Scan file or directory with full metadata tracking."""
         start_time = time.perf_counter()
@@ -305,7 +306,8 @@ class SASTScanner:
                     else:
                         files_to_scan.append(file_p)
 
-        for file_path in files_to_scan:
+        total_files = len(files_to_scan)
+        for idx, file_path in enumerate(files_to_scan, 1):
             # Explicit single file targets bypass default extension/path ignore rules
             if (
                 target_path.is_file()
@@ -324,6 +326,22 @@ class SASTScanner:
 
             scanned_files += 1
             total_lines += lines_count
+
+            if verbose:
+                rel_p = (
+                    file_path.relative_to(target_path)
+                    if target_path.is_dir()
+                    else file_path.name
+                )
+                finding_txt = (
+                    f" -> \033[31m{len(matches)} finding(s)\033[0m"
+                    if matches
+                    else " -> \033[32mOK\033[0m"
+                )
+                print(
+                    f"[{idx}/{total_files}] Scanning {rel_p}{finding_txt}",
+                    flush=True,
+                )
 
             if interactive and matches:
                 for match in matches:

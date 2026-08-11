@@ -53,10 +53,12 @@ class AuditService:
         self.profile = self.profile_loader.load(str(self.profile_path))
         return self.profile
 
-    def run_audit(self, target_path: str) -> tuple[list[dict[str, Any]], str, str]:
+    def run_audit(
+        self, target_path: str, verbose: bool = False
+    ) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
         self._reload_profile()
-        res = self.scanner.scan_with_metadata(target_path)
+        res = self.scanner.scan_with_metadata(target_path, verbose=verbose)
         findings = res["findings"]
         metadata = res["metadata"]
         audit_level = self.profile.get("audit_level", "full")
