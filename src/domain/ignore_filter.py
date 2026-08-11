@@ -25,7 +25,7 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".bundle",  # Ruby bundler cache
     # Temp / Cache / build artefacts & .NET / ASP.NET build output
     ".tmp",  # Hidden temp directory
-    ".temp", # Hidden temp directory
+    ".temp",  # Hidden temp directory
     "cache",  # General cache directory
     ".cache",  # Hidden system/build cache directory
     "__pycache__",
