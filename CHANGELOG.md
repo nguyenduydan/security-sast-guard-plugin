@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.6...v1.6.0) (2026-08-11)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **detection:** implement Smarter Detection Engine with taint analysis, AST confirmation, and cross-file call graph ([a8fbc89](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a8fbc89d7b6e6937a3b003cdf83e033b474b1796))
+
+
+### 🐛 Bug Fixes
+
+* **cache:** add pure-python OrderedDict LRUCache fallback and install dependencies in CI workflow ([7b2045b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7b2045b5e59a58d54dee443e1ff59c42ccc1a558))
+* **mypy:** configure mypy overrides for untyped third-party packages in pyproject.toml ([ba04246](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ba04246d6e3f7a62ecc9f110807472820c7610c0))
+* **pytest:** add pythonpath to pyproject.toml to resolve test collection module imports ([8bd7cee](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8bd7cee306b568030d6867e9281511f7e9d22997))
+* **types:** resolve all 20 mypy type annotations and ignore warnings ([0c8b11b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0c8b11b6534841a596189098ecb330f8e652e223))
+* **types:** resolve SymbolCache.get no-any-return mypy error ([1684949](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1684949417b25186ec32257c90bfca3f3700cdea))
+
+
+### 📝 Documentation
+
+* **plans:** add 4-sprint implementation plans for smarter detection engine ([23ed127](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/23ed127a4408db368ff9a58ca861ce99dd99e3bd))
+* **spec:** add smarter detection engine design spec with taint analysis and cross-file dataflow ([330011a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/330011a3c466f98a7d53abef8b7ab18a8f52ab46))
+
+
+### 🎨 Code Style & Formatting
+
+* **linter:** import Generator from collections.abc (UP035) ([5a01771](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5a01771d42c2b48fe39cff4683ee80a2ac7bd2ec))
+
 ## [1.5.6](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.5.5...v1.5.6) (2026-08-10)
 
 
