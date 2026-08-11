@@ -79,6 +79,14 @@ warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 
+[[tool.mypy.overrides]]
+module = [
+    "cachetools.*",
+    "tree_sitter.*",
+    "tree_sitter_languages.*",
+]
+ignore_missing_imports = true
+
 
 # ==========================================
 # Pytest Test Runner Configuration
