@@ -6,29 +6,39 @@ on:
   pull_request:
     branches: [main, develop, 'release/*']
 
-jobs:
-  verify:
-    name: Build & Code Quality Check
-    runs-on: ubuntu-latest
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+permissions:
+  contents: read
+
+jobs:
+  manifest-check:
+    name: Verify Manifest Version Consistency
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python 3.12
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Verify Manifest Version Consistency
+      - name: Verify Manifest Version Match
         run: |
           python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version'], f'Mismatch: {p[\"version\"]} vs {e[\"version\"]}'"
 
+  lint-and-format:
+    name: Code Linting & Formatting (Ruff + Pylint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e . ruff mypy pytest detect-secrets pylint
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
 
       - name: Run Ruff Linter & Formatter Check
         run: |
@@ -39,10 +49,67 @@ jobs:
         run: |
           python -m pylint control_plane.py hooks/run_audit_hook.py scripts/md_to_json.py src/ tests/
 
+  type-check:
+    name: Type Checking (Mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+
       - name: Run Mypy Type Checker
         run: |
           python -m mypy --config-file=pyproject.toml control_plane.py src/
 
+  pytest-suite:
+    name: Unit Tests (Pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+
       - name: Run Pytest Suite
         run: |
           python -m pytest
+
+  sast-self-check:
+    name: SAST Security Self-Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+
+      - name: Run Security Audit
+        run: |
+          python control_plane.py audit codebase --level lite
+
+  ci-success:
+    name: CI Status Gate
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - manifest-check
+      - lint-and-format
+      - type-check
+      - pytest-suite
+      - sast-self-check
+    steps:
+      - name: Check Status of All Jobs
+        run: |
+          if [ "${{ needs.manifest-check.result }}" != "success" ] || \
+             [ "${{ needs.lint-and-format.result }}" != "success" ] || \
+             [ "${{ needs.type-check.result }}" != "success" ] || \
+             [ "${{ needs.pytest-suite.result }}" != "success" ] || \
+             [ "${{ needs.sast-self-check.result }}" != "success" ]; then
+            echo "One or more CI jobs failed!"
+            exit 1
+          fi
+          echo "All CI Quality Gate checks passed successfully."

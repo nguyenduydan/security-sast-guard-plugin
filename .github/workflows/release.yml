@@ -7,6 +7,10 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -40,8 +44,6 @@ jobs:
 
       - name: Package Release Asset
         run: |
-          # Package only runtime files. Keep the top-level directory expected
-          # by install.ps1/update.ps1 while excluding source/docs/dev files.
           git archive \
             --format=zip \
             --prefix=security-sast-guard/ \
@@ -59,11 +61,11 @@ jobs:
             rules \
             skills \
             src
-          
+
       - name: Generate Checksum
         run: |
           sha256sum ${{ github.ref_name }}.zip > checksums.txt
-          
+
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -81,8 +83,7 @@ jobs:
   release-please:
     name: Release Please PR Automation
     runs-on: ubuntu-latest
-    if: |
-      github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -90,6 +91,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-
-      # NOTE: Release PRs created by release-please must be merged MANUALLY by the repo owner.
-      # Auto-merge is intentionally disabled to avoid uncontrolled version bumps.
