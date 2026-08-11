@@ -47,9 +47,9 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "Upload",
     "uploads",
     "upload",
-    "Images",   # Static image assets directory
+    "Images",  # Static image assets directory
     "images",
-    "Template", # HTML / email / doc templates directory
+    "Template",  # HTML / email / doc templates directory
     "template",
     "TestResults",  # .NET / MSTest test execution results
     ".next",

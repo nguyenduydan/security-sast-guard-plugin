@@ -20,8 +20,8 @@ class MCPToolHandlers:
 
     def handle_sast_scan_file(self, file_path: str) -> dict[str, Any]:
         """Scan a single file and include taint traces in output."""
-        findings, report_file, summary = self.audit_service.run_audit(
-            target_path=file_path
+        findings, _, summary = self.audit_service.run_audit(
+            target_path=file_path, generate_report=False
         )
         taint_findings = self.audit_service.run_taint_analysis(file_path)
         taint_traces = [
@@ -46,7 +46,6 @@ class MCPToolHandlers:
         ]
         return {
             "status": "success",
-            "report_file": str(report_file),
             "findings_count": len(findings),
             "summary": summary,
             "findings": [
@@ -65,7 +64,9 @@ class MCPToolHandlers:
 
     def handle_sast_scan_diff(self) -> dict[str, Any]:
         """Scan modified git files and include taint traces in output."""
-        findings, report_file, summary = self.audit_service.run_audit(target_path=".")
+        findings, _, summary = self.audit_service.run_audit(
+            target_path=".", generate_report=False
+        )
         taint_findings = self.audit_service.run_taint_analysis(".")
         taint_traces = [
             {
@@ -89,10 +90,45 @@ class MCPToolHandlers:
         ]
         return {
             "status": "success",
-            "report_file": str(report_file),
             "findings_count": len(findings),
             "summary": summary,
             "taint_traces": taint_traces,
+            "findings": [
+                {
+                    "rule_id": f.get("rule_id", ""),
+                    "rule_name": f.get("rule_name", ""),
+                    "severity": f.get("severity", ""),
+                    "file_path": f.get("path", ""),
+                    "line_number": f.get("line", 0),
+                    "action": f.get("action", "Block"),
+                }
+                for f in findings
+            ],
+        }
+
+    def handle_sast_generate_report(
+        self, findings: list[dict[str, Any]], target_path: str, ai_analysis: str
+    ) -> dict[str, Any]:
+        """Generate a SAST markdown report containing AI analysis."""
+        # pylint: disable=import-outside-toplevel
+        from src.infrastructure.report_generator import generate_markdown_report
+
+        metadata = {
+            "scanned_files": "N/A",
+            "total_lines": "N/A",
+            "duration_seconds": "N/A",
+        }
+        report_file, summary = generate_markdown_report(
+            findings,
+            target_path=target_path,
+            metadata=metadata,
+            audit_level=self.profile_loader.load().get("audit_level", "full"),
+            ai_analysis=ai_analysis,
+        )
+        return {
+            "status": "success",
+            "report_file": str(report_file),
+            "summary": summary,
         }
 
     def handle_sast_check_command(self, command: str) -> dict[str, Any]:

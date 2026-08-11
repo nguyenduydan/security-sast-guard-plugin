@@ -167,4 +167,27 @@ TOOLS_SCHEMAS: list[dict[str, Any]] = [
             "required": ["file_path", "line_number"],
         },
     },
+    {
+        "name": "sast_generate_report",
+        "description": "Generate SAST markdown report containing AI analysis.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "findings": {
+                    "type": "array",
+                    "description": "JSON findings returned from the scanner.",
+                    "items": {"type": "object"},
+                },
+                "target_path": {
+                    "type": "string",
+                    "description": "Path that was scanned.",
+                },
+                "ai_analysis": {
+                    "type": "string",
+                    "description": "AI's markdown analysis of the findings.",
+                },
+            },
+            "required": ["findings", "target_path", "ai_analysis"],
+        },
+    },
 ]
