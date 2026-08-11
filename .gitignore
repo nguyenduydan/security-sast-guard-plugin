@@ -45,6 +45,18 @@ ENV/
 *.swp
 *.swo
 
+# Secrets & Certificates Hardening
+.env
+.env.*
+!.env.example
+secrets/
+*.secret
+*.key
+*.pem
+*.pfx
+*.p12
+*.log
+
 # Pre-commit & Build cache
 .pre-commit-config.yaml.bak
 
@@ -55,4 +67,4 @@ ENV/
 reports/
 .sast/
 
-.profile.sha256
+.profile.sha256
