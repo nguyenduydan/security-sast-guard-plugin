@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 # Try to import tree-sitter. Set flag for graceful degradation.
 try:
-    import tree_sitter_languages  # type: ignore[import-not-found]
-    from tree_sitter import Parser  # type: ignore[import-not-found]
+    import tree_sitter_languages
+    from tree_sitter import Parser
 
     _TREE_SITTER_AVAILABLE = True
 except ImportError:
