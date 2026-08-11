@@ -16,6 +16,8 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 # pylint: disable=wrong-import-position
+import json
+
 from src.domain.firewall_engine import (  # noqa: E402
     FirewallEngine,
 )
@@ -38,6 +40,7 @@ def main() -> int:
                 if tool_call.get("name") == "run_command":
                     cmd_text = tool_call.get("args", {}).get("CommandLine", "")
         except json.JSONDecodeError:
+            # Ignore stdin parsing errors; fallback to argv or env vars later
             pass
 
     # Fallback to sys.argv or environment variables

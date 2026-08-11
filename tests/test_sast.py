@@ -86,3 +86,22 @@ def test_single_file_scan_unignored_even_if_default_ignored(tmp_path: Path) -> N
 
     assert res["metadata"]["scanned_files"] == 1
     assert len(res["findings"]) == 1
+
+
+def test_sast_scanner_plaintext_secret_ignores_publickeytoken(tmp_path: Path) -> None:
+    test_file = tmp_path / "Web.config"
+    test_file.write_text(
+        '<assemblyIdentity name="Newtonsoft.Json" '
+        'publicKeyToken="30ad4fe6b2a6aeed" />\n'
+        'var token = "30ad4fe6b2a6aeed";\n'
+    )
+
+    scanner = SASTScanner()
+    scanner.mode = "strict"
+    # We scan the specific file to override ignore filter for Web.config
+    results = scanner.scan(str(test_file))
+
+    # The publicKeyToken line should NOT trigger PLAINTEXT_SECRET
+    # But the variable assignment `token = "..."` SHOULD trigger it
+    lines = [r["line"] for r in results if r["rule_id"] == "PLAINTEXT_SECRET"]
+    assert lines == [2]

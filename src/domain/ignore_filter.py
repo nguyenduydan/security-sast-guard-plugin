@@ -51,6 +51,7 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "images",
     "Template",  # HTML / email / doc templates directory
     "template",
+    "plugins",  # Frontend / 3rd party plugins directory
     "TestResults",  # .NET / MSTest test execution results
     ".next",
     ".nuxt",
@@ -113,6 +114,7 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".user",  # Visual Studio project user settings
     ".userossc",
     ".sln.docstates",
+    ".csproj",  # Visual Studio C# Project File
     # XML Schema / static configs
     ".xsd",
     # Databases & ASP.NET data files

@@ -109,6 +109,7 @@ def test_ignore_filter_should_ignore_dir_new_entries(tmp_path: Path) -> None:
     assert filter_inst.should_ignore_dir("obj") is True
     assert filter_inst.should_ignore_dir("packages") is True
     assert filter_inst.should_ignore_dir(".vs") is True
+    assert filter_inst.should_ignore_dir("plugins") is True
     assert filter_inst.should_ignore_dir("src") is False
 
 
@@ -140,6 +141,7 @@ def test_ignore_filter_aspnet_rules(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "app.user") is True
     assert filter_inst.should_ignore(tmp_path / "data.mdf") is True
     assert filter_inst.should_ignore(tmp_path / "data_log.ldf") is True
+    assert filter_inst.should_ignore(tmp_path / "project.csproj") is True
 
     # Lock and Config files
     assert filter_inst.should_ignore(tmp_path / "packages.lock.json") is True
