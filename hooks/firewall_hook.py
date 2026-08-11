@@ -16,8 +16,6 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 # pylint: disable=wrong-import-position
-import json
-
 from src.domain.firewall_engine import (  # noqa: E402
     FirewallEngine,
 )
