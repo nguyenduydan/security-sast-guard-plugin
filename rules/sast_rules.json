@@ -23,7 +23,23 @@
     "remediation": {
       "fix_before": "import os\nos.system(\"ping \" + user_input)",
       "fix_after": "import subprocess\nsubprocess.run([\"ping\", \"-c\", \"1\", user_input], check=True)"
-    }
+    },
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "input(",
+      "sys.argv",
+      "os.environ.get"
+    ],
+    "sinks": [
+      "subprocess.call",
+      "subprocess.run",
+      "subprocess.Popen",
+      "os.system",
+      "exec(",
+      "eval("
+    ]
   },
   {
     "id": "WILDCARD_PATH",
@@ -98,6 +114,24 @@
       "f['\"].*\\{(user_input|query|input|prompt|context)\\}.*['\"]",
       "prompt\\s*\\+\\s*",
       "\\.format\\([^)]*(user_input|query)[^)]*\\)"
+    ],
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "request.form",
+      "Request.Form",
+      "Request.QueryString",
+      "os.environ.get",
+      "input("
+    ],
+    "sinks": [
+      "cursor.execute",
+      "db.query",
+      "db.execute",
+      "SqlCommand",
+      "executeQuery",
+      "mysqli_query"
     ]
   },
   {
@@ -142,6 +176,24 @@
       "(?i)String\\.Format\\s*\\(\\s*[\"'](SELECT|INSERT|UPDATE|DELETE)",
       "(?i)EXEC\\s*\\(\\s*(@|[a-zA-Z0-9_]+)\\s*\\+\\s*",
       "(?i)SqlCommand\\s*\\(\\s*[\"'].*\\+"
+    ],
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "request.form",
+      "Request.Form",
+      "Request.QueryString",
+      "os.environ.get",
+      "input("
+    ],
+    "sinks": [
+      "cursor.execute",
+      "db.query",
+      "db.execute",
+      "SqlCommand",
+      "executeQuery",
+      "mysqli_query"
     ]
   },
   {
@@ -399,7 +451,25 @@
     "category": "owasp-web-2021",
     "severity": "Critical",
     "source_file": "A03_Injection.md",
-    "patterns": []
+    "patterns": [],
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "request.form",
+      "Request.Form",
+      "Request.QueryString",
+      "os.environ.get",
+      "input("
+    ],
+    "sinks": [
+      "cursor.execute",
+      "db.query",
+      "db.execute",
+      "SqlCommand",
+      "executeQuery",
+      "mysqli_query"
+    ]
   },
   {
     "id": "A05_SECURITYMISCONFIGURATION",
@@ -1386,6 +1456,24 @@
       "\\*\\*✅\\ ĐÚNG\\ —\\ Ép\\ kiểu\\ \\+\\ sanitize:\\*\\*",
       "\\*\\*❌\\ SAI\\ —\\ OS\\ Command:\\*\\*",
       "\\*\\*✅\\ ĐÚNG\\ —\\ Không\\ dùng\\ OS\\ command\\ với\\ user\\ input,\\ hoặc\\ dùng\\ argument\\ array:\\*\\*"
+    ],
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "request.form",
+      "Request.Form",
+      "Request.QueryString",
+      "os.environ.get",
+      "input("
+    ],
+    "sinks": [
+      "cursor.execute",
+      "db.query",
+      "db.execute",
+      "SqlCommand",
+      "executeQuery",
+      "mysqli_query"
     ]
   },
   {
