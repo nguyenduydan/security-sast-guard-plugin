@@ -1,4 +1,4 @@
-name: CodeQL Security Analysis
+name: CodeQL
 
 on:
   push:
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   analyze:
-    name: CodeQL Python Analysis
+    name: Python Scan
     runs-on: ubuntu-latest
     permissions:
       security-events: write

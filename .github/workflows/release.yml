@@ -1,4 +1,4 @@
-name: Enterprise Automated Release & Tagging
+name: Release
 
 on:
   push:
@@ -19,11 +19,11 @@ permissions:
 
 jobs:
   security-gate:
-    name: Mandatory Pre-Release Security Audit
+    name: Security Audit
     uses: ./.github/workflows/reusable-security-gate.yml
 
   release-package-sbom:
-    name: Release Asset & SBOM Attestation
+    name: SBOM & Attestation
     needs: [security-gate]
     if: startsWith(github.ref, 'refs/tags/v')
     uses: ./.github/workflows/reusable-release-sbom.yml
@@ -31,7 +31,7 @@ jobs:
       tag_name: ${{ github.ref_name }}
 
   release-please:
-    name: Release Please PR Automation
+    name: Release PR
     needs: [security-gate]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

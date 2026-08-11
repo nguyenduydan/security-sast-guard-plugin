@@ -1,4 +1,4 @@
-name: Reusable Release SBOM & Attestation
+name: Release SBOM
 
 on:
   workflow_call:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   release-package-attest:
-    name: Build Asset, Generate SBOM & Cryptographic Attestation
+    name: Package & Attest
     runs-on: ubuntu-latest
     environment: release
     permissions:

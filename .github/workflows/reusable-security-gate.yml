@@ -1,4 +1,4 @@
-name: Reusable Security Gate Audit
+name: Security Gate
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   sast-codebase-audit:
-    name: SAST Codebase Vulnerability Audit
+    name: SAST Audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -22,7 +22,7 @@ jobs:
           python control_plane.py audit codebase --level full
 
   secret-scanning:
-    name: Secret & Credential Leak Scanning
+    name: Secret Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -36,7 +36,7 @@ jobs:
           detect-secrets scan --all-files
 
   dependency-review:
-    name: Dependency Vulnerability Review
+    name: Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:

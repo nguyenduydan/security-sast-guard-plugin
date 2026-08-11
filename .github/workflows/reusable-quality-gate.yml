@@ -1,4 +1,4 @@
-name: Reusable Quality Gate
+name: Quality Gate
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   manifest-check:
-    name: Verify Manifest Version Consistency
+    name: Manifest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -24,7 +24,7 @@ jobs:
           python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version'], f'Mismatch: {p[\"version\"]} vs {e[\"version\"]}'"
 
   lint-and-format:
-    name: Code Linting & Formatting (Ruff + Pylint)
+    name: Lint & Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -43,7 +43,7 @@ jobs:
           python -m pylint control_plane.py hooks/run_audit_hook.py scripts/md_to_json.py src/ tests/
 
   type-check:
-    name: Type Checking (Mypy)
+    name: Type Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -57,7 +57,7 @@ jobs:
           python -m mypy --config-file=pyproject.toml control_plane.py src/
 
   pytest-suite:
-    name: Unit Tests (Pytest)
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

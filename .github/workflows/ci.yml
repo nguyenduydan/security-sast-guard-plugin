@@ -1,4 +1,4 @@
-name: Enterprise Security CI Pipeline
+name: CI
 
 on:
   push:
@@ -15,15 +15,15 @@ permissions:
 
 jobs:
   quality-gate:
-    name: Code Quality Gate
+    name: Quality Check
     uses: ./.github/workflows/reusable-quality-gate.yml
 
   security-gate:
-    name: Security & Vulnerability Audit Gate
+    name: Security Check
     uses: ./.github/workflows/reusable-security-gate.yml
 
   ci-status-gate:
-    name: Final CI Status Gate
+    name: Status Gate
     runs-on: ubuntu-latest
     if: always()
     needs:
@@ -32,11 +32,11 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Verify All Reusable Workflows Passed
+      - name: Verify All Gates Passed
         run: |
           if [ "${{ needs.quality-gate.result }}" != "success" ] || \
              [ "${{ needs.security-gate.result }}" != "success" ]; then
             echo "One or more required CI security/quality gates failed!"
             exit 1
           fi
-          echo "All Enterprise Security & Quality Gates passed successfully."
+          echo "All CI Security & Quality Gates passed successfully."
