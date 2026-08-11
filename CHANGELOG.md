@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.7](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.6...v1.8.7) (2026-08-11)
+
+
+### 🐛 Bug Fixes
+
+* **hooks:** update firewall hook to output JSON for Gemini compatibility ([344b28c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/344b28c1c1cc78f1945a579f45e71128e78be3b6))
+
+
+### Maintenance & Tooling
+
+* **rules:** enforce ruff checks and fix hook formatting ([55a7da5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/55a7da5b12cafd8b71f3cd9ade14bf6ccafbb386))
+
 ## [1.8.6](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.5...v1.8.6) (2026-08-11)
 
 
