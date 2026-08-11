@@ -4,7 +4,15 @@ version = "1.5.6"
 description = "Static Application Security Testing (SAST) & Command Firewall Guard Plugin"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "cachetools>=5.0",
+]
+
+[project.optional-dependencies]
+ast = [
+    "tree-sitter>=0.21",
+    "tree-sitter-languages>=1.10",
+]
 
 [build-system]
 requires = ["setuptools>=68.0"]

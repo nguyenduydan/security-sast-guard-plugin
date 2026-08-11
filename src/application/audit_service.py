@@ -1,12 +1,19 @@
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
+from src.domain.ast_confirm_engine import ASTConfirmEngine
+from src.domain.call_graph_builder import CallGraphBuilder
+from src.domain.models import TaintFinding
 from src.domain.sast_scanner import SASTScanner
+from src.domain.symbol_indexer import SymbolIndexer
+from src.domain.taint_tracker import TaintTracker
 from src.infrastructure.integrity_checker import IntegrityChecker
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.profile_resolver import ProfileResolver
 from src.infrastructure.report_generator import generate_markdown_report
+from src.infrastructure.symbol_cache import SymbolCache
 from src.infrastructure.version_loader import get_plugin_version
 
 
@@ -61,6 +68,72 @@ class AuditService:
             audit_level=audit_level,
         )
         return findings, report_md, summary
+
+    def _get_commit_hash(self) -> str:
+        """Return current HEAD commit hash, or 'no-git' if not in a git repo."""
+        try:
+            result = subprocess.run(
+                ["git", "rev-parse", "HEAD"],  # noqa: S607
+                capture_output=True,
+                text=True,
+                timeout=5,
+                check=False,
+            )
+            return result.stdout.strip() or "no-git"
+        except (OSError, subprocess.TimeoutExpired):
+            return "no-git"
+
+    def _extract_taint_rules(self) -> list[dict[str, Any]]:
+        """Extract rules with taint_enabled=True from sast_rules.json."""
+        all_rules = self.scanner.get_rules()
+        return [r for r in all_rules if r.get("taint_enabled")]
+
+    # pylint: disable=too-many-locals
+    def run_taint_analysis(self, target_path: str) -> list[TaintFinding]:
+        """Run taint analysis, AST confirmation, and call graph tracing."""
+        taint_rules = self._extract_taint_rules()
+        if not taint_rules:
+            return []
+        repo_path = str(Path(target_path).resolve())
+        cache = SymbolCache()
+        commit_hash = self._get_commit_hash()
+        call_graph = CallGraphBuilder(repo_path)
+        raw_findings: list[TaintFinding] = []
+
+        for rule in taint_rules:
+            sources = rule.get("sources", [])
+            sinks = rule.get("sinks", [])
+            rule_id = rule.get("id", "UNKNOWN")
+            if not sources or not sinks:
+                continue
+            for source in sources:
+                cached = cache.get(repo_path, [source], commit_hash)
+                if cached is not None:
+                    symbol_map = cached
+                else:
+                    indexer = SymbolIndexer(repo_path)
+                    symbol_map = indexer.index([source])
+                    cache.set(repo_path, [source], commit_hash, symbol_map)
+                tracker = TaintTracker(repo_path)
+                findings = tracker.trace(symbol_map, rule_id, source, sinks)
+                # Phase 3: enrich trace_path with cross-file call chains
+                for finding in findings:
+                    chains = call_graph.trace_to_sinks(
+                        finding.source_file,
+                        next(iter(symbol_map.keys())) if symbol_map else "",
+                        sinks,
+                    )
+                    if chains:
+                        # Append cross-file steps to existing trace_path
+                        for chain in chains:
+                            finding.trace_path.extend(chain.steps)
+                raw_findings.extend(findings)
+
+        # Phase 2: AST confirmation (gracefully skipped if tree-sitter not installed)
+        ast_engine = ASTConfirmEngine()
+        confirmed = ast_engine.confirm_all(raw_findings)
+        # Filter out AST-rejected findings (confidence == 0.0)
+        return [f for f in confirmed if f.confidence > 0.0]
 
     def set_audit_level(self, level: str) -> bool:
         """Set active audit level in profile configuration."""

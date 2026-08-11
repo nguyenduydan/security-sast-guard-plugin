@@ -119,6 +119,18 @@ class MCPServer:
             return self.handlers.handle_sast_sync_rules(args.get("rules_dir", ""))
         if tool_name == "sast_get_help":
             return self.handlers.handle_sast_get_help()
+        if tool_name == "sast_get_dataflow_path":
+            return self.handlers.handle_sast_get_dataflow_path(
+                args.get("source_pattern", ""),
+                args.get("sink_pattern", ""),
+                args.get("repo_path", "."),
+            )
+        if tool_name == "sast_get_taint_context":
+            return self.handlers.handle_sast_get_taint_context(
+                args.get("file_path", ""),
+                args.get("line_number", 0),
+                args.get("context_lines", 10),
+            )
         if tool_name == "sast_set_mode":
             return self.handlers.handle_sast_set_mode(args.get("mode", "strict"))
 
