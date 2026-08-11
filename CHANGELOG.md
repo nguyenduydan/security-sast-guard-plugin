@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.2...v1.8.3) (2026-08-11)
+
+
+### 🐛 Bug Fixes
+
+* **install:** fix bug expect ([16a6d91](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/16a6d91ce3b193f4b11d73d7e9335c3ee92ea581))
+
 ## [1.8.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.1...v1.8.2) (2026-08-11)
 
 
