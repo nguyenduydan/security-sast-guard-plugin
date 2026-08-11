@@ -4,7 +4,15 @@ version = "1.5.6"
 description = "Static Application Security Testing (SAST) & Command Firewall Guard Plugin"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "cachetools>=5.0",
+]
+
+[project.optional-dependencies]
+ast = [
+    "tree-sitter>=0.21",
+    "tree-sitter-languages>=1.10",
+]
 
 [build-system]
 requires = ["setuptools>=68.0"]
@@ -71,6 +79,14 @@ warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 
+[[tool.mypy.overrides]]
+module = [
+    "cachetools.*",
+    "tree_sitter.*",
+    "tree_sitter_languages.*",
+]
+ignore_missing_imports = true
+
 
 # ==========================================
 # Pytest Test Runner Configuration
@@ -80,3 +96,4 @@ minversion = "8.0"
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
 addopts = "-v --strict-markers --tb=short"
+pythonpath = ["."]

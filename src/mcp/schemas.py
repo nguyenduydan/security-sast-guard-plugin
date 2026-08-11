@@ -2,7 +2,37 @@
 
 from __future__ import annotations
 
+from dataclasses import asdict, dataclass
 from typing import Any
+
+
+@dataclass
+class TaintTraceItem:
+    rule_id: str
+    source_file: str
+    source_line: int
+    sink_file: str
+    sink_line: int
+    trace_path: list[dict[str, Any]]
+    confidence: float
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class DataflowPathResult:
+    paths: list[dict[str, Any]]
+    total: int
+
+
+@dataclass
+class TaintContextResult:
+    file: str
+    line: int
+    code_snippet: str
+    taint_info: dict[str, Any]
+
 
 TOOLS_SCHEMAS: list[dict[str, Any]] = [
     {
@@ -109,6 +139,32 @@ TOOLS_SCHEMAS: list[dict[str, Any]] = [
                 }
             },
             "required": ["mode"],
+        },
+    },
+    {
+        "name": "sast_get_dataflow_path",
+        "description": "Get dataflow paths from source to sink.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "source_pattern": {"type": "string"},
+                "sink_pattern": {"type": "string"},
+                "repo_path": {"type": "string"},
+            },
+            "required": ["source_pattern", "sink_pattern"],
+        },
+    },
+    {
+        "name": "sast_get_taint_context",
+        "description": "Get taint context for a specific file and line.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file_path": {"type": "string"},
+                "line_number": {"type": "integer"},
+                "context_lines": {"type": "integer"},
+            },
+            "required": ["file_path", "line_number"],
         },
     },
 ]
