@@ -1,0 +1,94 @@
+name: Reusable Release SBOM & Attestation
+
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        description: "Git Tag Name (e.g. v1.2.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  release-package-attest:
+    name: Build Asset, Generate SBOM & Cryptographic Attestation
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git Author Identity
+        run: |
+          git config --global user.name "fogvn"
+          git config --global user.email "dn135897@gmail.com"
+
+      - name: Determine Release Notes File
+        id: notes
+        run: |
+          if [ -f "docs/releases/${{ inputs.tag_name }}.md" ]; then
+            echo "path=docs/releases/${{ inputs.tag_name }}.md" >> $GITHUB_OUTPUT
+          elif [ -f "CHANGELOG.md" ]; then
+            echo "path=CHANGELOG.md" >> $GITHUB_OUTPUT
+          else
+            echo "path=README.md" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Package Release Asset
+        run: |
+          git archive \
+            --format=zip \
+            --prefix=security-sast-guard/ \
+            --output=${{ inputs.tag_name }}.zip \
+            HEAD -- \
+            plugin.json \
+            gemini-extension.json \
+            control_plane.py \
+            hooks.json \
+            install.ps1 \
+            update.ps1 \
+            remove.ps1 \
+            commands \
+            hooks \
+            rules \
+            skills \
+            src
+
+      - name: Generate SHA-256 Checksum
+        run: |
+          sha256sum ${{ inputs.tag_name }}.zip > checksums.txt
+
+      - name: Generate Software Bill of Materials (SBOM)
+        uses: anchore/sbom-action@f325610c2861e631fc661f4380e2270928f6e166 # v0.17.9
+        with:
+          path: "."
+          format: "spdx-json"
+          output-file: "spdx.json"
+
+      - name: Attest Build Provenance (OIDC Cryptographic Attestation)
+        uses: actions/attest-build-provenance@c074443f1aee8da4aeeae055861115b9745897e9 # v2.2.3
+        with:
+          subject-path: "${{ inputs.tag_name }}.zip"
+
+      - name: Publish Official GitHub Release
+        uses: softprops/action-gh-release@c95fe148915b2148a657497a7604b7f0ec689100 # v2.2.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ inputs.tag_name }}
+          name: ${{ inputs.tag_name }}
+          body_path: ${{ steps.notes.outputs.path }}
+          files: |
+            ${{ inputs.tag_name }}.zip
+            checksums.txt
+            spdx.json
+          generate_release_notes: true
+          draft: false
+          prerelease: false

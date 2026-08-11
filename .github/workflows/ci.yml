@@ -1,4 +1,4 @@
-name: CI Quality Gate
+name: Enterprise Security CI Pipeline
 
 on:
   push:
@@ -10,106 +10,32 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  manifest-check:
-    name: Verify Manifest Version Consistency
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  quality-gate:
+    name: Code Quality Gate
+    uses: ./.github/workflows/reusable-quality-gate.yml
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+  security-gate:
+    name: Security & Vulnerability Audit Gate
+    uses: ./.github/workflows/reusable-security-gate.yml
 
-      - name: Verify Manifest Version Match
-        run: |
-          python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version'], f'Mismatch: {p[\"version\"]} vs {e[\"version\"]}'"
-
-  lint-and-format:
-    name: Code Linting & Formatting (Ruff + Pylint)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
-
-      - name: Run Ruff Linter & Formatter Check
-        run: |
-          python -m ruff check .
-          python -m ruff format --check .
-
-      - name: Run Pylint Analysis
-        run: |
-          python -m pylint control_plane.py hooks/run_audit_hook.py scripts/md_to_json.py src/ tests/
-
-  type-check:
-    name: Type Checking (Mypy)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
-
-      - name: Run Mypy Type Checker
-        run: |
-          python -m mypy --config-file=pyproject.toml control_plane.py src/
-
-  pytest-suite:
-    name: Unit Tests (Pytest)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
-
-      - name: Run Pytest Suite
-        run: |
-          python -m pytest
-
-  sast-self-check:
-    name: SAST Security Self-Audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
-
-      - name: Run Security Audit
-        run: |
-          python control_plane.py audit codebase --level lite
-
-  ci-success:
-    name: CI Status Gate
+  ci-status-gate:
+    name: Final CI Status Gate
     runs-on: ubuntu-latest
     if: always()
     needs:
-      - manifest-check
-      - lint-and-format
-      - type-check
-      - pytest-suite
-      - sast-self-check
+      - quality-gate
+      - security-gate
+    permissions:
+      contents: read
     steps:
-      - name: Check Status of All Jobs
+      - name: Verify All Reusable Workflows Passed
         run: |
-          if [ "${{ needs.manifest-check.result }}" != "success" ] || \
-             [ "${{ needs.lint-and-format.result }}" != "success" ] || \
-             [ "${{ needs.type-check.result }}" != "success" ] || \
-             [ "${{ needs.pytest-suite.result }}" != "success" ] || \
-             [ "${{ needs.sast-self-check.result }}" != "success" ]; then
-            echo "One or more CI jobs failed!"
+          if [ "${{ needs.quality-gate.result }}" != "success" ] || \
+             [ "${{ needs.security-gate.result }}" != "success" ]; then
+            echo "One or more required CI security/quality gates failed!"
             exit 1
           fi
-          echo "All CI Quality Gate checks passed successfully."
+          echo "All Enterprise Security & Quality Gates passed successfully."
