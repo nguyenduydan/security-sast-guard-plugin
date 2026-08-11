@@ -76,6 +76,9 @@ class SymbolCache:
         if not self._cache_file.exists():
             return {}
         try:
-            return json.loads(self._cache_file.read_text(encoding="utf-8"))
+            data: dict[str, Any] = json.loads(
+                self._cache_file.read_text(encoding="utf-8")
+            )
+            return data
         except (json.JSONDecodeError, OSError):
             return {}

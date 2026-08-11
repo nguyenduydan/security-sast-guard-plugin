@@ -214,7 +214,7 @@ class MCPToolHandlers:
         source_pattern: str,
         sink_pattern: str,
         repo_path: str = ".",
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Return all taint flow paths matching source_pattern -> sink_pattern."""
         all_findings = self.audit_service.run_taint_analysis(repo_path)
         matched = [
@@ -249,7 +249,7 @@ class MCPToolHandlers:
         file_path: str,
         line_number: int,
         context_lines: int = 10,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Return code snippet and taint context around the given file:line."""
         path = Path(file_path)
         if not path.exists():

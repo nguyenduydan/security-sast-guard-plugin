@@ -6,6 +6,7 @@ gracefully degrade: findings are returned unchanged with a warning log.
 
 import logging
 from dataclasses import dataclass, replace
+from typing import Any
 
 from .models import TaintFinding
 
@@ -13,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 # Try to import tree-sitter. Set flag for graceful degradation.
 try:
-    import tree_sitter_languages  # type: ignore[import]
-    from tree_sitter import Parser  # type: ignore[import]
+    import tree_sitter_languages  # type: ignore[import-not-found]
+    from tree_sitter import Parser  # type: ignore[import-not-found]
 
     _TREE_SITTER_AVAILABLE = True
 except ImportError:
@@ -156,14 +157,14 @@ class ASTConfirmEngine:
         )
 
     @staticmethod
-    def _find_enclosing_function(tree, line_number: int) -> str | None:
+    def _find_enclosing_function(tree: Any, line_number: int) -> str | None:
         """Walk the AST to find the name of the function enclosing line_number.
 
         Returns the function name string, or None if at module level.
         """
         target_byte_line = line_number - 1  # tree-sitter uses 0-indexed rows
 
-        def walk(node):
+        def walk(node: Any) -> str | None:
             if node.type in (
                 "function_definition",
                 "method_declaration",
@@ -175,7 +176,8 @@ class ASTConfirmEngine:
                     # Try to get function name from first named child
                     for child in node.children:
                         if child.type == "identifier":
-                            return child.text.decode("utf-8", errors="ignore")
+                            res: str = child.text.decode("utf-8", errors="ignore")
+                            return res
                     return "<anonymous>"
             for child in node.children:
                 result = walk(child)
@@ -183,4 +185,5 @@ class ASTConfirmEngine:
                     return result
             return None
 
-        return walk(tree.root_node)
+        res_fn: str | None = walk(tree.root_node)
+        return res_fn
