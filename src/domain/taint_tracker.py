@@ -1,6 +1,7 @@
 """TaintTracker: traces tainted symbols from source assignments to sink call sites."""
 
 from pathlib import Path
+from typing import Generator
 
 from .models import SymbolMap, TaintFinding, TraceStep
 
@@ -109,7 +110,7 @@ class TaintTracker:
                         hits.append((rel, lineno, sink))
         return hits
 
-    def _iter_code_files(self):
+    def _iter_code_files(self) -> Generator[Path, None, None]:
         for path in self.repo_path.rglob("*"):
             if (
                 path.is_file()

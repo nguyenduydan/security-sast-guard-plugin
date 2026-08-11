@@ -13,16 +13,16 @@ class TaintTraceItem:
     source_line: int
     sink_file: str
     sink_line: int
-    trace_path: list[dict]
+    trace_path: list[dict[str, Any]]
     confidence: float
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
 @dataclass
 class DataflowPathResult:
-    paths: list[dict]
+    paths: list[dict[str, Any]]
     total: int
 
 
@@ -31,7 +31,7 @@ class TaintContextResult:
     file: str
     line: int
     code_snippet: str
-    taint_info: dict
+    taint_info: dict[str, Any]
 
 
 TOOLS_SCHEMAS: list[dict[str, Any]] = [
