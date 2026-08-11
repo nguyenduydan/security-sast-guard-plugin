@@ -117,21 +117,18 @@ def test_ignore_filter_aspnet_rules(tmp_path: Path) -> None:
     filter_inst = IgnoreFilter(root_dir=tmp_path)
 
     # Directories
-    assert filter_inst.should_ignore(tmp_path / "bin" / "Debug" / "app.dll") is True
-    assert (
-        filter_inst.should_ignore(
-            tmp_path / "obj" / "Release" / "app.csproj.assemblyInputs.cache"
-        )
-        is True
-    )
-    assert (
-        filter_inst.should_ignore(tmp_path / "packages" / "Newtonsoft.Json" / "lib.dll")
-        is True
-    )
-    assert (
-        filter_inst.should_ignore(tmp_path / ".vs" / "solution" / "v17" / ".suo")
-        is True
-    )
+    bin_dll = tmp_path / "bin" / "Debug" / "app.dll"
+    assert filter_inst.should_ignore(bin_dll) is True
+
+    obj_cache = tmp_path / "obj" / "Release" / "app.csproj.assemblyInputs.cache"
+    assert filter_inst.should_ignore(obj_cache) is True
+
+    pkg_dll = tmp_path / "packages" / "Newtonsoft.Json" / "lib.dll"
+    assert filter_inst.should_ignore(pkg_dll) is True
+
+    vs_suo = tmp_path / ".vs" / "solution" / "v17" / ".suo"
+    assert filter_inst.should_ignore(vs_suo) is True
+
     assert filter_inst.should_ignore(tmp_path / "publish" / "web.config") is True
     assert filter_inst.should_ignore(tmp_path / "App_Data" / "aspnet.mdf") is True
     assert filter_inst.should_ignore(tmp_path / "TestResults" / "test.trx") is True
@@ -148,10 +145,8 @@ def test_ignore_filter_aspnet_rules(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "packages.lock.json") is True
 
     # ASP.NET C# source code must NOT be ignored
-    assert (
-        filter_inst.should_ignore(tmp_path / "Controllers" / "HomeController.cs")
-        is False
-    )
+    ctrl_cs = tmp_path / "Controllers" / "HomeController.cs"
+    assert filter_inst.should_ignore(ctrl_cs) is False
     assert filter_inst.should_ignore(tmp_path / "Program.cs") is False
 
 
@@ -186,23 +181,25 @@ def test_ignore_filter_temp_and_libraries(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / ".cache" / "build.json") is True
 
     # Library directories across ecosystems
-    assert (
-        filter_inst.should_ignore(tmp_path / "bower_components" / "jquery.js") is True
-    )
-    assert (
-        filter_inst.should_ignore(tmp_path / "jspm_packages" / "npm" / "lib.js") is True
-    )
+    bower_file = tmp_path / "bower_components" / "jquery.js"
+    assert filter_inst.should_ignore(bower_file) is True
+
+    jspm_file = tmp_path / "jspm_packages" / "npm" / "lib.js"
+    assert filter_inst.should_ignore(jspm_file) is True
+
     assert filter_inst.should_ignore(tmp_path / ".nuget" / "packages.config") is True
-    assert (
-        filter_inst.should_ignore(tmp_path / ".gradle" / "caches" / "test.jar") is True
-    )
-    assert (
-        filter_inst.should_ignore(tmp_path / ".m2" / "repository" / "lib.jar") is True
-    )
-    assert (
-        filter_inst.should_ignore(tmp_path / ".cargo" / "registry" / "lib.rlib") is True
-    )
-    assert filter_inst.should_ignore(tmp_path / ".bundle" / "gems" / "ruby.rb") is True
+
+    gradle_file = tmp_path / ".gradle" / "caches" / "test.jar"
+    assert filter_inst.should_ignore(gradle_file) is True
+
+    m2_file = tmp_path / ".m2" / "repository" / "lib.jar"
+    assert filter_inst.should_ignore(m2_file) is True
+
+    cargo_file = tmp_path / ".cargo" / "registry" / "lib.rlib"
+    assert filter_inst.should_ignore(cargo_file) is True
+
+    bundle_file = tmp_path / ".bundle" / "gems" / "ruby.rb"
+    assert filter_inst.should_ignore(bundle_file) is True
 
     # Temp extensions
     assert filter_inst.should_ignore(tmp_path / "cache.tmp") is True
