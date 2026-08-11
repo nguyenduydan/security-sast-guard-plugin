@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.0...v1.8.1) (2026-08-11)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **cli:** add verbose real-time progress logging for sast scan ([5a30dc4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5a30dc4bcbf36f9c536d4cb96b1ea0329892f907))
+
 ## [1.8.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.7.0...v1.8.0) (2026-08-11)
 
 
