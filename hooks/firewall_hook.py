@@ -23,23 +23,40 @@ from src.infrastructure.profile_loader import (  # noqa: E402
 )
 
 
+import json
+
 def main() -> int:
     """Run firewall evaluation on input command."""
     cmd_text = ""
-    if len(sys.argv) > 1:
-        cmd_text = " ".join(sys.argv[1:])
-    else:
-        cmd_text = os.environ.get("COMMAND_TEXT", os.environ.get("PRE_COMMAND", ""))
+    
+    # Try reading from stdin first (Gemini Hook standard)
+    if not sys.stdin.isatty():
+        try:
+            stdin_data = sys.stdin.read()
+            if stdin_data:
+                payload = json.loads(stdin_data)
+                tool_call = payload.get("toolCall", {})
+                if tool_call.get("name") == "run_command":
+                    cmd_text = tool_call.get("args", {}).get("CommandLine", "")
+        except json.JSONDecodeError:
+            pass
+
+    # Fallback to sys.argv or environment variables
+    if not cmd_text:
+        if len(sys.argv) > 1:
+            cmd_text = " ".join(sys.argv[1:])
+        else:
+            cmd_text = os.environ.get("COMMAND_TEXT", os.environ.get("PRE_COMMAND", ""))
 
     if not cmd_text:
-        print("ALLOW: No command provided to firewall.")
+        print(json.dumps({"decision": "allow", "reason": "No command provided to firewall."}))
         return 0
 
     loader = ProfileLoader()
     profile = loader.load()
     if not profile:
-        print("DENY: Missing or corrupted profile configuration.")
-        return 1
+        print(json.dumps({"decision": "deny", "reason": "Missing or corrupted profile configuration."}))
+        return 0
 
     overlay = profile.get("command_firewall_overlay", {})
     deny_rules = overlay.get("deny", [])
@@ -48,12 +65,20 @@ def main() -> int:
     engine = FirewallEngine(deny_rules=deny_rules, confirm_rules=confirm_rules)
     verdict = engine.evaluate(cmd_text)
 
-    print(f"{verdict.verdict}: {verdict.reason}")
+    decision_map = {
+        "DENY": "deny",
+        "CONFIRM": "force_ask",
+        "ALLOW": "allow"
+    }
+    
+    decision = decision_map.get(verdict.verdict, "allow")
+    
+    print(json.dumps({
+        "decision": decision,
+        "reason": verdict.reason
+    }))
 
-    if verdict.verdict == "DENY":
-        return 1
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())
