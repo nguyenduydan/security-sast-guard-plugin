@@ -1,6 +1,9 @@
-import textwrap, tempfile
+import tempfile
+import textwrap
 from pathlib import Path
+
 from src.domain.call_graph_builder import CallGraphBuilder
+
 
 def _make_repo(files: dict[str, str]) -> str:
     d = tempfile.mkdtemp()

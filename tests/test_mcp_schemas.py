@@ -1,5 +1,5 @@
-import pytest
-from src.mcp.schemas import TaintTraceItem, DataflowPathResult, TaintContextResult
+from src.mcp.schemas import DataflowPathResult, TaintContextResult, TaintTraceItem
+
 
 def test_taint_trace_item():
     item = TaintTraceItem(
@@ -28,7 +28,10 @@ def test_dataflow_path_result():
     assert result.paths == [{"path": "p1"}]
 
 def test_taint_context_result():
-    result = TaintContextResult(file="f1.py", line=1, code_snippet="print(1)", taint_info={"tainted": True})
+    result = TaintContextResult(
+        file="f1.py", line=1, code_snippet="print(1)", taint_info={"tainted": True}
+    )
+
     assert result.file == "f1.py"
     assert result.line == 1
     assert result.code_snippet == "print(1)"
