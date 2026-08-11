@@ -6,6 +6,7 @@ Invoked by PreCommandExecute hook to validate command safety.
 
 from __future__ import annotations
 
+import json
 import os
 import sys
 
@@ -23,12 +24,10 @@ from src.infrastructure.profile_loader import (  # noqa: E402
 )
 
 
-import json
-
 def main() -> int:
     """Run firewall evaluation on input command."""
     cmd_text = ""
-    
+
     # Try reading from stdin first (Gemini Hook standard)
     if not sys.stdin.isatty():
         try:
@@ -49,13 +48,24 @@ def main() -> int:
             cmd_text = os.environ.get("COMMAND_TEXT", os.environ.get("PRE_COMMAND", ""))
 
     if not cmd_text:
-        print(json.dumps({"decision": "allow", "reason": "No command provided to firewall."}))
+        print(
+            json.dumps(
+                {"decision": "allow", "reason": "No command provided to firewall."}
+            )
+        )
         return 0
 
     loader = ProfileLoader()
     profile = loader.load()
     if not profile:
-        print(json.dumps({"decision": "deny", "reason": "Missing or corrupted profile configuration."}))
+        print(
+            json.dumps(
+                {
+                    "decision": "deny",
+                    "reason": "Missing or corrupted profile configuration.",
+                }
+            )
+        )
         return 0
 
     overlay = profile.get("command_firewall_overlay", {})
@@ -65,20 +75,14 @@ def main() -> int:
     engine = FirewallEngine(deny_rules=deny_rules, confirm_rules=confirm_rules)
     verdict = engine.evaluate(cmd_text)
 
-    decision_map = {
-        "DENY": "deny",
-        "CONFIRM": "force_ask",
-        "ALLOW": "allow"
-    }
-    
+    decision_map = {"DENY": "deny", "CONFIRM": "force_ask", "ALLOW": "allow"}
+
     decision = decision_map.get(verdict.verdict, "allow")
-    
-    print(json.dumps({
-        "decision": decision,
-        "reason": verdict.reason
-    }))
+
+    print(json.dumps({"decision": decision, "reason": verdict.reason}))
 
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())
