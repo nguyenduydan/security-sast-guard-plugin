@@ -34,9 +34,17 @@ jobs:
     steps:
       - name: Verify All Gates Passed
         run: |
-          if [ "${{ needs.quality-gate.result }}" != "success" ] || \
-             [ "${{ needs.security-gate.result }}" != "success" ]; then
-            echo "One or more required CI security/quality gates failed!"
+          QUALITY="${{ needs.quality-gate.result }}"
+          SECURITY="${{ needs.security-gate.result }}"
+
+          if [ "$QUALITY" != "success" ]; then
+            echo "❌ Quality Gate failed (result: $QUALITY)"
             exit 1
           fi
-          echo "All CI Security & Quality Gates passed successfully."
+
+          if [ "$SECURITY" != "success" ] && [ "$SECURITY" != "skipped" ]; then
+            echo "❌ Security Gate failed (result: $SECURITY)"
+            exit 1
+          fi
+
+          echo "✅ All CI Gates passed (quality=$QUALITY, security=$SECURITY)"

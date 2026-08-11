@@ -63,3 +63,27 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
+  gate-result:
+    name: Gate Result
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - sast-codebase-audit
+      - secret-scanning
+    steps:
+      - name: Check Required Jobs
+        run: |
+          SAST="${{ needs.sast-codebase-audit.result }}"
+          SECRETS="${{ needs.secret-scanning.result }}"
+
+          if [ "$SAST" != "success" ]; then
+            echo "❌ SAST Audit failed (result: $SAST)"
+            exit 1
+          fi
+
+          if [ "$SECRETS" != "success" ]; then
+            echo "❌ Secret Scan failed (result: $SECRETS)"
+            exit 1
+          fi
+
+          echo "✅ Security Gate passed (sast=$SAST, secrets=$SECRETS)"
