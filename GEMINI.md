@@ -22,7 +22,7 @@ Khi được yêu cầu fix bug hoặc thêm tính năng, Agent BẮT BUỘC tu�
 1. **Tuyệt đối không commit trực tiếp lên `main`**: Trước khi sửa đổi bất kỳ code nào, phải tạo và chuyển sang nhánh mới bằng lệnh `git checkout -b <loại>/<tên-nhánh>` (VD: `git checkout -b fix/sast-status` hoặc `git checkout -b feat/firewall-rules`).
 2. **Thực thi và Kiểm thử**: 
    - Sửa code và chạy các bài test/linter (như `pytest`, `mypy`, `pylint` hoặc các script test có sẵn trong dự án) để đảm bảo không phá vỡ tính năng hiện tại.
-   - **Kiểm tra CI/CD Bắt Buộc Trước Khi Commit/Push:** BẮT BUỘC phải thực thi kiểm tra toàn bộ linter (`python -m pylint ...`), test suite (`pytest`) và đảm bảo điểm số linter tối đa (không còn cảnh báo) trước khi commit, push code hoặc báo cáo hoàn thành.
+   - **Kiểm tra CI/CD Bắt Buộc Trước Khi Commit/Push:** BẮT BUỘC phải thực thi kiểm tra toàn bộ linter (`python -m pylint ...`), bộ định dạng (`python -m ruff check .` và `python -m ruff format --check .`), cùng test suite (`pytest`). Phải đảm bảo điểm số linter tối đa và mọi lệnh check (kể cả ruff) đều pass 100% (không còn cảnh báo hay lỗi format) **ngay trước khi commit**, push code hoặc báo cáo hoàn thành. Nếu có bất kỳ chỉnh sửa nào (dù nhỏ nhất), cũng phải chạy lại các lệnh check này VÀ CẢ TEST SUITE trước khi tạo commit mới.
    - Bắt buộc chạy `/sast-audit file <path>` để kiểm tra bảo mật (không có lỗ hổng OWASP/CWE).
 3. **Commit đúng chuẩn**: Bắt buộc sử dụng Conventional Commits có Scope (như đã quy định ở trên).
 4. **Không Merge/Tag thủ công**: Báo cáo lại cho User để họ tự tạo Pull Request và Merge vào `main`. Không được tự ý `git merge` vào `main` hay đánh tag phiên bản. Bot `release-please` sẽ lo phần còn lại.
