@@ -2,10 +2,33 @@
 
 import hashlib
 import json
+from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
-from cachetools import LRUCache
+try:
+    from cachetools import LRUCache
+except ImportError:
+
+    class LRUCache(OrderedDict[str, Any]):  # type: ignore[no-redef]
+        """Fallback LRU cache using OrderedDict if cachetools is not installed."""
+
+        def __init__(self, maxsize: int = 64) -> None:
+            super().__init__()
+            self.maxsize = maxsize
+
+        def __getitem__(self, key: Any) -> Any:
+            val = super().__getitem__(key)
+            self.move_to_end(key)
+            return val
+
+        def __setitem__(self, key: Any, value: Any) -> None:
+            if key in self:
+                self.move_to_end(key)
+            super().__setitem__(key, value)
+            if len(self) > self.maxsize:
+                self.popitem(last=False)
+
 
 from src.domain.models import SymbolMap
 
