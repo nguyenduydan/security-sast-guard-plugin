@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.6](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.5...v1.8.6) (2026-08-11)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **core:** decouple report generation to allow AI analysis injection ([1fee309](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1fee309fe6e4c0d1b703e5ec233bf1378de8608a))
+
+
+### Maintenance & Tooling
+
+* **ignore:** add missing ASP.NET directories, designer.cs, static configs, and htm files to default ignore rules ([01c9522](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/01c95221ed923cec5f0e064daa9ea05c9d934683))
+* **ignore:** add web.config, app.config, and environment transformation files to default ignore rules ([f1981e9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f1981e9a9be8979a62e7a482d32c63ead5124e52))
+
 ## [1.8.5](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.4...v1.8.5) (2026-08-11)
 
 
