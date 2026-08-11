@@ -1,4 +1,4 @@
-param(
+﻿param(
     [switch]$Ascii,
     [switch]$Quiet
 )
