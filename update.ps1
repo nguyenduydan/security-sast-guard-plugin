@@ -1,253 +1,81 @@
-param(
-    [switch]$Ascii,
-    [switch]$Quiet
-)
-
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
-$global:ProgressPreference = "SilentlyContinue"
 
-try {
-    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-} catch {}
-
-$Theme = @{
-    Primary    = "Cyan"
-    Dim        = "DarkCyan"
-    Success    = "Green"
-    SuccessDim = "DarkGreen"
-    Warn       = "Yellow"
-    Fail       = "Red"
-    Text       = "White"
-    Muted      = "Gray"
-}
-
-$script:IsRealConsole = $true
-try {
-    if ([Console]::IsOutputRedirected) { $script:IsRealConsole = $false }
-} catch {}
-if ($Host.Name -match 'ISE') { $script:IsRealConsole = $false }
-
-$script:ShowProgressBar = $script:IsRealConsole -and (-not $Quiet.IsPresent)
-
-$script:UseAscii = $Ascii.IsPresent
-if (-not $script:UseAscii) {
-    try {
-        if ([Console]::OutputEncoding.CodePage -ne 65001) { $script:UseAscii = $true }
-    } catch {
-        $script:UseAscii = $true
-    }
-}
-
-if ($script:UseAscii) {
-    $bTL = '+'; $bTR = '+'; $bBL = '+'; $bBR = '+'
-    $bH  = '-'; $bV  = '|'; $bML = '+'; $bMR = '+'
-    $cCheck = 'OK'; $cCross = 'X'; $cBullet = '*'; $cArrow = '>'
-    $cShield = '[#]'; $cWarn = '!'; $cHourglass = '...'
-    $barFilledChar = '#'; $barEmptyChar = '-'
-} else {
-    $bTL = [char]0x256D # ╭
-    $bTR = [char]0x256E # ╮
-    $bBL = [char]0x2570 # ╰
-    $bBR = [char]0x256F # ╯
-    $bH  = [char]0x2500 # ─
-    $bV  = [char]0x2502 # │
-    $bML = [char]0x251C # ├
-    $bMR = [char]0x2524 # ┤
-    $cCheck = [char]0x2713   # ✓
-    $cCross = [char]0x2717   # ✗
-    $cBullet = [char]0x2022
-$cZap    = [char]0x26A1
-$cBarF   = [char]0x25B0
-$cBarE   = [char]0x25B1  # •
-    $cArrow  = [char]0x25B8  # ▸
-    $cShield = [char]0x26E8  # ⛨
-    $cWarn   = [char]0x26A0  # ⚠
-    $cHourglass = [char]0x23F3 # ⏳
-    $barFilledChar = [char]0x25B0 # $cBarF
-    $barEmptyChar  = [char]0x25B1 # $cBarE
-}
-
-function Get-BoxInnerWidth {
-    $inner = 73
-    if ($script:IsRealConsole) {
-        try {
-            $consoleW = $Host.UI.RawUI.WindowSize.Width
-            if ($consoleW -gt 0) {
-                $inner = [math]::Max(60, [math]::Min(96, $consoleW - 6))
-            }
-        } catch {}
-    }
-    return $inner
-}
-
-$script:Inner     = Get-BoxInnerWidth
-$script:LineWidth = $script:Inner + 17
-
-function Write-BoxTop {
-    param([string]$Color)
-    Write-Host "$bTL$([string]$bH * $script:Inner)$bTR" -ForegroundColor $Color
-}
-
-function Write-BoxDivider {
-    param([string]$Color)
-    Write-Host "$bML$([string]$bH * $script:Inner)$bMR" -ForegroundColor $Color
-}
-
-function Write-BoxBottom {
-    param([string]$Color)
-    Write-Host "$bBL$([string]$bH * $script:Inner)$bBR" -ForegroundColor $Color
-}
-
-function Write-BoxRow {
-    param([string]$Text, [string]$Color = $Theme.Text)
-    $padded = " $Text".PadRight($script:Inner)
-    Write-Host "$bV$padded$bV" -ForegroundColor $Color
-}
-
-function Format-BoxLine {
-    param([string]$Label, [string]$Value, [string]$Color = $Theme.Text)
-    $avail = $script:Inner - $Label.Length - 1
-    if ($avail -lt 5) { $avail = 5 }
-    $valStr = $Value
-    if ($valStr.Length -gt $avail) {
-        $valStr = "..." + $valStr.Substring($valStr.Length - ($avail - 3))
-    }
-    Write-BoxRow -Text "$Label$valStr" -Color $Color
-}
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 function Write-CyberHeader {
-    param([string]$TargetDir)
-    if ($script:IsRealConsole) {
-        try { Clear-Host } catch {}
+    param([string]$Title, [string]$SubTitle)
+    Clear-Host
+    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor DarkCyan
+    Write-Host "║  ███████╗ █████╗ ███████╗████████╗                                   ║" -ForegroundColor Cyan
+    Write-Host "║  ██╔════╝██╔══██╗██╔════╝╚══██╔══╝   SECURITY SAST GUARD             ║" -ForegroundColor Cyan
+    Write-Host "║  ███████╗███████║███████╗   ██║      Zero-Trust Shield               ║" -ForegroundColor Cyan
+    Write-Host "║  ╚════██║██╔══██║╚════██║   ██║                                      ║" -ForegroundColor Cyan
+    $t = if ($Title) { $Title.ToUpper() } else { "UPDATER v0.10.1" }
+    $tStr = "║  ███████║██║  ██║███████║   ██║      {0,-31} ║" -f $t
+    Write-Host $tStr -ForegroundColor Cyan
+    Write-Host "║  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝                                      ║" -ForegroundColor Cyan
+    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor DarkCyan
+    if ($SubTitle) {
+        Write-Host " [i] $SubTitle" -ForegroundColor Gray
     }
     Write-Host ""
-    Write-Host " $cShield  SECURITY SAST GUARD" -ForegroundColor Cyan
-    Write-Host "    Zero-Trust Shield for AI Coding Assistants" -ForegroundColor DarkCyan
-    Write-Host " $([string]$bH * ($script:Inner + 2))" -ForegroundColor DarkCyan
-    if ($TargetDir) {
-        Write-Host "  Target : $TargetDir" -ForegroundColor Gray
-    }
-    Write-Host ""
-}
-
-function Get-ProgressColor {
-    param([int]$Percent)
-    if ($Percent -lt 34)      { return $Theme.Fail }
-    elseif ($Percent -lt 67)  { return $Theme.Warn }
-    else                      { return $Theme.Success }
 }
 
 function Write-CyberStep {
     param([int]$Step, [int]$TotalSteps, [string]$Message, [int]$Percent)
-    if (-not $script:ShowProgressBar) { return }
-
-    $barWidth = 24
-    $filled = [math]::Floor($barWidth * $Percent / 100)
-    if ($filled -lt 0) { $filled = 0 }
-    if ($filled -gt $barWidth) { $filled = $barWidth }
-    $bar = ([string]$barFilledChar * $filled) + ([string]$barEmptyChar * ($barWidth - $filled))
-    $barColor = Get-ProgressColor -Percent $Percent
-
-    Write-Host ("`r  {0} [{1}/{2}]  " -f $cHourglass, $Step, $TotalSteps) -NoNewline -ForegroundColor DarkCyan
-    Write-Host $bar -NoNewline -ForegroundColor $barColor
-    $msg = ("  {0,3}%  $bV  {1}" -f $Percent, $Message)
-    Write-Host $msg.PadRight(60) -NoNewline -ForegroundColor White
+    $width = 25
+    $filled = [math]::Floor($width * $Percent / 100)
+    $bar = ("█" * $filled) + ("░" * ($width - $filled))
+    $statusLine = "`r [Step $Step/$TotalSteps] [$bar] {0,3}% {1,-40}" -f $Percent, $Message
+    Write-Host $statusLine -NoNewline -ForegroundColor Cyan
 }
 
 function Write-CyberPass {
     param([string]$Message)
-    $prefix = if ($script:IsRealConsole) { "`r" } else { "" }
-    $line = "$prefix  $cCheck  $Message"
-    if ($script:IsRealConsole) { $line = $line.PadRight($script:LineWidth + 25) }
-    Write-Host $line -ForegroundColor Green
+    $passLine = "`r [✓] {0,-70}" -f $Message
+    Write-Host $passLine -ForegroundColor Green
 }
 
 function Write-CyberWarn {
     param([string]$Message)
-    $prefix = if ($script:IsRealConsole) { "`r" } else { "" }
-    $line = "$prefix  $cWarn  $Message"
-    if ($script:IsRealConsole) { $line = $line.PadRight($script:LineWidth + 25) }
-    Write-Host $line -ForegroundColor Yellow
+    $warnLine = "`r [!] {0,-70}" -f $Message
+    Write-Host $warnLine -ForegroundColor Yellow
 }
 
 function Write-CyberFail {
     param([string]$Message)
     Write-Host ""
-    Write-BoxTop -Color $Theme.Fail
-    Write-BoxRow -Text "$cCross UPDATE FAILED" -Color $Theme.Fail
-    Write-BoxDivider -Color $Theme.Fail
-    Format-BoxLine -Label "Error: " -Value $Message -Color $Theme.Fail
-    Write-BoxBottom -Color $Theme.Fail
+    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Red
+    Write-Host "║  [✗] UPDATE FAILED                                                   ║" -ForegroundColor Red
+    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor Red
+    $errLine = "║  Error: {0,-60} ║" -f $Message
+    Write-Host $errLine -ForegroundColor Red
+    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Red
     Write-Host ""
 }
 
 function Write-CyberSuccessCard {
-    param([string]$TargetDir, [string]$Version, [bool]$RestoredProfile, [string]$Elapsed)
+    param([string]$TargetDir, [string]$Version, [bool]$RestoredProfile)
     Write-Host ""
-    Write-BoxTop -Color $Theme.Success
-    Write-BoxRow -Text "$cCheck UPDATE SUCCESSFUL" -Color $Theme.Success
-    Write-BoxDivider -Color $Theme.SuccessDim
-
-    Format-BoxLine -Label "Target Directory : " -Value $TargetDir
-    Format-BoxLine -Label "Updated Version  : " -Value $Version
+    Write-Host "╔══════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
+    Write-Host "║  [✓] UPDATE SUCCESSFUL                                               ║" -ForegroundColor Green
+    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
+    $targetLine = "║  Target Directory : {0,-48} ║" -f $TargetDir
+    $versionLine = "║  Updated Version  : {0,-48} ║" -f $Version
     $profileStatus = if ($RestoredProfile) { "Preserved and Restored" } else { "Fresh Default Profile" }
-    Format-BoxLine -Label "User Profile     : " -Value $profileStatus
-    Format-BoxLine -Label "Duration         : " -Value $Elapsed
-    Format-BoxLine -Label "Status           : " -Value "Active and Ready" -Color $Theme.Success
-
-    Write-BoxDivider -Color $Theme.SuccessDim
-    Write-BoxRow -Text "Quick Commands:"
-    Write-BoxRow -Text " $cArrow In AI Chat UI : '/sast-status' or '/sast-audit file <path>'" -Color $Theme.Muted
-    Write-BoxRow -Text " $cArrow In Terminal   : 'python control_plane.py status'" -Color $Theme.Muted
-    Write-BoxBottom -Color $Theme.Success
+    $profileLine = "║  User Profile     : {0,-48} ║" -f $profileStatus
+    $statusLine = "║  Status           : {0,-48} ║" -f "Active and Ready"
+    Write-Host $targetLine -ForegroundColor White
+    Write-Host $versionLine -ForegroundColor White
+    Write-Host $profileLine -ForegroundColor White
+    Write-Host $statusLine -ForegroundColor Green
+    Write-Host "╠══════════════════════════════════════════════════════════════════════╣" -ForegroundColor DarkGreen
+    Write-Host "║  Quick Commands:                                                     ║" -ForegroundColor White
+    Write-Host "║   • In AI Chat UI : '/sast-status' or '/sast-audit file <path>'      ║" -ForegroundColor Gray
+    Write-Host "║   • In Terminal   : 'python control_plane.py status'                 ║" -ForegroundColor Gray
+    Write-Host "╚══════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
-}
-
-function Download-FileWithProgress {
-    param(
-        [string]$Url,
-        [string]$OutputFile,
-        [int]$Step,
-        [int]$TotalSteps,
-        [string]$Message,
-        [int]$BasePercent,
-        [int]$WeightPercent
-    )
-    $req = [System.Net.HttpWebRequest]::Create($Url)
-    $req.UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-    $res = $req.GetResponse()
-    $totalBytes = $res.ContentLength
-    $inStream = $res.GetResponseStream()
-    $outStream = [System.IO.File]::Create($OutputFile)
-    $buffer = New-Object byte[] 65536
-    $downloaded = 0
-    $sw = [System.Diagnostics.Stopwatch]::StartNew()
-
-    try {
-        while (($read = $inStream.Read($buffer, 0, $buffer.Length)) -gt 0) {
-            $outStream.Write($buffer, 0, $read)
-            $downloaded += $read
-            if ($sw.ElapsedMilliseconds -gt 80 -or $downloaded -eq $totalBytes) {
-                $sw.Restart()
-                $stepPct = if ($totalBytes -gt 0) { [math]::Min(100, [math]::Floor(($downloaded / $totalBytes) * 100)) } else { 50 }
-                $overallPct = [math]::Min(99, $BasePercent + [math]::Floor($stepPct * ($WeightPercent / 100)))
-                $mbDownloaded = [math]::Round($downloaded / 1MB, 2)
-                $mbTotal = if ($totalBytes -gt 0) { [math]::Round($totalBytes / 1MB, 2) } else { 0 }
-                $sizeStr = if ($mbTotal -gt 0) {
-                    ' ({0} MB / {1} MB)' -f $mbDownloaded, $mbTotal
-                } else {
-                    ' ({0} MB)' -f $mbDownloaded
-                }
-                $statusMsg = $Message + $sizeStr
-                Write-CyberStep -Step $Step -TotalSteps $TotalSteps -Message $statusMsg -Percent $overallPct
-            }
-        }
-    } finally {
-        $outStream.Close()
-        $inStream.Close()
-        $res.Close()
-    }
 }
 
 function Register-MCPServer {
@@ -274,14 +102,10 @@ function Register-MCPServer {
         $JsonObj | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue ([PSCustomObject]@{}) -Force
     }
 
-    $PyCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
-    if ($PyCmd) { $PyCmd = $PyCmd.Replace("\", "/") } else { $PyCmd = "python" }
-
     $ServerConfig = [PSCustomObject]@{
-        command = $PyCmd
+        command = "python"
         args    = @("-m", "src.mcp.server")
         cwd     = $NormPath
-        env     = [PSCustomObject]@{ PYTHONPATH = $NormPath }
     }
 
     if ($JsonObj.mcpServers.PSObject.Properties['security-sast-guard']) {
@@ -290,9 +114,7 @@ function Register-MCPServer {
         $JsonObj.mcpServers | Add-Member -NotePropertyName "security-sast-guard" -NotePropertyValue $ServerConfig -Force
     }
 
-    $JsonStr = $JsonObj | ConvertTo-Json -Depth 10
-    $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-    [System.IO.File]::WriteAllText($ConfigFile, $JsonStr, $Utf8NoBom)
+    $JsonObj | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigFile -Encoding UTF8
     Write-CyberPass "Registered MCP Server 'security-sast-guard' in $ConfigFile"
 }
 
@@ -305,16 +127,15 @@ $RepoOwner = "nguyenduydan"
 $RepoName = "security-sast-guard-plugin"
 $InstallDir = Join-Path $HOME ".gemini\config\plugins\$PluginName"
 
-Write-CyberHeader -TargetDir $InstallDir
+Write-CyberHeader -Title "Updater v0.10.1" -SubTitle "Target: $InstallDir"
 
 if (-not (Test-Path $InstallDir)) {
     Write-CyberWarn "Plugin is not installed at $InstallDir"
-    Write-Host "  [i] Use 'install.ps1' to install first." -ForegroundColor Yellow
+    Write-Host " [i] Use 'install.ps1' to install first." -ForegroundColor Yellow
     Write-Host ""
     exit 1
 }
 
-$UpdateTimer = [System.Diagnostics.Stopwatch]::StartNew()
 $TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString())
 New-Item -ItemType Directory -Path $TempDir | Out-Null
 $ZipPath = Join-Path $TempDir "plugin.zip"
@@ -329,7 +150,7 @@ if (Test-Path $ProfilePath) {
 }
 
 try {
-    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Backing up config and checking release..." -Percent 10
+    Write-CyberStep -Step 1 -TotalSteps 4 -Message "Backing up user config and fetching release..." -Percent 15
     $Release = Invoke-RestMethod -Uri "https://api.github.com/repos/$RepoOwner/$RepoName/releases/latest"
     $ZipAsset = $Release.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
     $ChecksumAsset = $Release.assets | Where-Object { $_.name -eq "checksums.txt" } | Select-Object -First 1
@@ -343,14 +164,13 @@ try {
     }
     Write-CyberPass "User profile backed up and found release: $($Release.tag_name)"
 
+    Write-CyberStep -Step 2 -TotalSteps 4 -Message "Downloading release archive..." -Percent 40
+    Invoke-WebRequest -Uri $ZipAsset.browser_download_url -OutFile (Join-Path $TempDir $ZipAsset.name)
+    if ($ChecksumAsset) {
+        Invoke-WebRequest -Uri $ChecksumAsset.browser_download_url -OutFile (Join-Path $TempDir $ChecksumAsset.name)
+    }
     $ZipPath = Join-Path $TempDir $ZipAsset.name
     $ChecksumPath = Join-Path $TempDir "checksums.txt"
-
-    Download-FileWithProgress -Url $ZipAsset.browser_download_url -OutputFile $ZipPath -Step 2 -TotalSteps 4 -Message "Downloading release archive" -BasePercent 25 -WeightPercent 35
-
-    if ($ChecksumAsset) {
-        Download-FileWithProgress -Url $ChecksumAsset.browser_download_url -OutputFile $ChecksumPath -Step 2 -TotalSteps 4 -Message "Downloading checksum file" -BasePercent 60 -WeightPercent 5
-    }
     Write-CyberPass "Downloaded latest release package"
 
     Write-CyberStep -Step 3 -TotalSteps 4 -Message "Verifying SHA-256 checksum..." -Percent 65
@@ -368,33 +188,13 @@ try {
         Write-CyberPass "Package checksum step skipped (checksums.txt unavailable)"
     }
 
-    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Replacing runtime files and restoring profile..." -Percent 75
-    $global:ProgressPreference = "SilentlyContinue"
-    try {
-        Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($ZipPath, $ExtractPath)
-    } catch {
-        Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
-    }
+    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Replacing runtime files and restoring profile..." -Percent 90
+    Expand-Archive -Path $ZipPath -DestinationPath $ExtractPath -Force
     $ExtractedRootFolder = Get-ChildItem -Path $ExtractPath -Directory | Select-Object -First 1
 
-    try {
-        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*src.mcp.server*" -and $_.CommandLine -like "*security-sast-guard*" } | ForEach-Object {
-            Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue
-        }
-        Start-Sleep -Milliseconds 500
-    } catch {}
-
-    $filesToCopy = Get-ChildItem -Path $ExtractedRootFolder.FullName -Recurse
-    $totalFiles = [math]::Max(1, $filesToCopy.Count)
-    $copiedCount = 0
-
-    Get-ChildItem -Path $ExtractedRootFolder.FullName | ForEach-Object {
-        Copy-Item -Path $_.FullName -Destination $InstallDir -Recurse -Force
-        $copiedCount++
-        $copyPct = 75 + [math]::Floor(($copiedCount / $totalFiles) * 20)
-        Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying runtime files ($copiedCount/$totalFiles)..." -Percent $copyPct
-    }
+    Set-Location -Path $TempDir
+    Remove-Item -Path $InstallDir -Recurse -Force
+    Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
 
     if ($HasProfile) {
         Copy-Item -Path $BackupPath -Destination $ProfilePath -Force
@@ -405,9 +205,7 @@ try {
 
     Register-MCPServer -InstallDir $InstallDir
 
-    $UpdateTimer.Stop()
-    $ElapsedStr = "{0:0.0}s" -f $UpdateTimer.Elapsed.TotalSeconds
-    Write-CyberSuccessCard -TargetDir $InstallDir -Version $($Release.tag_name) -RestoredProfile $HasProfile -Elapsed $ElapsedStr
+    Write-CyberSuccessCard -TargetDir $InstallDir -Version $($Release.tag_name) -RestoredProfile $HasProfile
 } catch {
     Write-CyberFail -Message $_.Exception.Message
     exit 1
