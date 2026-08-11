@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.7.0...v1.8.0) (2026-08-11)
+
+
+### 🚀 Features & SAST Security Rules
+
+* merge remaining feature branches - AST context engine, installer auto-reg, landing page docs, skill files update ([ac476d9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ac476d949d5a946411ac4a3855209949611a85fc))
+* **taint:** merge full taint analysis engine - CallGraphBuilder, TaintTracker, SymbolIndexer, ASTConfirmEngine, MCP dataflow tools ([b5b6724](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b5b67243415240768a549e52d8dc8b383352b6ec))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** allow skipped dependency-review on push events, add gate-result job to security gate ([9b68d31](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9b68d316c815400746422dd5ad7440e646a0ec45))
+* **security:** resolve 10 CodeQL alerts - remove unused globals, clarify empty except blocks ([607c57e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/607c57e455d4122b923de19c374fbf45ff2a0162))
+* **types:** add explicit type annotations for mypy - dict generics, Iterator return types, no-any-return ([437db8c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/437db8cabc94cdf4f2635efc6fa6ab771e54ee8b))
+
+
+### 🎨 Code Style & Formatting
+
+* **format:** auto-format 14 files with ruff format ([b97b493](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b97b49375b118fcd2a11a67fcc0b9a81d6737150))
+* **lint:** fix pylint C1803, C0415, W0621, W0404 and trailing newline ([271aa55](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/271aa550b02452e9ccb2558760b0bb84452bb890))
+* **lint:** fix ruff I001, E501, RUF015, F401, E401, SIM117 across audit_service and tests ([33063c2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/33063c28c326fe0ad4d78278c5be1ffd71bf9067))
+
 ## [1.7.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.6.1...v1.7.0) (2026-08-11)
 
 
