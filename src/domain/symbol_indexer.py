@@ -1,8 +1,8 @@
 """SymbolIndexer: grep-based source assignment finder."""
 
 import re
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 from .models import SymbolMap
 
