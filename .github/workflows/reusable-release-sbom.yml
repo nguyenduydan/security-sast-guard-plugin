@@ -22,7 +22,7 @@ jobs:
       attestations: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -67,19 +67,19 @@ jobs:
           sha256sum ${{ inputs.tag_name }}.zip > checksums.txt
 
       - name: Generate Software Bill of Materials (SBOM)
-        uses: anchore/sbom-action@f325610c2861e631fc661f4380e2270928f6e166 # v0.17.9
+        uses: anchore/sbom-action@v0
         with:
           path: "."
           format: "spdx-json"
           output-file: "spdx.json"
 
       - name: Attest Build Provenance (OIDC Cryptographic Attestation)
-        uses: actions/attest-build-provenance@c074443f1aee8da4aeeae055861115b9745897e9 # v2.2.3
+        uses: actions/attest-build-provenance@v2
         with:
           subject-path: "${{ inputs.tag_name }}.zip"
 
       - name: Publish Official GitHub Release
-        uses: softprops/action-gh-release@c95fe148915b2148a657497a7604b7f0ec689100 # v2.2.1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ inputs.tag_name }}
