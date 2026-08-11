@@ -18,6 +18,9 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "env",
     ".env",
     "packages",  # NuGet legacy packages directory
+    "OtherDLL",  # Legacy external compiled DLLs directory
+    "OtherDll",
+    "otherdll",
     ".nuget",  # NuGet cache directory
     ".gradle",  # Gradle cache directory
     ".m2",  # Maven local repository cache
@@ -40,6 +43,14 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "obj",  # ASP.NET / .NET intermediate build output
     "publish",  # ASP.NET publish output directory
     "App_Data",  # ASP.NET local data / mdf files directory
+    "Uploads",  # User uploaded files directory
+    "Upload",
+    "uploads",
+    "upload",
+    "Images",   # Static image assets directory
+    "images",
+    "Template", # HTML / email / doc templates directory
+    "template",
     "TestResults",  # .NET / MSTest test execution results
     ".next",
     ".nuxt",
@@ -52,6 +63,7 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     # Logs & telemetry
     "logs",
     "log",
+    "Log",
     "reports",
     "docs",
     ".aiops",
@@ -101,18 +113,22 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".user",  # Visual Studio project user settings
     ".userossc",
     ".sln.docstates",
+    # XML Schema / static configs
+    ".xsd",
     # Databases & ASP.NET data files
     ".db",
     ".sqlite",
     ".mdf",  # SQL Server Express database file
     ".ldf",  # SQL Server Express log file
-    # Templates (text/HTML scaffold files — non-executable)
+    # Templates & Static HTML files (scaffold / static error pages)
     ".template",
     ".tpl",
     ".tmpl",
     ".mustache",
     ".handlebars",
     ".hbs",
+    ".htm",
+    ".html",
     # Documentation, plain text, temp, and log files
     ".md",
     ".markdown",
@@ -137,11 +153,13 @@ DEFAULT_IGNORE_FILES: set[str] = {
     "Cargo.lock",
     "poetry.lock",
     "packages.lock.json",  # NuGet package lock file
-    # ASP.NET / .NET environment config transformation files
+    # ASP.NET / .NET environment config transformation files & static configs
     "web.config",
     "web.debug.config",
     "web.release.config",
     "app.config",
+    "nlog.config",
+    "applicationinsights.config",
 }
 
 
@@ -178,12 +196,13 @@ class IgnoreFilter:
             if part in DEFAULT_IGNORE_DIRS:
                 return True
 
-        # Check extension
-        if p.suffix.lower() in DEFAULT_IGNORE_EXTS:
-            return True
-
-        # Check exact filename (case-insensitive)
-        if p.name.lower() in DEFAULT_IGNORE_FILES:
+        # Check extension, exact filename, or .designer.cs auto-generated files
+        name_lower = p.name.lower()
+        if (
+            p.suffix.lower() in DEFAULT_IGNORE_EXTS
+            or name_lower in DEFAULT_IGNORE_FILES
+            or name_lower.endswith(".designer.cs")
+        ):
             return True
 
         # Check custom fnmatch patterns from .sastignore

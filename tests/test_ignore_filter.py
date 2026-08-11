@@ -210,3 +210,28 @@ def test_ignore_filter_temp_and_libraries(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / ".main.py.swp") is True
     assert filter_inst.should_ignore(tmp_path / ".main.py.swo") is True
     assert filter_inst.should_ignore(tmp_path / ".DS_Store") is True
+
+
+def test_ignore_filter_aspnet_extended_rules(tmp_path: Path) -> None:
+    """OtherDLL, Uploads, Template, .designer.cs and static configs must be ignored."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    # Directories
+    assert filter_inst.should_ignore(tmp_path / "OtherDLL" / "lib.dll") is True
+    assert filter_inst.should_ignore(tmp_path / "Uploads" / "doc.pdf") is True
+    assert filter_inst.should_ignore(tmp_path / "Template" / "mail.htm") is True
+    assert filter_inst.should_ignore(tmp_path / "Log" / "trace.log") is True
+
+    # Auto-generated designer files
+    designer_file = tmp_path / "WebMethod.aspx.designer.cs"
+    assert filter_inst.should_ignore(designer_file) is True
+
+    # Static HTML & Schema configs
+    assert filter_inst.should_ignore(tmp_path / "_index.htm") is True
+    assert filter_inst.should_ignore(tmp_path / "auth-error.html") is True
+    assert filter_inst.should_ignore(tmp_path / "NLog.xsd") is True
+
+    # Static config files
+    assert filter_inst.should_ignore(tmp_path / "Nlog.config") is True
+    app_insights = tmp_path / "ApplicationInsights.config"
+    assert filter_inst.should_ignore(app_insights) is True
