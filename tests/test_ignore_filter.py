@@ -166,3 +166,31 @@ def test_ignore_filter_templates_and_logs(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "email.mustache") is True
     assert filter_inst.should_ignore(tmp_path / "view.handlebars") is True
     assert filter_inst.should_ignore(tmp_path / "item.hbs") is True
+
+
+def test_ignore_filter_temp_and_libraries(tmp_path: Path) -> None:
+    """Temp directories, library caches, and swap files must be ignored."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    # Temp and Cache directories
+    assert filter_inst.should_ignore(tmp_path / "temp" / "file.txt") is True
+    assert filter_inst.should_ignore(tmp_path / "tmp" / "file.txt") is True
+    assert filter_inst.should_ignore(tmp_path / ".tmp" / "file.txt") is True
+    assert filter_inst.should_ignore(tmp_path / "cache" / "data.bin") is True
+    assert filter_inst.should_ignore(tmp_path / ".cache" / "build.json") is True
+
+    # Library directories across ecosystems
+    assert filter_inst.should_ignore(tmp_path / "bower_components" / "jquery.js") is True
+    assert filter_inst.should_ignore(tmp_path / "jspm_packages" / "npm" / "lib.js") is True
+    assert filter_inst.should_ignore(tmp_path / ".nuget" / "packages.config") is True
+    assert filter_inst.should_ignore(tmp_path / ".gradle" / "caches" / "test.jar") is True
+    assert filter_inst.should_ignore(tmp_path / ".m2" / "repository" / "lib.jar") is True
+    assert filter_inst.should_ignore(tmp_path / ".cargo" / "registry" / "lib.rlib") is True
+    assert filter_inst.should_ignore(tmp_path / ".bundle" / "gems" / "ruby.rb") is True
+
+    # Temp extensions
+    assert filter_inst.should_ignore(tmp_path / "cache.tmp") is True
+    assert filter_inst.should_ignore(tmp_path / "scratch.temp") is True
+    assert filter_inst.should_ignore(tmp_path / ".main.py.swp") is True
+    assert filter_inst.should_ignore(tmp_path / ".main.py.swo") is True
+    assert filter_inst.should_ignore(tmp_path / ".DS_Store") is True

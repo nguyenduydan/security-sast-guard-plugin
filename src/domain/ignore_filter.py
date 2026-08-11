@@ -8,14 +8,27 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".git",
     ".hg",
     ".svn",
-    # Dependencies
+    # Dependencies / Libraries (cross-ecosystem)
     "node_modules",
     "vendor",
+    "bower_components", # Frontend legacy package manager
+    "jspm_packages",    # JS package manager
     ".venv",
     "venv",
     "env",
-    "packages",  # NuGet legacy packages directory
-    # Cache / build artefacts & .NET / ASP.NET build output
+    ".env",
+    "packages",         # NuGet legacy packages directory
+    ".nuget",           # NuGet cache directory
+    ".gradle",          # Gradle cache directory
+    ".m2",              # Maven local repository cache
+    ".cargo",           # Rust cargo cache
+    ".bundle",          # Ruby bundler cache
+    # Temp / Cache / build artefacts & .NET / ASP.NET build output
+    "temp",             # General temporary files directory
+    "tmp",              # General temporary files directory
+    ".tmp",             # Hidden temp directory
+    "cache",            # General cache directory
+    ".cache",           # Hidden system/build cache directory
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
@@ -101,7 +114,7 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".mustache",
     ".handlebars",
     ".hbs",
-    # Documentation, plain text, and log files
+    # Documentation, plain text, temp, and log files
     ".md",
     ".markdown",
     ".rst",
@@ -110,9 +123,15 @@ DEFAULT_IGNORE_EXTS: set[str] = {
     ".out",
     ".err",
     ".bak",
+    ".tmp",
+    ".temp",
+    ".swp",
+    ".swo",
+    ".ds_store",
 }
 
 DEFAULT_IGNORE_FILES: set[str] = {
+    ".ds_store",
     "package-lock.json",
     "yarn.lock",
     "pnpm-lock.yaml",
@@ -159,8 +178,8 @@ class IgnoreFilter:
         if p.suffix.lower() in DEFAULT_IGNORE_EXTS:
             return True
 
-        # Check exact filename
-        if p.name in DEFAULT_IGNORE_FILES:
+        # Check exact filename (case-insensitive)
+        if p.name.lower() in DEFAULT_IGNORE_FILES:
             return True
 
         # Check custom fnmatch patterns from .sastignore
