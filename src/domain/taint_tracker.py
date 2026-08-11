@@ -1,7 +1,7 @@
 """TaintTracker: traces tainted symbols from source assignments to sink call sites."""
 
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 from .models import SymbolMap, TaintFinding, TraceStep
 
