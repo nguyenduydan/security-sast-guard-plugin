@@ -21,7 +21,7 @@ jobs:
 
       - name: Verify Manifest Version Match
         run: |
-          python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version'], f'Mismatch: {p[\"version\"]} vs {e[\"version\"]}'"
+          python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version']"
 
   lint-and-format:
     name: Lint & Format
@@ -30,8 +30,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
+      - name: Setup Python 3.12
+        uses: actions/setup-python@39cd14742d08025d6053865ea99933f070b40e4e # v5.3.0
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . ruff mypy pytest detect-secrets pylint
 
       - name: Run Ruff Linter & Formatter Check
         run: |
@@ -49,8 +57,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
+      - name: Setup Python 3.12
+        uses: actions/setup-python@39cd14742d08025d6053865ea99933f070b40e4e # v5.3.0
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . ruff mypy pytest detect-secrets pylint
 
       - name: Run Mypy Type Checker
         run: |
@@ -63,8 +79,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
+      - name: Setup Python 3.12
+        uses: actions/setup-python@39cd14742d08025d6053865ea99933f070b40e4e # v5.3.0
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . ruff mypy pytest detect-secrets pylint
 
       - name: Run Pytest Suite
         run: |
