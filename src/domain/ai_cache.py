@@ -40,7 +40,8 @@ class AICache:
             with open(self.cache_file, "w", encoding="utf-8") as f:
                 json.dump(self._data, f, indent=2)
         except OSError:
-            pass
+            pass  # Cache write failure is non-fatal: continue without persisting
+
 
     @staticmethod
     def compute_key(rule_id: str, line_content: str, file_ext: str = "") -> str:

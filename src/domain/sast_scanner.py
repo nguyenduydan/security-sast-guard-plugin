@@ -40,7 +40,8 @@ class SASTScanner:
                 profile = json.load(f)
                 self.mode = profile.get("mode", "strict")
         except FileNotFoundError:
-            pass
+            pass  # Profile file absent: use default strict mode
+
 
     def _get_rules_path(self) -> Path:
         p = Path(self.rules_path)

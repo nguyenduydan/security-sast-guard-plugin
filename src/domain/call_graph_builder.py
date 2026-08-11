@@ -32,18 +32,7 @@ _SCAN_EXTENSIONS = {
     ".go",
     ".rs",
 }
-_SKIP_DIRS = {
-    ".git",
-    ".venv",
-    "venv",
-    "node_modules",
-    "__pycache__",
-    ".mypy_cache",
-    ".ruff_cache",
-    "dist",
-    "build",
-    ".sast",
-}
+
 
 
 class CallGraphBuilder:

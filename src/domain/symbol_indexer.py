@@ -6,12 +6,6 @@ from pathlib import Path
 
 from .models import SymbolMap
 
-# Matches: <identifier> = <anything containing source_keyword>
-# Also matches: <identifier>: <type> = <...> (typed annotations)
-_ASSIGN_RE = re.compile(
-    r"^[ \t]*([a-zA-Z_]\w*)(?:\s*:\s*\S+)?\s*[:=]=?\s*.*?({SOURCE})"
-)
-
 # File extensions to scan (text-based code files)
 _SCAN_EXTENSIONS = {
     ".py",

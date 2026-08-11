@@ -83,7 +83,8 @@ class GitHelper:
             if res.returncode == 0 and res.stdout.strip():
                 return res.stdout.strip()
         except (OSError, ValueError):
-            pass
+            pass  # git not available: fall through to branch fallbacks
+
 
         # 2. Fallback check for common default remote branches
         for branch in ["origin/main", "origin/master", "origin/develop"]:

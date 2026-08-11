@@ -18,7 +18,8 @@ def get_plugin_version() -> str:
                 if data.get("version"):
                     return str(data["version"])
         except (json.JSONDecodeError, OSError):
-            pass
+            pass  # Non-critical: fall through to next resolution strategy
+
 
     pyproject = plugin_root / "pyproject.toml"
     if pyproject.exists():
@@ -29,6 +30,7 @@ def get_plugin_version() -> str:
                     if ver:
                         return ver
         except OSError:
-            pass
+            pass  # Non-critical: fall through to RuntimeError fallback
+
 
     raise RuntimeError(f"Could not resolve plugin version from {plugin_root}")
