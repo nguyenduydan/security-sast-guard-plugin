@@ -24,9 +24,8 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".cargo",  # Rust cargo cache
     ".bundle",  # Ruby bundler cache
     # Temp / Cache / build artefacts & .NET / ASP.NET build output
-    "temp",  # General temporary files directory
-    "tmp",  # General temporary files directory
     ".tmp",  # Hidden temp directory
+    ".temp", # Hidden temp directory
     "cache",  # General cache directory
     ".cache",  # Hidden system/build cache directory
     "__pycache__",

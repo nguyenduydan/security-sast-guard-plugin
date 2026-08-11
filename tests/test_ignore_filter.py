@@ -174,8 +174,7 @@ def test_ignore_filter_temp_and_libraries(tmp_path: Path) -> None:
     filter_inst = IgnoreFilter(root_dir=tmp_path)
 
     # Temp and Cache directories
-    assert filter_inst.should_ignore(tmp_path / "temp" / "file.txt") is True
-    assert filter_inst.should_ignore(tmp_path / "tmp" / "file.txt") is True
+    assert filter_inst.should_ignore(tmp_path / ".temp" / "file.txt") is True
     assert filter_inst.should_ignore(tmp_path / ".tmp" / "file.txt") is True
     assert filter_inst.should_ignore(tmp_path / "cache" / "data.bin") is True
     assert filter_inst.should_ignore(tmp_path / ".cache" / "build.json") is True
