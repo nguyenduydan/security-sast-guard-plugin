@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.8](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.7...v1.8.8) (2026-08-11)
+
+
+### 🐛 Bug Fixes
+
+* **hooks:** remove duplicate import json in firewall_hook.py ([bc7ff1d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bc7ff1dd32eed02b5cc67de527d6e81794f91d4c))
+* resolve false positives for web.config tokens, csproj, and plugins directory ([6e817d9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/6e817d9a58e1686e0abe271c5f52412ce898747b))
+
 ## [1.8.7](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.6...v1.8.7) (2026-08-11)
 
 
