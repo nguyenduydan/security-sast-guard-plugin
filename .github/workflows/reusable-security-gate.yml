@@ -34,3 +34,16 @@ jobs:
       - name: Scan for Hardcoded Secrets
         run: |
           detect-secrets scan --all-files
+
+  dependency-review:
+    name: Dependency Vulnerability Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Dependency Review Scan
+        uses: actions/dependency-review-action@5a2ee3f344d6735e5d36e26715ae6aaefae9cfa8 # v4.5.0
+        with:
+          fail-on-severity: high
