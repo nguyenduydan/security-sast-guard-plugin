@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Any, Literal
 
 
 class FirewallDecision(StrEnum):
@@ -100,3 +101,74 @@ class CallChain:
     entry_fn: str
     steps: list[TraceStep]
     terminal_sink: str
+
+
+# ── Shared v2.0.0 Interface Contracts ──────────────────────────────────────
+
+
+class VerdictState(StrEnum):
+    """Decision verdict state enum."""
+
+    TRUE_POSITIVE = "TRUE_POSITIVE"
+    FALSE_POSITIVE = "FALSE_POSITIVE"
+    CONFIRM_REQUIRED = "CONFIRM_REQUIRED"
+    NOT_ENOUGH_CONTEXT = "NOT_ENOUGH_CONTEXT"
+
+
+# pylint: disable=too-many-instance-attributes
+@dataclass(frozen=True)
+class FirewallVerdictV2:
+    """Detailed verdict produced by FirewallEngine v2."""
+
+    verdict: Literal["ALLOW", "CONFIRM", "DENY"]
+    intent_label: str | None
+    capability_set: list[str] | tuple[str, ...]
+    risk_score: float
+    confidence: float
+    matched_patterns: list[str] | tuple[str, ...]
+    deobfuscated_form: str
+    chain_threat: bool
+    reason: str
+    recommended_action: str
+
+    def __post_init__(self) -> None:
+        """Convert list attributes to tuples to ensure hashability if frozen."""
+        if isinstance(self.capability_set, list):
+            object.__setattr__(self, "capability_set", tuple(self.capability_set))
+        if isinstance(self.matched_patterns, list):
+            object.__setattr__(self, "matched_patterns", tuple(self.matched_patterns))
+
+
+@dataclass(frozen=True)
+class DecisionResult:
+    """Result of SecurityDecisionEngine processing a finding."""
+
+    state: VerdictState
+    risk_score: float
+    confidence: float
+    reason: str
+    policy_override: bool = False
+
+
+@dataclass(frozen=True)
+class SemanticFingerprint:
+    """Semantic fingerprint for SAST finding baseline tracking."""
+
+    fingerprint_id: str
+    rule_id: str
+    normalized_sink: str
+    normalized_source: str
+    dataflow_signature: str
+    symbol: str
+    first_seen: str
+    status: Literal["open", "resolved", "suppressed"]
+
+
+@dataclass
+class AuditEntry:
+    """Single entry in append-only security audit log."""
+
+    timestamp: str
+    entry_type: Literal["SAST_FINDING", "FIREWALL_VERDICT", "DECISION", "KB_APPROVAL"]
+    payload: dict[str, Any]
+    entry_hash: str
