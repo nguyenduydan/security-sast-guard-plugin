@@ -375,6 +375,9 @@ function runFirewallLogic(cmd) {
     lower.includes("mkfs") ||
     lower.includes("stop-computer") ||
     lower.includes("restart-computer") ||
+    lower.includes("git checkout --") ||
+    lower.includes("git restore") ||
+    lower.includes("git reset --hard") ||
     isBase64Deny;
 
   if (isDeny) {
