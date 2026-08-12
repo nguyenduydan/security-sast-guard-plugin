@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.9](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.8...v1.8.9) (2026-08-12)
+
+
+### 📦 Build System & Dependencies
+
+* **deps:** bump actions/attest-build-provenance from 2 to 4 ([f3ccfde](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f3ccfdea3e7b35cf7519b0afb26fe78e112f041d))
+* **deps:** bump actions/dependency-review-action from 4 to 5 ([a3875d2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a3875d268e7b58c50f43451460cfca6b15f8c91c))
+* **deps:** bump actions/setup-python from 5 to 7 ([4a8fbc3](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4a8fbc38ed7b1fe66a7ccf1f76963a6a05f29905))
+* **deps:** bump googleapis/release-please-action from 4 to 5 ([3accaaa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3accaaa69b30ab9fd70104dc4c541a9d3cb328f6))
+* **deps:** bump softprops/action-gh-release from 2 to 3 ([d2b0a71](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d2b0a71f0557cbeb075a875ec0e004020693e095))
+
 ## [1.8.8](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.7...v1.8.8) (2026-08-11)
 
 
