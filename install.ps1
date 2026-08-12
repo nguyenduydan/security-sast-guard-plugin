@@ -1,4 +1,4 @@
-﻿param(
+param(
     [switch]$Ascii,
     [switch]$Quiet
 )
@@ -248,8 +248,69 @@ function Download-FileWithProgress {
     }
 }
 
-function Register-MCPServer {
+function Ensure-PythonEnvironment {
     param([string]$InstallDir)
+
+    $sysPython = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if ($sysPython) {
+        Write-CyberPass "Detected system Python: $sysPython"
+        return $sysPython.Replace("\", "/")
+    }
+
+    Write-CyberWarn "System Python not found. Setting up Python 3.11.9 Embeddable (Portable)..."
+    $embedDir = Join-Path $InstallDir ".python"
+    $embedExe = Join-Path $embedDir "python.exe"
+
+    if (Test-Path $embedExe) {
+        Write-CyberPass "Found existing Python Embeddable environment at $embedDir"
+        return $embedExe.Replace("\", "/")
+    }
+
+    $zipUrl = "https://www.python.org/ftp/python/3.11.9/python-3.11.9-embed-amd64.zip"
+    $tempZip = Join-Path ([System.IO.Path]::GetTempPath()) "python-3.11.9-embed-amd64.zip"
+
+    try {
+        Download-FileWithProgress -Url $zipUrl -OutputFile $tempZip -Step 4 -TotalSteps 5 -Message "Downloading Python Embeddable package" -BasePercent 70 -WeightPercent 15
+        
+        if (-not (Test-Path $embedDir)) {
+            New-Item -ItemType Directory -Path $embedDir | Out-Null
+        }
+
+        try {
+            Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($tempZip, $embedDir)
+        } catch {
+            Expand-Archive -Path $tempZip -DestinationPath $embedDir -Force
+        }
+
+        # Enable site-packages and local imports in python311._pth
+        $pthFile = Join-Path $embedDir "python311._pth"
+        if (Test-Path $pthFile) {
+            $pthLines = Get-Content $pthFile
+            $updatedLines = @()
+            foreach ($line in $pthLines) {
+                if ($line -match "^#\s*import site") {
+                    $updatedLines += "import site"
+                } else {
+                    $updatedLines += $line
+                }
+            }
+            # Append parent directory to sys.path
+            $updatedLines += ".."
+            $updatedLines | Set-Content -Path $pthFile -Encoding UTF8
+        }
+
+        Write-CyberPass "Successfully initialized Python Embeddable environment"
+        return $embedExe.Replace("\", "/")
+    } finally {
+        if (Test-Path $tempZip) {
+            Remove-Item -Path $tempZip -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+function Register-MCPServer {
+    param([string]$InstallDir, [string]$PythonExe)
     $ConfigDir = Join-Path $HOME ".gemini\config"
     if (-not (Test-Path $ConfigDir)) {
         New-Item -ItemType Directory -Path $ConfigDir | Out-Null
@@ -272,8 +333,7 @@ function Register-MCPServer {
         $JsonObj | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue ([PSCustomObject]@{}) -Force
     }
 
-    $PyCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
-    if ($PyCmd) { $PyCmd = $PyCmd.Replace("\", "/") } else { $PyCmd = "python" }
+    $PyCmd = if ($PythonExe) { $PythonExe } else { "python" }
 
     $ServerConfig = [PSCustomObject]@{
         command = $PyCmd
@@ -357,7 +417,7 @@ try {
         Write-CyberPass "Package checksum step skipped (checksums.txt unavailable)"
     }
 
-    Write-CyberStep -Step 4 -TotalSteps 4 -Message "Deploying plugin files and registering MCP server..." -Percent 75
+    Write-CyberStep -Step 4 -TotalSteps 5 -Message "Deploying plugin files..." -Percent 75
     $global:ProgressPreference = "SilentlyContinue"
     try {
         Add-Type -AssemblyName System.IO.Compression.FileSystem -ErrorAction SilentlyContinue
@@ -375,7 +435,10 @@ try {
     Move-Item -Path $ExtractedRootFolder.FullName -Destination $InstallDir -Force
     Write-CyberPass "Deployed runtime files to target location"
 
-    Register-MCPServer -InstallDir $InstallDir
+    $pythonExe = Ensure-PythonEnvironment -InstallDir $InstallDir
+
+    Write-CyberStep -Step 5 -TotalSteps 5 -Message "Registering MCP server..." -Percent 95
+    Register-MCPServer -InstallDir $InstallDir -PythonExe $pythonExe
 
     $InstallTimer.Stop()
     $ElapsedStr = "{0:0.0}s" -f $InstallTimer.Elapsed.TotalSeconds
