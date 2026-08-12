@@ -63,6 +63,37 @@ table, tr, td, th {
               box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Remove default browser & Tailwind focus rings from input elements */
+*,
+*:focus,
+*:focus-visible,
+input,
+input:focus,
+input:focus-visible,
+input:focus-within,
+button:focus,
+button:focus-visible {
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  box-shadow: none !important;
+  border-color: inherit;
+  -webkit-focus-ring-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-width: 0px !important;
+}
+
+#cmd-input,
+#rule-search {
+  outline: none !important;
+  outline-style: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 /* Theme Toggle Button Micro-Animation */
 #theme-toggle-btn {
   position: relative;
