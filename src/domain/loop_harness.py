@@ -18,37 +18,41 @@ def _get_process_memory_mb() -> float:
         import resource  # pylint: disable=import-outside-toplevel
 
         if hasattr(resource, "getrusage") and hasattr(resource, "RUSAGE_SELF"):
-            rusage = resource.getrusage(resource.RUSAGE_SELF)  # type: ignore[attr-defined]
-            return float(rusage.ru_maxrss) / 1024.0
-    except ImportError:
+            getrusage = getattr(resource, "getrusage")  # noqa: B009
+            rusage_self = getattr(resource, "RUSAGE_SELF")  # noqa: B009
+            rusage = getrusage(rusage_self)
+            return float(getattr(rusage, "ru_maxrss", 0)) / 1024.0
+    except (ImportError, AttributeError):
         pass
 
-    try:
+    if hasattr(ctypes, "windll"):
+        try:
 
-        class PROCESS_MEMORY_COUNTERS(ctypes.Structure):
-            _fields_ = [
-                ("cb", ctypes.c_ulong),
-                ("PageFaultCount", ctypes.c_ulong),
-                ("PeakWorkingSetSize", ctypes.c_size_t),
-                ("WorkingSetSize", ctypes.c_size_t),
-                ("QuotaPeakPeakPagedPoolUsage", ctypes.c_size_t),
-                ("QuotaPagedPoolUsage", ctypes.c_size_t),
-                ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
-                ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
-                ("PagefileUsage", ctypes.c_size_t),
-                ("PeakPagefileUsage", ctypes.c_size_t),
-            ]
+            class PROCESS_MEMORY_COUNTERS(ctypes.Structure):
+                _fields_ = [
+                    ("cb", ctypes.c_ulong),
+                    ("PageFaultCount", ctypes.c_ulong),
+                    ("PeakWorkingSetSize", ctypes.c_size_t),
+                    ("WorkingSetSize", ctypes.c_size_t),
+                    ("QuotaPeakPeakPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                    ("PagefileUsage", ctypes.c_size_t),
+                    ("PeakPagefileUsage", ctypes.c_size_t),
+                ]
 
-        counters = PROCESS_MEMORY_COUNTERS()
-        # pylint: disable=attribute-defined-outside-init
-        counters.cb = ctypes.sizeof(PROCESS_MEMORY_COUNTERS)
-        handle = ctypes.windll.kernel32.GetCurrentProcess()
-        if ctypes.windll.psapi.GetProcessMemoryInfo(
-            handle, ctypes.byref(counters), counters.cb
-        ):
-            return float(counters.WorkingSetSize) / (1024 * 1024)
-    except Exception:  # noqa: S110 # pylint: disable=broad-exception-caught
-        pass
+            counters = PROCESS_MEMORY_COUNTERS()
+            # pylint: disable=attribute-defined-outside-init
+            counters.cb = ctypes.sizeof(PROCESS_MEMORY_COUNTERS)
+            windll = getattr(ctypes, "windll")  # noqa: B009
+            handle = windll.kernel32.GetCurrentProcess()
+            if windll.psapi.GetProcessMemoryInfo(
+                handle, ctypes.byref(counters), counters.cb
+            ):
+                return float(counters.WorkingSetSize) / (1024 * 1024)
+        except Exception:  # noqa: S110 # pylint: disable=broad-exception-caught
+            pass
 
     return 0.0
 
