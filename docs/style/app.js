@@ -168,99 +168,225 @@ function initDockObserver() {
 const WORKFLOW_STEPS = [
   {
     step: 1,
-    title: "Step 1: Intake & Requirements Analysis",
+    title: "Node 01-A: Intake & Requirements Gate (PreCommand Hook)",
     icon: "ph-clipboard-text",
-    tag: "REQUIREMENTS GATE",
-    badgeColor: "bg-cyan-500 text-black",
-    description: "Evaluates request for ambiguity before writing code. Confirms spec approval and project profile constraints.",
+    tag: "CLIENT & HOOK LAYER",
+    badgeColor: "bg-emerald-500 text-black",
+    description: "Intercepts shell execution before terminal run. Evaluates request intent and enforces profile constraints.",
     codeSnippet: `[Intake Service] Analyzing request context...\n[✓] Confidence Score: 98%\n[✓] Target Scope: src/domain/firewall_engine.py\n[✓] Profile Loaded: CWD .sast/profile.json (Level: FULL)\n[✓] Action Plan: Proceeding with zero ambiguity.`
   },
   {
+    step: "1b",
+    title: "Node 01-B: AI File Modifications Guard (PostToolCallExecute)",
+    icon: "ph-code-simple",
+    tag: "CLIENT & HOOK LAYER",
+    badgeColor: "bg-emerald-500 text-black",
+    description: "Triggers automatically after AI code modifications. Immediately runs SAST scan on generated diffs before saving to disk.",
+    codeSnippet: `[PostToolCallExecute] File modified: src/domain/scanner.py\n[✓] Diff Extracted: +42 lines, -12 lines\n[✓] Auto-Scan Initiated against OWASP Vector Rules\n[✓] Zero vulnerabilities detected in generated diff.`
+  },
+  {
+    step: "1c",
+    title: "Node 01-C: Antigravity Slash Commands Suite",
+    icon: "ph-terminal-window",
+    tag: "CLIENT & HOOK LAYER",
+    badgeColor: "bg-emerald-500 text-black",
+    description: "Slash commands integrated into AI session (/sast-audit, /sast-init, /sast-mode, /sast-rules) for on-demand security auditing.",
+    codeSnippet: `[Slash Commands] Executing /sast-audit file=src/app.py --level=ultra\n[✓] Scanning against 53 OWASP Vector Rules...\n[✓] Taint Dataflow Traces Extracted\n[✓] Zero critical vulnerabilities found.`
+  },
+  {
     step: 2,
-    title: "Step 2: PreCommand Firewall Interception",
+    title: "Node 02-A: Command Firewall & Anti-Bypass Deobfuscator",
     icon: "ph-shield-warning",
-    tag: "COMMAND FIREWALL",
+    tag: "FIREWALL ENGINE",
     badgeColor: "bg-rose-500 text-white",
-    description: "Executes PreCommandExecute hook. Strips obfuscation carets (^, \`) and decodes Base64 payloads before terminal execution.",
+    description: "Executes PreCommandExecute hook. Strips obfuscation carets (^, \`) and decodes Base64 shell payloads before terminal execution.",
     codeSnippet: `[FirewallEngine] Evaluating command: "powershell -enc cm0gLXJmIC8="\n[!] Anti-Bypass Deobfuscation Triggered!\n[!] Decoded Payload: "rm -rf /"\n[✗] VERDICT: DENY (Dangerous pattern matched)\n[✓] Command Execution Blocked Safely.`
   },
   {
-    step: 3,
-    title: "Step 3: Real-Time SAST Vulnerability Audit",
-    icon: "ph-magnifying-glass-plus",
-    tag: "53 SAST RULES SCAN",
+    step: "2b",
+    title: "Node 02-B: PowerShell AST Parser & Pattern Matcher",
+    icon: "ph-terminal-window",
+    tag: "FIREWALL ENGINE",
+    badgeColor: "bg-rose-500 text-white",
+    description: "Parses PowerShell AST tokens and evaluates commands against ALLOW, CONFIRM, and DENY security rules.",
+    codeSnippet: `[AST Parser] Analyzing command tokens: "Remove-Item -Path C:\\Windows -Recurse"\n[!] Match Found: Remove-Item (Destructive file deletion)\n[!] Action Required: User confirmation modal triggered\n[✓] VERDICT: CONFIRM.`
+  },
+  {
+    step: "2c",
+    title: "Node 02-C: Firewall Verdict Engine (DENY / CONFIRM / ALLOW)",
+    icon: "ph-gavel",
+    tag: "FIREWALL ENGINE",
+    badgeColor: "bg-rose-500 text-white",
+    description: "Enforces zero-trust command verdicts. DENY blocks destructive calls automatically; CONFIRM requests explicit user approval.",
+    codeSnippet: `[Verdict Engine] Final Evaluation:\n  - DENY: Blocked "rm -rf /", "Format-Volume", "Disable-Defender"\n  - CONFIRM: Prompted user for "Remove-Item", "git push --force"\n  - ALLOW: Permitted clean read-only status commands.`
+  },
+  {
+    step: "3a",
+    title: "Node 03-A: Profile Cascade Resolver (.sast/profile.json)",
+    icon: "ph-gear-six",
+    tag: "CONTROL PLANE",
+    badgeColor: "bg-cyan-500 text-black",
+    description: "Resolves project configuration cascading from CWD (.sast/profile.json) -> Git Root -> Global Fallback (~/.gemini/config).",
+    codeSnippet: `[Profile Cascade] Resolving settings...\n[✓] Local Profile Found: .sast/profile.json\n[✓] Audit Level: FULL (53 Rules Active)\n[✓] Operation Mode: STRICT (Fail-Closed Enforcement).`
+  },
+  {
+    step: "core",
+    title: "Node CORE: Stdio MCP Server (9 Stdio JSON-RPC Tools)",
+    icon: "ph-cpu",
+    tag: "CONTROL PLANE & MCP",
     badgeColor: "bg-brand-emerald text-black",
-    description: "Scans modified files against 53 OWASP Top 10 and CWE rules across 4 severity levels (Critical, High, Medium, Low).",
+    description: "Central Stdio MCP Server exposing 9 specialized security tools (sast_scan_file, sast_scan_diff, sast_check_command, sast_init, etc.) to AI agent.",
+    codeSnippet: `[MCP Server] Stdio JSON-RPC Transport Connected\n[✓] Available Tools: 9 Eager & Lazy Tools Registered\n[✓] Real-time JSON-RPC Query Processing Active\n[✓] Zero-Latency Subprocess IPC Communication.`
+  },
+  {
+    step: "3c",
+    title: "Node 03-C: Operation Mode & Audit Level Controls",
+    icon: "ph-sliders-horizontal",
+    tag: "CONTROL PLANE",
+    badgeColor: "bg-cyan-500 text-black",
+    description: "Controls strictness levels (lite, full, ultra) and operation modes (strict, draft). Parses inline # sast-ignore suppressions.",
+    codeSnippet: `[Mode Engine] Active Settings:\n  - Mode: strict (Blocks execution on any Critical/High finding)\n  - Level: ultra (Includes dataflow taint tracking)\n  - Comment Suppression: # sast-ignore parsed on Line 88.`
+  },
+  {
+    step: 3,
+    title: "Node 03: 53 SAST Vector Audit Engine",
+    icon: "ph-magnifying-glass-plus",
+    tag: "SAST SCAN ENGINE",
+    badgeColor: "bg-brand-cyan text-black",
+    description: "Scans modified files against 53 OWASP Top 10, CWE Top 25, NIST 800-53, and ASP.NET security rules.",
     codeSnippet: `[SAST Audit] Scanning file: src/api/routes.py\n[!] Rule Triggered: OWASP-A03-SQLi (Critical)\n    Line 42: query = f"SELECT * FROM users WHERE id = '{user_id}'"\n[✓] AST Scope Extracted: Class UserHandler -> Method get_user()\n[✓] 1 Finding Registered.`
   },
   {
     step: 4,
-    title: "Step 4: AI Verifier & SHA-256 Response Cache",
+    title: "Node 04: SHA-256 AI Response Cache",
     icon: "ph-brain",
-    tag: "LLM FALSE POSITIVE FILTER",
+    tag: "AI CACHE ENGINE",
     badgeColor: "bg-violet-500 text-white",
-    description: "Queries LLM AI Verifier to filter false positives. Results cached locally with SHA-256 keys (24h TTL) to minimize latency.",
-    codeSnippet: `[AICache] Checking key: 8f9a2b4c1e7d...\n[✓] CACHE HIT! SHA-256 verification retrieved (Latency: 0ms)\n[✓] Verification Result: Valid Vulnerability Confirmed\n[✓] Suggested Remediation: Use Parameterized Queries (sqlite3/sqlalchemy).`
+    description: "Queries LLM AI Verifier to filter false positives. Results cached locally with SHA-256 keys (24h TTL) for 0ms latency verification.",
+    codeSnippet: `[AICache] Checking key: 8f9a2b4c1e7d...\n[✓] CACHE HIT! SHA-256 verification retrieved (Latency: 0ms)\n[✓] Verification Result: Valid Vulnerability Confirmed\n[✓] Suggested Remediation: Use Parameterized Queries.`
   },
   {
     step: 5,
-    title: "Step 5: Report Generation & Decision Logging",
+    title: "Node 05: Report Generator & Audit Trail Logger",
     icon: "ph-file-text",
-    tag: "AUDIT LOG & REPORT",
+    tag: "EXPORTERS & LOGS",
     badgeColor: "bg-amber-500 text-black",
-    description: "Generates Markdown/JSON reports and appends architectural entry to .aiops/decisions.jsonl decision log.",
-    codeSnippet: `[Report Generator] Markdown report created: reports/sast_report_20260806.md\n[Report Generator] JSON report created: reports/sast_report_20260806.json\n[Decision Log] Appended entry to .aiops/decisions.jsonl\n[✓] SAST Guard Workflow Execution Complete (100% Verified).`
+    description: "Generates ISO SARIF 2.1.0, Markdown, and JSON reports while logging audit decisions to .aiops/decisions.jsonl.",
+    codeSnippet: `[Report Generator] SARIF report created: reports/sast_audit.sarif\n[Report Generator] Markdown report created: reports/sast_audit.md\n[Decision Log] Appended entry to .aiops/decisions.jsonl\n[✓] SAST Guard Workflow Execution Complete.`
   }
 ];
 
-let currentStep = 1;
-let autoPlayTimer = null;
-let isAutoPlaying = true;
+const WORKFLOW_MODES = {
+  firewall: {
+    activeNodes: ['1', '2', 'core', '2c', '5'],
+    defaultStep: '2',
+    btnId: 'mode-btn-firewall',
+    btnClass: 'bg-rose-500 text-white'
+  },
+  autoscan: {
+    activeNodes: ['1b', '2b', 'core', '4'],
+    defaultStep: '1b',
+    btnId: 'mode-btn-autoscan',
+    btnClass: 'bg-emerald-500 text-black'
+  },
+  slash: {
+    activeNodes: ['1c', '3a', 'core', '3c', '3'],
+    defaultStep: '1c',
+    btnId: 'mode-btn-slash',
+    btnClass: 'bg-cyan-500 text-black'
+  },
+  all: {
+    activeNodes: ['1', '1b', '1c', '2', '2b', '2c', '3a', 'core', '3c', '3', '4', '5'],
+    defaultStep: 1,
+    btnId: 'mode-btn-all',
+    btnClass: 'bg-brand-emerald text-black'
+  }
+};
+
+let currentWorkflowMode = 'firewall';
 
 function initWorkflowVisualizer() {
   renderStepNodes();
-  selectStep(1);
+  switchWorkflowMode('firewall');
   startAutoPlay();
 }
 
-function renderStepNodes() {
-  const container = document.getElementById("workflow-nodes-container");
-  if (!container) return;
+function switchWorkflowMode(modeKey) {
+  currentWorkflowMode = modeKey;
+  const mode = WORKFLOW_MODES[modeKey];
+  if (!mode) return;
 
-  container.innerHTML = WORKFLOW_STEPS.map((s) => `
-    <button onclick="selectStep(${s.step})" id="step-node-${s.step}"
-      class="step-node flex-1 min-w-[120px] p-3 rounded-xl border-2 border-black dark:border-white/20 bg-white dark:bg-obsidian-900 flex flex-col items-center gap-1.5 transition-all text-center group hover:scale-105 shadow-brutal-sm">
-      <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-obsidian-850 flex items-center justify-center font-bold font-mono text-xs border border-black dark:border-white/20 group-hover:border-brand-emerald">
-        ${s.step}
-      </div>
-      <span class="font-display font-extrabold text-[11px] leading-tight uppercase tracking-tight text-slate-800 dark:text-slate-200">
-        ${s.tag}
-      </span>
-    </button>
-  `).join("");
-}
-
-function selectStep(stepNum) {
-  currentStep = stepNum;
-  const stepData = WORKFLOW_STEPS.find((s) => s.step === stepNum);
-  if (!stepData) return;
-
-  WORKFLOW_STEPS.forEach((s) => {
-    const node = document.getElementById(`step-node-${s.step}`);
-    if (node) {
-      if (s.step === stepNum) {
-        node.classList.add("step-node-active");
+  // 1. Update Mode Tab Buttons styling
+  Object.keys(WORKFLOW_MODES).forEach((key) => {
+    const btn = document.getElementById(WORKFLOW_MODES[key].btnId);
+    if (btn) {
+      if (key === modeKey) {
+        btn.className = `mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black shadow-brutal-sm ${WORKFLOW_MODES[key].btnClass}`;
       } else {
-        node.classList.remove("step-node-active");
+        btn.className = `mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-obsidian-850`;
       }
     }
   });
 
-  const fill = document.getElementById("workflow-progress-fill");
-  if (fill) {
-    const percentage = ((stepNum - 1) / (WORKFLOW_STEPS.length - 1)) * 100;
-    fill.style.width = `${percentage}%`;
-  }
+  // 2. Filter Packet Streams
+  const firewallPackets = document.querySelector('.stream-packet-firewall');
+  const autoscanPackets = document.querySelector('.stream-packet-autoscan');
+  const slashPackets = document.querySelector('.stream-packet-slash');
+
+  if (firewallPackets) firewallPackets.style.display = (modeKey === 'firewall' || modeKey === 'all') ? 'inline' : 'none';
+  if (autoscanPackets) autoscanPackets.style.display = (modeKey === 'autoscan' || modeKey === 'all') ? 'inline' : 'none';
+  if (slashPackets) slashPackets.style.display = (modeKey === 'slash' || modeKey === 'all') ? 'inline' : 'none';
+
+  // 3. Filter Node Opacity
+  WORKFLOW_STEPS.forEach((s) => {
+    const node = document.getElementById(`step-node-${s.step}`);
+    if (node) {
+      if (mode.activeNodes.includes(String(s.step))) {
+        node.style.opacity = "1";
+      } else {
+        node.style.opacity = "0.35";
+      }
+    }
+  });
+
+  // 4. Select default step for active workflow mode
+  selectStep(mode.defaultStep);
+}
+
+function renderStepNodes() {
+  // Static SVG Node Graph structure is defined in HTML docs/index.html
+}
+
+function selectStep(stepKey) {
+  currentStep = stepKey;
+  const stepData = WORKFLOW_STEPS.find((s) => String(s.step) === String(stepKey));
+  if (!stepData) return;
+
+  const modeObj = WORKFLOW_MODES[currentWorkflowMode] || WORKFLOW_MODES.all;
+
+  WORKFLOW_STEPS.forEach((s) => {
+    const node = document.getElementById(`step-node-${s.step}`);
+    if (node) {
+      const rect = node.querySelector('.node-rect');
+      const isActiveInMode = modeObj.activeNodes.includes(String(s.step));
+
+      if (String(s.step) === String(stepKey)) {
+        node.classList.add("step-node-active");
+        node.style.opacity = "1";
+        if (rect) {
+          rect.setAttribute("stroke-width", "3.5");
+          rect.setAttribute("filter", "url(#neon-glow)");
+        }
+      } else {
+        node.classList.remove("step-node-active");
+        node.style.opacity = isActiveInMode ? "1" : "0.35";
+        if (rect) {
+          rect.setAttribute("stroke-width", "1.5");
+          rect.removeAttribute("filter");
+        }
+      }
+    }
+  });
 
   const displayBox = document.getElementById("workflow-display-box");
   if (displayBox) {

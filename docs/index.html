@@ -192,8 +192,9 @@
     <div class="absolute top-[60vh] left-0 w-[450px] h-[450px] bg-purple-500/10 dark:bg-brand-violet/15 rounded-full blur-[150px] pointer-events-none -z-10"></div>
 
     <!-- HERO SECTION (DUAL LIGHT/DARK NEO-BRUTALIST HERO WITH CYBER GRID) -->
-    <section class="relative py-16 md:py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10 cyber-grid-pattern">
-      <div class="max-w-6xl mx-auto text-center flex flex-col items-center">
+    <section class="relative py-16 md:py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10 cyber-grid-pattern overflow-hidden">
+      <canvas id="bg-canvas" class="absolute inset-0 pointer-events-none z-0 opacity-40 dark:opacity-60"></canvas>
+      <div class="relative z-10 max-w-6xl mx-auto text-center flex flex-col items-center">
         
         <!-- Eyebrow Badge -->
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black text-white dark:bg-brand-emerald/15 dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider mb-6 border-2 border-black dark:border-brand-emerald/40 shadow-brutal-sm mx-auto">
@@ -202,9 +203,9 @@
         </div>
 
         <!-- 2-Line Enforced Eye-Catching Heading -->
-        <h1 class="font-display font-black text-4xl sm:text-6xl md:text-7xl text-black dark:text-white tracking-tight leading-[1.08] max-w-5xl mb-6 text-center mx-auto">
+        <h1 class="font-display font-black text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[1.08] max-w-5xl mb-6 text-center mx-auto text-black dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-brand-emerald dark:to-brand-cyan drop-shadow-sm">
           Autonomous Security Gate &amp; <br class="hidden sm:inline" />
-          <span class="bg-black text-emerald-400 dark:bg-brand-emerald dark:text-obsidian-950 px-3.5 py-1 rounded-2xl inline-block mt-2 border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+          <span class="bg-black text-emerald-400 dark:bg-brand-emerald dark:text-obsidian-950 px-3.5 py-1 rounded-2xl inline-block mt-2 border-2 border-black dark:border-white shadow-[0_0_20px_rgba(16,185,129,0.5)]">
             Command Firewall
           </span>
           <span class="text-black dark:text-white font-black"> &amp; SAST Shield</span>
@@ -323,59 +324,97 @@
       </div>
     </section>
 
-    <!-- PERFORMANCE OVERVIEW (PROGRESS BARS STYLED FOR BOTH MODES) -->
+    <!-- PERFORMANCE OVERVIEW (HIGH-TECH ANIMATED METRIC METERS & CHART) -->
     <section class="py-16 md:py-20 px-6 md:px-10 bg-slate-200/70 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
       <div class="max-w-6xl mx-auto">
         
-        <h2 class="font-display font-black text-3xl text-black dark:text-white mb-8 uppercase tracking-tight">Security Coverage Overview</h2>
-
-        <div class="brutal-card p-6 rounded-2xl space-y-6">
-          
-          <!-- Bar 1 -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
-              <span>OWASP API Security 2023 Rules (10 Rules)</span>
-              <span>100% Coverage</span>
-            </div>
-            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
-              <div class="h-full bg-black dark:bg-brand-emerald w-[100%]"></div>
-            </div>
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <span class="px-3 py-1 rounded bg-black dark:bg-brand-emerald/15 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider">REALTIME METRICS & COVERAGE</span>
+            <h2 class="font-display font-black text-3xl text-black dark:text-white mt-2 uppercase tracking-tight">Security Coverage Overview</h2>
           </div>
-
-          <!-- Bar 2 -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
-              <span>CWE Top 25 Vulnerabilities (12 Rules)</span>
-              <span>100% Coverage</span>
-            </div>
-            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
-              <div class="h-full bg-black dark:bg-brand-cyan w-[100%]"></div>
-            </div>
-          </div>
-
-          <!-- Bar 3 -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
-              <span>NIST 800-53 Control Mappings (10 Controls)</span>
-              <span>100% Coverage</span>
-            </div>
-            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
-              <div class="h-full bg-black dark:bg-brand-violet w-[100%]"></div>
-            </div>
-          </div>
-
-          <!-- Bar 4 -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between font-mono font-bold text-sm text-black dark:text-slate-200">
-              <span>Command Interceptor Execution Speed</span>
-              <span>&lt; 50ms Benchmark</span>
-            </div>
-            <div class="w-full h-8 bg-slate-200 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 rounded-lg overflow-hidden relative">
-              <div class="h-full bg-black dark:bg-brand-emerald w-[95%]"></div>
-            </div>
-          </div>
-
+          <span class="font-mono text-xs font-bold text-slate-700 dark:text-brand-emerald flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span> Live Scan Engines
+          </span>
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Main Chart Container -->
+          <div class="lg:col-span-2 brutal-card p-6 rounded-2xl bg-white dark:bg-obsidian-950 space-y-6">
+            <h3 class="font-display font-black text-lg text-black dark:text-white flex items-center justify-between border-b-2 border-black dark:border-white/10 pb-3">
+              <span>Security Rule Coverage Breakdown</span>
+              <span class="font-mono text-xs text-brand-emerald">100% Target Met</span>
+            </h3>
+
+            <!-- Bar 1 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
+                <span class="flex items-center gap-2"><i class="ph-bold ph-shield-check text-brand-emerald"></i> OWASP API Security 2023 Rules (10 Rules)</span>
+                <span class="text-brand-emerald font-black">100%</span>
+              </div>
+              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
+                <div class="h-full bg-gradient-to-r from-emerald-500 to-brand-emerald w-[100%] rounded-full shadow-[0_0_10px_rgba(16,185,129,0.7)] animate-pulse"></div>
+              </div>
+            </div>
+
+            <!-- Bar 2 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
+                <span class="flex items-center gap-2"><i class="ph-bold ph-warning-octagon text-brand-cyan"></i> CWE Top 25 Vulnerabilities (12 Rules)</span>
+                <span class="text-brand-cyan font-black">100%</span>
+              </div>
+              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
+                <div class="h-full bg-gradient-to-r from-cyan-500 to-brand-cyan w-[100%] rounded-full shadow-[0_0_10px_rgba(6,182,212,0.7)] animate-pulse"></div>
+              </div>
+            </div>
+
+            <!-- Bar 3 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
+                <span class="flex items-center gap-2"><i class="ph-bold ph-lock-key text-brand-violet"></i> NIST 800-53 Control Mappings (10 Controls)</span>
+                <span class="text-brand-violet font-black">100%</span>
+              </div>
+              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
+                <div class="h-full bg-gradient-to-r from-purple-500 to-brand-violet w-[100%] rounded-full shadow-[0_0_10px_rgba(168,85,247,0.7)] animate-pulse"></div>
+              </div>
+            </div>
+
+            <!-- Bar 4 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
+                <span class="flex items-center gap-2"><i class="ph-bold ph-lightning text-amber-400"></i> Command Interceptor Speed (&lt; 50ms)</span>
+                <span class="text-amber-400 font-black">98.5% Speed Score</span>
+              </div>
+              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
+                <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 w-[98.5%] rounded-full shadow-[0_0_10px_rgba(245,158,11,0.7)]"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-Time Radar / Pulse Gauge Card -->
+          <div class="brutal-card p-6 rounded-2xl bg-white dark:bg-obsidian-950 flex flex-col justify-between items-center text-center">
+            <div class="w-full border-b-2 border-black dark:border-white/10 pb-3 font-mono font-black text-xs text-black dark:text-white uppercase">
+              Firewall Latency Radar
+            </div>
+            
+            <div class="relative my-6 w-36 h-36 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-full border-2 border-emerald-500/30 animate-ping"></div>
+              <div class="absolute inset-2 rounded-full border-2 border-emerald-500/50"></div>
+              <div class="absolute inset-6 rounded-full bg-emerald-500/10 dark:bg-brand-emerald/20 flex flex-col items-center justify-center border border-brand-emerald">
+                <span class="font-mono font-black text-2xl text-black dark:text-brand-emerald">&lt;12ms</span>
+                <span class="font-mono text-[9px] text-slate-600 dark:text-slate-400 uppercase font-bold">Avg Response</span>
+              </div>
+            </div>
+
+            <div class="w-full bg-slate-100 dark:bg-obsidian-900 p-3 rounded-xl border-2 border-black/20 dark:border-white/20 font-mono text-[11px] font-bold text-slate-700 dark:text-slate-300 flex justify-around">
+              <span>Status: <strong class="text-brand-emerald">Optimal</strong></span>
+              <span>Zero-Trust: <strong class="text-brand-cyan">Active</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
       </div>
     </section>
@@ -574,34 +613,275 @@ def get_user_account(user_id):
           </button>
         </div>
 
-        <!-- Progress Tracker Bar -->
-        <div class="relative mb-8 p-3.5 brutal-card rounded-2xl bg-white dark:bg-obsidian-950">
-          <div class="relative w-full h-2.5 bg-slate-200 dark:bg-obsidian-850 rounded-full overflow-hidden mb-4 border border-black/20 dark:border-white/10">
-            <div id="workflow-progress-fill" class="h-full flow-laser-line transition-all duration-500 rounded-full" style="width: 20%;"></div>
+        <!-- Cyberpunk High-Tech Full Security Architecture Graph -->
+        <div class="relative mb-8 p-6 brutal-card rounded-2xl bg-white dark:bg-obsidian-950 overflow-hidden">
+          <div class="flex items-center justify-between border-b-2 border-black dark:border-white/10 pb-4 mb-4 font-mono text-xs">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-brand-emerald animate-ping"></span>
+              <span class="font-bold text-black dark:text-white uppercase tracking-wider">FULL PROJECT ARCHITECTURE & TOPOLOGY MAP</span>
+            </div>
           </div>
 
-          <!-- Step Buttons Container -->
-          <div id="workflow-nodes-container" class="flex flex-wrap items-center justify-between gap-2.5">
-            <button onclick="selectStep(1)" id="step-node-1" class="step-node step-node-active flex-1 min-w-[110px] p-2.5 rounded-xl border-2 border-black dark:border-white/20 bg-white dark:bg-obsidian-900 flex flex-col items-center gap-1 transition-all text-center group hover:scale-105 shadow-brutal-sm">
-              <div class="w-7 h-7 rounded-full bg-slate-100 dark:bg-obsidian-850 flex items-center justify-center font-bold font-mono text-xs border border-black dark:border-white/20">1</div>
-              <span class="font-display font-extrabold text-[10px] uppercase tracking-tight text-slate-800 dark:text-slate-200">REQUIREMENTS GATE</span>
-            </button>
-            <button onclick="selectStep(2)" id="step-node-2" class="step-node flex-1 min-w-[110px] p-2.5 rounded-xl border-2 border-black dark:border-white/20 bg-white dark:bg-obsidian-900 flex flex-col items-center gap-1 transition-all text-center group hover:scale-105 shadow-brutal-sm">
-              <div class="w-7 h-7 rounded-full bg-slate-100 dark:bg-obsidian-850 flex items-center justify-center font-bold font-mono text-xs border border-black dark:border-white/20">2</div>
-              <span class="font-display font-extrabold text-[10px] uppercase tracking-tight text-slate-800 dark:text-slate-200">COMMAND FIREWALL</span>
-            </button>
-            <button onclick="selectStep(3)" id="step-node-3" class="step-node flex-1 min-w-[110px] p-2.5 rounded-xl border-2 border-black dark:border-white/20 bg-white dark:bg-obsidian-900 flex flex-col items-center gap-1 transition-all text-center group hover:scale-105 shadow-brutal-sm">
-              <div class="w-7 h-7 rounded-full bg-slate-100 dark:bg-obsidian-850 flex items-center justify-center font-bold font-mono text-xs border border-black dark:border-white/20">3</div>
-              <span class="font-display font-extrabold text-[10px] uppercase tracking-tight text-slate-800 dark:text-slate-200">53 SAST RULES SCAN</span>
-            </button>
-            <button onclick="selectStep(4)" id="step-node-4" class="step-node flex-1 min-w-[110px] p-2.5 rounded-xl border-2 border-black dark:border-white/20 bg-white dark:bg-obsidian-900 flex flex-col items-center gap-1 transition-all text-center group hover:scale-105 shadow-brutal-sm">
-              <div class="w-7 h-7 rounded-full bg-slate-100 dark:bg-obsidian-850 flex items-center justify-center font-bold font-mono text-xs border border-black dark:border-white/20">4</div>
-              <span class="font-display font-extrabold text-[10px] uppercase tracking-tight text-slate-800 dark:text-slate-200">LLM FALSE POSITIVE FILTER</span>
-            </button>
-            <button onclick="selectStep(5)" id="step-node-5" class="step-node flex-1 min-w-[110px] p-2.5 rounded-xl border-2 border-black dark:border-white/20 bg-white dark:bg-obsidian-900 flex flex-col items-center gap-1 transition-all text-center group hover:scale-105 shadow-brutal-sm">
-              <div class="w-7 h-7 rounded-full bg-slate-100 dark:bg-obsidian-850 flex items-center justify-center font-bold font-mono text-xs border border-black dark:border-white/20">5</div>
-              <span class="font-display font-extrabold text-[10px] uppercase tracking-tight text-slate-800 dark:text-slate-200">AUDIT LOG & REPORT</span>
-            </button>
+          <!-- Interactive Workflow Execution Mode Selector Bar -->
+          <div class="mb-4 p-2.5 rounded-xl bg-slate-200/90 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 flex flex-wrap items-center justify-between gap-3 shadow-brutal-sm">
+            <div class="flex items-center gap-2">
+              <i class="ph-bold ph-funnel text-base text-black dark:text-white"></i>
+              <span class="text-xs font-mono font-black uppercase tracking-wider text-black dark:text-white">Filter Workflow By Command Type:</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="switchWorkflowMode('firewall')" id="mode-btn-firewall" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-rose-500 text-white shadow-brutal-sm">
+                🔴 1. Shell Command Firewall
+              </button>
+              <button onclick="switchWorkflowMode('autoscan')" id="mode-btn-autoscan" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-black">
+                🟢 2. PostToolCall AI Code Scan
+              </button>
+              <button onclick="switchWorkflowMode('slash')" id="mode-btn-slash" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-cyan-500 hover:text-black">
+                🔵 3. Slash Command Audit (/sast-audit)
+              </button>
+              <button onclick="switchWorkflowMode('all')" id="mode-btn-all" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-brand-emerald hover:text-black">
+                ⚡ 4. Full Overview (All Systems)
+              </button>
+            </div>
+          </div>
+
+          <!-- Ultra-Detailed SVG Architecture Topology Canvas -->
+          <div class="relative w-full min-h-[500px] rounded-xl bg-slate-100/90 dark:bg-obsidian-900/90 border-2 border-black/20 dark:border-white/10 p-4 flex items-center justify-center overflow-x-auto terminal-scrollbar">
+            
+            <svg class="w-full min-w-[960px] h-[480px]" viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="edge-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#10b981" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.3" />
+                </linearGradient>
+                <linearGradient id="edge-rose" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e11d48" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#10b981" stop-opacity="0.3" />
+                </linearGradient>
+                <linearGradient id="edge-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#a855f7" stop-opacity="0.3" />
+                </linearGradient>
+                <linearGradient id="edge-violet" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a855f7" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#10b981" stop-opacity="0.3" />
+                </linearGradient>
+
+                <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- Grid Background Overlay -->
+              <pattern id="arch-mesh-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1" class="text-slate-300/40 dark:text-white/5" />
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#arch-mesh-grid)" />
+
+              <!-- Architecture Section Background Regions -->
+              <!-- Client & Hook Layer -->
+              <rect x="20" y="20" width="220" height="440" rx="16" fill="none" stroke="#10b981" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
+              <text x="35" y="42" fill="#10b981" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">01. CLIENT & HOOK LAYER</text>
+
+              <!-- Firewall & Deobfuscation -->
+              <rect x="260" y="20" width="220" height="440" rx="16" fill="none" stroke="#e11d48" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
+              <text x="275" y="42" fill="#e11d48" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">02. COMMAND FIREWALL</text>
+
+              <!-- Control Plane & Stdio MCP Server -->
+              <rect x="500" y="20" width="230" height="440" rx="16" fill="none" stroke="#06b6d4" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
+              <text x="515" y="42" fill="#06b6d4" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">03. CONTROL PLANE & MCP</text>
+
+              <!-- SAST Scan Engine & Exporters -->
+              <rect x="750" y="20" width="230" height="440" rx="16" fill="none" stroke="#a855f7" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
+              <text x="765" y="42" fill="#a855f7" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">04. SAST SCAN & EXPORTERS</text>
+
+              <!-- Central Hub-and-Spoke Cable Infrastructure - All 3 Streams Converge into CORE MCP Server -->
+              <g stroke-width="2" fill="none">
+                <!-- 🔴 PIPELINE 1: COMMAND FIREWALL (Inputs -> 02-A -> CORE -> 02-C Verdicts & 05 Logger) -->
+                <path id="path-firewall-stream" d="M 230 95 L 270 95 M 465 95 L 490 95 Q 500 95 500 110 L 500 220 Q 500 235 520 235 M 715 235 L 735 235 Q 745 235 745 110 Q 745 95 755 95 L 770 95" stroke="#e11d48" stroke-opacity="0.65" stroke-dasharray="6 4" />
+                
+                <!-- 🟢 PIPELINE 2: AI CODE MOD SCAN (Inputs -> 02-B AST -> CORE -> 04 AI Cache) -->
+                <path id="path-sast-top-stream" d="M 230 235 L 270 235 M 465 235 L 520 235 M 715 235 L 770 235" stroke="#10b981" stroke-opacity="0.65" stroke-dasharray="6 4" />
+                
+                <!-- 🔵 PIPELINE 3: SLASH COMMAND AUDIT (Inputs -> 03-A Profile -> CORE -> 03 SAST Vector & 05 Logger) -->
+                <path id="path-sast-bot-stream" d="M 230 375 L 270 375 M 465 375 L 490 375 Q 500 375 500 350 L 500 250 Q 500 235 520 235 M 715 235 L 735 235 Q 745 235 745 360 Q 745 375 755 375 L 770 375" stroke="#06b6d4" stroke-opacity="0.65" stroke-dasharray="6 4" />
+              </g>
+
+              <!-- Smooth Dynamic Cyber Data Stream Packets (~4.5s - 5.0s Duration / Lively Flow) -->
+              <!-- Firewall Stream Packets (Rose Packets) -->
+              <g class="stream-packet-firewall">
+                <circle r="4" fill="#e11d48" filter="url(#neon-glow)">
+                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="0s">
+                    <mpath href="#path-firewall-stream" />
+                  </animateMotion>
+                </circle>
+                <circle r="4" fill="#e11d48" filter="url(#neon-glow)">
+                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="1.5s">
+                    <mpath href="#path-firewall-stream" />
+                  </animateMotion>
+                </circle>
+                <circle r="4" fill="#e11d48" filter="url(#neon-glow)">
+                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="3.0s">
+                    <mpath href="#path-firewall-stream" />
+                  </animateMotion>
+                </circle>
+              </g>
+
+              <!-- SAST Audit Stream Packets (Emerald Packets) -->
+              <g class="stream-packet-autoscan">
+                <circle r="4" fill="#10b981" filter="url(#neon-glow)">
+                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="0s">
+                    <mpath href="#path-sast-top-stream" />
+                  </animateMotion>
+                </circle>
+                <circle r="4" fill="#10b981" filter="url(#neon-glow)">
+                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="1.6s">
+                    <mpath href="#path-sast-top-stream" />
+                  </animateMotion>
+                </circle>
+                <circle r="4" fill="#10b981" filter="url(#neon-glow)">
+                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="3.2s">
+                    <mpath href="#path-sast-top-stream" />
+                  </animateMotion>
+                </circle>
+              </g>
+
+              <!-- Slash Commands & Cache Packets (Cyan Packets) -->
+              <g class="stream-packet-slash">
+                <circle r="4" fill="#06b6d4" filter="url(#neon-glow)">
+                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="0s">
+                    <mpath href="#path-sast-bot-stream" />
+                  </animateMotion>
+                </circle>
+                <circle r="4" fill="#06b6d4" filter="url(#neon-glow)">
+                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="1.66s">
+                    <mpath href="#path-sast-bot-stream" />
+                  </animateMotion>
+                </circle>
+                <circle r="4" fill="#06b6d4" filter="url(#neon-glow)">
+                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="3.33s">
+                    <mpath href="#path-sast-bot-stream" />
+                  </animateMotion>
+                </circle>
+              </g>
+
+              <!-- === LAYER 1: CLIENT & HOOKS === -->
+              <!-- Step 1 Node: PreCommand Hook (Row 1 Input) -->
+              <g id="step-node-1" transform="translate(35, 50)" onclick="selectStep(1)" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-rose-500" stroke-width="2" filter="url(#neon-glow)" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="2" />
+                <circle cx="20" cy="24" r="12" fill="#e11d48" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">01-A</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Intake & Req Gate</text>
+                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">PreCommand Hook</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Zero Ambiguity Guard</text>
+              </g>
+
+              <!-- PostToolCall Auto-Scan Sub-node (Row 2 Input) -->
+              <g id="step-node-1b" transform="translate(35, 190)" onclick="selectStep('1b')" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-emerald" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#10b981" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">01-B</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">AI File Modifications</text>
+                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">PostToolCallExecute</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Auto-Scan Generated Code</text>
+              </g>
+
+              <!-- Slash Commands Node (Row 3 Input) -->
+              <g id="step-node-1c" transform="translate(35, 330)" onclick="selectStep('1c')" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-cyan" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#06b6d4" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">01-C</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Slash Commands</text>
+                <text x="14" y="52" class="fill-brand-cyan font-bold text-[10px]" font-family="monospace">/sast-audit • /sast-init</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Manual Security Auditing</text>
+              </g>
+
+              <!-- === LAYER 2: LOCAL PRE-PROCESSORS & PARSERS === -->
+              <!-- Step 2 Node: Command Firewall Deobfuscator (Row 1) -->
+              <g id="step-node-2" transform="translate(270, 50)" onclick="selectStep(2)" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-rose-500" stroke-width="2" filter="url(#neon-glow)" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="2" />
+                <circle cx="20" cy="24" r="12" fill="#e11d48" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">02-A</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Command Firewall</text>
+                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">Strips carets c^m^d</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Base64 Shell Payload Dec</text>
+              </g>
+
+              <!-- PowerShell AST Parser Node (Row 2) -->
+              <g id="step-node-2b" transform="translate(270, 190)" onclick="selectStep('2b')" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-emerald" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#10b981" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">02-B</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">PowerShell AST Parser</text>
+                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">AST Expression Evaluator</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">De-obfuscates Carets</text>
+              </g>
+
+              <!-- Profile Cascade Resolver Node (Row 3) -->
+              <g id="step-node-3a" transform="translate(270, 330)" onclick="selectStep('3a')" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-cyan" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#06b6d4" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">03-A</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Profile Cascade</text>
+                <text x="14" y="52" class="fill-brand-cyan font-bold text-[10px]" font-family="monospace">.sast/profile.json (CWD)</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Git Root -> Global Fallback</text>
+              </g>
+
+              <!-- === LAYER 3: CENTRAL CORE STDIO MCP SERVER GATEWAY === -->
+              <!-- Stdio MCP Server Engine (Central Gateway Hub) -->
+              <g id="step-node-core" transform="translate(520, 190)" onclick="selectStep('core')" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-obsidian-950 stroke-brand-emerald" stroke-width="3.5" filter="url(#neon-glow)" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="3.5" />
+                <circle cx="24" cy="26" r="12" fill="#10b981" />
+                <text x="24" y="30" text-anchor="middle" fill="#000" font-family="monospace" font-weight="900" font-size="8">CORE</text>
+                <text x="42" y="28" fill="#fff" font-family="sans-serif" font-weight="900" font-size="11">STDIO MCP SERVER</text>
+                <text x="14" y="52" fill="#10b981" font-family="monospace" font-weight="bold" font-size="9">9 Stdio JSON-RPC Tools</text>
+                <text x="14" y="68" fill="#a855f7" font-family="monospace" font-weight="bold" font-size="9">Central Application Gateway</text>
+              </g>
+
+              <!-- === LAYER 4: ENGINES, CACHE & LOGGERS === -->
+              <!-- Firewall Verdicts Node (Row 1 Output) -->
+              <g id="step-node-2c" transform="translate(770, 50)" onclick="selectStep('2c')" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-rose-500" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#e11d48" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">02-C</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Firewall Verdicts</text>
+                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">DENY (rm -rf / format)</text>
+                <text x="14" y="68" class="fill-amber-500 font-bold text-[9px]" font-family="monospace">CONFIRM (Remove-Item)</text>
+              </g>
+
+              <!-- SHA-256 AI Response Cache Node (Row 2 Output) -->
+              <g id="step-node-4" transform="translate(770, 190)" onclick="selectStep(4)" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-emerald" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#10b981" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">04</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">SHA-256 AI Cache</text>
+                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">24h TTL Scan Cache</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Zero Latency Verification</text>
+              </g>
+
+              <!-- 53 SAST Vector Engine & Report Logger Node (Row 3 Output) -->
+              <g id="step-node-3" transform="translate(770, 330)" onclick="selectStep(3)" class="cursor-pointer transition-all duration-300">
+                <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-purple-500" stroke-width="1.5" />
+                <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
+                <circle cx="20" cy="24" r="12" fill="#a855f7" />
+                <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">03</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">53 SAST Vector Audit</text>
+                <text x="14" y="52" class="fill-purple-500 font-bold text-[10px]" font-family="monospace">OWASP TOP 10 • NIST 800-53</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">ASP.NET / Secret / SQLi</text>
+              </g>            </svg>
+
           </div>
         </div>
 
@@ -662,15 +942,21 @@ def get_user_account(user_id):
               <tbody class="divide-y-2 divide-black dark:divide-white/10 font-bold">
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
                   <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Real-Time Command Firewall</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Yes (PreCommand Hook)</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Yes (PreCommand Hook + De-obfuscator)</td>
                   <td class="py-4 px-6 text-slate-500">No (Code Only)</td>
                   <td class="py-4 px-6 text-slate-500">No (Code Only)</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">AI Agent Trajectory Protection</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Native Interceptor Hook</td>
-                  <td class="py-4 px-6 text-slate-500">None</td>
-                  <td class="py-4 px-6 text-slate-500">None</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Taint Analysis & Dataflow Tracing</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Source-to-Sink Taint Engine</td>
+                  <td class="py-4 px-6 text-slate-500">Heavy Enterprise Only</td>
+                  <td class="py-4 px-6 text-slate-500">Paid Pro Only</td>
+                </tr>
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">SHA-256 AI Response Caching</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> 24h TTL Zero Latency Cache</td>
+                  <td class="py-4 px-6 text-slate-500">None (Full Re-scan)</td>
+                  <td class="py-4 px-6 text-slate-500">None (Full Re-scan)</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
                   <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Context Minification (Token Saving)</td>
@@ -686,7 +972,7 @@ def get_user_account(user_id):
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
                   <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Antigravity 2.0 Stdio MCP Server</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Stdio Server (9 Tools)</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Stdio Server (11 Tools)</td>
                   <td class="py-4 px-6 text-slate-500">No (Web API only)</td>
                   <td class="py-4 px-6 text-slate-500">No (CLI only)</td>
                 </tr>
@@ -794,6 +1080,13 @@ def get_user_account(user_id):
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-purple-400 font-bold text-sm">
+                    <code>🧬 /sast-rules [sync &lt;dir&gt;|add &lt;file&gt;]</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Parses and syncs custom Markdown security rules into active ruleset.</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
                     <code id="cmd-sast-status">📊 /sast-status</code>
                     <button onclick="copySnippet('cmd-sast-status')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
@@ -850,7 +1143,14 @@ def get_user_account(user_id):
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
                     <code>🔌 sast mcp-server</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Launches Stdio JSON-RPC MCP Server exposing 9 native IDE tools.</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Launches Stdio JSON-RPC MCP Server exposing 11 native IDE tools (including Taint Tracking).</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                  <div class="flex items-center justify-between text-black dark:text-rose-400 font-bold text-sm">
+                    <code>🔥 sast firewall check &lt;command&gt;</code>
+                  </div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Evaluates shell command safety against PreCommand Firewall safety rules.</div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
@@ -868,7 +1168,7 @@ def get_user_account(user_id):
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
-                  <div class="flex items-center justify-between text-black dark:text-rose-400 font-bold text-sm">
+                  <div class="flex items-center justify-between text-black dark:text-amber-400 font-bold text-sm">
                     <code>📊 sast status</code>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Displays version, project ID, tech stack, operation mode, and rule counts.</div>
@@ -1171,11 +1471,11 @@ def get_user_account(user_id):
 
       container.innerHTML = filtered.map(r => {
         return `
-          <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/10 space-y-2">
+          <div onclick="showRuleDetails('${r.id}')" class="group p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/10 hover:border-brand-emerald dark:hover:border-brand-emerald space-y-2 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-brutal">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <span class="font-mono font-bold text-white dark:text-obsidian-950 bg-black dark:bg-brand-emerald px-2 py-0.5 rounded text-xs">${r.id}</span>
-                <span class="font-display font-black text-black dark:text-white text-base">${r.name}</span>
+                <span class="font-mono font-bold text-white dark:text-obsidian-950 bg-black dark:bg-brand-emerald px-2 py-0.5 rounded text-xs group-hover:scale-105 transition-transform">${r.id}</span>
+                <span class="font-display font-black text-black dark:text-white text-base group-hover:text-brand-emerald transition-colors">${r.name}</span>
               </div>
               <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 uppercase">${r.severity}</span>
             </div>
@@ -1230,7 +1530,7 @@ def get_user_account(user_id):
 
       if (isDeny) {
         status = "DENY";
-        statusClass = "bg-black dark:bg-rose-500 text-white dark:text-obsidian-950";
+        statusClass = "bg-rose-600 text-white shadow-[0_0_12px_rgba(225,29,72,0.6)] animate-pulse";
         icon = "ph-x-circle";
         if (cmd !== cleanCmd || isBase64Deny) {
           reason = "ANTI-BYPASS DENY: Obfuscated/Base64 payload decoded and blocked by Deobfuscation Engine!";
@@ -1239,14 +1539,14 @@ def get_user_account(user_id):
         }
       } else if (lower.includes('remove-item') || lower.includes('--force') || lower.includes('rmdir') || lower.includes('del ')) {
         status = "CONFIRM";
-        statusClass = "bg-black dark:bg-amber-500 text-white dark:text-obsidian-950";
+        statusClass = "bg-amber-500 text-black shadow-[0_0_12px_rgba(245,158,11,0.6)]";
         icon = "ph-warning-circle";
         reason = "HIGH RISK: Operation alters file state/history. Halting for Y/N user prompt.";
       }
 
       const timestamp = new Date().toLocaleTimeString();
       const newEntry = document.createElement('div');
-      newEntry.className = 'p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-2 shadow-brutal-sm';
+      newEntry.className = 'p-3.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-2 shadow-brutal-sm transition-all duration-300';
       newEntry.innerHTML = `
         <div class="flex items-center justify-between text-xs font-mono font-bold">
           <span class="text-black dark:text-white">$ ${escapeHtml(cmd)}</span>
@@ -1292,6 +1592,214 @@ def get_user_account(user_id):
         toast.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
       }, 2200);
     }
+
+    // Canvas Background Dot Matrix Animation Engine
+    (function initCanvasMatrix() {
+      const canvas = document.getElementById('bg-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let mouse = { x: -1000, y: -1000 };
+
+      function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+      }
+      window.addEventListener('resize', resize);
+      canvas.parentElement.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+
+      resize();
+
+      const spacing = 35;
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        const isDark = document.documentElement.classList.contains('dark');
+        const dotColor = isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(0, 0, 0, 0.08)';
+        const activeColor = isDark ? 'rgba(16, 185, 129, 0.8)' : 'rgba(13, 148, 136, 0.8)';
+
+        for (let x = 15; x < width; x += spacing) {
+          for (let y = 15; y < height; y += spacing) {
+            const dx = mouse.x - x;
+            const dy = mouse.y - y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxDist = 120;
+            let radius = 1.5;
+            let color = dotColor;
+
+            if (dist < maxDist) {
+              radius = 1.5 + (1 - dist / maxDist) * 3;
+              color = activeColor;
+            }
+
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // Interactive 2D Security Agent Network Mesh Canvas Engine
+    (function initNetworkMeshCanvas() {
+      const canvas = document.getElementById('network-mesh-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const tooltip = document.getElementById('network-node-tooltip');
+      const tooltipTitle = document.getElementById('tooltip-title');
+      const tooltipDesc = document.getElementById('tooltip-desc');
+
+      let width = 1000, height = 400;
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          width = canvas.width = rect.width;
+          height = canvas.height = rect.height;
+        }
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Node Graph Structure (Main Hubs + Sub-Nodes)
+      const nodes = [
+        { id: 1, label: "Core Security Gate", x: 0.5, y: 0.5, radius: 22, color: "#10b981", isHub: true, desc: "Central Zero-Trust Control Plane" },
+        { id: 2, label: "Firewall Interceptor", x: 0.25, y: 0.3, radius: 16, color: "#e11d48", desc: "PreCommand Shell Execution Guard" },
+        { id: 3, label: "53 SAST Rules Scanner", x: 0.75, y: 0.3, radius: 16, color: "#06b6d4", desc: "Static Code Vulnerability Scanner" },
+        { id: 4, label: "AI Cache & LLM Verifier", x: 0.3, y: 0.75, radius: 16, color: "#a855f7", desc: "SHA-256 Response Caching Filter" },
+        { id: 5, label: "Audit Logger", x: 0.7, y: 0.75, radius: 16, color: "#f59e0b", desc: "Decision Log & Report Generator" },
+        // Satellite Sub-Nodes
+        { id: 6, label: "OWASP API 2023", x: 0.85, y: 0.18, radius: 10, color: "#06b6d4", desc: "10 API Rules Vector" },
+        { id: 7, label: "CWE Top 25", x: 0.9, y: 0.42, radius: 10, color: "#06b6d4", desc: "12 CWE Vulnerabilities" },
+        { id: 8, label: "Base64 De-obfuscator", x: 0.12, y: 0.2, radius: 10, color: "#e11d48", desc: "CMD Caret & Encoding Stripper" },
+        { id: 9, label: "De-obfuscation AST", x: 0.12, y: 0.42, radius: 10, color: "#e11d48", desc: "PowerShell AST Parser" },
+        { id: 10, label: "SHA-256 TTL Cache", x: 0.15, y: 0.8, radius: 10, color: "#a855f7", desc: "24h Scan Latency Eliminator" },
+        { id: 11, label: "AIOps Log", x: 0.85, y: 0.82, radius: 10, color: "#f59e0b", desc: ".aiops/decisions.jsonl" }
+      ];
+
+      // Network Edges (Connections)
+      const edges = [
+        { from: 1, to: 2 }, { from: 1, to: 3 }, { from: 1, to: 4 }, { from: 1, to: 5 },
+        { from: 2, to: 8 }, { from: 2, to: 9 },
+        { from: 3, to: 6 }, { from: 3, to: 7 },
+        { from: 4, to: 10 }, { from: 5, to: 11 },
+        { from: 2, to: 3 }, { from: 4, to: 5 }
+      ];
+
+      let hoverNode = null;
+      let activePulseOffset = 0;
+
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        hoverNode = null;
+        for (const n of nodes) {
+          const nx = n.x * width;
+          const ny = n.y * height;
+          const dist = Math.sqrt((mx - nx) ** 2 + (my - ny) ** 2);
+          if (dist < n.radius + 6) {
+            hoverNode = n;
+            tooltipTitle.innerText = n.label;
+            tooltipDesc.innerText = n.desc;
+            tooltip.style.left = `${mx + 15}px`;
+            tooltip.style.top = `${my + 15}px`;
+            tooltip.classList.remove('opacity-0');
+            break;
+          }
+        }
+
+        if (!hoverNode) {
+          tooltip.classList.add('opacity-0');
+        }
+      });
+
+      canvas.addEventListener('click', () => {
+        if (hoverNode && hoverNode.id <= 5 && typeof window.selectStep === 'function') {
+          window.selectStep(hoverNode.id);
+        }
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        activePulseOffset = (activePulseOffset + 1) % 100;
+
+        // Draw Edge Connections with Pulsing Particles
+        edges.forEach(edge => {
+          const fn = nodes.find(n => n.id === edge.from);
+          const tn = nodes.find(n => n.id === edge.to);
+          const fx = fn.x * width;
+          const fy = fn.y * height;
+          const tx = tn.x * width;
+          const ty = tn.y * height;
+
+          ctx.beginPath();
+          ctx.moveTo(fx, fy);
+          ctx.lineTo(tx, ty);
+          ctx.strokeStyle = document.documentElement.classList.contains('dark') 
+            ? 'rgba(255, 255, 255, 0.15)' 
+            : 'rgba(0, 0, 0, 0.15)';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Draw Travelling Data Particle
+          const ratio = (activePulseOffset / 100);
+          const px = fx + (tx - fx) * ratio;
+          const py = fy + (ty - fy) * ratio;
+
+          ctx.beginPath();
+          ctx.arc(px, py, 3, 0, Math.PI * 2);
+          ctx.fillStyle = fn.color;
+          ctx.fill();
+        });
+
+        // Draw Nodes
+        nodes.forEach(n => {
+          const nx = n.x * width;
+          const ny = n.y * height;
+          const isHovered = hoverNode && hoverNode.id === n.id;
+
+          // Pulse Aura Ring
+          if (n.isHub || isHovered) {
+            ctx.beginPath();
+            ctx.arc(nx, ny, n.radius + (isHovered ? 12 : 6), 0, Math.PI * 2);
+            ctx.fillStyle = `${n.color}25`;
+            ctx.fill();
+          }
+
+          // Main Circle
+          ctx.beginPath();
+          ctx.arc(nx, ny, isHovered ? n.radius + 3 : n.radius, 0, Math.PI * 2);
+          ctx.fillStyle = n.color;
+          ctx.shadowColor = n.color;
+          ctx.shadowBlur = isHovered ? 15 : 8;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.strokeStyle = "#000000";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Text Label
+          ctx.font = `${n.isHub ? 'bold 11px' : '9px'} 'Plus Jakarta Sans', sans-serif`;
+          ctx.fillStyle = document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000';
+          ctx.textAlign = 'center';
+          ctx.fillText(n.label, nx, ny + n.radius + 14);
+        });
+
+        requestAnimationFrame(render);
+      }
+
+      render();
+    })();
 
     function copySnippet(id) {
       const button = event.currentTarget;
