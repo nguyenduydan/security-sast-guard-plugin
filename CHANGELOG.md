@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.11...v1.9.0) (2026-08-12)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **installer:** add automatic Python Embeddable fallback when system Python is missing ([02b32c0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/02b32c0b27ce25be20ac2eaaedb6764380ff71a0))
+
+
+### 🐛 Bug Fixes
+
+* **docs:** remove duplicate inline script block and declare autoPlayTimer in app.js ([2378d5b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2378d5b5fc6636d6272fcb7a56fcce962d10f3cb))
+* **docs:** update version badges to v1.8.11 and resolve version sync logic ([d73ce64](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d73ce64d2a35854b909e85668a737313f1e0a618))
+
 ## [1.8.11](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.10...v1.8.11) (2026-08-12)
 
 
