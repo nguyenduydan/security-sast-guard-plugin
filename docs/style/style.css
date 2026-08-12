@@ -63,6 +63,19 @@ table, tr, td, th {
               box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Remove default browser & Tailwind focus rings from input elements */
+input,
+input:focus,
+input:focus-visible,
+button:focus,
+button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+}
+
 /* Theme Toggle Button Micro-Animation */
 #theme-toggle-btn {
   position: relative;
