@@ -1,9 +1,13 @@
 """SAST Audit Markdown Report Generator component."""
 
+import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+from src.domain.cwe_owasp_mapper import CWEOWASPMapper
+from src.infrastructure.version_loader import get_plugin_version
 
 DEFAULT_TEMPLATE_PATH = (
     Path(__file__).parent.parent.parent / "templates" / "report_template.md"
@@ -334,6 +338,123 @@ def _map_severity_to_sarif_level(severity: str) -> str:
     return "note"
 
 
+def _extract_cwe_owasp_properties(
+    rule_id: str, finding: dict[str, Any]
+) -> tuple[dict[str, Any], str | None]:
+    """Extract CWE and OWASP metadata properties and helpUri for a rule."""
+    cwe_id = finding.get("cwe") or finding.get("cwe_id")
+    owasp_cat = finding.get("owasp") or finding.get("owasp_category")
+
+    mapper = CWEOWASPMapper()
+    mapping = mapper.get_mapping(rule_id)
+
+    final_cwe_id = str(cwe_id) if cwe_id else mapping.cwe_id
+    final_cwe_name = str(finding.get("cwe_name") or mapping.cwe_name)
+    final_owasp_cat = str(owasp_cat) if owasp_cat else mapping.owasp_category
+    final_owasp_name = str(finding.get("owasp_name") or mapping.owasp_name)
+
+    tags = ["security", final_cwe_id, final_owasp_cat]
+    properties: dict[str, Any] = {
+        "tags": tags,
+        "cwe": [final_cwe_id],
+        "cweName": final_cwe_name,
+        "owasp": [final_owasp_cat],
+        "owaspName": final_owasp_name,
+        "precision": "high",
+    }
+
+    help_uri = None
+    cwe_num = "".join(filter(str.isdigit, final_cwe_id))
+    if cwe_num:
+        help_uri = f"https://cwe.mitre.org/data/definitions/{cwe_num}.html"
+
+    return properties, help_uri
+
+
+def _extract_fingerprints(
+    rule_id: str, file_path: str, line_num: int, finding: dict[str, Any]
+) -> dict[str, str]:
+    """Extract or compute partial fingerprints for SARIF finding."""
+    fp_hash = None
+    for key in ("fingerprint", "fingerprint_id", "hash"):
+        if finding.get(key):
+            fp_hash = str(finding[key])
+            break
+
+    if not fp_hash:
+        line_content = str(finding.get("line_content", ""))
+        raw = f"{rule_id}:{file_path}:{line_num}:{line_content}"
+        fp_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+    return {
+        "primaryLocationLineHash": fp_hash,
+        "semanticFingerprint/v1": fp_hash,
+    }
+
+
+def _extract_code_flows(finding: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """Extract codeFlows from evidence graph or trace steps for SARIF location trace."""
+    raw_nodes: list[Any] = []
+    ev_graph = finding.get("evidence_graph")
+    if ev_graph is not None:
+        if hasattr(ev_graph, "nodes"):
+            raw_nodes = getattr(ev_graph, "nodes", [])
+        elif isinstance(ev_graph, dict) and "nodes" in ev_graph:
+            raw_nodes = ev_graph.get("nodes", [])
+
+    if not raw_nodes:
+        for key in ("trace_steps", "taint_trace", "code_flow", "dataflow", "locations"):
+            if key in finding and isinstance(finding[key], list):
+                raw_nodes = finding[key]
+                break
+
+    if not raw_nodes:
+        return None
+
+    locations: list[dict[str, Any]] = []
+    for node in raw_nodes:
+        if hasattr(node, "file_path"):
+            f_path = getattr(node, "file_path", "")
+            l_num = getattr(node, "line_number", 1)
+            n_type = getattr(node, "node_type", "step")
+            snippet = getattr(node, "code_snippet", "") or getattr(node, "symbol", "")
+        elif isinstance(node, dict):
+            f_path = str(
+                node.get("file_path") or node.get("file") or node.get("path") or ""
+            )
+            l_num = int(node.get("line_number") or node.get("line") or 1)
+            n_type = str(
+                node.get("node_type")
+                or node.get("step_type")
+                or node.get("type")
+                or "step"
+            )
+            snippet = str(
+                node.get("code_snippet")
+                or node.get("snippet")
+                or node.get("symbol")
+                or ""
+            )
+        else:
+            continue
+
+        loc_entry = {
+            "location": {
+                "physicalLocation": {
+                    "artifactLocation": {"uri": f_path},
+                    "region": {"startLine": max(1, l_num)},
+                },
+                "message": {"text": f"[{n_type}] {snippet}".strip()},
+            }
+        }
+        locations.append(loc_entry)
+
+    if not locations:
+        return None
+
+    return [{"threadFlows": [{"locations": locations}]}]
+
+
 # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
 def generate_sarif_report(
     findings: list[dict[str, Any]],
@@ -342,7 +463,6 @@ def generate_sarif_report(
     metadata: dict[str, Any] | None = None,
     audit_level: str = "full",
 ) -> tuple[str, str]:
-    """Generate SARIF 2.1.0 report file for SAST findings."""
     target_dir = Path(output_dir)
     target_dir.mkdir(parents=True, exist_ok=True)
 
@@ -360,35 +480,47 @@ def generate_sarif_report(
         sarif_level = _map_severity_to_sarif_level(severity)
 
         if rule_id not in rules_map:
-            rules_map[rule_id] = {
+            props, help_uri = _extract_cwe_owasp_properties(rule_id, finding)
+            rule_entry: dict[str, Any] = {
                 "id": rule_id,
                 "name": rule_name,
                 "shortDescription": {"text": description},
                 "defaultConfiguration": {"level": sarif_level},
+                "properties": props,
             }
+            if help_uri:
+                rule_entry["helpUri"] = help_uri
+            rules_map[rule_id] = rule_entry
 
         msg_text = description
         if finding.get("line_content"):
             msg_text += f": {finding['line_content']}"
 
-        file_path = finding.get("path", target_path)
+        file_path = str(finding.get("path", target_path))
         line_num = max(1, int(finding.get("line", 1)))
 
-        results.append(
-            {
-                "ruleId": rule_id,
-                "level": sarif_level,
-                "message": {"text": msg_text},
-                "locations": [
-                    {
-                        "physicalLocation": {
-                            "artifactLocation": {"uri": file_path},
-                            "region": {"startLine": line_num},
-                        }
+        result_entry: dict[str, Any] = {
+            "ruleId": rule_id,
+            "level": sarif_level,
+            "message": {"text": msg_text},
+            "locations": [
+                {
+                    "physicalLocation": {
+                        "artifactLocation": {"uri": file_path},
+                        "region": {"startLine": line_num},
                     }
-                ],
-            }
-        )
+                }
+            ],
+            "partialFingerprints": _extract_fingerprints(
+                rule_id, file_path, line_num, finding
+            ),
+        }
+
+        code_flows = _extract_code_flows(finding)
+        if code_flows:
+            result_entry["codeFlows"] = code_flows
+
+        results.append(result_entry)
 
     sarif_data = {
         "$schema": (
@@ -401,9 +533,27 @@ def generate_sarif_report(
                 "tool": {
                     "driver": {
                         "name": "Security SAST Guard",
+                        "semanticVersion": get_plugin_version(),
+                        "informationUri": (
+                            "https://github.com/nguyenduydan/security-sast-guard-plugin"
+                        ),
                         "rules": list(rules_map.values()),
                     }
                 },
+                "taxonomies": [
+                    {
+                        "name": "CWE",
+                        "version": "4.13",
+                        "organization": "MITRE",
+                        "shortDescription": {"text": "Common Weakness Enumeration"},
+                    },
+                    {
+                        "name": "OWASP Top 10",
+                        "version": "2021",
+                        "organization": "OWASP",
+                        "shortDescription": {"text": "OWASP Top 10 2021 Categories"},
+                    },
+                ],
                 "invocations": [
                     {
                         "executionSuccessful": True,
