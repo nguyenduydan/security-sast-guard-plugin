@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.9.0...v2.0.0) (2026-08-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **dx:** Major release upgrade to Security SAST Guard v2.0.0 Architecture.
+
+### 🚀 Features & SAST Security Rules
+
+* **dx:** implement v2.0.0 Tier 3 developer experience modules ([8a5d863](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8a5d863103186fd36de278c71df5fb7408d48b2e))
+* **sast-intelligence:** implement v2.0.0 Tier 2 SAST intelligence modules ([66ad017](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/66ad017d22fde6ebd36b3fa878d5bd99971ceb88))
+* **security-core:** implement v2.0.0 Tier 1 security core modules ([e3673d7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e3673d74ff03cac1e9a10e055d8797b12f94be2c))
+
+
+### 🐛 Bug Fixes
+
+* **harness:** add explanatory comments to empty except blocks for CodeQL ([ee1a3fd](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ee1a3fd4e8913ce76c4201deb32695a29367e653))
+* **harness:** resolve cross-platform mypy type checking errors in loop_harness ([c00c208](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c00c208d68c6115424dd09317563657db695f211))
+
 ## [1.9.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.8.11...v1.9.0) (2026-08-12)
 
 
