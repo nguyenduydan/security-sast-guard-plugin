@@ -23,6 +23,8 @@ def _get_process_memory_mb() -> float:
             rusage = getrusage(rusage_self)
             return float(getattr(rusage, "ru_maxrss", 0)) / 1024.0
     except (ImportError, AttributeError):
+        # resource module is unavailable on non-POSIX OS (e.g. Windows);
+        # fall back to ctypes memory query
         pass
 
     if hasattr(ctypes, "windll"):
@@ -52,6 +54,7 @@ def _get_process_memory_mb() -> float:
             ):
                 return float(counters.WorkingSetSize) / (1024 * 1024)
         except Exception:  # noqa: S110 # pylint: disable=broad-exception-caught
+            # Windows API query failed or permission denied; return fallback 0.0
             pass
 
     return 0.0
