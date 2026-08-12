@@ -79,6 +79,130 @@ class AuditService:
         )
         return findings, report_md, summary
 
+    # pylint: disable=too-many-locals,import-outside-toplevel
+    def run_audit_v2(self, target_path: str, verbose: bool = False) -> dict[str, Any]:
+        """Execute SAST v2.0.0 audit orchestrating v2 modules."""
+        from src.domain.audit_log import AppendOnlyAuditLog
+        from src.domain.cwe_owasp_mapper import CWEOWASPMapper
+        from src.domain.decision_engine import SecurityDecisionEngine
+        from src.domain.evidence_engine import EvidenceEngine
+        from src.domain.fingerprint_tracker import SemanticFingerprintTracker
+        from src.domain.frameworks.registry import FrameworkRegistry
+        from src.domain.loop_harness import BoundedVerificationHarness
+
+        findings, report_md, summary = self.run_audit(
+            target_path, verbose=verbose, generate_report=True
+        )
+
+        mapper = CWEOWASPMapper()
+        evidence_engine = EvidenceEngine()
+        decision_engine = SecurityDecisionEngine()
+        registry = FrameworkRegistry()
+        harness = BoundedVerificationHarness()
+
+        repo_root = Path(__file__).parents[2]
+        audit_log = AppendOnlyAuditLog(repo_root / ".sast" / "firewall_audit.jsonl")
+        fingerprint_tracker = SemanticFingerprintTracker(
+            repo_root / ".sast" / "baseline.json"
+        )
+
+        v2_findings: list[dict[str, Any]] = []
+        for f in findings:
+            rule_id = f.get("rule_id", "UNKNOWN")
+            mapping = mapper.get_mapping(rule_id)
+            file_path = f.get("path", "")
+            code_line = f.get("line_content", "")
+            line_no = f.get("line", 1)
+
+            # Framework Semantics check
+            strat = registry.get_strategy(file_path, code_line)
+            semantics_res = strat.analyze_semantics(
+                file_path=file_path,
+                content=code_line,
+            )
+
+            # Build Evidence Graph
+            trace_steps = [
+                {
+                    "step_type": "source",
+                    "file_path": file_path,
+                    "line_number": line_no,
+                    "symbol": f.get("scope", "user_input"),
+                    "code_snippet": code_line,
+                },
+                {
+                    "step_type": "sink",
+                    "file_path": file_path,
+                    "line_number": line_no,
+                    "symbol": rule_id,
+                    "code_snippet": code_line,
+                },
+            ]
+            graph = evidence_engine.build_from_trace(
+                finding_id=f"{rule_id}:{file_path}:{line_no}",
+                trace_steps=trace_steps,
+            )
+
+            # Run Harness Iteration
+            harness.record_tool_call()
+            harness.record_file_read(1)
+
+            # Run Decision Engine
+            is_sanitized = bool(semantics_res.sanitized_expressions)
+            framework_ctx = {
+                "is_sanitized": is_sanitized,
+                "sanitizer_type": semantics_res.framework_name,
+            }
+            decision = decision_engine.decide(
+                finding=f,
+                evidence={"complete_path": graph.is_complete_path},
+                framework_context=framework_ctx,
+                harness_iterations_used=harness.iterations_used,
+                max_iterations=harness.constraints.max_iterations,
+            )
+
+            # Semantic Fingerprint
+            fp_id = fingerprint_tracker.compute_fingerprint(
+                rule_id=rule_id,
+                normalized_sink=rule_id,
+                normalized_source=f.get("scope", "user_input"),
+                dataflow_signature="DATAFLOW",
+                symbol=code_line.strip(),
+            )
+            is_new = fingerprint_tracker.is_new(fp_id)
+
+            enriched = dict(f)
+            enriched.update(
+                {
+                    "cwe": mapping.cwe_id,
+                    "owasp": mapping.owasp_category,
+                    "decision": decision.state.value,
+                    "risk_score": decision.risk_score,
+                    "decision_reason": decision.reason,
+                    "fingerprint": fp_id,
+                    "is_new_finding": is_new,
+                }
+            )
+            v2_findings.append(enriched)
+
+            # Log Audit Entry
+            audit_log.append(
+                entry_type="SAST_FINDING",
+                payload={
+                    "rule_id": rule_id,
+                    "file": file_path,
+                    "decision": decision.state.value,
+                    "risk_score": decision.risk_score,
+                },
+            )
+
+        return {
+            "v2_findings": v2_findings,
+            "report_md": report_md,
+            "summary": summary,
+            "total_count": len(v2_findings),
+        }
+
     def _get_commit_hash(self) -> str:
         """Return current HEAD commit hash, or 'no-git' if not in a git repo."""
         try:
