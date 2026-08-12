@@ -3,8 +3,10 @@
    ========================================================================== */
 
 const GITHUB_REPO = "nguyenduydan/security-sast-guard-plugin";
-const FALLBACK_VERSION = "v1.0.0";
+const FALLBACK_VERSION = "v1.8.11";
 let activeCategory = "ALL";
+let autoPlayTimer = null;
+let isAutoPlaying = false;
 
 // 53 SAST Vector Rules Database
 const SAST_RULES = [
@@ -665,6 +667,22 @@ function renderRules() {
 /* --------------------------------------------------------------------------
    6. GitHub Latest Release Fetcher
    -------------------------------------------------------------------------- */
+function parseVer(v) {
+  return (v || "").replace(/^v/, "").split(".").map(Number);
+}
+
+function compareVer(v1, v2) {
+  const a = parseVer(v1);
+  const b = parseVer(v2);
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    const numA = a[i] || 0;
+    const numB = b[i] || 0;
+    if (numA > numB) return 1;
+    if (numA < numB) return -1;
+  }
+  return 0;
+}
+
 async function fetchLatestRelease() {
   try {
     const res = await fetch(
@@ -673,8 +691,14 @@ async function fetchLatestRelease() {
     );
     if (!res.ok) throw new Error(`GitHub API ${res.status}`);
     const data = await res.json();
-    const tag = data.tag_name || FALLBACK_VERSION;
-    applyVersionToPage(tag, data.html_url);
+    let tag = data.tag_name || FALLBACK_VERSION;
+    if (compareVer(FALLBACK_VERSION, tag) > 0) {
+      tag = FALLBACK_VERSION;
+    }
+    applyVersionToPage(
+      tag,
+      data.html_url || `https://github.com/${GITHUB_REPO}/releases/tag/${tag}`
+    );
   } catch (err) {
     applyVersionToPage(
       FALLBACK_VERSION,
@@ -690,7 +714,7 @@ function applyVersionToPage(tag, releaseUrl) {
   document.querySelectorAll("[data-version-link]").forEach((el) => {
     el.href = releaseUrl;
   });
-  document.title = `Security SAST Guard ${tag} — Zero-Trust Code Auditing & Command Interceptor`;
+  document.title = `Security SAST Guard ${tag} — Dual Theme Neo-Brutalist Security Platform`;
 }
 
 /* --------------------------------------------------------------------------
@@ -751,6 +775,24 @@ function escapeHtml(text) {
     .replace(/>/g, "&gt;");
 }
 
+function initScrollSpy() {
+  const sections = [...document.querySelectorAll('[data-nav-section]')]
+    .map(link => document.getElementById(link.dataset.navSection))
+    .filter(Boolean);
+  const links = document.querySelectorAll('[data-nav-section]');
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries.filter(entry => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!visible) return;
+    links.forEach(link => {
+      const active = link.dataset.navSection === visible.target.id;
+      link.classList.toggle('nav-link-active', active);
+      link.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+  }, { rootMargin: '-18% 0px -62% 0px', threshold: [0.1, 0.35, 0.6] });
+  sections.forEach(section => observer.observe(section));
+}
+
 /* --------------------------------------------------------------------------
    8. Global Window Event Handler Expositions
    -------------------------------------------------------------------------- */
@@ -766,3 +808,5 @@ window.filterRules = filterRules;
 window.switchTab = switchTab;
 window.copySnippet = copySnippet;
 window.showCopyToast = showCopyToast;
+window.syncVersionFromGitHub = fetchLatestRelease;
+window.initScrollSpy = initScrollSpy;
