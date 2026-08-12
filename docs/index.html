@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
- <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Favicons -->
@@ -13,20 +13,20 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <link rel="manifest" href="./site.webmanifest">
 
-  <!-- Theme Color (Adapts mobile browser UI to your Neo-Brutalist theme) -->
+  <!-- Theme Color -->
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 
-  <!-- GEO-Optimized Title: Clear, descriptive, and entity-focused -->
-  <title>Security SAST Guard | Zero-Trust Code Auditing & Command Interceptor</title>
+  <!-- GEO-Optimized Title -->
+  <title>Security SAST Guard v2.0.0 | Symbiotic AI Security Engine & 10-Stage Interceptor</title>
 
-  <!-- GEO-Optimized Description: Conversational, specific, and lists exact capabilities -->
-  <!-- Semantic Keywords (Helps LLMs categorize the domain) -->
-  <meta name="keywords" content="SAST code audit, zero-trust security, Gemini CLI security, Google Antigravity interceptor, neo-brutalist UI, application security testing">
+  <!-- Meta Tags & Keywords -->
+  <meta name="keywords" content="SAST code audit, zero-trust security, 10-stage firewall, Gemini CLI security, Google Antigravity interceptor, neo-brutalist UI, application security testing, SARIF 2.1.0, 13 security modules">
+  <meta name="description" content="Security SAST Guard v2.0.0: Autonomous AI Agent Symbiotic Security Engine featuring 13 core modules, 10-stage command firewall, bounded verification harness, and 53 SAST rules.">
 
-  <!-- Open Graph / Entity Context for AI Scrapers -->
-  <meta property="og:title" content="Security SAST Guard | Real-Time Code Security">
-  <meta property="og:description" content="Automatically audit code against 53 SAST rules in real-time within the Gemini CLI ecosystem.">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Security SAST Guard v2.0.0 | Symbiotic AI Security Engine">
+  <meta property="og:description" content="Zero-Trust Autonomous AI Security Platform with 13 Core Modules, 10-Stage Command Firewall, and 53 SAST Rules.">
   <meta property="og:type" content="website">
 
   <!-- Fonts -->
@@ -34,26 +34,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- JSON-LD Schema Markup: The most critical element for GEO -->
+  <!-- JSON-LD Schema Markup -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Security SAST Guard",
+      "softwareVersion": "2.0.0",
       "operatingSystem": "All",
       "applicationCategory": "SecurityApplication",
-      "description": "A zero-trust security platform and real-time command interceptor designed for Google Antigravity and Gemini CLI ecosystems. It audits code against 53 SAST rules.",
+      "description": "A zero-trust AI agent symbiotic security platform and 10-stage command interceptor with 13 core security modules and 53 SAST rules.",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
       },
       "featureList": [
-        "Real-time command interception",
-        "Audits against 53 SAST rules",
-        "Zero-trust architecture",
-        "Integration with Gemini CLI and Google Antigravity",
-        "Dual-theme neo-brutalist user interface"
+        "10-Stage Command Firewall Deobfuscator",
+        "13 Symbiotic Security Engine Modules",
+        "Bounded Verification Harness",
+        "53 SAST Threat Vector Rules",
+        "Append-Only Hash Chain Audit Log",
+        "ISO SARIF 2.1.0 Exporters",
+        "Antigravity 2.0 Stdio MCP Server"
       ]
     }
   </script>
@@ -110,7 +113,7 @@
     Skip to main content
   </a>
 
-  <!-- TOP BRANDING ANCHOR (LEFT LOGO & RIGHT QUICK CONTROLS) -->
+  <!-- TOP BRANDING ANCHOR -->
   <header id="top-branding" class="fixed top-5 left-6 right-6 z-40 flex items-center justify-between pointer-events-none">
     <!-- Top Left Logo Badge -->
     <a href="#" class="pointer-events-auto flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-obsidian-900/90 border-2 border-black dark:border-white shadow-[3px_3px_0px_0px_#000] dark:shadow-[3px_3px_0px_0px_#fff] backdrop-blur-xl group hover:scale-105 transition-transform">
@@ -118,7 +121,7 @@
         <img src="./logo.png" alt="Security SAST Guard Logo" class="w-7 h-7 group-hover:rotate-12 transition-transform" />
       </div>
       <span class="font-display font-black text-xs md:text-sm uppercase tracking-tight text-black dark:text-white whitespace-nowrap">SAST GUARD</span>
-      <span id="ver-badge-nav" class="px-2 py-0.5 rounded-full bg-black/5 dark:bg-brand-emerald/15 text-black dark:text-brand-emerald font-mono font-bold text-[10px] border border-black/20 dark:border-brand-emerald/30" data-version-text>v1.8.11</span>
+      <span id="ver-badge-nav" class="px-2 py-0.5 rounded-full bg-black/5 dark:bg-brand-emerald/15 text-black dark:text-brand-emerald font-mono font-bold text-[10px] border border-black/20 dark:border-brand-emerald/30" data-version-text>v2.0.0</span>
     </a>
 
     <!-- Top Right Quick Controls -->
@@ -131,30 +134,30 @@
     </div>
   </header>
 
-  <!-- FLOATING CYBER-HUD BOTTOM DOCK (PROXIMITY HOVER ZONE & NEO-BRUTALIST DESIGN) -->
+  <!-- FLOATING CYBER-HUD BOTTOM DOCK -->
   <div class="fixed bottom-2 sm:bottom-3 left-0 right-0 z-50 pointer-events-none px-2 sm:px-4 flex justify-center">
     <div id="cyber-dock-wrapper" class="pointer-events-auto py-3 px-6 sm:py-4 sm:px-8">
       <nav id="cyber-dock" class="max-w-5xl w-fit mx-auto px-3 sm:px-4 py-1.5 rounded-full bg-white dark:bg-obsidian-900 text-black dark:text-white border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] flex items-center flex-nowrap gap-2 sm:gap-2.5 overflow-x-auto terminal-scrollbar transition-all duration-300">
         
         <!-- Dock Items -->
         <a href="#firewall" data-nav-section="firewall" class="dock-item nav-link-active shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-black text-xs">
-          <i class="ph-bold ph-shield-warning text-base text-emerald-600 dark:text-brand-emerald"></i>
+          <i class="ph-bold ph-shield-warning text-base text-rose-600 dark:text-rose-400"></i>
           <span>Firewall</span>
         </a>
 
+        <a href="#modules" data-nav-section="modules" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
+          <i class="ph-bold ph-squares-four text-base text-emerald-600 dark:text-brand-emerald"></i>
+          <span>13 Modules</span>
+        </a>
+
+        <a href="#architecture" data-nav-section="architecture" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
+          <i class="ph-bold ph-tree-structure text-base text-cyan-600 dark:text-brand-cyan"></i>
+          <span>Topology</span>
+        </a>
+
         <a href="#diff-sec" data-nav-section="diff-sec" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
-          <i class="ph-bold ph-bug text-base text-rose-600 dark:text-rose-400"></i>
-          <span>Audit</span>
-        </a>
-
-        <a href="#features" data-nav-section="features" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
-          <i class="ph-bold ph-cpu text-base text-cyan-600 dark:text-brand-cyan"></i>
-          <span>Capabilities</span>
-        </a>
-
-        <a href="#workflow" data-nav-section="workflow" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
-          <i class="ph-bold ph-lightning text-base text-amber-500 dark:text-amber-400"></i>
-          <span>Workflow</span>
+          <i class="ph-bold ph-bug text-base text-amber-500 dark:text-amber-400"></i>
+          <span>Audit Diff</span>
         </a>
 
         <a href="#compare" data-nav-section="compare" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
@@ -163,7 +166,7 @@
         </a>
 
         <a href="#usage" data-nav-section="usage" class="dock-item shrink-0 relative group px-2.5 sm:px-3 py-1 rounded-full text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all flex items-center gap-1.5 font-display font-extrabold text-xs">
-          <i class="ph-bold ph-terminal-window text-base text-amber-600 dark:text-amber-400"></i>
+          <i class="ph-bold ph-terminal-window text-base text-teal-600 dark:text-brand-cyan"></i>
           <span>Usage</span>
         </a>
 
@@ -176,7 +179,7 @@
 
         <a href="#install" class="dock-always-visible dock-install-cta shrink-0 px-3.5 py-1 rounded-full font-display font-black text-xs uppercase tracking-wider flex items-center gap-1.5 hover:scale-105 transition-all">
           <i class="ph-bold ph-download-simple text-sm"></i>
-          <span>INSTALL</span>
+          <span>INSTALL v2</span>
         </a>
 
       </nav>
@@ -186,12 +189,12 @@
   <!-- MAIN CONTENT CONTAINER -->
   <main id="main-content" class="relative z-10 overflow-x-hidden w-full max-w-full pt-16 pb-32">
 
-    <!-- AMBIENT CYBER GLOW ORBS (BACKGROUND ENHANCEMENT) -->
+    <!-- AMBIENT CYBER GLOW ORBS -->
     <div class="absolute top-10 left-1/4 w-[550px] h-[550px] bg-emerald-500/10 dark:bg-brand-emerald/15 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse"></div>
     <div class="absolute top-[30vh] right-0 w-[500px] h-[500px] bg-cyan-500/10 dark:bg-brand-cyan/15 rounded-full blur-[160px] pointer-events-none -z-10"></div>
     <div class="absolute top-[60vh] left-0 w-[450px] h-[450px] bg-purple-500/10 dark:bg-brand-violet/15 rounded-full blur-[150px] pointer-events-none -z-10"></div>
 
-    <!-- HERO SECTION (DUAL LIGHT/DARK NEO-BRUTALIST HERO WITH CYBER GRID) -->
+    <!-- HERO SECTION -->
     <section class="relative py-16 md:py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10 cyber-grid-pattern overflow-hidden">
       <canvas id="bg-canvas" class="absolute inset-0 pointer-events-none z-0 opacity-40 dark:opacity-60"></canvas>
       <div class="relative z-10 max-w-6xl mx-auto text-center flex flex-col items-center">
@@ -199,27 +202,27 @@
         <!-- Eyebrow Badge -->
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black text-white dark:bg-brand-emerald/15 dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider mb-6 border-2 border-black dark:border-brand-emerald/40 shadow-brutal-sm mx-auto">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>ANTIGRAVITY 2.0 ZERO-TRUST SECURITY ENGINE</span>
+          <span>SECURITY SAST GUARD v2.0.0 — SYMBIOTIC AI ENGINE</span>
         </div>
 
         <!-- 2-Line Enforced Eye-Catching Heading -->
         <h1 class="font-display font-black text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[1.08] max-w-5xl mb-6 text-center mx-auto text-black dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-brand-emerald dark:to-brand-cyan drop-shadow-sm">
-          Autonomous Security Gate &amp; <br class="hidden sm:inline" />
+          Symbiotic AI Security Engine &amp; <br class="hidden sm:inline" />
           <span class="bg-black text-emerald-400 dark:bg-brand-emerald dark:text-obsidian-950 px-3.5 py-1 rounded-2xl inline-block mt-2 border-2 border-black dark:border-white shadow-[0_0_20px_rgba(16,185,129,0.5)]">
-            Command Firewall
+            10-Stage Interceptor
           </span>
-          <span class="text-black dark:text-white font-black"> &amp; SAST Shield</span>
+          <span class="text-black dark:text-white font-black"> &amp; SAST Gate</span>
         </h1>
 
         <!-- Subtext Slogan -->
-        <p class="text-slate-800 dark:text-slate-300 text-lg md:text-xl max-w-3xl font-medium leading-relaxed mb-8 text-center mx-auto">
-          <strong class="text-black dark:text-white font-bold">Intercept threats before code reaches Git.</strong> Protect your system from destructive shell execution (<code class="bg-black dark:bg-obsidian-900 text-emerald-400 px-2 py-0.5 rounded font-mono text-sm font-bold">rm -rf</code>, <code class="bg-black dark:bg-obsidian-900 text-cyan-400 px-2 py-0.5 rounded font-mono text-sm font-bold">Format-Volume</code>, obfuscated carets) while auditing AI-generated code against <strong class="text-emerald-600 dark:text-brand-emerald font-bold">53 OWASP, CWE &amp; NIST rules</strong> powered by <strong class="text-cyan-600 dark:text-brand-cyan font-bold">Antigravity 2.0 Stdio MCP Server</strong>.
+        <p class="text-slate-800 dark:text-slate-300 text-lg md:text-xl max-w-4xl font-medium leading-relaxed mb-8 text-center mx-auto">
+          <strong class="text-black dark:text-white font-bold">13 Symbiotic Security Modules working in unison.</strong> Intercept destructive shell execution (<code class="bg-black dark:bg-obsidian-900 text-rose-400 px-2 py-0.5 rounded font-mono text-sm font-bold">r^m^ -r^f</code>, <code class="bg-black dark:bg-obsidian-900 text-rose-400 px-2 py-0.5 rounded font-mono text-sm font-bold">Base64 Payloads</code>) through a 10-stage deobfuscator while auditing AI-generated code with a bounded verification harness against <strong class="text-emerald-600 dark:text-brand-emerald font-bold">53 OWASP, CWE &amp; NIST rules</strong>.
         </p>
 
         <!-- Quick One-Line Install Command Widget -->
         <div class="w-full max-w-3xl mb-10 brutal-card rounded-2xl bg-white dark:bg-obsidian-900 p-4 font-mono text-xs shadow-brutal text-left mx-auto">
           <div class="flex items-center justify-between text-slate-700 dark:text-slate-400 font-bold mb-2">
-            <span class="flex items-center gap-2"><i class="ph-bold ph-terminal-window text-base text-brand-emerald"></i> Quick Install (PowerShell Terminal):</span>
+            <span class="flex items-center gap-2"><i class="ph-bold ph-terminal-window text-base text-brand-emerald"></i> Quick Install v2.0.0 (PowerShell Terminal):</span>
             <span class="text-[10px] uppercase bg-emerald-500/20 text-emerald-800 dark:text-brand-emerald px-2 py-0.5 rounded font-bold border border-emerald-500/30 flex items-center gap-1">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span> Realtime Active
             </span>
@@ -236,35 +239,35 @@
         <div id="hero-ctas" class="flex flex-wrap items-center justify-center gap-4 mb-14 font-display font-black w-full mx-auto">
           <a href="#install" class="dock-install-cta px-7 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-2 font-black shadow-brutal hover:scale-105 transition-all">
             <i class="ph-bold ph-download-simple text-lg"></i>
-            Install Suite
+            Install Suite v2.0.0
           </a>
-          <button onclick="openRulesModal()" class="px-7 py-3.5 rounded-xl brutal-btn-alt text-sm uppercase tracking-wider flex items-center gap-2 font-black shadow-brutal hover:scale-105 transition-all">
-            <i class="ph-bold ph-shield-check text-lg"></i>
-            Explore 53 SAST Rules
-          </button>
+          <a href="#modules" class="px-7 py-3.5 rounded-xl brutal-btn-alt text-sm uppercase tracking-wider flex items-center gap-2 font-black shadow-brutal hover:scale-105 transition-all">
+            <i class="ph-bold ph-squares-four text-lg text-emerald-600 dark:text-brand-emerald"></i>
+            Explore 13 Modules
+          </a>
           <a href="#firewall" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-obsidian-900 text-black dark:text-white border-2 border-black dark:border-white/30 text-sm uppercase tracking-wider flex items-center gap-2 font-bold hover:bg-slate-300 dark:hover:bg-obsidian-850 transition-all">
-            <i class="ph-bold ph-play-circle text-lg text-emerald-600 dark:text-brand-emerald"></i>
-            Live Terminal Demo
+            <i class="ph-bold ph-play-circle text-lg text-rose-600 dark:text-rose-400"></i>
+            Live Firewall Sandbox
           </a>
 
           <!-- 4 Pillars Quick Badges -->
           <div class="w-full mt-2 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs mx-auto">
+            <span class="px-3.5 py-1.5 rounded-xl bg-rose-500/15 text-rose-800 dark:text-rose-300 font-bold border-2 border-rose-500/30 flex items-center gap-1.5 shadow-brutal-sm">
+              <i class="ph-bold ph-shield text-rose-600 dark:text-rose-400 text-sm"></i> 10-Stage Firewall Deobfuscator
+            </span>
             <span class="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold border-2 border-emerald-500/30 flex items-center gap-1.5 shadow-brutal-sm">
-              <i class="ph-bold ph-shield text-emerald-600 dark:text-emerald-400 text-sm"></i> PreCommand Firewall
+              <i class="ph-bold ph-cpu text-emerald-600 dark:text-emerald-400 text-sm"></i> 13 Symbiotic Security Modules
             </span>
             <span class="px-3.5 py-1.5 rounded-xl bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 font-bold border-2 border-cyan-500/30 flex items-center gap-1.5 shadow-brutal-sm">
-              <i class="ph-bold ph-cpu text-cyan-600 dark:text-cyan-400 text-sm"></i> Antigravity 2.0 Stdio MCP
+              <i class="ph-bold ph-timer text-cyan-600 dark:text-cyan-400 text-sm"></i> Bounded Verification Harness
             </span>
             <span class="px-3.5 py-1.5 rounded-xl bg-purple-500/15 text-purple-800 dark:text-purple-300 font-bold border-2 border-purple-500/30 flex items-center gap-1.5 shadow-brutal-sm">
-              <i class="ph-bold ph-folder-user text-purple-600 dark:text-purple-400 text-sm"></i> .sast Cascade Profile
-            </span>
-            <span class="px-3.5 py-1.5 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold border-2 border-amber-500/30 flex items-center gap-1.5 shadow-brutal-sm">
-              <i class="ph-bold ph-brain text-amber-600 dark:text-amber-400 text-sm"></i> SHA-256 AI Cache
+              <i class="ph-bold ph-link-simple text-purple-600 dark:text-purple-400 text-sm"></i> Append-Only Hash Chain Audit
             </span>
           </div>
         </div>
 
-        <!-- KEY METRICS CARDS (DUAL LIGHT & DARK STYLED) -->
+        <!-- KEY METRICS CARDS -->
         <div>
           <h2 class="font-display font-black text-2xl text-black dark:text-white mb-6 uppercase tracking-tight">Key Metrics</h2>
           
@@ -273,12 +276,12 @@
             <!-- Card 1 -->
             <div class="brutal-card p-5 rounded-2xl flex items-center justify-between">
               <div>
-                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">SAST Threat Vector Rules</div>
-                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-white mt-1">53 Rules</div>
-                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">OWASP, CWE & NIST Controls</div>
+                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Symbiotic Core Engine</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-emerald mt-1">13 Modules</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Zero-Conflict Architecture</div>
               </div>
               <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
-                <i class="ph-bold ph-shield-warning"></i>
+                <i class="ph-bold ph-squares-four"></i>
               </div>
             </div>
 
@@ -287,7 +290,7 @@
               <div>
                 <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Intercept Latency</div>
                 <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-cyan mt-1">&lt; 50ms</div>
-                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">PowerShell AST Parsing</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">10-Stage AST Normalization</div>
               </div>
               <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
                 <i class="ph-bold ph-lightning"></i>
@@ -297,12 +300,12 @@
             <!-- Card 3 -->
             <div class="brutal-card p-5 rounded-2xl flex items-center justify-between">
               <div>
-                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Release Version</div>
-                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1" data-version-text>v1.8.11</div>
-                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Release-Please Tagged</div>
+                <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">SAST Threat Vector Rules</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1">53 Rules</div>
+                <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">OWASP, CWE &amp; NIST Controls</div>
               </div>
               <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-violet text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
-                <i class="ph-bold ph-tag"></i>
+                <i class="ph-bold ph-shield-warning"></i>
               </div>
             </div>
 
@@ -324,269 +327,255 @@
       </div>
     </section>
 
-    <!-- PERFORMANCE OVERVIEW (HIGH-TECH ANIMATED METRIC METERS & CHART) -->
-    <section class="py-16 md:py-20 px-6 md:px-10 bg-slate-200/70 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+    <!-- SECTION: 13 SYMBIOTIC MODULES SHOWCASE -->
+    <section id="modules" class="py-20 px-6 md:px-10 bg-slate-200/70 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
       <div class="max-w-6xl mx-auto">
         
-        <div class="flex items-center justify-between mb-8">
-          <div>
-            <span class="px-3 py-1 rounded bg-black dark:bg-brand-emerald/15 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider">REALTIME METRICS & COVERAGE</span>
-            <h2 class="font-display font-black text-3xl text-black dark:text-white mt-2 uppercase tracking-tight">Security Coverage Overview</h2>
-          </div>
-          <span class="font-mono text-xs font-bold text-slate-700 dark:text-brand-emerald flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span> Live Scan Engines
+        <div class="text-center mb-12">
+          <span class="px-3.5 py-1 bg-black dark:bg-brand-emerald/20 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-emerald/40">
+            SECURITY SAST GUARD v2.0.0 CORE
           </span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- Main Chart Container -->
-          <div class="lg:col-span-2 brutal-card p-6 rounded-2xl bg-white dark:bg-obsidian-950 space-y-6">
-            <h3 class="font-display font-black text-lg text-black dark:text-white flex items-center justify-between border-b-2 border-black dark:border-white/10 pb-3">
-              <span>Security Rule Coverage Breakdown</span>
-              <span class="font-mono text-xs text-brand-emerald">100% Target Met</span>
-            </h3>
-
-            <!-- Bar 1 -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
-                <span class="flex items-center gap-2"><i class="ph-bold ph-shield-check text-brand-emerald"></i> OWASP API Security 2023 Rules (10 Rules)</span>
-                <span class="text-brand-emerald font-black">100%</span>
-              </div>
-              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
-                <div class="h-full bg-gradient-to-r from-emerald-500 to-brand-emerald w-[100%] rounded-full shadow-[0_0_10px_rgba(16,185,129,0.7)] animate-pulse"></div>
-              </div>
-            </div>
-
-            <!-- Bar 2 -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
-                <span class="flex items-center gap-2"><i class="ph-bold ph-warning-octagon text-brand-cyan"></i> CWE Top 25 Vulnerabilities (12 Rules)</span>
-                <span class="text-brand-cyan font-black">100%</span>
-              </div>
-              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
-                <div class="h-full bg-gradient-to-r from-cyan-500 to-brand-cyan w-[100%] rounded-full shadow-[0_0_10px_rgba(6,182,212,0.7)] animate-pulse"></div>
-              </div>
-            </div>
-
-            <!-- Bar 3 -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
-                <span class="flex items-center gap-2"><i class="ph-bold ph-lock-key text-brand-violet"></i> NIST 800-53 Control Mappings (10 Controls)</span>
-                <span class="text-brand-violet font-black">100%</span>
-              </div>
-              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
-                <div class="h-full bg-gradient-to-r from-purple-500 to-brand-violet w-[100%] rounded-full shadow-[0_0_10px_rgba(168,85,247,0.7)] animate-pulse"></div>
-              </div>
-            </div>
-
-            <!-- Bar 4 -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between font-mono font-bold text-xs text-black dark:text-slate-200">
-                <span class="flex items-center gap-2"><i class="ph-bold ph-lightning text-amber-400"></i> Command Interceptor Speed (&lt; 50ms)</span>
-                <span class="text-amber-400 font-black">98.5% Speed Score</span>
-              </div>
-              <div class="w-full h-4 bg-slate-100 dark:bg-obsidian-900 border border-black/20 dark:border-white/20 rounded-full overflow-hidden relative p-0.5">
-                <div class="h-full bg-gradient-to-r from-amber-400 to-amber-500 w-[98.5%] rounded-full shadow-[0_0_10px_rgba(245,158,11,0.7)]"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Real-Time Radar / Pulse Gauge Card -->
-          <div class="brutal-card p-6 rounded-2xl bg-white dark:bg-obsidian-950 flex flex-col justify-between items-center text-center">
-            <div class="w-full border-b-2 border-black dark:border-white/10 pb-3 font-mono font-black text-xs text-black dark:text-white uppercase">
-              Firewall Latency Radar
-            </div>
-            
-            <div class="relative my-6 w-36 h-36 flex items-center justify-center">
-              <div class="absolute inset-0 rounded-full border-2 border-emerald-500/30 animate-ping"></div>
-              <div class="absolute inset-2 rounded-full border-2 border-emerald-500/50"></div>
-              <div class="absolute inset-6 rounded-full bg-emerald-500/10 dark:bg-brand-emerald/20 flex flex-col items-center justify-center border border-brand-emerald">
-                <span class="font-mono font-black text-2xl text-black dark:text-brand-emerald">&lt;12ms</span>
-                <span class="font-mono text-[9px] text-slate-600 dark:text-slate-400 uppercase font-bold">Avg Response</span>
-              </div>
-            </div>
-
-            <div class="w-full bg-slate-100 dark:bg-obsidian-900 p-3 rounded-xl border-2 border-black/20 dark:border-white/20 font-mono text-[11px] font-bold text-slate-700 dark:text-slate-300 flex justify-around">
-              <span>Status: <strong class="text-brand-emerald">Optimal</strong></span>
-              <span>Zero-Trust: <strong class="text-brand-cyan">Active</strong></span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-      </div>
-    </section>
-
-    <!-- LIVE INTERACTIVE FIREWALL SANDBOX -->
-    <section id="firewall" class="py-20 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10">
-      <div class="max-w-6xl mx-auto">
-        
-        <div class="text-center mb-12">
-          <span class="px-3 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">LIVE TERMINAL SIMULATOR</span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Command Firewall Sandbox</h2>
-          <p class="text-slate-700 dark:text-slate-300 text-base max-w-xl mx-auto mt-2 font-medium">
-            Test real-time ALLOW / CONFIRM / DENY responses against shell commands.
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase tracking-tight">
+            13 Symbiotic Security Modules
+          </h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-3xl mx-auto mt-2 font-medium">
+            A fully integrated defense ecosystem. 13 specialized modules working in zero-conflict symbiosis to protect your shell, verify code, and govern security decisions.
           </p>
         </div>
 
-        <div class="brutal-card rounded-2xl max-w-4xl mx-auto overflow-hidden">
-          <div class="bg-black text-white px-6 py-3.5 flex items-center justify-between font-mono text-xs border-b-2 border-black dark:border-white/20">
-            <div class="flex items-center gap-3">
-              <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
-              <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
-              <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
-              <span class="font-bold ml-2">firewall-interceptor.ps1</span>
-            </div>
-            <span class="px-3 py-0.5 rounded bg-white text-black font-bold text-[11px] uppercase">FIREWALL ACTIVE</span>
-          </div>
-
-          <div class="p-4 bg-slate-200/80 dark:bg-obsidian-850 border-b-2 border-black dark:border-white/10 flex flex-wrap items-center gap-2 font-mono text-xs">
-            <span class="font-bold text-black dark:text-slate-200 mr-2">Preset Commands:</span>
-            <button onclick="simulateCommand('rm -rf /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">rm -rf /</button>
-            <button onclick="simulateCommand('r^m^ -r^f /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">r^m^ -r^f (Obfuscated)</button>
-            <button onclick="simulateCommand('Format-Volume -DriveLetter D -FileSystem NTFS')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Format-Volume D</button>
-            <button onclick="simulateCommand('Set-MpPreference -DisableRealtimeMonitoring $true')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Disable Defender</button>
-            <button onclick="simulateCommand('powershell -enc cm0gLXJmIC8=')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Base64 Payload</button>
-            <button onclick="simulateCommand('git push origin main --force')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">git push --force</button>
-          </div>
-
-          <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-950 space-y-4 min-h-[280px] max-h-[400px] overflow-y-auto terminal-scrollbar flex flex-col justify-between">
-            <div id="terminal-output" class="space-y-3">
-              <div class="text-slate-600 dark:text-slate-400">// Security SAST Guard Interceptor ready.</div>
-              <div class="text-black dark:text-slate-200 font-semibold">Click a preset above or enter shell instruction to evaluate firewall rules.</div>
-            </div>
-
-            <form onsubmit="handleCustomCommand(event)" class="mt-4 flex items-center gap-3 bg-slate-100 dark:bg-obsidian-900 p-3 rounded-xl border-2 border-black dark:border-white/20">
-              <label for="cmd-input" class="font-bold text-black dark:text-brand-emerald">$</label>
-              <input type="text" id="cmd-input" name="command" placeholder="Type command (e.g. format C:, git commit, rmdir /s)..." class="bg-transparent text-black dark:text-white font-bold w-full focus:outline-none focus:ring-0 focus:ring-transparent font-mono text-xs placeholder:text-slate-500 border-none outline-none" autocomplete="off" aria-label="Terminal command input" />
-              <button type="submit" class="px-4 py-2 rounded brutal-btn font-bold text-xs uppercase whitespace-nowrap">
-                Evaluate
-              </button>
-            </form>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- LIVE CODE VULNERABILITY VS FIXED DIFF AUDITOR -->
-    <section id="diff-sec" class="min-h-[85vh] py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10 flex flex-col justify-center">
-      <div class="max-w-6xl mx-auto w-full">
-        
-        <div class="text-center mb-12">
-          <span class="px-3 py-1 bg-black dark:bg-brand-violet/20 text-white dark:text-brand-violet font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-violet/40">STATIC CODE AUDITOR</span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Vulnerability Detection</h2>
-          <p class="text-slate-700 dark:text-slate-300 text-base max-w-xl mx-auto mt-2 font-medium">
-            Detects AI-generated security flaws and minifies context for instant resolution.
-          </p>
-        </div>
-
-        <div class="brutal-card p-5 md:p-6 rounded-2xl">
-          <div class="flex items-center justify-between border-b-2 border-black dark:border-white/20 pb-4 mb-6 font-mono text-xs">
-            <div class="flex items-center gap-4">
-              <span class="text-black dark:text-rose-400 font-extrabold flex items-center gap-1.5"><i class="ph-bold ph-bug"></i> FLAGGED VULNERABLE CODE</span>
-              <span class="text-black dark:text-brand-emerald font-extrabold flex items-center gap-1.5"><i class="ph-bold ph-shield-check"></i> SANITIZED SECURE CODE</span>
-            </div>
-            <span class="font-bold text-black dark:text-slate-200">Rule: <code class="bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 px-2 py-0.5 rounded font-bold">CWE-89 (SQL Injection)</code></span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
-            <div class="p-4 rounded-xl bg-slate-100 dark:bg-rose-950/20 border-2 border-black dark:border-rose-500/40 space-y-2">
-              <div class="text-black dark:text-rose-400 font-bold text-[11px] uppercase border-b border-black/30 dark:border-rose-500/30 pb-1">// FLAGGED BY SAST GUARD</div>
-              <pre class="text-black dark:text-rose-200 overflow-x-auto font-bold"><code><span class="text-slate-600 dark:text-slate-400"># Vulnerable SQL Query Construction</span>
-def get_user_account(user_id):
-    query = f"SELECT * FROM users WHERE id = '{user_id}'"
-    cursor.execute(query) <span class="bg-black text-white px-1"># SQLi Threat!</span>
-    return cursor.fetchone()</code></pre>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-100 dark:bg-emerald-950/20 border-2 border-black dark:border-emerald-500/40 space-y-2">
-              <div class="text-black dark:text-brand-emerald font-bold text-[11px] uppercase border-b border-black/30 dark:border-emerald-500/30 pb-1">// SANITIZED SECURE PATTERN</div>
-              <pre class="text-black dark:text-emerald-200 overflow-x-auto font-bold"><code><span class="text-slate-600 dark:text-slate-400"># Parameterized Query</span>
-def get_user_account(user_id):
-    query = "SELECT * FROM users WHERE id = %s"
-    cursor.execute(query, (user_id,)) <span class="bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 px-1 font-bold"># Safe!</span>
-    return cursor.fetchone()</code></pre>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- CAPABILITIES BENTO GRID -->
-    <section id="features" class="relative min-h-[85vh] py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10 flex flex-col justify-center cyber-grid-pattern">
-      <div class="max-w-6xl mx-auto w-full">
-        
-        <div class="text-center mb-12">
-          <span class="px-3 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">CORE CAPABILITIES</span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Capabilities & Protection System</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 grid-flow-dense">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          <div class="brutal-card rounded-2xl p-6 md:col-span-2 flex flex-col justify-between">
+          <!-- Module 1 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-rose transition-colors">
             <div>
-              <div class="flex items-center justify-between mb-6">
-                <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
-                  <i class="ph-bold ph-shield-warning"></i>
-                </div>
-                <button onclick="openRulesModal()" class="px-4 py-2 rounded brutal-btn font-mono text-xs font-bold uppercase">
-                  Open 53 Rules Explorer &rarr;
-                </button>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-rose-500/20 text-rose-800 dark:text-rose-400 border border-rose-500/30">MODULE 01</span>
+                <i class="ph-bold ph-arrows-merge text-2xl text-rose-500"></i>
               </div>
-
-              <h3 class="font-display font-black text-2xl text-black dark:text-white mb-3">53 Security Vector Rules</h3>
-              <p class="text-slate-800 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
-                Audits code against international security frameworks before commits enter git history:
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Firewall Normalizer</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                10-Stage Anti-Bypass Deobfuscator. Strips carets (<code class="font-bold text-rose-400">c^m^d</code>), backticks, hex escapes (<code class="font-bold text-rose-400">\x52</code>), Base64, char codes, and expands aliases.
               </p>
-
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
-                <div onclick="openRulesModal('OWASP API 2023')" class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-brand-emerald">
-                  <div class="text-black dark:text-brand-emerald font-bold">OWASP API (10)</div>
-                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">BOLA, SSRF, Mass Assign</div>
-                </div>
-                <div onclick="openRulesModal('OWASP Web 2021')" class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-brand-cyan">
-                  <div class="text-black dark:text-brand-cyan font-bold">OWASP Web (10)</div>
-                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">Access Control, Crypto</div>
-                </div>
-                <div onclick="openRulesModal('CWE Top 25')" class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-brand-violet">
-                  <div class="text-black dark:text-brand-violet font-bold">CWE Top 25 (12)</div>
-                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">SQLi, XSS, Command Inj</div>
-                </div>
-                <div onclick="openRulesModal('NIST 800-53')" class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-rose-500">
-                  <div class="text-black dark:text-rose-400 font-bold">NIST 800-53 (10)</div>
-                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">AC-2, SC-8 Controls</div>
-                </div>
-                <div onclick="openRulesModal('Web App Specific')" class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-amber-500">
-                  <div class="text-black dark:text-amber-400 font-bold">Web Specific (11)</div>
-                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">Race Conditions, CORS</div>
-                </div>
-                <div onclick="openRulesModal('Secret Protection')" class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 cursor-pointer hover:bg-slate-200 dark:hover:border-emerald-500">
-                  <div class="text-black dark:text-emerald-400 font-bold">Secret Leak Guard</div>
-                  <div class="text-slate-700 dark:text-slate-400 text-[11px] mt-0.5">RSA Keys & API Tokens</div>
-                </div>
-              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Command Defense</span>
+              <span class="font-bold text-rose-500">500ms Stage Timeout</span>
             </div>
           </div>
 
-          <div class="brutal-card rounded-2xl p-6 md:col-span-1 flex flex-col justify-between">
+          <!-- Module 2 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-rose transition-colors">
             <div>
-              <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold mb-6">
-                <i class="ph-bold ph-git-commit"></i>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-rose-500/20 text-rose-800 dark:text-rose-400 border border-rose-500/30">MODULE 02</span>
+                <i class="ph-bold ph-funnel text-2xl text-rose-500"></i>
               </div>
-              <h3 class="font-display font-black text-2xl text-black dark:text-white mb-3">14-Stage Pre-Commit Gate</h3>
-              <p class="text-slate-800 dark:text-slate-300 text-sm font-medium leading-relaxed mb-4">
-                Automated sanitation pipeline with strict tooling:
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Capability Classifier</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Categorizes command tokens into 7 distinct capability groups: NETWORK, FILE_READ, FILE_WRITE, PROCESS_EXEC, PRIVILEGE_CHANGE, PERSISTENCE, DATA_TRANSFER.
               </p>
-              <ul class="space-y-3 font-mono text-xs text-black dark:text-slate-200 font-bold">
-                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Ruff Formatting & Linting</li>
-                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Mypy Strict Type Safety</li>
-                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Pytest 100% Coverage</li>
-                <li class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-black dark:text-brand-emerald"></i> Detect-Secrets Baseline</li>
-              </ul>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Behavioral Classification</span>
+              <span class="font-bold text-rose-500">7 Groups</span>
+            </div>
+          </div>
+
+          <!-- Module 3 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-rose transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-rose-500/20 text-rose-800 dark:text-rose-400 border border-rose-500/30">MODULE 03</span>
+                <i class="ph-bold ph-brain text-2xl text-rose-500"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Intent Classifier</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Evaluates capabilities into high-level intent labels (EXFILTRATION, DESTRUCTIVE, PERSISTENCE, PRIVILEGE_ESCALATION) with computed confidence scores.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Semantic Reasoning</span>
+              <span class="font-bold text-rose-500">Confidence Scoring</span>
+            </div>
+          </div>
+
+          <!-- Module 4 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-amber transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-amber-500/20 text-amber-800 dark:text-amber-400 border border-amber-500/30">MODULE 04</span>
+                <i class="ph-bold ph-link-break text-2xl text-amber-500"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Attack Chain Analyzer</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Detects dangerous multi-command combinations (e.g. Download + Execute, Policy Bypass + Run) that appear benign in isolation but deadly in chain.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Multi-Step Attack Chain</span>
+              <span class="font-bold text-amber-500">Chain Threat Guard</span>
+            </div>
+          </div>
+
+          <!-- Module 5 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-emerald transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-800 dark:text-brand-emerald border border-emerald-500/30">MODULE 05</span>
+                <i class="ph-bold ph-scales text-2xl text-brand-emerald"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Security Decision Engine</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Formal 4-State Machine (TRUE_POSITIVE, FALSE_POSITIVE, CONFIRM_REQUIRED, NOT_ENOUGH_CONTEXT) with Policy Overrides and multi-weight risk formula.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Risk Processing</span>
+              <span class="font-bold text-brand-emerald">4-State Machine</span>
+            </div>
+          </div>
+
+          <!-- Module 6 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-emerald transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-800 dark:text-brand-emerald border border-emerald-500/30">MODULE 06</span>
+                <i class="ph-bold ph-fingerprint text-2xl text-brand-emerald"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Fingerprint Tracker</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Computes location-independent SHA-256 semantic fingerprints. Tracks vulnerability baselines across refactors with automatic tamper verification.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Baseline Tracking</span>
+              <span class="font-bold text-brand-emerald">Line-Independent</span>
+            </div>
+          </div>
+
+          <!-- Module 7 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-emerald transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-800 dark:text-brand-emerald border border-emerald-500/30">MODULE 07</span>
+                <i class="ph-bold ph-shield-check text-2xl text-brand-emerald"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Rule Integrity Validator</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Verifies SHA-256 checksums of custom SAST rules to block unauthorized rule tampering. Contains heuristic ReDoS regex safety checks.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Rule Protection</span>
+              <span class="font-bold text-brand-emerald">ReDoS Guard</span>
+            </div>
+          </div>
+
+          <!-- Module 8 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-cyan transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-800 dark:text-brand-cyan border border-cyan-500/30">MODULE 08</span>
+                <i class="ph-bold ph-list-numbers text-2xl text-brand-cyan"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Append-Only Audit Log</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Cryptographic append-only JSONL audit log (<code class="font-bold text-brand-cyan">.sast/firewall_audit.jsonl</code>) with cryptographic hash chain integrity verification.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Audit Governance</span>
+              <span class="font-bold text-brand-cyan">SHA-256 Hash Chain</span>
+            </div>
+          </div>
+
+          <!-- Module 9 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-cyan transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-800 dark:text-brand-cyan border border-cyan-500/30">MODULE 09</span>
+                <i class="ph-bold ph-graph text-2xl text-brand-cyan"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Evidence Engine</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Constructs Evidence Graphs connecting sources, propagation paths, sanitizers, and sinks. Extracts program slices for concise token-saving analysis.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Dataflow &amp; Slicing</span>
+              <span class="font-bold text-brand-cyan">Program Slicer</span>
+            </div>
+          </div>
+
+          <!-- Module 10 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-violet transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-purple-500/20 text-purple-800 dark:text-brand-violet border border-purple-500/30">MODULE 10</span>
+                <i class="ph-bold ph-timer text-2xl text-brand-violet"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Bounded Verification Harness</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Enforces strict execution constraints on verification loops: Max 5 iterations, 10 tool calls, 30s execution, 1MB output, 20 files read, 128MB RAM.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Resource Boundary</span>
+              <span class="font-bold text-brand-violet">Max 5 Iterations / 30s</span>
+            </div>
+          </div>
+
+          <!-- Module 11 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-violet transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-purple-500/20 text-purple-800 dark:text-brand-violet border border-purple-500/30">MODULE 11</span>
+                <i class="ph-bold ph-books text-2xl text-brand-violet"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Adaptive Knowledge Base</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Trusted Sanitizer Registry with Human/Policy Approval Gate. Prevents AI agents from auto-approving unverified sanitizers without human signature.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Sanitizer Governance</span>
+              <span class="font-bold text-brand-violet">Human Approval Gate</span>
+            </div>
+          </div>
+
+          <!-- Module 12 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-emerald transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-800 dark:text-brand-emerald border border-emerald-500/30">MODULE 12</span>
+                <i class="ph-bold ph-chart-line-up text-2xl text-brand-emerald"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Standards Mapper &amp; Metrics</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Maps rule triggers to OWASP Top 10, CWE Top 25, and NIST 800-53 controls while computing real-time Precision, Recall, F1, FPR, and FNR quality metrics.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Compliance &amp; Metrics</span>
+              <span class="font-bold text-brand-emerald">Precision &amp; F1 Engine</span>
+            </div>
+          </div>
+
+          <!-- Module 13 -->
+          <div class="brutal-card p-6 rounded-2xl flex flex-col justify-between bg-white dark:bg-obsidian-950 hover:border-brand-cyan font-mono text-xs md:col-span-2 lg:col-span-1 hover:border-brand-cyan transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-black px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-800 dark:text-brand-cyan border border-cyan-500/30">MODULE 13</span>
+                <i class="ph-bold ph-code-block text-2xl text-brand-cyan"></i>
+              </div>
+              <h3 class="font-display font-black text-xl text-black dark:text-white mb-2">Framework Semantics Engine</h3>
+              <p class="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                Extensible Strategy Pattern handling ASP.NET WebForms server controls (<code class="font-bold text-brand-cyan">&lt;asp:TextBox&gt;</code>, <code class="font-bold text-brand-cyan">runat="server"</code>) and multi-language framework semantics.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-black/10 dark:border-white/10 font-mono text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+              <span>Domain: Framework Semantics</span>
+              <span class="font-bold text-brand-cyan">ASP.NET &amp; Strategy Pattern</span>
             </div>
           </div>
 
@@ -595,17 +584,17 @@ def get_user_account(user_id):
       </div>
     </section>
 
-    <!-- INTERACTIVE ANIMATED WORKFLOW ARCHITECTURE SECTION -->
-    <section id="workflow" class="min-h-[85vh] py-24 px-6 md:px-10 bg-slate-200/70 dark:bg-obsidian-900/80 border-b-3 border-black dark:border-white/10 flex flex-col justify-center">
+    <!-- WORKFLOW EXECUTION ARCHITECTURE & SYMBIOTIC TOPOLOGY MAP -->
+    <section id="architecture" class="min-h-[85vh] py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10 flex flex-col justify-center cyber-grid-pattern">
       <div class="max-w-6xl mx-auto w-full">
         
         <div class="flex flex-wrap items-end justify-between gap-4 mb-12">
           <div>
             <div class="inline-block px-3 py-1 rounded bg-black dark:bg-brand-emerald/15 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase tracking-wider mb-3 border border-black dark:border-brand-emerald/30">
-              ⚡ LIVE STEP-BY-STEP EXECUTION ANIMATION
+              ⚡ SYMBIOTIC AI SECURITY TOPOLOGY MAP
             </div>
             <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white uppercase tracking-tight">
-              Workflow Execution Architecture
+              Symbiotic Security Architecture
             </h2>
           </div>
           <button id="workflow-autoplay-btn" onclick="toggleWorkflowAutoPlay()" class="px-4 py-2 rounded-xl brutal-btn-alt font-mono font-extrabold text-xs flex items-center gap-2 shadow-brutal-sm">
@@ -618,7 +607,7 @@ def get_user_account(user_id):
           <div class="flex items-center justify-between border-b-2 border-black dark:border-white/10 pb-4 mb-4 font-mono text-xs">
             <div class="flex items-center gap-3">
               <span class="w-3 h-3 rounded-full bg-brand-emerald animate-ping"></span>
-              <span class="font-bold text-black dark:text-white uppercase tracking-wider">FULL PROJECT ARCHITECTURE & TOPOLOGY MAP</span>
+              <span class="font-bold text-black dark:text-white uppercase tracking-wider">FULL PROJECT TOPOLOGY &amp; SYMBIOTIC DATAFLOW MATRIX</span>
             </div>
           </div>
 
@@ -626,25 +615,25 @@ def get_user_account(user_id):
           <div class="mb-4 p-2.5 rounded-xl bg-slate-200/90 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 flex flex-wrap items-center justify-between gap-3 shadow-brutal-sm">
             <div class="flex items-center gap-2">
               <i class="ph-bold ph-funnel text-base text-black dark:text-white"></i>
-              <span class="text-xs font-mono font-black uppercase tracking-wider text-black dark:text-white">Filter Workflow By Command Type:</span>
+              <span class="text-xs font-mono font-black uppercase tracking-wider text-black dark:text-white">Filter Topology By Subsystem:</span>
             </div>
             <div class="flex flex-wrap gap-2">
               <button onclick="switchWorkflowMode('firewall')" id="mode-btn-firewall" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-rose-500 text-white shadow-brutal-sm">
-                🔴 1. Shell Command Firewall
+                🔴 1. 10-Stage Firewall
               </button>
               <button onclick="switchWorkflowMode('autoscan')" id="mode-btn-autoscan" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-black">
-                🟢 2. PostToolCall AI Code Scan
+                🟢 2. PostToolCall SAST Scan
               </button>
               <button onclick="switchWorkflowMode('slash')" id="mode-btn-slash" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-cyan-500 hover:text-black">
-                🔵 3. Slash Command Audit (/sast-audit)
+                🔵 3. Slash &amp; Decision Engine
               </button>
               <button onclick="switchWorkflowMode('all')" id="mode-btn-all" class="mode-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono font-black transition-all border-2 border-black bg-white dark:bg-obsidian-950 text-slate-700 dark:text-slate-300 hover:bg-brand-emerald hover:text-black">
-                ⚡ 4. Full Overview (All Systems)
+                ⚡ 4. Full 13-Module Overview
               </button>
             </div>
           </div>
 
-          <!-- Ultra-Detailed SVG Architecture Topology Canvas -->
+          <!-- SVG Architecture Topology Canvas -->
           <div class="relative w-full min-h-[500px] rounded-xl bg-slate-100/90 dark:bg-obsidian-900/90 border-2 border-black/20 dark:border-white/10 p-4 flex items-center justify-center overflow-x-auto terminal-scrollbar">
             
             <svg class="w-full min-w-[960px] h-[480px]" viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet">
@@ -660,10 +649,6 @@ def get_user_account(user_id):
                 <linearGradient id="edge-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.8" />
                   <stop offset="100%" stop-color="#a855f7" stop-opacity="0.3" />
-                </linearGradient>
-                <linearGradient id="edge-violet" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#a855f7" stop-opacity="0.8" />
-                  <stop offset="100%" stop-color="#10b981" stop-opacity="0.3" />
                 </linearGradient>
 
                 <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
@@ -681,206 +666,164 @@ def get_user_account(user_id):
               </pattern>
               <rect width="100%" height="100%" fill="url(#arch-mesh-grid)" />
 
-              <!-- Architecture Section Background Regions -->
-              <!-- Client & Hook Layer -->
+              <!-- Architecture Layer Regions -->
               <rect x="20" y="20" width="220" height="440" rx="16" fill="none" stroke="#10b981" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
-              <text x="35" y="42" fill="#10b981" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">01. CLIENT & HOOK LAYER</text>
+              <text x="35" y="42" fill="#10b981" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">01. CLIENT &amp; HOOK LAYER</text>
 
-              <!-- Firewall & Deobfuscation -->
               <rect x="260" y="20" width="220" height="440" rx="16" fill="none" stroke="#e11d48" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
-              <text x="275" y="42" fill="#e11d48" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">02. COMMAND FIREWALL</text>
+              <text x="275" y="42" fill="#e11d48" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">02. 10-STAGE FIREWALL</text>
 
-              <!-- Control Plane & Stdio MCP Server -->
               <rect x="500" y="20" width="230" height="440" rx="16" fill="none" stroke="#06b6d4" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
-              <text x="515" y="42" fill="#06b6d4" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">03. CONTROL PLANE & MCP</text>
+              <text x="515" y="42" fill="#06b6d4" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">03. CONTROL PLANE &amp; MCP</text>
 
-              <!-- SAST Scan Engine & Exporters -->
               <rect x="750" y="20" width="230" height="440" rx="16" fill="none" stroke="#a855f7" stroke-opacity="0.2" stroke-width="1.5" stroke-dasharray="6 4" />
-              <text x="765" y="42" fill="#a855f7" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">04. SAST SCAN & EXPORTERS</text>
+              <text x="765" y="42" fill="#a855f7" font-family="monospace" font-weight="900" font-size="10" letter-spacing="1">04. SAST INTELLIGENCE</text>
 
-              <!-- Central Hub-and-Spoke Cable Infrastructure - All 3 Streams Converge into CORE MCP Server -->
+              <!-- Central Hub Cables -->
               <g stroke-width="2" fill="none">
-                <!-- 🔴 PIPELINE 1: COMMAND FIREWALL (Inputs -> 02-A -> CORE -> 02-C Verdicts & 05 Logger) -->
                 <path id="path-firewall-stream" d="M 230 95 L 270 95 M 465 95 L 490 95 Q 500 95 500 110 L 500 220 Q 500 235 520 235 M 715 235 L 735 235 Q 745 235 745 110 Q 745 95 755 95 L 770 95" stroke="#e11d48" stroke-opacity="0.65" stroke-dasharray="6 4" />
-                
-                <!-- 🟢 PIPELINE 2: AI CODE MOD SCAN (Inputs -> 02-B AST -> CORE -> 04 AI Cache) -->
                 <path id="path-sast-top-stream" d="M 230 235 L 270 235 M 465 235 L 520 235 M 715 235 L 770 235" stroke="#10b981" stroke-opacity="0.65" stroke-dasharray="6 4" />
-                
-                <!-- 🔵 PIPELINE 3: SLASH COMMAND AUDIT (Inputs -> 03-A Profile -> CORE -> 03 SAST Vector & 05 Logger) -->
                 <path id="path-sast-bot-stream" d="M 230 375 L 270 375 M 465 375 L 490 375 Q 500 375 500 350 L 500 250 Q 500 235 520 235 M 715 235 L 735 235 Q 745 235 745 360 Q 745 375 755 375 L 770 375" stroke="#06b6d4" stroke-opacity="0.65" stroke-dasharray="6 4" />
               </g>
 
-              <!-- Smooth Dynamic Cyber Data Stream Packets (~4.5s - 5.0s Duration / Lively Flow) -->
-              <!-- Firewall Stream Packets (Rose Packets) -->
+              <!-- Stream Packets -->
               <g class="stream-packet-firewall">
                 <circle r="4" fill="#e11d48" filter="url(#neon-glow)">
-                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="0s">
-                    <mpath href="#path-firewall-stream" />
-                  </animateMotion>
+                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="0s"><mpath href="#path-firewall-stream" /></animateMotion>
                 </circle>
                 <circle r="4" fill="#e11d48" filter="url(#neon-glow)">
-                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="1.5s">
-                    <mpath href="#path-firewall-stream" />
-                  </animateMotion>
-                </circle>
-                <circle r="4" fill="#e11d48" filter="url(#neon-glow)">
-                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="3.0s">
-                    <mpath href="#path-firewall-stream" />
-                  </animateMotion>
+                  <animateMotion dur="4.5s" repeatCount="indefinite" begin="1.5s"><mpath href="#path-firewall-stream" /></animateMotion>
                 </circle>
               </g>
 
-              <!-- SAST Audit Stream Packets (Emerald Packets) -->
               <g class="stream-packet-autoscan">
                 <circle r="4" fill="#10b981" filter="url(#neon-glow)">
-                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="0s">
-                    <mpath href="#path-sast-top-stream" />
-                  </animateMotion>
+                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="0s"><mpath href="#path-sast-top-stream" /></animateMotion>
                 </circle>
                 <circle r="4" fill="#10b981" filter="url(#neon-glow)">
-                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="1.6s">
-                    <mpath href="#path-sast-top-stream" />
-                  </animateMotion>
-                </circle>
-                <circle r="4" fill="#10b981" filter="url(#neon-glow)">
-                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="3.2s">
-                    <mpath href="#path-sast-top-stream" />
-                  </animateMotion>
+                  <animateMotion dur="4.8s" repeatCount="indefinite" begin="1.6s"><mpath href="#path-sast-top-stream" /></animateMotion>
                 </circle>
               </g>
 
-              <!-- Slash Commands & Cache Packets (Cyan Packets) -->
               <g class="stream-packet-slash">
                 <circle r="4" fill="#06b6d4" filter="url(#neon-glow)">
-                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="0s">
-                    <mpath href="#path-sast-bot-stream" />
-                  </animateMotion>
+                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="0s"><mpath href="#path-sast-bot-stream" /></animateMotion>
                 </circle>
                 <circle r="4" fill="#06b6d4" filter="url(#neon-glow)">
-                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="1.66s">
-                    <mpath href="#path-sast-bot-stream" />
-                  </animateMotion>
-                </circle>
-                <circle r="4" fill="#06b6d4" filter="url(#neon-glow)">
-                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="3.33s">
-                    <mpath href="#path-sast-bot-stream" />
-                  </animateMotion>
+                  <animateMotion dur="5.0s" repeatCount="indefinite" begin="1.66s"><mpath href="#path-sast-bot-stream" /></animateMotion>
                 </circle>
               </g>
 
-              <!-- === LAYER 1: CLIENT & HOOKS === -->
-              <!-- Step 1 Node: PreCommand Hook (Row 1 Input) -->
+              <!-- Node 1 -->
               <g id="step-node-1" transform="translate(35, 50)" onclick="selectStep(1)" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-rose-500" stroke-width="2" filter="url(#neon-glow)" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="2" />
                 <circle cx="20" cy="24" r="12" fill="#e11d48" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">01-A</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Intake & Req Gate</text>
-                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">PreCommand Hook</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Zero Ambiguity Guard</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">PreCommand Interceptor</text>
+                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">Shell Command Gate</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Zero-Trust Inspection</text>
               </g>
 
-              <!-- PostToolCall Auto-Scan Sub-node (Row 2 Input) -->
+              <!-- Node 1b -->
               <g id="step-node-1b" transform="translate(35, 190)" onclick="selectStep('1b')" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-emerald" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#10b981" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">01-B</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">AI File Modifications</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">PostToolCall Auto-Scan</text>
                 <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">PostToolCallExecute</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Auto-Scan Generated Code</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Instant Diff Scanner</text>
               </g>
 
-              <!-- Slash Commands Node (Row 3 Input) -->
+              <!-- Node 1c -->
               <g id="step-node-1c" transform="translate(35, 330)" onclick="selectStep('1c')" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-cyan" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#06b6d4" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">01-C</text>
                 <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Slash Commands</text>
-                <text x="14" y="52" class="fill-brand-cyan font-bold text-[10px]" font-family="monospace">/sast-audit • /sast-init</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Manual Security Auditing</text>
+                <text x="14" y="52" class="fill-brand-cyan font-bold text-[10px]" font-family="monospace">/sast-audit • /sast-mode</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Interactive Security Auditing</text>
               </g>
 
-              <!-- === LAYER 2: LOCAL PRE-PROCESSORS & PARSERS === -->
-              <!-- Step 2 Node: Command Firewall Deobfuscator (Row 1) -->
+              <!-- Node 2 -->
               <g id="step-node-2" transform="translate(270, 50)" onclick="selectStep(2)" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-rose-500" stroke-width="2" filter="url(#neon-glow)" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="2" />
                 <circle cx="20" cy="24" r="12" fill="#e11d48" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">02-A</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Command Firewall</text>
-                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">Strips carets c^m^d</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Base64 Shell Payload Dec</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">10-Stage Normalizer</text>
+                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">Anti-Bypass Deobfuscator</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Base64, Hex &amp; Caret Stripper</text>
               </g>
 
-              <!-- PowerShell AST Parser Node (Row 2) -->
+              <!-- Node 2b -->
               <g id="step-node-2b" transform="translate(270, 190)" onclick="selectStep('2b')" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-emerald" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#10b981" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">02-B</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">PowerShell AST Parser</text>
-                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">AST Expression Evaluator</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">De-obfuscates Carets</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Capability &amp; Intent</text>
+                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">7 Capability Groups</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Intent Reasoning Engine</text>
               </g>
 
-              <!-- Profile Cascade Resolver Node (Row 3) -->
+              <!-- Node 3a -->
               <g id="step-node-3a" transform="translate(270, 330)" onclick="selectStep('3a')" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-cyan" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#06b6d4" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">03-A</text>
                 <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Profile Cascade</text>
-                <text x="14" y="52" class="fill-brand-cyan font-bold text-[10px]" font-family="monospace">.sast/profile.json (CWD)</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Git Root -> Global Fallback</text>
+                <text x="14" y="52" class="fill-brand-cyan font-bold text-[10px]" font-family="monospace">.sast/profile.json</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">CWD -> Git -> Global</text>
               </g>
 
-              <!-- === LAYER 3: CENTRAL CORE STDIO MCP SERVER GATEWAY === -->
-              <!-- Stdio MCP Server Engine (Central Gateway Hub) -->
+              <!-- Node CORE -->
               <g id="step-node-core" transform="translate(520, 190)" onclick="selectStep('core')" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-obsidian-950 stroke-brand-emerald" stroke-width="3.5" filter="url(#neon-glow)" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="3.5" />
                 <circle cx="24" cy="26" r="12" fill="#10b981" />
                 <text x="24" y="30" text-anchor="middle" fill="#000" font-family="monospace" font-weight="900" font-size="8">CORE</text>
                 <text x="42" y="28" fill="#fff" font-family="sans-serif" font-weight="900" font-size="11">STDIO MCP SERVER</text>
-                <text x="14" y="52" fill="#10b981" font-family="monospace" font-weight="bold" font-size="9">9 Stdio JSON-RPC Tools</text>
+                <text x="14" y="52" fill="#10b981" font-family="monospace" font-weight="bold" font-size="9">13 Native MCP Tools</text>
                 <text x="14" y="68" fill="#a855f7" font-family="monospace" font-weight="bold" font-size="9">Central Application Gateway</text>
               </g>
 
-              <!-- === LAYER 4: ENGINES, CACHE & LOGGERS === -->
-              <!-- Firewall Verdicts Node (Row 1 Output) -->
+              <!-- Node 2c -->
               <g id="step-node-2c" transform="translate(770, 50)" onclick="selectStep('2c')" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-rose-500" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#e11d48" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">02-C</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Firewall Verdicts</text>
-                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">DENY (rm -rf / format)</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Firewall Verdict Engine</text>
+                <text x="14" y="52" class="fill-rose-500 font-bold text-[10px]" font-family="monospace">DENY (rm -rf, format)</text>
                 <text x="14" y="68" class="fill-amber-500 font-bold text-[9px]" font-family="monospace">CONFIRM (Remove-Item)</text>
               </g>
 
-              <!-- SHA-256 AI Response Cache Node (Row 2 Output) -->
+              <!-- Node 4 -->
               <g id="step-node-4" transform="translate(770, 190)" onclick="selectStep(4)" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-brand-emerald" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#10b981" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">04</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">SHA-256 AI Cache</text>
-                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">24h TTL Scan Cache</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Zero Latency Verification</text>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Bounded Harness</text>
+                <text x="14" y="52" class="fill-brand-emerald font-bold text-[10px]" font-family="monospace">Max 5 Iterations / 30s</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">SHA-256 AI Response Cache</text>
               </g>
 
-              <!-- 53 SAST Vector Engine & Report Logger Node (Row 3 Output) -->
+              <!-- Node 3 -->
               <g id="step-node-3" transform="translate(770, 330)" onclick="selectStep(3)" class="cursor-pointer transition-all duration-300">
                 <rect width="195" height="90" rx="14" class="node-rect fill-white dark:fill-obsidian-950 stroke-purple-500" stroke-width="1.5" />
                 <rect width="195" height="90" rx="14" fill="none" stroke="#000" stroke-width="1.5" />
                 <circle cx="20" cy="24" r="12" fill="#a855f7" />
                 <text x="20" y="28" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="900" font-size="9">03</text>
-                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">53 SAST Vector Audit</text>
-                <text x="14" y="52" class="fill-purple-500 font-bold text-[10px]" font-family="monospace">OWASP TOP 10 • NIST 800-53</text>
-                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">ASP.NET / Secret / SQLi</text>
-              </g>            </svg>
+                <text x="38" y="28" class="fill-slate-900 dark:fill-white font-black text-[11px]" font-family="sans-serif">Decision &amp; Audit Log</text>
+                <text x="14" y="52" class="fill-purple-500 font-bold text-[10px]" font-family="monospace">4-State Decision Machine</text>
+                <text x="14" y="68" class="fill-slate-500 font-bold text-[9px]" font-family="monospace">Append-Only Hash Chain</text>
+              </g>
+            </svg>
 
           </div>
         </div>
@@ -897,7 +840,7 @@ def get_user_account(user_id):
                   REQUIREMENTS GATE
                 </span>
                 <h4 class="font-display font-black text-lg text-black dark:text-white leading-tight mt-0.5">
-                  Step 1: Intake & Requirements Analysis
+                  Step 1: Intake &amp; Requirements Analysis
                 </h4>
               </div>
             </div>
@@ -920,12 +863,113 @@ def get_user_account(user_id):
       </div>
     </section>
 
-    <!-- COMPARISON TABLE SECTION -->
-    <section id="compare" class="min-h-[85vh] py-24 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10 flex flex-col justify-center">
+    <!-- LIVE INTERACTIVE FIREWALL SANDBOX -->
+    <section id="firewall" class="py-20 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-12">
+          <span class="px-3 py-1 bg-black dark:bg-brand-rose/20 text-white dark:text-brand-rose font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-rose/40">LIVE TERMINAL SIMULATOR</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">10-Stage Firewall Sandbox</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base max-w-xl mx-auto mt-2 font-medium">
+            Test real-time ALLOW / CONFIRM / DENY responses against obfuscated and destructive shell commands.
+          </p>
+        </div>
+
+        <div class="brutal-card rounded-2xl max-w-4xl mx-auto overflow-hidden">
+          <div class="bg-black text-white px-6 py-3.5 flex items-center justify-between font-mono text-xs border-b-2 border-black dark:border-white/20">
+            <div class="flex items-center gap-3">
+              <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+              <span class="font-bold ml-2">firewall-normalizer.ps1</span>
+            </div>
+            <span class="px-3 py-0.5 rounded bg-white text-black font-bold text-[11px] uppercase">10-STAGE DEOBFUSCATOR ACTIVE</span>
+          </div>
+
+          <div class="p-4 bg-slate-200/80 dark:bg-obsidian-850 border-b-2 border-black dark:border-white/10 flex flex-wrap items-center gap-2 font-mono text-xs">
+            <span class="font-bold text-black dark:text-slate-200 mr-2">Preset Test Commands:</span>
+            <button onclick="simulateCommand('rm -rf /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">rm -rf /</button>
+            <button onclick="simulateCommand('r^m^ -r^f /')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">r^m^ -r^f (Carets)</button>
+            <button onclick="simulateCommand('Format-Volume -DriveLetter D -FileSystem NTFS')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Format-Volume D</button>
+            <button onclick="simulateCommand('Set-MpPreference -DisableRealtimeMonitoring $true')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Disable Defender</button>
+            <button onclick="simulateCommand('powershell -enc cm0gLXJmIC8=')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">Base64 Payload</button>
+            <button onclick="simulateCommand('git push origin main --force')" class="px-3 py-1 rounded brutal-btn-alt font-bold text-xs">git push --force</button>
+          </div>
+
+          <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-950 space-y-4 min-h-[280px] max-h-[400px] overflow-y-auto terminal-scrollbar flex flex-col justify-between">
+            <div id="terminal-output" class="space-y-3">
+              <div class="text-slate-600 dark:text-slate-400">// 10-Stage Firewall Deobfuscator &amp; Command Interceptor ready.</div>
+              <div class="text-black dark:text-slate-200 font-semibold">Click a preset above or enter shell instruction to evaluate firewall rules.</div>
+            </div>
+
+            <form onsubmit="handleCustomCommand(event)" class="mt-4 flex items-center gap-3 bg-slate-100 dark:bg-obsidian-900 p-3 rounded-xl border-2 border-black dark:border-white/20">
+              <label for="cmd-input" class="font-bold text-black dark:text-brand-emerald">$</label>
+              <input type="text" id="cmd-input" name="command" placeholder="Type command (e.g. format C:, git commit, rmdir /s)..." class="bg-transparent text-black dark:text-white font-bold w-full focus:outline-none focus:ring-0 focus:ring-transparent font-mono text-xs placeholder:text-slate-500 border-none outline-none" autocomplete="off" aria-label="Terminal command input" />
+              <button type="submit" class="px-4 py-2 rounded brutal-btn font-bold text-xs uppercase whitespace-nowrap">
+                Evaluate
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CODE VULNERABILITY VS SANITIZED DIFF AUDITOR -->
+    <section id="diff-sec" class="min-h-[85vh] py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10 flex flex-col justify-center">
       <div class="max-w-6xl mx-auto w-full">
         
         <div class="text-center mb-12">
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white uppercase">Feature Comparison</h2>
+          <span class="px-3 py-1 bg-black dark:bg-brand-violet/20 text-white dark:text-brand-violet font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-violet/40">EVIDENCE ENGINE &amp; PROGRAM SLICER</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Vulnerability Detection Diff</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base max-w-xl mx-auto mt-2 font-medium">
+            Extracts exact dataflow evidence graphs and minifies context for zero false positives.
+          </p>
+        </div>
+
+        <div class="brutal-card p-5 md:p-6 rounded-2xl">
+          <div class="flex items-center justify-between border-b-2 border-black dark:border-white/20 pb-4 mb-6 font-mono text-xs">
+            <div class="flex items-center gap-4">
+              <span class="text-black dark:text-rose-400 font-extrabold flex items-center gap-1.5"><i class="ph-bold ph-bug"></i> FLAGGED VULNERABLE CODE</span>
+              <span class="text-black dark:text-brand-emerald font-extrabold flex items-center gap-1.5"><i class="ph-bold ph-shield-check"></i> SANITIZED SECURE PATTERN</span>
+            </div>
+            <span class="font-bold text-black dark:text-slate-200">Rule: <code class="bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 px-2 py-0.5 rounded font-bold">CWE-89 (SQL Injection)</code></span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-rose-950/20 border-2 border-black dark:border-rose-500/40 space-y-2">
+              <div class="text-black dark:text-rose-400 font-bold text-[11px] uppercase border-b border-black/30 dark:border-rose-500/30 pb-1">// FLAGGED BY SAST GUARD EVIDENCE ENGINE</div>
+              <pre class="text-black dark:text-rose-200 overflow-x-auto font-bold"><code><span class="text-slate-600 dark:text-slate-400"># Vulnerable Raw String Interpolation</span>
+def get_user_account(user_id):
+    query = f"SELECT * FROM users WHERE id = '{user_id}'"
+    cursor.execute(query) <span class="bg-black text-white px-1"># SQLi Threat!</span>
+    return cursor.fetchone()</code></pre>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-emerald-950/20 border-2 border-black dark:border-emerald-500/40 space-y-2">
+              <div class="text-black dark:text-brand-emerald font-bold text-[11px] uppercase border-b border-black/30 dark:border-emerald-500/30 pb-1">// SANITIZED SECURE PATTERN</div>
+              <pre class="text-black dark:text-emerald-200 overflow-x-auto font-bold"><code><span class="text-slate-600 dark:text-slate-400"># Parameterized Query Execution</span>
+def get_user_account(user_id):
+    query = "SELECT * FROM users WHERE id = %s"
+    cursor.execute(query, (user_id,)) <span class="bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 px-1 font-bold"># Safe!</span>
+    return cursor.fetchone()</code></pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FEATURE COMPARISON MATRIX (v1.x VS v2.0.0) -->
+    <section id="compare" class="min-h-[85vh] py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10 flex flex-col justify-center">
+      <div class="max-w-6xl mx-auto w-full">
+        
+        <div class="text-center mb-12">
+          <span class="px-3.5 py-1 bg-black dark:bg-brand-violet/20 text-white dark:text-brand-violet font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-violet/40">EVOLUTION &amp; BENCHMARK</span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase tracking-tight">Feature Comparison Matrix</h2>
+          <p class="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mt-2 font-medium">
+            Compare v2.0.0 13 Symbiotic Security Modules against legacy v1.x and traditional enterprise SAST scanners.
+          </p>
         </div>
 
         <div class="brutal-card rounded-2xl overflow-hidden">
@@ -933,54 +977,69 @@ def get_user_account(user_id):
             <table class="w-full text-left text-xs font-mono text-black dark:text-slate-200">
               <thead class="bg-black dark:bg-obsidian-950 text-white text-xs uppercase border-b-2 border-black dark:border-white/20">
                 <tr>
-                  <th scope="col" class="py-4 px-6 font-bold">Capability</th>
-                  <th scope="col" class="py-4 px-6 text-white dark:text-brand-emerald font-black">Security SAST Guard</th>
-                  <th scope="col" class="py-4 px-6 font-bold">SonarQube / Snyk</th>
-                  <th scope="col" class="py-4 px-6 font-bold">Semgrep</th>
+                  <th scope="col" class="py-4 px-6 font-bold">Capability / Dimension</th>
+                  <th scope="col" class="py-4 px-6 text-white dark:text-brand-emerald font-black">SAST Guard v2.0.0 (13 Modules)</th>
+                  <th scope="col" class="py-4 px-6 font-bold text-slate-400">SAST Guard v1.x (Legacy)</th>
+                  <th scope="col" class="py-4 px-6 font-bold text-slate-400">SonarQube / Snyk</th>
+                  <th scope="col" class="py-4 px-6 font-bold text-slate-400">Semgrep</th>
                 </tr>
               </thead>
               <tbody class="divide-y-2 divide-black dark:divide-white/10 font-bold">
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Real-Time Command Firewall</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Yes (PreCommand Hook + De-obfuscator)</td>
-                  <td class="py-4 px-6 text-slate-500">No (Code Only)</td>
-                  <td class="py-4 px-6 text-slate-500">No (Code Only)</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Command Firewall Interceptor</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> 10-Stage Anti-Bypass Deobfuscator</td>
+                  <td class="py-4 px-6 text-slate-500">Basic Regex Interceptor</td>
+                  <td class="py-4 px-6 text-slate-500">None (Code Only)</td>
+                  <td class="py-4 px-6 text-slate-500">None (Code Only)</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Taint Analysis & Dataflow Tracing</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Source-to-Sink Taint Engine</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Security Decision Engine</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> 4-State Machine + Policy Overrides</td>
+                  <td class="py-4 px-6 text-slate-500">Binary Allow / Deny</td>
+                  <td class="py-4 px-6 text-slate-500">Static Quality Gate</td>
+                  <td class="py-4 px-6 text-slate-500">Rule Match Only</td>
+                </tr>
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Verification Loop Control</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> Bounded Harness (Max 5 Iterations / 30s)</td>
+                  <td class="py-4 px-6 text-slate-500">Unbounded Single Pass</td>
+                  <td class="py-4 px-6 text-slate-500">Batch Job Run</td>
+                  <td class="py-4 px-6 text-slate-500">Single CLI Run</td>
+                </tr>
+                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Dataflow &amp; Evidence Graphs</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> Evidence Engine &amp; Program Slicer</td>
+                  <td class="py-4 px-6 text-slate-500">Line Snippets Only</td>
                   <td class="py-4 px-6 text-slate-500">Heavy Enterprise Only</td>
                   <td class="py-4 px-6 text-slate-500">Paid Pro Only</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">SHA-256 AI Response Caching</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> 24h TTL Zero Latency Cache</td>
-                  <td class="py-4 px-6 text-slate-500">None (Full Re-scan)</td>
-                  <td class="py-4 px-6 text-slate-500">None (Full Re-scan)</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Audit Trail &amp; Integrity</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> SHA-256 Hash Chain JSONL Audit Log</td>
+                  <td class="py-4 px-6 text-slate-500">Standard Text Log</td>
+                  <td class="py-4 px-6 text-slate-500">Database Records</td>
+                  <td class="py-4 px-6 text-slate-500">Console Output</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Context Minification (Token Saving)</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Built-in Snippet Extractor</td>
-                  <td class="py-4 px-6 text-slate-500">N/A</td>
-                  <td class="py-4 px-6 text-slate-500">N/A</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Sanitizer Knowledge Base</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> Adaptive KB &amp; Human Approval Gate</td>
+                  <td class="py-4 px-6 text-slate-500">Static Hardcoded Rules</td>
+                  <td class="py-4 px-6 text-slate-500">Manual Suppression</td>
+                  <td class="py-4 px-6 text-slate-500">Inline Comments</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Scan Speed / Latency</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black">&lt; 50ms (PowerShell AST)</td>
-                  <td class="py-4 px-6 text-slate-500">Slow (Heavy Java AST)</td>
-                  <td class="py-4 px-6 text-slate-500">Medium</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Framework Semantics Support</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> ASP.NET WebForms &amp; Multi-Lang Engine</td>
+                  <td class="py-4 px-6 text-slate-500">Generic Regex</td>
+                  <td class="py-4 px-6 text-slate-500">Framework Plugins</td>
+                  <td class="py-4 px-6 text-slate-500">Generic Semgrep Rules</td>
                 </tr>
                 <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Antigravity 2.0 Stdio MCP Server</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> Stdio Server (11 Tools)</td>
-                  <td class="py-4 px-6 text-slate-500">No (Web API only)</td>
-                  <td class="py-4 px-6 text-slate-500">No (CLI only)</td>
-                </tr>
-                <tr class="hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
-                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Multi-Project Profile Cascade</td>
-                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg"></i> .sast/profile.json Cascade</td>
-                  <td class="py-4 px-6 text-slate-500">Global Admin Only</td>
-                  <td class="py-4 px-6 text-slate-500">Manual Config</td>
+                  <td class="py-4 px-6 font-display font-black text-sm text-black dark:text-white">Reporting Standards &amp; TUI</td>
+                  <td class="py-4 px-6 text-black dark:text-brand-emerald font-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-lg text-brand-emerald"></i> Pure ANSI TUI + SARIF 2.1.0 (CWE/OWASP)</td>
+                  <td class="py-4 px-6 text-slate-500">Basic JSON Export</td>
+                  <td class="py-4 px-6 text-slate-500">Web Portal Only</td>
+                  <td class="py-4 px-6 text-slate-500">SARIF / JSON</td>
                 </tr>
               </tbody>
             </table>
@@ -991,12 +1050,12 @@ def get_user_account(user_id):
     </section>
 
     <!-- INSTALLATION SUITE SECTION -->
-    <section id="install" class="py-20 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950">
+    <section id="install" class="py-20 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
       <div class="max-w-6xl mx-auto">
         
         <div class="text-center mb-10">
           <span class="px-3 py-1 bg-black dark:bg-brand-emerald/20 text-white dark:text-brand-emerald font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-emerald/40">AUTOMATED SUITE</span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Install Plugin</h2>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase">Install Plugin v2.0.0</h2>
         </div>
 
         <div class="brutal-card rounded-2xl overflow-hidden">
@@ -1006,12 +1065,12 @@ def get_user_account(user_id):
               <button onclick="switchTab('update')" id="tab-update" class="px-4 py-1.5 rounded text-white hover:underline font-bold text-xs">2. Update</button>
               <button onclick="switchTab('remove')" id="tab-remove" class="px-4 py-1.5 rounded text-white hover:underline font-bold text-xs">3. Remove</button>
             </div>
-            <span class="font-bold">PowerShell Core 7+</span>
+            <span class="font-bold">PowerShell Core 7+ / Gemini CLI</span>
           </div>
 
           <div class="p-6 font-mono text-xs md:text-sm bg-white dark:bg-obsidian-900">
             <div id="content-install" class="space-y-4">
-              <div class="text-slate-700 dark:text-slate-300 font-bold">// Downloads release ZIP, extracts, and configures Antigravity CLI plugin</div>
+              <div class="text-slate-700 dark:text-slate-300 font-bold">// Downloads v2.0.0 release ZIP, extracts, and configures Antigravity CLI plugin</div>
               <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 flex items-center justify-between text-black dark:text-brand-emerald font-bold gap-3">
                 <code id="code-install" class="overflow-x-auto">Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"; .\install.ps1</code>
                 <button onclick="copySnippet('code-install')" class="ml-2 px-4 py-2 rounded brutal-btn text-xs font-bold whitespace-nowrap">Copy</button>
@@ -1036,13 +1095,16 @@ def get_user_account(user_id):
           </div>
         </div>
 
+      </div>
+    </section>
+
     <!-- PLUGIN USAGE GUIDE -->
-    <section id="usage" class="py-24 px-6 md:px-10 bg-slate-200/60 dark:bg-obsidian-900/60 border-b-3 border-black dark:border-white/10">
+    <section id="usage" class="py-24 px-6 md:px-10 bg-slate-100 dark:bg-obsidian-950 border-b-3 border-black dark:border-white/10">
       <div class="max-w-6xl mx-auto">
         
         <div class="text-center mb-14">
-          <span class="px-3.5 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">COMMAND REFERENCE <span data-version-text>v1.8.11</span></span>
-          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase tracking-tight">Plugin Usage & Controls</h2>
+          <span class="px-3.5 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">COMMAND REFERENCE <span data-version-text>v2.0.0</span></span>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase tracking-tight">Plugin Usage &amp; Controls</h2>
           <p class="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mt-2 font-medium">
             Execute security audits, initialize project profiles, launch Stdio MCP Server, and test firewall rules in real-time.
           </p>
@@ -1051,7 +1113,7 @@ def get_user_account(user_id):
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           <!-- Column 1: AI Chat Slash Commands -->
-          <div class="brutal-card rounded-2xl p-8 flex flex-col justify-between">
+          <div class="brutal-card rounded-2xl p-8 flex flex-col justify-between bg-white dark:bg-obsidian-950">
             <div>
               <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-black dark:border-white/20">
                 <div class="flex items-center gap-3">
@@ -1060,7 +1122,7 @@ def get_user_account(user_id):
                   </div>
                   <div>
                     <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white">AI Chat Slash Commands</h3>
-                    <span class="font-mono text-xs text-slate-600 dark:text-slate-400 font-bold">Antigravity Chat & Gemini CLI</span>
+                    <span class="font-mono text-xs text-slate-600 dark:text-slate-400 font-bold">Antigravity Chat &amp; Gemini CLI</span>
                   </div>
                 </div>
                 <span class="px-3 py-1 bg-black dark:bg-brand-emerald text-white dark:text-obsidian-950 font-mono text-xs font-extrabold rounded uppercase">Interactive</span>
@@ -1071,22 +1133,22 @@ def get_user_account(user_id):
               </p>
 
               <div class="space-y-4 font-mono text-xs">
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
                     <code id="cmd-sast-audit">🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
                     <button onclick="copySnippet('cmd-sast-audit')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit. Outputs Markdown and JSON reports.</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit. Outputs Pure ANSI TUI, Markdown, and SARIF 2.1.0 reports.</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-purple-400 font-bold text-sm">
                     <code>🧬 /sast-rules [sync &lt;dir&gt;|add &lt;file&gt;]</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Parses and syncs custom Markdown security rules into active ruleset.</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Parses and syncs custom Markdown security rules with SHA-256 integrity verification.</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
                     <code id="cmd-sast-status">📊 /sast-status</code>
                     <button onclick="copySnippet('cmd-sast-status')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
@@ -1094,21 +1156,21 @@ def get_user_account(user_id):
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Displays version, project ID, tech stack, operation mode, and active rules count.</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
                     <code>🚀 /sast-init</code>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Creates project-local <code class="text-slate-900 dark:text-white font-bold">.sast/profile.json</code> security profile.</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-emerald-400 font-bold text-sm">
                     <code>🎛️ /sast-mode [strict|draft]</code>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Switches operation mode (<code class="text-emerald-500 font-bold">strict</code>: full enforcement, <code class="text-amber-500 font-bold">draft</code>: auto-allow low/medium).</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-violet font-bold text-sm">
                     <code>🎚️ /sast-audit-level [lite|full|ultra]</code>
                   </div>
@@ -1119,7 +1181,7 @@ def get_user_account(user_id):
           </div>
 
           <!-- Column 2: CLI Control Plane & Stdio MCP Server -->
-          <div class="brutal-card rounded-2xl p-8 flex flex-col justify-between">
+          <div class="brutal-card rounded-2xl p-8 flex flex-col justify-between bg-white dark:bg-obsidian-950">
             <div>
               <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-black dark:border-white/20">
                 <div class="flex items-center gap-3">
@@ -1127,8 +1189,8 @@ def get_user_account(user_id):
                     <i class="ph-bold ph-terminal-window"></i>
                   </div>
                   <div>
-                    <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white">CLI Plane & MCP Server</h3>
-                    <span class="font-mono text-xs text-slate-600 dark:text-slate-400 font-bold">Terminal Scripting & IDE Integration</span>
+                    <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white">CLI Plane &amp; MCP Server</h3>
+                    <span class="font-mono text-xs text-slate-600 dark:text-slate-400 font-bold">Terminal Scripting &amp; IDE Integration</span>
                   </div>
                 </div>
                 <span class="px-3 py-1 bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 font-mono text-xs font-extrabold rounded uppercase">Direct CLI</span>
@@ -1139,35 +1201,35 @@ def get_user_account(user_id):
               </p>
 
               <div class="space-y-4 font-mono text-xs">
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
                     <code>🔌 sast mcp-server</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Launches Stdio JSON-RPC MCP Server exposing 11 native IDE tools (including Taint Tracking).</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Launches Stdio JSON-RPC MCP Server exposing 13 native IDE tools (including Taint Tracking &amp; Evidence Engine).</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-rose-400 font-bold text-sm">
                     <code>🔥 sast firewall check &lt;command&gt;</code>
                   </div>
-                  <div class="text-slate-600 dark:text-slate-400 text-xs">Evaluates shell command safety against PreCommand Firewall safety rules.</div>
+                  <div class="text-slate-600 dark:text-slate-400 text-xs">Evaluates shell command safety against 10-Stage Firewall Deobfuscation rules.</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-emerald-400 font-bold text-sm">
                     <code>🎛️ sast mode [strict|draft]</code>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Updates active operation mode (<code class="text-emerald-500 font-bold">strict</code> | <code class="text-amber-500 font-bold">draft</code>).</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
                     <code>⚙️ sast init</code>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Generates project-local <code class="text-slate-900 dark:text-white font-bold">.sast/profile.json</code> profile.</div>
                 </div>
 
-                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
+                <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-amber-400 font-bold text-sm">
                     <code>📊 sast status</code>
                   </div>
@@ -1177,7 +1239,6 @@ def get_user_account(user_id):
             </div>
           </div>
 
-
         </div>
 
         <!-- RECOMMENDED ENTERPRISE WORKFLOW -->
@@ -1185,18 +1246,19 @@ def get_user_account(user_id):
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="flex-1 min-w-0">
               <div class="font-mono text-xs font-black uppercase text-brand-emerald mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-shield-check text-base"></i> Recommended <span data-version-text>v1.8.11</span> Production Workflow
+                <i class="ph-bold ph-shield-check text-base"></i> Recommended <span data-version-text>v2.0.0</span> Production Workflow
               </div>
-              <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white mb-2">Init Project → Real-Time Intercept → AI Cache Scan</h3>
+              <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white mb-2">Init Profile → 10-Stage Firewall Intercept → Bounded Harness SAST</h3>
               <p class="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                Initialize project profile via <code class="bg-slate-100 dark:bg-obsidian-900 px-2 py-0.5 rounded font-mono font-bold text-black dark:text-brand-emerald">/sast-init</code>. The PreCommand Firewall interceptor blocks destructive terminal execution while SHA-256 AI response caching eliminates duplicate scan latencies.
+                Initialize project profile via <code class="bg-slate-100 dark:bg-obsidian-900 px-2 py-0.5 rounded font-mono font-bold text-black dark:text-brand-emerald">/sast-init</code>. The 10-Stage Command Firewall intercepts obfuscated threats while the Bounded Verification Harness and Evidence Engine perform zero-false-positive SAST scans with append-only hash chain audit logging.
               </p>
             </div>
 
             <div class="font-mono text-xs bg-slate-100 dark:bg-obsidian-900 text-black dark:text-brand-emerald rounded-xl p-5 border-2 border-black dark:border-white/20 space-y-2 lg:shrink-0">
               <div class="font-bold"><span class="text-brand-cyan">01</span> /sast-init (Create .sast/profile.json)</div>
-              <div class="font-bold"><span class="text-brand-cyan">02</span> PreCommand Intercept (De-obfuscate & Block)</div>
-              <div class="font-bold"><span class="text-brand-cyan">03</span> PostWrite Auto-Scan (SHA-256 24h AI Cache)</div>
+              <div class="font-bold"><span class="text-brand-cyan">02</span> 10-Stage Firewall (De-obfuscate &amp; Intercept)</div>
+              <div class="font-bold"><span class="text-brand-cyan">03</span> Bounded Harness SAST (Max 5 Iterations / 30s Cap)</div>
+              <div class="font-bold"><span class="text-brand-cyan">04</span> Append-Only Hash Chain Audit (.sast/firewall_audit.jsonl)</div>
             </div>
           </div>
         </div>
@@ -1257,14 +1319,13 @@ def get_user_account(user_id):
 
       <div class="flex items-center gap-6 text-black dark:text-slate-300 font-bold">
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="hover:underline flex items-center gap-1.5"><i class="ph-bold ph-github-logo"></i> GitHub</a>
-        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v1.8.11</span></a>
+        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v2.0.0</span></a>
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin/blob/main/LICENSE" target="_blank" class="hover:underline">LICENSE</a>
       </div>
     </div>
   </footer>
 
-
-
+  <!-- COPY TOAST NOTIFICATION -->
   <div id="copy-toast" role="status" aria-live="polite"
     class="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 translate-y-4 items-center gap-3 rounded-xl border-2 border-black bg-brand-emerald px-5 py-3 font-mono text-xs font-black text-black opacity-0 shadow-[5px_5px_0_#000] pointer-events-none transition-all duration-200">
     <span class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-black bg-black text-brand-emerald">
@@ -1272,9 +1333,11 @@ def get_user_account(user_id):
     </span>
     <span>PowerShell command copied</span>
   </div>
-  <!-- SCROLL TO TOP BUTTON (HARMONIOUS NEO-BRUTALIST DESIGN) -->
+
+  <!-- SCROLL TO TOP BUTTON -->
   <button id="scroll-to-top-btn" onclick="scrollToTop()" class="scroll-to-top-cta fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full font-bold flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none translate-y-4 active:scale-95" title="Scroll to top of page" aria-label="Scroll to top of page">
     <i class="ph-bold ph-arrow-up text-lg"></i>
   </button>
+
 </body>
 </html>
