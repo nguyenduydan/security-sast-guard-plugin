@@ -15,6 +15,7 @@
       "regedit",
       "bcdedit",
       "diskpart",
+      "diskutil\\s+(eraseDisk|eraseVolume|repartition)",
       "sfc\\s+/scannow",
       "net\\s+(user|localgroup|accounts)\\s+.*(add|delete|/add|/delete)",
       "net\\s+stop\\s+",

@@ -118,7 +118,7 @@
         <img src="./logo.png" alt="Security SAST Guard Logo" class="w-7 h-7 group-hover:rotate-12 transition-transform" />
       </div>
       <span class="font-display font-black text-xs md:text-sm uppercase tracking-tight text-black dark:text-white whitespace-nowrap">SAST GUARD</span>
-      <span id="ver-badge-nav" class="px-2 py-0.5 rounded-full bg-black/5 dark:bg-brand-emerald/15 text-black dark:text-brand-emerald font-mono font-bold text-[10px] border border-black/20 dark:border-brand-emerald/30" data-version-text>v1.0.0</span>
+      <span id="ver-badge-nav" class="px-2 py-0.5 rounded-full bg-black/5 dark:bg-brand-emerald/15 text-black dark:text-brand-emerald font-mono font-bold text-[10px] border border-black/20 dark:border-brand-emerald/30" data-version-text>v1.8.9</span>
     </a>
 
     <!-- Top Right Quick Controls -->
@@ -297,7 +297,7 @@
             <div class="brutal-card p-5 rounded-2xl flex items-center justify-between">
               <div>
                 <div class="text-xs font-mono font-bold uppercase text-slate-700 dark:text-slate-400">Release Version</div>
-                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1" data-version-text>v1.0.0</div>
+                <div class="font-display font-black text-3xl md:text-4xl text-black dark:text-brand-violet mt-1" data-version-text>v1.8.9</div>
                 <div class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mt-2">Release-Please Tagged</div>
               </div>
               <div class="w-12 h-12 rounded-xl bg-black dark:bg-brand-violet text-white dark:text-obsidian-950 flex items-center justify-center text-2xl font-bold">
@@ -755,7 +755,7 @@ def get_user_account(user_id):
       <div class="max-w-6xl mx-auto">
         
         <div class="text-center mb-14">
-          <span class="px-3.5 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">COMMAND REFERENCE v1.0.0</span>
+          <span class="px-3.5 py-1 bg-black dark:bg-brand-cyan/20 text-white dark:text-brand-cyan font-mono text-xs font-bold uppercase rounded border border-black dark:border-brand-cyan/40">COMMAND REFERENCE <span data-version-text>v1.8.9</span></span>
           <h2 class="font-display font-black text-3xl sm:text-5xl text-black dark:text-white mt-3 uppercase tracking-tight">Plugin Usage & Controls</h2>
           <p class="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mt-2 font-medium">
             Execute security audits, initialize project profiles, launch Stdio MCP Server, and test firewall rules in real-time.
@@ -882,10 +882,10 @@ def get_user_account(user_id):
 
         <!-- RECOMMENDED ENTERPRISE WORKFLOW -->
         <div class="mt-10 brutal-card rounded-2xl p-8 bg-white dark:bg-obsidian-950">
-          <div class="flex flex-wrap items-center justify-between gap-6">
-            <div class="max-w-2xl">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="flex-1 min-w-0">
               <div class="font-mono text-xs font-black uppercase text-brand-emerald mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-shield-check text-base"></i> Recommended v1.0.0 Production Workflow
+                <i class="ph-bold ph-shield-check text-base"></i> Recommended <span data-version-text>v1.8.9</span> Production Workflow
               </div>
               <h3 class="font-display font-black text-2xl uppercase text-black dark:text-white mb-2">Init Project → Real-Time Intercept → AI Cache Scan</h3>
               <p class="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -893,7 +893,7 @@ def get_user_account(user_id):
               </p>
             </div>
 
-            <div class="font-mono text-xs bg-slate-100 dark:bg-obsidian-900 text-black dark:text-brand-emerald rounded-xl p-5 border-2 border-black dark:border-white/20 space-y-2 shrink-0">
+            <div class="font-mono text-xs bg-slate-100 dark:bg-obsidian-900 text-black dark:text-brand-emerald rounded-xl p-5 border-2 border-black dark:border-white/20 space-y-2 lg:shrink-0">
               <div class="font-bold"><span class="text-brand-cyan">01</span> /sast-init (Create .sast/profile.json)</div>
               <div class="font-bold"><span class="text-brand-cyan">02</span> PreCommand Intercept (De-obfuscate & Block)</div>
               <div class="font-bold"><span class="text-brand-cyan">03</span> PostWrite Auto-Scan (SHA-256 24h AI Cache)</div>
@@ -957,7 +957,7 @@ def get_user_account(user_id):
 
       <div class="flex items-center gap-6 text-black dark:text-slate-300 font-bold">
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin" target="_blank" class="hover:underline flex items-center gap-1.5"><i class="ph-bold ph-github-logo"></i> GitHub</a>
-        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v1.0.0</span></a>
+        <a id="ver-link-footer" href="https://github.com/nguyenduydan/security-sast-guard-plugin/releases/latest" target="_blank" class="hover:underline" data-version-link>Release <span data-version-text>v1.8.9</span></a>
         <a href="https://github.com/nguyenduydan/security-sast-guard-plugin/blob/main/LICENSE" target="_blank" class="hover:underline">LICENSE</a>
       </div>
     </div>
@@ -1037,7 +1037,7 @@ def get_user_account(user_id):
 
     // GitHub Live Version Sync Engine
     // Fetches latest release tag from GitHub API and updates ALL version badges
-    const FALLBACK_VERSION = 'v1.0.0';
+    const FALLBACK_VERSION = 'v1.8.9';
     const GITHUB_REPO = 'nguyenduydan/security-sast-guard-plugin';
 
     async function syncVersionFromGitHub() {

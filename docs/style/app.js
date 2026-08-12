@@ -365,6 +365,7 @@ function runFirewallLogic(cmd) {
     lower.includes("clear-disk") ||
     lower.includes("initialize-disk") ||
     lower.includes("remove-partition") ||
+    lower.includes("diskutil") ||
     lower.includes("set-mppreference") ||
     lower.includes("add-mppreference") ||
     lower.includes("disable-netfirewallrule") ||
