@@ -787,14 +787,16 @@ def get_user_account(user_id):
               <div class="space-y-4 font-mono text-xs">
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
-                    <code>🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
+                    <code id="cmd-sast-audit">🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
+                    <button onclick="copySnippet('cmd-sast-audit')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit. Outputs Markdown and JSON reports.</div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
-                    <code>📊 /sast-status</code>
+                    <code id="cmd-sast-status">📊 /sast-status</code>
+                    <button onclick="copySnippet('cmd-sast-status')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Displays version, project ID, tech stack, operation mode, and active rules count.</div>
                 </div>
