@@ -375,6 +375,9 @@ function runFirewallLogic(cmd) {
     lower.includes("mkfs") ||
     lower.includes("stop-computer") ||
     lower.includes("restart-computer") ||
+    lower.includes("git checkout --") ||
+    lower.includes("git restore") ||
+    lower.includes("git reset --hard") ||
     isBase64Deny;
 
   if (isDeny) {
@@ -506,6 +509,16 @@ function renderRules() {
 
   container.innerHTML = filtered
     .map((r) => {
+      let sevBadgeClass = "bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950";
+      if (r.severity === "CRITICAL") {
+        sevBadgeClass = "bg-rose-600 dark:bg-rose-500 text-white font-black";
+      } else if (r.severity === "HIGH") {
+        sevBadgeClass = "bg-amber-500 text-black font-black";
+      } else if (r.severity === "MEDIUM") {
+        sevBadgeClass = "bg-cyan-500 text-black font-bold";
+      } else if (r.severity === "LOW") {
+        sevBadgeClass = "bg-slate-300 dark:bg-slate-700 text-black dark:text-white font-bold";
+      }
       return `
       <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-900 border-2 border-black dark:border-white/10 space-y-2">
         <div class="flex items-center justify-between">
@@ -513,7 +526,7 @@ function renderRules() {
             <span class="font-mono font-bold text-white dark:text-obsidian-950 bg-black dark:bg-brand-emerald px-2 py-0.5 rounded text-xs">${r.id}</span>
             <span class="font-display font-black text-black dark:text-white text-base">${r.name}</span>
           </div>
-          <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-black dark:bg-brand-cyan text-white dark:text-obsidian-950 uppercase">${r.severity}</span>
+          <span class="text-[10px] font-mono px-2.5 py-0.5 rounded ${sevBadgeClass} uppercase tracking-wider">${r.severity}</span>
         </div>
         <p class="text-xs text-black dark:text-slate-300 font-mono font-semibold">${r.desc}</p>
       </div>

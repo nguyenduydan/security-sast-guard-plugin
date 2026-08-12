@@ -421,7 +421,7 @@
 
             <form onsubmit="handleCustomCommand(event)" class="mt-4 flex items-center gap-3 bg-slate-100 dark:bg-obsidian-900 p-3 rounded-xl border-2 border-black dark:border-white/20">
               <label for="cmd-input" class="font-bold text-black dark:text-brand-emerald">$</label>
-              <input type="text" id="cmd-input" name="command" placeholder="Type command (e.g. format C:, git commit, rmdir /s)..." class="bg-transparent text-black dark:text-white font-bold w-full focus:outline-none font-mono text-xs placeholder:text-slate-500" autocomplete="off" aria-label="Terminal command input" />
+              <input type="text" id="cmd-input" name="command" placeholder="Type command (e.g. format C:, git commit, rmdir /s)..." class="bg-transparent text-black dark:text-white font-bold w-full focus:outline-none focus:ring-0 focus:ring-transparent font-mono text-xs placeholder:text-slate-500 border-none outline-none" autocomplete="off" aria-label="Terminal command input" />
               <button type="submit" class="px-4 py-2 rounded brutal-btn font-bold text-xs uppercase whitespace-nowrap">
                 Evaluate
               </button>
@@ -787,14 +787,16 @@ def get_user_account(user_id):
               <div class="space-y-4 font-mono text-xs">
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-emerald font-bold text-sm">
-                    <code>🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
+                    <code id="cmd-sast-audit">🛡️ /sast-audit &lt;file|codebase|api|web&gt; &lt;path&gt;</code>
+                    <button onclick="copySnippet('cmd-sast-audit')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Runs OWASP/CWE static audit. Outputs Markdown and JSON reports.</div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-slate-100 dark:bg-obsidian-950 border-2 border-black dark:border-white/20 space-y-1">
                   <div class="flex items-center justify-between text-black dark:text-brand-cyan font-bold text-sm">
-                    <code>📊 /sast-status</code>
+                    <code id="cmd-sast-status">📊 /sast-status</code>
+                    <button onclick="copySnippet('cmd-sast-status')" class="px-2.5 py-1 rounded brutal-btn text-[10px] font-bold uppercase whitespace-nowrap">Copy</button>
                   </div>
                   <div class="text-slate-600 dark:text-slate-400 text-xs">Displays version, project ID, tech stack, operation mode, and active rules count.</div>
                 </div>
@@ -925,7 +927,7 @@ def get_user_account(user_id):
         <div class="relative">
           <label for="rule-search" class="sr-only">Search Security Rules</label>
           <i class="ph-bold ph-magnifying-glass absolute left-4 top-3.5 text-black dark:text-slate-400 font-bold text-base"></i>
-          <input type="text" id="rule-search" name="rule-search" oninput="filterRules()" placeholder="Search Rule ID (e.g. API1, CWE-89, A03), category or keyword..." class="w-full bg-white dark:bg-obsidian-950 pl-11 pr-4 py-3 rounded-xl border-2 border-black dark:border-white/20 text-sm text-black dark:text-white font-mono font-bold placeholder:text-slate-500 focus:outline-none" autocomplete="off" />
+          <input type="text" id="rule-search" name="rule-search" oninput="filterRules()" placeholder="Search Rule ID (e.g. API1, CWE-89, A03), category or keyword..." class="w-full bg-white dark:bg-obsidian-950 pl-11 pr-4 py-3 rounded-xl border-2 border-black dark:border-white/20 text-sm text-black dark:text-white font-mono font-bold placeholder:text-slate-500 focus:outline-none focus:ring-0 focus:ring-transparent border-none outline-none" autocomplete="off" />
         </div>
         <div class="flex flex-wrap gap-2 text-xs font-mono" id="category-pills"></div>
       </div>
