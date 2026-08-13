@@ -106,7 +106,12 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
         "severity": "High",
         "action": "Block",
         "patterns": [
-            r"(?i)on(focus|error|load|click|mouseover|submit|keydown)\s*=\s*[\"'](?=.*?(?:eval\(|alert\(|confirm\(|prompt\(|javascript:|document\.cookie|window\.|console\.|\+\s*[a-zA-Z0-9_.]*(?:Request|params|input)|<%=\s*Request)).*?[\"']"
+            r"(?i)on(focus|error|load|click|mouseover|submit|keydown)"
+            r"\s*=\s*[\"']"
+            r"(?=.*?(?:eval\(|alert\(|confirm\(|prompt\(|javascript:"
+            r"|document\.cookie|window\.|console\."
+            r"|\+\s*[a-zA-Z0-9_.]*(?:Request|params|input)"
+            r"|<%=\s*Request)).*?[\"']"
         ],
         "remediation": {
             "fix_before": '<input onfocus="eval(user_input)">',
