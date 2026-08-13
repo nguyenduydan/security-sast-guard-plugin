@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.0.0...v2.0.1) (2026-08-13)
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **rules:** reduce false positives for ASP.NET, UI events and minified JS ([79eafd0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/79eafd001aff1f7d0c0dbae52709f3796180e4e0))
+
+
+### 🎨 Code Style & Formatting
+
+* **scripts:** split long line in md_to_json.py for pylint line-too-long compliance ([4c69dd2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4c69dd2296bb7e13f21ef681552914d0a6d9d8d8))
+* **tests:** split long line in test_sast.py for ruff compliance ([dd054b5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/dd054b5a12c35423ad63bbb13893c4555f813dda))
+
 ## [2.0.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v1.9.0...v2.0.0) (2026-08-12)
 
 
