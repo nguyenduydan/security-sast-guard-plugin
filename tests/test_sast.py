@@ -63,7 +63,8 @@ def test_aspnet_false_positive_filtering(tmp_path: Path) -> None:
         '<div><%= SecurityHelper.Encrypt("/Uploads/CauHoi") %></div>\n'
         '<button onclick="SweetTable.resetColumns()">Reset</button>\n'
         'lbTitleDlDetail.InnerHtml = "Cập nhật loại giấy tờ";\n'
-        'onclick=\'<%# "selectExam(this, " + Container.ItemIndex + "); return false;" %>\'\n'
+        'onclick=\'<%# "selectExam(this, " + '
+        'Container.ItemIndex + "); return false;" %>\'\n'
         '<input onfocus="eval(location.hash)">\n',
         encoding="utf-8",
     )
