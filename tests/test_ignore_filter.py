@@ -13,9 +13,14 @@ def test_ignore_filter_default_dirs(tmp_path: Path) -> None:
     git_path = tmp_path / ".git" / "config"
     src_path = tmp_path / "src" / "index.ts"
 
+    gemini_path = tmp_path / ".gemini" / "rules.json"
+    agent_path = tmp_path / ".agents" / "task.py"
+
     assert filter_inst.should_ignore(node_path) is True
     assert filter_inst.should_ignore(venv_path) is True
     assert filter_inst.should_ignore(git_path) is True
+    assert filter_inst.should_ignore(gemini_path) is True
+    assert filter_inst.should_ignore(agent_path) is True
     assert filter_inst.should_ignore(src_path) is False
 
 
@@ -24,6 +29,8 @@ def test_ignore_filter_default_extensions(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "assets" / "logo.png") is True
     assert filter_inst.should_ignore(tmp_path / "docs" / "manual.pdf") is True
     assert filter_inst.should_ignore(tmp_path / "build" / "app.exe") is True
+    assert filter_inst.should_ignore(tmp_path / "assets" / "loader.js") is True
+    assert filter_inst.should_ignore(tmp_path / "dist" / "app.min.js") is True
     assert filter_inst.should_ignore(tmp_path / "main.py") is False
 
 

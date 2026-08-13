@@ -72,6 +72,8 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     ".superpowers",
     ".system_generated",
     ".github",
+    ".gemini",
+    ".agents",
     "skills",
     "templates",
     "tests",
@@ -162,6 +164,7 @@ DEFAULT_IGNORE_FILES: set[str] = {
     "app.config",
     "nlog.config",
     "applicationinsights.config",
+    "loader.js",
 }
 
 
@@ -198,12 +201,15 @@ class IgnoreFilter:
             if part in DEFAULT_IGNORE_DIRS:
                 return True
 
-        # Check extension, exact filename, or .designer.cs auto-generated files
+        # Check extension, exact filename, minified JS,
+        # or .designer.cs auto-generated files
         name_lower = p.name.lower()
         if (
             p.suffix.lower() in DEFAULT_IGNORE_EXTS
             or name_lower in DEFAULT_IGNORE_FILES
             or name_lower.endswith(".designer.cs")
+            or name_lower.endswith(".min.js")
+            or name_lower.endswith(".bundle.js")
         ):
             return True
 
