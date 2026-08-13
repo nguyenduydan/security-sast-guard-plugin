@@ -60,7 +60,12 @@ def test_aspnet_false_positive_filtering(tmp_path: Path) -> None:
     test_file.write_text(
         '<SweetSoft:ExtraButton ID="btnAdd" runat="server" OnClick="btnAdd_Click" />\n'
         '<div><%= GetResourceText("Label_Title") %></div>\n'
-        '<input onfocus="eval(location.hash)">\n'
+        '<div><%= SecurityHelper.Encrypt("/Uploads/CauHoi") %></div>\n'
+        '<button onclick="SweetTable.resetColumns()">Reset</button>\n'
+        'lbTitleDlDetail.InnerHtml = "Cập nhật loại giấy tờ";\n'
+        'onclick=\'<%# "selectExam(this, " + Container.ItemIndex + "); return false;" %>\'\n'
+        '<input onfocus="eval(location.hash)">\n',
+        encoding="utf-8",
     )
 
     scanner = SASTScanner()
@@ -68,10 +73,10 @@ def test_aspnet_false_positive_filtering(tmp_path: Path) -> None:
 
     results = scanner.scan(str(test_file))
 
-    # Only line 3 (the real malicious JS onfocus) should be detected as finding
-    # Lines 1 & 2 should be filtered out as false positives
+    # Only line 7 (the real malicious JS onfocus) should be detected as finding
+    # Lines 1-6 should be filtered out as false positives
     lines = [r["line"] for r in results]
-    assert lines == [3]
+    assert lines == [7]
 
 
 def test_single_file_scan_unignored_even_if_default_ignored(tmp_path: Path) -> None:
