@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.0.1...v2.1.0) (2026-08-14)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **ast:** add ASTPrecisionAnalyzer for Python constant propagation ([49c5e25](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/49c5e251cec6f6e5119b62e672c465872f56ff08))
+* **context:** add multi-line block comment tracking and context window extraction ([b32d8c6](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b32d8c606b1ec8f96c5fb4e553cda9f194002311))
+* **scanner:** integrate AST analyzer and context window into scanning pipeline ([9662e06](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9662e060ed70c3a5b3401e890f1235c73fa3371d))
+* **verifier:** add context window sanitizer inspection to AIVerifier ([8d81d64](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8d81d64f9b6f663a6348a4e0887d3ddd5f06972c))
+
+
+### 🐛 Bug Fixes
+
+* **tests:** move AICache import to top-level to satisfy pylint C0415 ([0be2a73](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0be2a73e31e10693053aded0bd268108d5ba1b4c))
+
+
+### 📝 Documentation
+
+* **specs:** add design, plan, and task reports for semantic precision engine ([4e955b7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4e955b7482ca55a24da8a9fe7fd30f72a293f6ad))
+
 ## [2.0.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.0.0...v2.0.1) (2026-08-13)
 
 
