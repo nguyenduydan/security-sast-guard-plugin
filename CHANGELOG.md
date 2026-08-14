@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.3.0...v2.3.1) (2026-08-14)
+
+
+### 🐛 Bug Fixes
+
+* **docs:** resolve Vietnamese diacritics font rendering using Plus Jakarta Sans and Be Vietnam Pro ([8a629ad](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8a629add4dbf8f16cf6068793cffc7e11dc6d0c1))
+
+
+### 📝 Documentation
+
+* translate all SAST rules and documentation to English and enable dynamic version rendering ([5595a78](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5595a7853370da8022c08efe9169a68673d34215))
+
 ## [2.3.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.2.0...v2.3.0) (2026-08-14)
 
 
