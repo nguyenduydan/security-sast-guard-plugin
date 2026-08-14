@@ -16,6 +16,8 @@ permissions:
   pull-requests: write
   id-token: write
   attestations: write
+  security-events: write
+  actions: read
 
 jobs:
   security-gate:
