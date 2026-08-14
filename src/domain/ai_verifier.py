@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import Any
 
 from src.domain.ai_cache import AICache
@@ -163,14 +164,15 @@ class AIVerifier:
     def is_false_positive(self, finding: dict[str, Any]) -> bool:
         """Analyze line content and context for false positive indicators."""
         line_content = str(finding.get("line_content", "")).lower()
-        file_path = str(finding.get("path", "")).lower()
+        file_path_str = str(finding.get("path", "")).lower()
+        file_name = Path(file_path_str).name.lower()
         rule_id = str(finding.get("rule_id", "")).upper()
         combined_text = _extract_combined_text(finding)
 
         # 1. Skip test files / mocks for low & medium severity findings
         severity = str(finding.get("severity", "")).upper()
         if severity in ("LOW", "MEDIUM") and any(
-            ind in file_path for ind in TEST_INDICATORS
+            ind in file_name for ind in TEST_INDICATORS
         ):
             return True
 

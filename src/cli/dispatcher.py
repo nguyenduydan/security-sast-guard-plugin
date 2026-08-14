@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from src.application.audit_service import AuditService
+from src.infrastructure.git_hook_installer import GitHookInstaller
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.version_loader import get_plugin_version
 from src.mcp.server import MCPServer
@@ -120,14 +121,16 @@ def _handle_mode(args: list[str]) -> int:
     return 0
 
 
-# pylint: disable=too-many-branches
+# pylint: disable=too-many-branches,too-many-statements
 def _handle_scan(args: list[str]) -> int:
-    """Handle scan / audit subcommand with format and level options."""
+    """Handle scan / audit subcommand with format, threads, and level options."""
     verbose = "-v" in args or "--verbose" in args
 
     sarif_output_path: str | None = None
+    html_output_path: str | None = None
     output_format = "markdown"
     target_level: str | None = None
+    threads: int | None = None
     positional_args: list[str] = []
 
     idx = 0
@@ -143,9 +146,25 @@ def _handle_scan(args: list[str]) -> int:
                 idx += 2
             else:
                 idx += 1
+        elif arg == "--html":
+            output_format = "html"
+            if idx + 1 < len(args) and not args[idx + 1].startswith("-"):
+                html_output_path = args[idx + 1]
+                idx += 2
+            else:
+                idx += 1
         elif arg in ("--format", "-f"):
             if idx + 1 < len(args):
                 output_format = args[idx + 1].lower()
+                idx += 2
+            else:
+                idx += 1
+        elif arg in ("--threads", "-t"):
+            if idx + 1 < len(args):
+                try:
+                    threads = int(args[idx + 1])
+                except ValueError:
+                    threads = None
                 idx += 2
             else:
                 idx += 1
@@ -172,6 +191,8 @@ def _handle_scan(args: list[str]) -> int:
         verbose=verbose or True,
         output_format=output_format,
         sarif_output_path=sarif_output_path,
+        html_output_path=html_output_path,
+        threads=threads,
     )
     print(summary)
     return 0
@@ -196,6 +217,24 @@ def _handle_init() -> int:
     profile_file.write_text(content, encoding="utf-8")
     print(f"Successfully initialized project profile at {profile_file}")
     return 0
+
+
+def _handle_install_hook(args: list[str]) -> int:
+    """Install git pre-commit security hook."""
+    target_repo = args[0] if args else "."
+    installer = GitHookInstaller(repo_dir=target_repo)
+    result = installer.install()
+    print(result.get("message", "Hook installation finished."))
+    return 0 if result.get("status") == "success" else 1
+
+
+def _handle_uninstall_hook(args: list[str]) -> int:
+    """Uninstall git pre-commit security hook."""
+    target_repo = args[0] if args else "."
+    installer = GitHookInstaller(repo_dir=target_repo)
+    result = installer.uninstall()
+    print(result.get("message", "Hook uninstallation finished."))
+    return 0 if result.get("status") == "success" else 1
 
 
 def _handle_mcp_server() -> int:
@@ -230,6 +269,12 @@ def dispatch(args: list[str]) -> int:
 
     if command == "init":
         return _handle_init()
+
+    if command in ("install-hook", "install-git-hook", "hook-install"):
+        return _handle_install_hook(args[1:])
+
+    if command in ("uninstall-hook", "uninstall-git-hook", "hook-uninstall"):
+        return _handle_uninstall_hook(args[1:])
 
     if command in ("mcp-server", "mcp"):
         return _handle_mcp_server()

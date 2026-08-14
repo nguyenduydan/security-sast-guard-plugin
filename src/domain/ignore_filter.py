@@ -178,8 +178,9 @@ class IgnoreFilter:
 
     def __init__(self, root_dir: str | Path | None = None) -> None:
         self.custom_patterns: list[str] = []
-        if root_dir:
-            self._load_custom_sastignore(Path(root_dir))
+        self.root_dir: Path | None = Path(root_dir).resolve() if root_dir else None
+        if self.root_dir:
+            self._load_custom_sastignore(self.root_dir)
 
     def _load_custom_sastignore(self, root_dir: Path) -> None:
         self.root_dir = root_dir.resolve()
@@ -200,9 +201,17 @@ class IgnoreFilter:
         """Check if path should be ignored by built-in defaults or custom patterns."""
         p = Path(path)
         parts = p.parts
+        if self.root_dir:
+            try:
+                rel_p = p.resolve().relative_to(self.root_dir)
+                dir_parts = rel_p.parts[:-1]
+            except ValueError:
+                dir_parts = p.parts[:-1]
+        else:
+            dir_parts = p.parts[:-1]
 
-        # Check default ignored directory names anywhere in path
-        for part in parts:
+        # Check default ignored directory names anywhere in relative directory path
+        for part in dir_parts:
             if part in DEFAULT_IGNORE_DIRS:
                 return True
 

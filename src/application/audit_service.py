@@ -8,6 +8,7 @@ from src.domain.models import TaintFinding
 from src.domain.sast_scanner import SASTScanner
 from src.domain.symbol_indexer import SymbolIndexer
 from src.domain.taint_tracker import TaintTracker
+from src.infrastructure.html_report_generator import generate_html_report
 from src.infrastructure.integrity_checker import IntegrityChecker
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.profile_resolver import ProfileResolver
@@ -64,10 +65,14 @@ class AuditService:
         generate_report: bool = True,
         output_format: str = "markdown",
         sarif_output_path: str | None = None,
+        html_output_path: str | None = None,
+        threads: int | None = None,
     ) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
         self._reload_profile()
-        res = self.scanner.scan_with_metadata(target_path, verbose=verbose)
+        res = self.scanner.scan_with_metadata(
+            target_path, verbose=verbose, threads=threads
+        )
         findings = res["findings"]
         metadata = res["metadata"]
         audit_level = self.profile.get("audit_level", "full")
@@ -99,6 +104,28 @@ class AuditService:
                 summary = (
                     f"SAST Audit completed. Total: {len(findings)} findings.\n"
                     f"SARIF report saved to: [{sarif_output_path}]({file_uri})"
+                )
+            return findings, report_file, summary
+
+        if output_format.lower() == "html" or html_output_path is not None:
+            out_dir = (
+                str(Path(html_output_path).parent) if html_output_path else "reports"
+            )
+            report_file, summary = generate_html_report(
+                findings,
+                output_dir=out_dir,
+                target_path=target_path,
+                metadata=metadata,
+                audit_level=audit_level,
+            )
+            if html_output_path and report_file != html_output_path:
+                Path(html_output_path).parent.mkdir(parents=True, exist_ok=True)
+                Path(report_file).replace(Path(html_output_path))
+                report_file = html_output_path
+                file_uri = Path(html_output_path).resolve().as_uri()
+                summary = (
+                    f"SAST Audit completed. Total: {len(findings)} findings.\n"
+                    f"HTML report saved to: [{html_output_path}]({file_uri})"
                 )
             return findings, report_file, summary
 

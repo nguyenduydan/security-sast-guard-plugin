@@ -125,3 +125,28 @@ def test_dispatcher_scan_format_sarif(capsys: CaptureFixture[str], tmp_path) -> 
     assert code == 0
     captured = capsys.readouterr()
     assert "SARIF report saved to:" in captured.out
+
+
+def test_dispatcher_scan_html(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_file = tmp_path / "app.py"
+    test_file.write_text("os.system('rm -rf /')\n", encoding="utf-8")
+    html_file = tmp_path / "audit.html"
+    code = main(["scan", str(test_file), "--html", str(html_file), "--threads", "2"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "HTML report saved to:" in captured.out
+    assert html_file.exists()
+
+
+def test_dispatcher_hook_commands(capsys: CaptureFixture[str], tmp_path) -> None:
+    git_dir = tmp_path / ".git"
+    git_dir.mkdir()
+    code = main(["install-hook", str(tmp_path)])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "pre-commit hook installed" in captured.out
+
+    code_un = main(["uninstall-hook", str(tmp_path)])
+    assert code_un == 0
+    captured_un = capsys.readouterr()
+    assert "Successfully uninstalled" in captured_un.out

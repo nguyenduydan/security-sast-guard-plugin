@@ -183,6 +183,48 @@ DEFAULT_MAPPINGS: dict[str, MappingInfo] = {
         owasp_category="A05:2021-Security Misconfiguration",
         owasp_name="Security Misconfiguration",
     ),
+    "LLM01_PROMPT_INJECTION": MappingInfo(
+        cwe_id="CWE-77",
+        cwe_name="Improper Neutralization of Special Elements used in a Command",
+        owasp_category="LLM01:2025-Prompt-Injection",
+        owasp_name="Prompt Injection",
+    ),
+    "LLM02_SENSITIVE_DATA_EXPOSURE": MappingInfo(
+        cwe_id="CWE-200",
+        cwe_name="Exposure of Sensitive Information to an Unauthorized Actor",
+        owasp_category="LLM02:2025-Sensitive-Information-Disclosure",
+        owasp_name="Sensitive Information Disclosure",
+    ),
+    "LLM06_EXCESSIVE_AGENCY": MappingInfo(
+        cwe_id="CWE-250",
+        cwe_name="Execution with Unnecessary Privileges",
+        owasp_category="LLM06:2025-Excessive-Agency",
+        owasp_name="Excessive Agency",
+    ),
+    "GHA_EXPRESSION_INJECTION": MappingInfo(
+        cwe_id="CWE-94",
+        cwe_name="Improper Control of Generation of Code ('Code Injection')",
+        owasp_category="A03:2021-Injection",
+        owasp_name="CI/CD Script Injection",
+    ),
+    "GHA_UNSAFE_CHECKOUT": MappingInfo(
+        cwe_id="CWE-829",
+        cwe_name="Inclusion of Functionality from Untrusted Control Sphere",
+        owasp_category="A01:2021-Broken Access Control",
+        owasp_name="Untrusted PR Checkout",
+    ),
+    "DOCKER_ROOT_USER": MappingInfo(
+        cwe_id="CWE-250",
+        cwe_name="Execution with Unnecessary Privileges",
+        owasp_category="A05:2021-Security Misconfiguration",
+        owasp_name="Container Root Execution",
+    ),
+    "DOCKER_CURL_BASH": MappingInfo(
+        cwe_id="CWE-494",
+        cwe_name="Download of Code Without Integrity Check",
+        owasp_category="A08:2021-Software and Data Integrity Failures",
+        owasp_name="Unverified Remote Code Execution",
+    ),
 }
 
 FALLBACK_MAPPING = MappingInfo(

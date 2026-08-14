@@ -2049,5 +2049,116 @@
       "\\*\\*✅\\ ĐÚNG\\ —\\ Public\\ API\\ không\\ cần\\ credentials:\\*\\*",
       "\\-\\-\\-"
     ]
+  },
+  {
+    "id": "LLM01_PROMPT_INJECTION",
+    "name": "Nguy cơ Prompt Injection vào mô hình LLM (OWASP LLM01 / ASI01)",
+    "description": "Phát hiện nối chuỗi trực tiếp dữ liệu người dùng không tin cậy vào System Prompt hoặc LLM Prompt template.",
+    "category": "owasp-llm-2025",
+    "severity": "Critical",
+    "scope": "server-code",
+    "action": "Block",
+    "patterns": [
+      "(?i)(?:system_prompt|prompt|instruction)\\s*(?:\\+|=)\\s*f?[\\\"'].*?\\{(?:user_input|user_query|input|prompt|message)\\}",
+      "(?i)chat\\.completions\\.create\\s*\\(.*?(?:user_input|user_query|req\\.body)",
+      "(?i)PromptTemplate(?:\\.from_template)?\\s*\\(\\s*f?[\\\"'].*?\\{user_input\\}"
+    ],
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "input(",
+      "sys.argv",
+      "req.body"
+    ],
+    "sinks": [
+      "chat.completions.create",
+      "PromptTemplate",
+      "llm.invoke",
+      "llm.predict"
+    ]
+  },
+  {
+    "id": "LLM02_SENSITIVE_DATA_EXPOSURE",
+    "name": "Tiết lộ thông tin nhạy cảm qua LLM Context (OWASP LLM02)",
+    "description": "Phát hiện truyền secrets, API keys, passwords hoặc tokens nhạy cảm vào prompt context của mô hình LLM.",
+    "category": "owasp-llm-2025",
+    "severity": "High",
+    "scope": "server-code",
+    "action": "Block",
+    "patterns": [
+      "(?i)(?:messages|prompt)\\s*=\\s*\\[.*?(?:api_key|password|secret|auth_token|connection_string|private_key)",
+      "(?i)logger\\.(?:info|debug|warning|error)\\s*\\(\\s*f?[\\\"'].*?(?:prompt|completion).*?(?:password|token|secret)"
+    ],
+    "taint_enabled": false
+  },
+  {
+    "id": "LLM06_EXCESSIVE_AGENCY",
+    "name": "Cấp quyền thực thi vượt mức cho AI Agent Tools (Excessive Agency - OWASP LLM06)",
+    "description": "Phát hiện cấu hình AI Tools với quyền thực thi shell hoặc hệ thống mà không có cơ chế kiểm duyệt/xác nhận.",
+    "category": "owasp-llm-2025",
+    "severity": "Critical",
+    "scope": "server-code",
+    "action": "Block",
+    "patterns": [
+      "(?i)allow_dangerous_tools\\s*=\\s*True",
+      "(?i)enable_execution_policy\\s*=\\s*[\\\"']bypass[\\\"']",
+      "(?i)ShellTool\\(.*dangerous\\s*=\\s*True"
+    ],
+    "taint_enabled": false
+  },
+  {
+    "id": "GHA_EXPRESSION_INJECTION",
+    "name": "GitHub Actions Script Expression Injection (GHA Injection)",
+    "description": "Phát hiện biểu thức ngữ cảnh GitHub không an toàn chèn trực tiếp vào câu lệnh run: gây nguy cơ chiếm quyền runner.",
+    "category": "ci-cd-security",
+    "severity": "Critical",
+    "scope": "global",
+    "action": "Block",
+    "patterns": [
+      "(?i)run:\\s*\\|?.*?\\$\\{\\{\\s*github\\.event\\.(?:issue|pull_request|comment)\\.(?:title|body)",
+      "(?i)run:\\s*\\|?.*?\\$\\{\\{\\s*github\\.head_ref\\s*\\}\\}"
+    ],
+    "taint_enabled": false
+  },
+  {
+    "id": "GHA_UNSAFE_CHECKOUT",
+    "name": "GitHub Actions Unsafe PR Target Checkout (PWN Request)",
+    "description": "Phát hiện sự kiện pull_request_target checkout trực tiếp commit untrusted từ PR của fork bên ngoài.",
+    "category": "ci-cd-security",
+    "severity": "High",
+    "scope": "global",
+    "action": "Block",
+    "patterns": [
+      "(?i)ref:\\s*\\$\\{\\{\\s*github\\.event\\.pull_request\\.head\\.sha\\s*\\}\\}",
+      "(?i)checkout.*?github\\.event\\.pull_request\\.head\\.sha"
+    ],
+    "taint_enabled": false
+  },
+  {
+    "id": "DOCKER_ROOT_USER",
+    "name": "Container chạy dưới quyền Root (Dockerfile Root Execution)",
+    "description": "Phát hiện Dockerfile tường minh cấu hình USER root hoặc chạy tiến trình dưới quyền siêu người dùng.",
+    "category": "container-security",
+    "severity": "Medium",
+    "scope": "global",
+    "action": "Warn",
+    "patterns": [
+      "(?i)^\\s*USER\\s+root\\b"
+    ],
+    "taint_enabled": false
+  },
+  {
+    "id": "DOCKER_CURL_BASH",
+    "name": "Thực thi script trực tiếp từ Internet trong Dockerfile (Curl Pipe Bash)",
+    "description": "Phát hiện tải và thực thi script trực tiếp không qua checksum trong Dockerfile (curl | bash, wget | sh).",
+    "category": "container-security",
+    "severity": "High",
+    "scope": "global",
+    "action": "Block",
+    "patterns": [
+      "(?i)RUN\\s+.*?(?:curl|wget)\\s+.*?[|>]\\s*(?:bash|sh|zsh)\\b"
+    ],
+    "taint_enabled": false
   }
 ]

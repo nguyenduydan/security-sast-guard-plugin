@@ -1,5 +1,6 @@
 """SAST Scanner domain component."""
 
+import concurrent.futures
 import contextlib
 import json
 import os
@@ -170,6 +171,25 @@ class SASTScanner:
             prev_line_content and line_suppresses(prev_line_content)
         )
 
+    @staticmethod
+    def _is_sink_rule(rule: dict[str, Any]) -> bool:
+        """Determine if rule targets sink functions with safe literal args."""
+        if rule.get("taint_enabled"):
+            return True
+        rule_id = str(rule.get("id", "")).upper()
+        return any(
+            k in rule_id
+            for k in (
+                "RCE",
+                "SQL",
+                "COMMAND_INJECTION",
+                "CODE_INJECTION",
+                "SUBPROCESS",
+                "SYSTEM",
+                "DESERIALIZATION",
+            )
+        )
+
     # pylint: disable=too-many-locals
     def _detect_matches_file(
         self, file_path: Path, rules: list[dict[str, Any]]
@@ -226,10 +246,12 @@ class SASTScanner:
                         if ctx.get("is_safe_context"):
                             continue
 
-                        if str_path.endswith(
-                            ".py"
-                        ) and self.ast_analyzer.is_safe_sink_call(
-                            str_path, line_idx, rule_id, line_content, None
+                        if (
+                            str_path.endswith(".py")
+                            and self._is_sink_rule(rule)
+                            and self.ast_analyzer.is_safe_sink_call(
+                                str_path, line_idx, rule_id, line_content, None
+                            )
                         ):
                             continue
 
@@ -256,15 +278,16 @@ class SASTScanner:
 
         return findings, line_count
 
-    # pylint: disable=too-many-locals,too-many-branches,too-many-statements
+    # pylint: disable=too-many-locals,too-many-branches,too-many-statements,too-many-arguments,too-many-positional-arguments
     def scan_with_metadata(
         self,
         path: str,
         interactive: bool = False,
         incremental: bool = False,
         verbose: bool = False,
+        threads: int | None = None,
     ) -> dict[str, Any]:
-        """Scan file or directory with full metadata tracking."""
+        """Scan file or directory with full metadata tracking and parallel scanning."""
         start_time = time.perf_counter()
         target_path = Path(path).resolve()
 
@@ -317,82 +340,117 @@ class SASTScanner:
                     else:
                         files_to_scan.append(file_p)
 
-        total_files = len(files_to_scan)
-        for idx, file_path in enumerate(files_to_scan, 1):
-            # Explicit single file targets bypass default extension/path ignore rules
+        valid_files: list[Path] = []
+        for file_path in files_to_scan:
             if (
                 target_path.is_file()
                 and target_path != file_path
                 and ignore_filter.should_ignore(file_path)
             ):
                 ignored_files += 1
-                continue
-
-            matches = self._detect_matches(str(file_path))
-            try:
-                with open(file_path, encoding="utf-8", errors="replace") as f:
-                    lines_count = len(f.readlines())
-            except OSError:
-                lines_count = 0
-
-            scanned_files += 1
-            total_lines += lines_count
-
-            if verbose:
-                rel_p = (
-                    file_path.relative_to(target_path)
-                    if target_path.is_dir()
-                    else file_path.name
-                )
-                finding_txt = (
-                    f" -> \033[31m{len(matches)} finding(s)\033[0m"
-                    if matches
-                    else " -> \033[32mOK\033[0m"
-                )
-                print(
-                    f"[{idx}/{total_files}] Scanning {rel_p}{finding_txt}",
-                    flush=True,
-                )
-
-            if interactive and matches:
-                for match in matches:
-                    rule_name = (
-                        match.get("rule_name")
-                        or match.get("rule_id")
-                        or match.get("rule", "Unknown")
-                    )
-                    line_no = match.get("line", 0)
-                    severity = match.get("severity", "MEDIUM")
-                    line_content = match.get("line_content", "")
-                    scope = match.get("scope", "global")
-
-                    msg = (
-                        f"[SAST WARNING] Potential {rule_name} at "
-                        f"`{file_path}:{line_no}`."
-                    )
-                    print(msg)
-                    print(f"- Severity: {severity}")
-                    print(f"- Line: `{str(line_content).strip()}`")
-                    print(f"- Scope: `{scope}`")
-
-                    if self.mode == "draft" and str(severity).upper() in (
-                        "MEDIUM",
-                        "LOW",
-                    ):
-                        print(
-                            ">> [DRAFT MODE] Auto-allowing low/medium severity finding "
-                            "to preserve vibe."
-                        )
-                        continue
-
-                    prompt_msg = (
-                        "? Is this context safe? (Reply Y to allow, N to block): "
-                    )
-                    answer = input(prompt_msg).strip().upper()
-                    if answer != "Y":
-                        raw_findings.append(match)
             else:
-                raw_findings.extend(matches)
+                valid_files.append(file_path)
+
+        total_files = len(valid_files)
+
+        def _scan_file_task(file_p: Path) -> tuple[Path, list[dict[str, Any]], int]:
+            matches = self._detect_matches(str(file_p))
+            try:
+                with open(file_p, encoding="utf-8", errors="replace") as f:
+                    count = len(f.readlines())
+            except OSError:
+                count = 0
+            return file_p, matches, count
+
+        if not interactive and total_files > 1:
+            workers = threads or min(32, (os.cpu_count() or 1) + 4)
+            with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
+                future_map = {
+                    executor.submit(_scan_file_task, fp): fp for fp in valid_files
+                }
+                for idx, future in enumerate(
+                    concurrent.futures.as_completed(future_map), 1
+                ):
+                    file_path, matches, lines_count = future.result()
+                    scanned_files += 1
+                    total_lines += lines_count
+                    raw_findings.extend(matches)
+                    if verbose:
+                        rel_p = (
+                            file_path.relative_to(target_path)
+                            if target_path.is_dir()
+                            else file_path.name
+                        )
+                        finding_txt = (
+                            f" -> \033[31m{len(matches)} finding(s)\033[0m"
+                            if matches
+                            else " -> \033[32mOK\033[0m"
+                        )
+                        print(
+                            f"[{idx}/{total_files}] Scanning {rel_p}{finding_txt}",
+                            flush=True,
+                        )
+        else:
+            for idx, file_path in enumerate(valid_files, 1):
+                file_p, matches, lines_count = _scan_file_task(file_path)
+                scanned_files += 1
+                total_lines += lines_count
+
+                if verbose:
+                    rel_p = (
+                        file_p.relative_to(target_path)
+                        if target_path.is_dir()
+                        else file_p.name
+                    )
+                    finding_txt = (
+                        f" -> \033[31m{len(matches)} finding(s)\033[0m"
+                        if matches
+                        else " -> \033[32mOK\033[0m"
+                    )
+                    print(
+                        f"[{idx}/{total_files}] Scanning {rel_p}{finding_txt}",
+                        flush=True,
+                    )
+
+                if interactive and matches:
+                    for match in matches:
+                        rule_name = (
+                            match.get("rule_name")
+                            or match.get("rule_id")
+                            or match.get("rule", "Unknown")
+                        )
+                        line_no = match.get("line", 0)
+                        severity = match.get("severity", "MEDIUM")
+                        line_content = match.get("line_content", "")
+                        scope = match.get("scope", "global")
+
+                        msg = (
+                            f"[SAST WARNING] Potential {rule_name} at "
+                            f"`{file_path}:{line_no}`."
+                        )
+                        print(msg)
+                        print(f"- Severity: {severity}")
+                        print(f"- Line: `{str(line_content).strip()}`")
+                        print(f"- Scope: `{scope}`")
+
+                        if self.mode == "draft" and str(severity).upper() in (
+                            "MEDIUM",
+                            "LOW",
+                        ):
+                            print(
+                                ">> [DRAFT MODE] Auto-allowing low/med finding "
+                                "to preserve vibe."
+                            )
+                            continue
+
+                        prompt_msg = (
+                            "? Is this context safe? (Reply Y to allow, N to block): "
+                        )
+                        answer = input(prompt_msg).strip().upper()
+                        if answer != "Y":
+                            raw_findings.append(match)
+                else:
+                    raw_findings.extend(matches)
 
         # Stage 2: AI Context Verification Gate (Filter False Positives)
         verified_findings, fp_count = self.ai_verifier.filter_false_positives(
@@ -467,10 +525,12 @@ class SASTScanner:
                     if self._rule_matches_line(line_content, rule):
                         if self._is_suppressed(line_content, prev_line, rule_id):
                             continue
-                        if filename.endswith(
-                            ".py"
-                        ) and self.ast_analyzer.is_safe_sink_call(
-                            filename, line_idx, rule_id, line_content, code
+                        if (
+                            filename.endswith(".py")
+                            and self._is_sink_rule(rule)
+                            and self.ast_analyzer.is_safe_sink_call(
+                                filename, line_idx, rule_id, line_content, code
+                            )
                         ):
                             continue
                         findings.append(
