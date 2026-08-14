@@ -34,12 +34,15 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: "pip"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -e . ruff mypy pytest detect-secrets pylint
+          uv pip install --system -e . ruff pylint
 
       - name: Run Ruff Linter & Formatter Check
         run: |
@@ -61,12 +64,15 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: "pip"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -e . ruff mypy pytest detect-secrets pylint
+          uv pip install --system -e . mypy pytest
 
       - name: Run Mypy Type Checker
         run: |
@@ -83,12 +89,15 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: "pip"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -e . ruff mypy pytest detect-secrets pylint
+          uv pip install --system -e . pytest
 
       - name: Run Pytest Suite
         run: |

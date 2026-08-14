@@ -103,3 +103,25 @@ def test_cli_init_command(capsys: CaptureFixture[str], tmp_path, monkeypatch) ->
     captured = capsys.readouterr()
     assert "Successfully initialized project profile" in captured.out
     assert (tmp_path / ".sast" / "profile.json").exists()
+
+
+def test_dispatcher_scan_sarif_flag(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_file = tmp_path / "test.html"
+    test_file.write_text('<input onfocus="alert(1)">', encoding="utf-8")
+    sarif_file = tmp_path / "out.sarif"
+    code = main(["scan", str(test_file), "--sarif", str(sarif_file)])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "SARIF report saved to:" in captured.out
+    assert sarif_file.exists()
+    sarif_content = sarif_file.read_text(encoding="utf-8")
+    assert '"version": "2.1.0"' in sarif_content
+
+
+def test_dispatcher_scan_format_sarif(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_file = tmp_path / "clean.py"
+    test_file.write_text("x = 1\n", encoding="utf-8")
+    code = main(["scan", str(test_file), "--format", "sarif"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "SARIF report saved to:" in captured.out
