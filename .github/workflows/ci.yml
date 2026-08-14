@@ -12,6 +12,8 @@ concurrency:
 
 permissions:
   contents: read
+  security-events: write
+  actions: read
 
 jobs:
   quality-gate:
