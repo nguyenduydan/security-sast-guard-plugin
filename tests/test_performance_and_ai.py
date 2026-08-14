@@ -3,6 +3,7 @@
 import time
 from pathlib import Path
 
+from src.domain.ai_cache import AICache
 from src.domain.ai_verifier import AIVerifier
 from src.domain.git_helper import GitHelper
 from src.domain.ignore_filter import IgnoreFilter
@@ -131,8 +132,6 @@ def test_ai_verifier_safe_typecast_in_context_window() -> None:
 def test_ai_verifier_filter_false_positives_batch_with_context(
     tmp_path: Path,
 ) -> None:
-    from src.domain.ai_cache import AICache
-
     cache = AICache(cache_file=tmp_path / "cache.json")
     verifier = AIVerifier(cache=cache)
 
