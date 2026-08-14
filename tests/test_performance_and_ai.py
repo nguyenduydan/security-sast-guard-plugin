@@ -46,6 +46,151 @@ def test_ai_verifier_false_positives() -> None:
     assert verifier.is_false_positive(real_vuln) is False
 
 
+def test_ai_verifier_sanitizer_in_preceding_line() -> None:
+    verifier = AIVerifier()
+    finding = {
+        "rule_id": "CMD_INJECTION",
+        "path": "worker.py",
+        "line": 4,
+        "line_content": "os.system(safe_cmd)",
+        "context_window": [
+            "import os",
+            "import shlex",
+            "safe_cmd = shlex.quote(user_input)",
+            "os.system(safe_cmd)",
+        ],
+        "severity": "HIGH",
+    }
+    assert verifier.is_false_positive(finding) is True
+
+
+def test_ai_verifier_dompurify_in_preceding_line() -> None:
+    verifier = AIVerifier()
+    finding = {
+        "rule_id": "XSS_DOM",
+        "path": "component.js",
+        "line": 3,
+        "line_content": "element.innerHTML = cleanHtml;",
+        "context_window": [
+            "const cleanHtml = DOMPurify.sanitize(dirtyInput);",
+            "element.innerHTML = cleanHtml;",
+        ],
+        "severity": "HIGH",
+    }
+    assert verifier.is_false_positive(finding) is True
+
+
+def test_ai_verifier_path_sanitizer_in_preceding_line() -> None:
+    verifier = AIVerifier()
+    finding = {
+        "rule_id": "PATH_TRAVERSAL",
+        "path": "file_reader.py",
+        "line": 3,
+        "line_content": "open(safe_path, 'r')",
+        "context_window": [
+            "safe_path = os.path.abspath(user_path)",
+            "open(safe_path, 'r')",
+        ],
+        "severity": "HIGH",
+    }
+    assert verifier.is_false_positive(finding) is True
+
+
+def test_ai_verifier_sql_parameterized_in_context_window() -> None:
+    verifier = AIVerifier()
+    finding = {
+        "rule_id": "SQL_INJECTION",
+        "path": "service.py",
+        "line": 4,
+        "line_content": "cursor.execute(sql_query, params={'id': user_id})",
+        "context_window": [
+            "sql_query = 'SELECT * FROM accounts WHERE id = :param'",
+            "cursor.execute(sql_query, params={'id': user_id})",
+        ],
+        "severity": "HIGH",
+    }
+    assert verifier.is_false_positive(finding) is True
+
+
+def test_ai_verifier_safe_typecast_in_context_window() -> None:
+    verifier = AIVerifier()
+    finding = {
+        "rule_id": "SQL_INJECTION",
+        "path": "views.py",
+        "line": 3,
+        "line_content": "db.execute(f'SELECT * FROM users WHERE id = {user_id}')",
+        "context_window": [
+            "user_id = int(request.GET['id'])",
+            "db.execute(f'SELECT * FROM users WHERE id = {user_id}')",
+        ],
+        "severity": "HIGH",
+    }
+    assert verifier.is_false_positive(finding) is True
+
+
+def test_ai_verifier_filter_false_positives_batch_with_context(
+    tmp_path: Path,
+) -> None:
+    from src.domain.ai_cache import AICache
+
+    cache = AICache(cache_file=tmp_path / "cache.json")
+    verifier = AIVerifier(cache=cache)
+
+    findings = [
+        {
+            "rule_id": "CMD_INJECTION",
+            "line_content": "subprocess.run(escaped_cmd, shell=True)",
+            "path": "exec.py",
+            "severity": "HIGH",
+            "context_window": [
+                "escaped_cmd = escapeshellcmd(raw_cmd)",
+                "subprocess.run(escaped_cmd, shell=True)",
+            ],
+        },
+        {
+            "rule_id": "XSS",
+            "line_content": "render(bleached_text)",
+            "path": "view.py",
+            "severity": "HIGH",
+            "context_window": [
+                "bleached_text = bleach.clean(raw_text)",
+                "render(bleached_text)",
+            ],
+        },
+        {
+            "rule_id": "PATH_TRAVERSAL",
+            "line_content": "open(p, 'w')",
+            "path": "fs.py",
+            "severity": "HIGH",
+            "context_window": [
+                "p = pathlib.Path(base).resolve()",
+                "open(p, 'w')",
+            ],
+        },
+        {
+            "rule_id": "COMMAND_INJECTION",
+            "line_content": "os.system('rm -rf ' + user_folder)",
+            "path": "danger.py",
+            "severity": "CRITICAL",
+            "context_window": [
+                "user_folder = request.GET['folder']",
+                "os.system('rm -rf ' + user_folder)",
+            ],
+        },
+    ]
+
+    verified, fp_count = verifier.filter_false_positives(findings)
+    assert fp_count == 3
+    assert len(verified) == 1
+    assert verified[0]["path"] == "danger.py"
+
+    # Second pass should hit cache
+    verified2, fp_count2 = verifier.filter_false_positives(findings)
+    assert fp_count2 == 3
+    assert len(verified2) == 1
+    assert verified2[0]["path"] == "danger.py"
+
+
 def test_early_directory_pruning(tmp_path: Path) -> None:
     ignore_filter = IgnoreFilter(root_dir=tmp_path)
     assert ignore_filter.should_ignore_dir("node_modules") is True
