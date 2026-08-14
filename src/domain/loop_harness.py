@@ -134,7 +134,7 @@ class BoundedVerificationHarness:
         return self.memory_mb_used
 
     # pylint: disable=too-many-return-statements
-    def check_constraints(self) -> str | None:
+    def check_constraints(self, update_memory: bool = True) -> str | None:
         """Check current resource metrics against constraints.
 
         Returns constraint violation name if any limit is exceeded, else None.
@@ -142,7 +142,8 @@ class BoundedVerificationHarness:
         if self.start_time > 0.0:
             self.execution_seconds = round(time.monotonic() - self.start_time, 4)
 
-        self.update_memory()
+        if update_memory:
+            self.update_memory()
 
         if self.iterations_used > self.constraints.max_iterations:
             return "max_iterations"
@@ -199,7 +200,7 @@ class BoundedVerificationHarness:
     def set_memory_mb(self, memory_mb: float) -> str | None:
         """Explicitly set memory usage (useful for testing) and return violation."""
         self.memory_mb_used = memory_mb
-        violation = self.check_constraints()
+        violation = self.check_constraints(update_memory=False)
         if violation is not None:
             self._log_violation(violation)
         return violation

@@ -149,7 +149,7 @@ def test_constraint_exceeded_max_memory_mb() -> None:
 
 def test_harness_reset_and_manual_recording() -> None:
     """Test manual recording methods and reset functionality."""
-    harness = BoundedVerificationHarness()
+    harness = BoundedVerificationHarness(memory_fn=lambda: 0.0)
     harness.reset()
 
     assert harness.record_tool_call(5) is None
