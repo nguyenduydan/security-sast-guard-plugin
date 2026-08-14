@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.1.0...v2.2.0) (2026-08-14)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **scanner:** add rules ignore filter, sarif cli export, and optimize ci with uv ([5aff348](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5aff348207745ba014d90472789837cc28844f5e))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** grant security-events and actions permissions to workflow callers ([89df682](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/89df682d3492c9737892b7c258761a5bbaaca2c6))
+* **harness:** preserve explicit memory value in set_memory_mb and stabilize test ([c2a48e2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c2a48e2212035f200bda289ced1ad45a7200de30))
+
 ## [2.1.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.0.1...v2.1.0) (2026-08-14)
 
 
