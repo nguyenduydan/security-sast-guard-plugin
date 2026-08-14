@@ -65,7 +65,7 @@ class ASTPrecisionAnalyzer:
     def _is_safe_call_node(self, node: ast.Call, safe_vars: set[str]) -> bool:
         """Evaluate if an ast.Call node arguments are all safe expressions."""
         if not node.args and not node.keywords:
-            return True
+            return False
         args_safe = all(self._is_safe_expr(arg, safe_vars) for arg in node.args)
         keywords_safe = all(
             self._is_safe_expr(kw.value, safe_vars) for kw in node.keywords

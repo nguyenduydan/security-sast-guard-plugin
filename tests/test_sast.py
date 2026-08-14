@@ -111,3 +111,37 @@ def test_sast_scanner_plaintext_secret_ignores_publickeytoken(tmp_path: Path) ->
     # But the variable assignment `token = "..."` SHOULD trigger it
     lines = [r["line"] for r in results if r["rule_id"] == "PLAINTEXT_SECRET"]
     assert lines == [2]
+
+
+def test_ast_precision_safe_constants_suppressed(tmp_path: Path) -> None:
+    safe_file = tmp_path / "safe_script.py"
+    safe_file.write_text(
+        'import os\nos.system("git status")\nuser_id = int(request.args.get("id"))\n'
+    )
+
+    scanner = SASTScanner()
+    res = scanner.scan_with_metadata(str(safe_file))
+    assert len(res["findings"]) == 0
+
+    code = 'import os\nos.system("git status")\n'
+    findings = scanner.scan_code(code, filename="safe_task.py")
+    assert len(findings) == 0
+
+
+def test_ast_precision_real_vulnerability_detected(tmp_path: Path) -> None:
+    vuln_file = tmp_path / "vuln_script.py"
+    vuln_file.write_text(
+        'import os\nuser_input = request.args.get("cmd")\nos.system(user_input)\n'
+    )
+
+    scanner = SASTScanner()
+    res = scanner.scan_with_metadata(str(vuln_file))
+    assert len(res["findings"]) == 1
+    assert res["findings"][0]["rule_id"] == "RCE_RISK"
+    assert "context_window" in res["findings"][0]
+    assert len(res["findings"][0]["context_window"]) > 0
+
+    code = "import os\nos.system(user_input)\n"
+    findings = scanner.scan_code(code, filename="vuln_task.py")
+    assert len(findings) == 1
+    assert findings[0].rule_id == "RCE_RISK"

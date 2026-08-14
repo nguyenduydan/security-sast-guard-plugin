@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .ai_verifier import AIVerifier
+from .ast_analyzer import ASTPrecisionAnalyzer
 from .ast_context_engine import ASTContextEngine
 from .context_extractor import ContextExtractor
 from .git_helper import GitHelper
@@ -16,6 +17,7 @@ from .ignore_filter import IgnoreFilter
 from .models import Finding
 
 
+# pylint: disable=too-many-instance-attributes
 class SASTScanner:
     """SAST rule scanner implementation."""
 
@@ -30,6 +32,7 @@ class SASTScanner:
         self.mode = "strict"
         self._rules_cache: list[dict[str, Any]] | None = rules
         self.ai_verifier = AIVerifier()
+        self.ast_analyzer = ASTPrecisionAnalyzer()
         self.ast_engine = ASTContextEngine()
         self.context_extractor = ContextExtractor()
         self._load_profile()
@@ -223,6 +226,13 @@ class SASTScanner:
                         if ctx.get("is_safe_context"):
                             continue
 
+                        if str_path.endswith(
+                            ".py"
+                        ) and self.ast_analyzer.is_safe_sink_call(
+                            str_path, line_idx, rule_id, line_content, None
+                        ):
+                            continue
+
                         findings.append(
                             {
                                 "rule_id": rule_id,
@@ -238,6 +248,7 @@ class SASTScanner:
                                 ),
                                 "action": rule.get("action", "Block"),
                                 "remediation": rule.get("remediation"),
+                                "context_window": ctx.get("context_window", []),
                             }
                         )
 
@@ -455,6 +466,12 @@ class SASTScanner:
                     rule_id = rule.get("id", "UNKNOWN")
                     if self._rule_matches_line(line_content, rule):
                         if self._is_suppressed(line_content, prev_line, rule_id):
+                            continue
+                        if filename.endswith(
+                            ".py"
+                        ) and self.ast_analyzer.is_safe_sink_call(
+                            filename, line_idx, rule_id, line_content, code
+                        ):
                             continue
                         findings.append(
                             Finding(
