@@ -10,47 +10,673 @@ let isAutoPlaying = false;
 
 // 53 SAST Vector Rules Database
 const SAST_RULES = [
-  { id: "SAST-API-001", name: "Broken Object Level Authorization (BOLA)", category: "OWASP API 2023", severity: "CRITICAL", desc: "Detects direct object references lacking identity verification checks." },
-  { id: "SAST-API-002", name: "Broken Authentication", category: "OWASP API 2023", severity: "CRITICAL", desc: "Flags hardcoded tokens, weak JWT algorithms, or unverified signatures." },
-  { id: "SAST-API-003", name: "Broken Object Property Level Auth", category: "OWASP API 2023", severity: "HIGH", desc: "Flags mass assignment vulnerabilities exposing sensitive internal fields." },
-  { id: "SAST-API-004", name: "Unrestricted Resource Consumption", category: "OWASP API 2023", severity: "MEDIUM", desc: "Identifies endpoints lacking pagination limits or request rate throttling." },
-  { id: "SAST-API-005", name: "Broken Function Level Auth", category: "OWASP API 2023", severity: "HIGH", desc: "Detects administrative endpoints accessible without role-based access control." },
-  { id: "SAST-API-006", name: "Unrestricted Access to Business Flows", category: "OWASP API 2023", severity: "MEDIUM", desc: "Flags operations sensitive to automated bot attacks lacking verification." },
-  { id: "SAST-API-007", name: "Server Side Request Forgery (SSRF)", category: "OWASP API 2023", severity: "CRITICAL", desc: "Detects user-controlled URLs passed into internal HTTP client callers." },
-  { id: "SAST-API-008", name: "Security Misconfiguration", category: "OWASP API 2023", severity: "HIGH", desc: "Identifies permissive CORS headers, verbose stack trace returns, or default credentials." },
-  { id: "SAST-API-009", name: "Improper Inventory Management", category: "OWASP API 2023", severity: "LOW", desc: "Flags unversioned API endpoints or exposed debug/staging routes." },
-  { id: "SAST-API-010", name: "Unsafe Consumption of APIs", category: "OWASP API 2023", severity: "MEDIUM", desc: "Detects unvalidated third-party API response ingestion." },
-  
-  { id: "SAST-WEB-001", name: "Broken Access Control", category: "OWASP Web 2021", severity: "CRITICAL", desc: "Flags missing authorization checks on sensitive data access." },
-  { id: "SAST-WEB-002", name: "Cryptographic Failures", category: "OWASP Web 2021", severity: "HIGH", desc: "Detects weak hashing algorithms (MD5, SHA1) or plain-text secret storage." },
-  { id: "SAST-WEB-003", name: "Injection Vectors", category: "OWASP Web 2021", severity: "CRITICAL", desc: "Identifies unescaped user inputs passed to system interpreters." },
-  { id: "SAST-WEB-004", name: "Insecure Design", category: "OWASP Web 2021", severity: "HIGH", desc: "Flags architectural patterns missing rate-limiting or boundary isolation." },
-  { id: "SAST-WEB-005", name: "Security Misconfiguration", category: "OWASP Web 2021", severity: "MEDIUM", desc: "Detects enabled directory listing or unnecessary default features." },
-  { id: "SAST-WEB-006", name: "Vulnerable Components", category: "OWASP Web 2021", severity: "HIGH", desc: "Flags known vulnerable third-party dependencies." },
-  { id: "SAST-WEB-007", name: "Auth & Identification Failures", category: "OWASP Web 2021", severity: "HIGH", desc: "Detects missing multi-factor authentication triggers or weak session timeouts." },
-  { id: "SAST-WEB-008", name: "Software & Data Integrity", category: "OWASP Web 2021", severity: "CRITICAL", desc: "Identifies unverified code updates or untrusted deserialization." },
-  { id: "SAST-WEB-009", name: "Logging & Monitoring Failures", category: "OWASP Web 2021", severity: "LOW", desc: "Flags security-critical actions missing audit log calls." },
-  { id: "SAST-WEB-010", name: "Server-Side Request Forgery", category: "OWASP Web 2021", severity: "CRITICAL", desc: "Identifies unvalidated remote resource fetches." },
-
-  { id: "SAST-CWE-089", name: "SQL Injection (CWE-89)", category: "CWE Top 25", severity: "CRITICAL", desc: "Flags string concatenation or raw formatting inside database query strings." },
-  { id: "SAST-CWE-079", name: "Cross-Site Scripting (CWE-79)", category: "CWE Top 25", severity: "HIGH", desc: "Identifies unescaped user input rendered in HTML templates or innerHTML." },
-  { id: "SAST-CWE-078", name: "OS Command Injection (CWE-078)", category: "CWE Top 25", severity: "CRITICAL", desc: "Detects shell command string formatting using raw user variables." },
-  { id: "SAST-CWE-022", name: "Path Traversal (CWE-022)", category: "CWE Top 25", severity: "HIGH", desc: "Flags file path operations without canonicalization or directory jail checks." },
-  { id: "SAST-CWE-352", name: "Cross-Site Request Forgery (CWE-352)", category: "CWE Top 25", severity: "HIGH", desc: "Detects state-changing endpoints lacking CSRF token protection." },
-  { id: "SAST-CWE-434", name: "Unrestricted File Upload (CWE-434)", category: "CWE Top 25", severity: "CRITICAL", desc: "Flags file uploads without extension whitelist or MIME type validation." },
-  { id: "SAST-CWE-306", name: "Missing Authentication (CWE-306)", category: "CWE Top 25", severity: "CRITICAL", desc: "Identifies critical business logic missing authentication checks." },
-  { id: "SAST-CWE-502", name: "Deserialization of Untrusted Data", category: "CWE Top 25", severity: "CRITICAL", desc: "Detects usage of unsafe pickle/yaml load on external inputs." },
-  { id: "SAST-CWE-798", name: "Use of Hard-coded Credentials", category: "CWE Top 25", severity: "HIGH", desc: "Flags static API keys, password strings, or private keys embedded in code." },
-  { id: "SAST-CWE-276", name: "Incorrect Default Permissions", category: "CWE Top 25", severity: "MEDIUM", desc: "Detects files or directories created with 0777 world-writable permissions." },
-
-  { id: "SAST-NIST-AC2", name: "Account Management (NIST AC-2)", category: "NIST 800-53", severity: "HIGH", desc: "Flags user creation operations lacking authorization checks." },
-  { id: "SAST-NIST-SC8", name: "Transmission Confidentiality (SC-8)", category: "NIST 800-53", severity: "HIGH", desc: "Detects HTTP connections lacking TLS/SSL encryption enforcement." },
-  { id: "SAST-NIST-IA2", name: "Identification & Auth (IA-2)", category: "NIST 800-53", severity: "HIGH", desc: "Flags plain-text password comparisons lacking constant-time verification." },
-  { id: "SAST-NIST-AU2", name: "Event Logging (AU-2)", category: "NIST 800-53", severity: "MEDIUM", desc: "Detects administrative actions executed without audit logging." },
-
-  { id: "SAST-SEC-KEY", name: "RSA/ECC Private Key Leak", category: "Secret Protection", severity: "CRITICAL", desc: "Flags embedded PEM private keys (-----BEGIN PRIVATE KEY-----)." },
-  { id: "SAST-SEC-TOK", name: "API Key / OAuth Token Leak", category: "Secret Protection", severity: "CRITICAL", desc: "Detects hardcoded cloud credentials, AWS keys, or API tokens." }
+  {
+    "id": "RCE_RISK",
+    "name": "Nguy cơ thực thi mã từ xa (Remote Code Execution Risk - OWASP ASI05)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Khớp các hành vi thực thi câu lệnh shell tùy ý hoặc đánh giá mã nguồn (eval, exec, subprocess, os.system)."
+  },
+  {
+    "id": "WILDCARD_PATH",
+    "name": "Quyền truy cập đường dẫn quá rộng / Ký tự đại diện (Excessive Agency - OWASP ASI03)",
+    "category": "OWASP API 2023",
+    "severity": "HIGH",
+    "desc": "Khớp các ký tự đại diện (*) hoặc đường dẫn thư mục gốc/quay lui gây ra quyền truy cập hệ thống tệp quá rộng."
+  },
+  {
+    "id": "PLAINTEXT_SECRET",
+    "name": "Lộ lọt thông tin bí mật và mật khẩu (Plaintext Credentials Disclosure - OWASP LLM02)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Phát hiện các token API, mật khẩu và khóa riêng tư bị lộ trong các cấu hình hoặc mã nguồn."
+  },
+  {
+    "id": "DESERIALIZATION_RCE",
+    "name": "Nguy cơ giải tuần tự hóa không an toàn (Unsafe Deserialization Risk)",
+    "category": "OWASP Web 2021",
+    "severity": "HIGH",
+    "desc": "Khớp việc phân tích dữ liệu đầu vào không an toàn như pickle, marshal, hoặc unsafe_load trong PyYAML."
+  },
+  {
+    "id": "XXE_RISK",
+    "name": "Liên kết ngoài XML nguy hại (XML External Entity Risk - XXE)",
+    "category": "CWE Top 25",
+    "severity": "HIGH",
+    "desc": "Phát hiện các hàm phân tích cú pháp sử dụng trình phân tích XML mặc định có lỗ hổng nhúng thực thể ngoài."
+  },
+  {
+    "id": "PROMPT_INJECTION_VULNERABLE",
+    "name": "Ghép chuỗi Prompt không an toàn (Unsafe Prompt Concatenation - OWASP ASI01 / LLM01)",
+    "category": "OWASP API 2023",
+    "severity": "MEDIUM",
+    "desc": "Đánh dấu việc ghép chuỗi thủ công nơi đầu vào không đáng tin cậy của người dùng được đưa trực tiếp vào prompt."
+  },
+  {
+    "id": "SSRF_LAN_ACCESS",
+    "name": "Lỗ hổng SSRF mạng nội bộ (LAN SSRF Vulnerability - OWASP API7 / ASI02)",
+    "category": "OWASP API 2023",
+    "severity": "HIGH",
+    "desc": "Phát hiện các endpoint mạng nội bộ hoặc localhost được viết cứng có nguy cơ bị khai thác SSRF."
+  },
+  {
+    "id": "SKILL_EXFILTRATION",
+    "name": "Skill yêu cầu gửi dữ liệu ra bên ngoài trái phép",
+    "category": "OWASP API 2023",
+    "severity": "HIGH",
+    "desc": "Phát hiện các chỉ thị (instructions) trong file skill.md ép Agent phải gửi kết quả, mã nguồn hoặc dữ liệu về một bên thứ ba."
+  },
+  {
+    "id": "SQL_INJECTION",
+    "name": "Lỗ hổng Tiêm câu lệnh SQL (SQL Injection - OWASP API8 / Web A03 / CWE-89)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Phát hiện các câu lệnh SQL ghép chuỗi trực tiếp hoặc sử dụng câu lệnh động không tham số hóa."
+  },
+  {
+    "id": "XSS_VULNERABILITY",
+    "name": "Lỗ hổng Chèn kịch bản chéo trang (Cross-Site Scripting - XSS / OWASP Web A03 / CWE-79)",
+    "category": "OWASP Web 2021",
+    "severity": "HIGH",
+    "desc": "Phát hiện xuất dữ liệu trực tiếp ra giao diện web mà không mã hóa HTML."
+  },
+  {
+    "id": "CSRF_CLICKJACKING",
+    "name": "Thiếu kiểm soát CSRF & Anti-Clickjacking (WEB2 / OWASP Web A01)",
+    "category": "OWASP Web 2021",
+    "severity": "HIGH",
+    "desc": "Phát hiện thiếu ValidateAntiForgeryToken hoặc cấu hình SameSite=None không an toàn."
+  },
+  {
+    "id": "UNRESTRICTED_FILE_UPLOAD",
+    "name": "Tải lên tệp không hạn chế (Unrestricted File Upload - WEB4 / OWASP Web A04)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Phát hiện xử lý lưu file trực tiếp mà không kiểm tra định dạng đuôi file an toàn."
+  },
+  {
+    "id": "VERBOSE_ERROR_DISCLOSURE",
+    "name": "Lộ lọt thông tin qua thông báo lỗi (Verbose Error / Stack Trace - WEB5)",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Phát hiện bật chế độ hiển thị lỗi chi tiết hoặc in stack trace ra giao diện."
+  },
+  {
+    "id": "ASP_NET_WEBMETHOD_EXPOSURE",
+    "name": "Lỗ hổng ASP.NET WebMethod / HttpHandler không xác thực (WEB6)",
+    "category": "OWASP Web 2021",
+    "severity": "HIGH",
+    "desc": "Phát hiện các WebMethod tĩnh hoặc HttpHandler chạy độc lập thiếu kiểm tra quyền đăng nhập."
+  },
+  {
+    "id": "CORS_MISCONFIGURATION",
+    "name": "Cấu hình CORS không an toàn (CORS Misconfiguration - WEB9)",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Phát hiện cho phép tất cả các nguồn truy cập (Access-Control-Allow-Origin: *)."
+  },
+  {
+    "id": "API_SECURITY_CHECKLIST",
+    "name": "🔐 API Security Checklist — Developer Review",
+    "category": "OWASP API 2023",
+    "severity": "HIGH",
+    "desc": "> Dùng trước mỗi lần release / merge vào main.\n> Tick ✅ = Đã kiểm tra và OK | ❌ = Có vấn đề cần fix | N/A = Không áp dụng"
+  },
+  {
+    "id": "DISCOVERY_GUIDE",
+    "name": "Discovery Guide — Nhận diện Dự án & Auth Mechanism",
+    "category": "OWASP API 2023",
+    "severity": "HIGH",
+    "desc": "Hướng dẫn AI tự grep để xác định **loại ứng dụng, cơ chế xác thực và các thành phần** trước khi audit."
+  },
+  {
+    "id": "FULL_AUDIT",
+    "name": "Profile: Full Audit (Tất cả tiêu chuẩn)",
+    "category": "OWASP Web 2021",
+    "severity": "HIGH",
+    "desc": "**Mục đích:** Audit toàn diện nhất — tất cả 4 tiêu chuẩn\n**Khi nào dùng:** Penetration test nội bộ, security audit định kỳ hàng năm, trước khi launch hệ thống lớn"
+  },
+  {
+    "id": "GOVERNMENT",
+    "name": "Profile: Government / Enterprise Audit",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Mục đích:** Audit toàn diện cho dự án Chính phủ, Enterprise, hệ thống dữ liệu nhạy cảm\n**Khi nào dùng:** Trước khi go-live, security review định kỳ, audit theo yêu cầu cơ quan nhà nước"
+  },
+  {
+    "id": "QUICK_API",
+    "name": "Profile: Quick API Audit",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "**Mục đích:** Audit nhanh tập trung vào bảo mật API cốt lõi (~15-20 phút)\n**Khi nào dùng:** Code review nhanh, pre-release check, dự án không có dữ liệu đặc biệt nhạy cảm"
+  },
+  {
+    "id": "WEB_APP",
+    "name": "Profile: Web Application Security Audit",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Mục đích:** Kiểm tra bảo mật toàn diện cho ứng dụng Web (không chỉ API)\n**Khi nào dùng:** Web app có UI, form, session, upload file, frontend JS"
+  },
+  {
+    "id": "README",
+    "name": "🔐 Application Security Audit Skill",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "> **Dành cho:** Developer, Tech Lead, Security Reviewer trong nhóm  \n> **Mục đích:** Giúp AI tự động rà soát bảo mật cho API và Web Application theo tiêu chuẩn quốc tế  \n> **Phiên bản:** 1.1 — Cập nhật 2026-06"
+  },
+  {
+    "id": "CWE_TOP25_RULES",
+    "name": "CWE/SANS Top 25 Most Dangerous Software Weaknesses (2024)",
+    "category": "CWE Top 25",
+    "severity": "CRITICAL",
+    "desc": "Tài liệu tham khảo: https://cwe.mitre.org/top25/"
+  },
+  {
+    "id": "GETCURRENTUSERID",
+    "name": "[A04:2021] Insecure Design",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)\n**Áp dụng cho:** Mọi web app — đặc biệt app có business workflow, giao dịch tài chính, xác thực"
+  },
+  {
+    "id": "DTO",
+    "name": "[API10:2023] Unsafe Consumption of APIs",
+    "category": "OWASP API 2023",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "OTHER_USER_ID",
+    "name": "[API1:2023] Broken Object Level Authorization (BOLA)",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "USER",
+    "name": "[API3:2023] Broken Object Property Level Authorization",
+    "category": "OWASP API 2023",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "SESSION",
+    "name": "[API4:2023] Unrestricted Resource Consumption",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "API6_BUSINESSFLOW",
+    "name": "[API6:2023] Unrestricted Access to Sensitive Business Flows",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "API7_SSRF",
+    "name": "[API7:2023] Server Side Request Forgery (SSRF)",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "API8_MISCONFIGURATION",
+    "name": "[API8:2023] Security Misconfiguration",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🟠 High\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "API9_INVENTORY",
+    "name": "[API9:2023] Improper Inventory Management",
+    "category": "OWASP API 2023",
+    "severity": "LOW",
+    "desc": "**Severity:** 🟢 Low\n**Tiêu chuẩn:** OWASP API Security Top 10 (2023)"
+  },
+  {
+    "id": "REQUEST",
+    "name": "[A01:2021] Broken Access Control",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "BCRYPT",
+    "name": "[A02:2021] Cryptographic Failures",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "A03_INJECTION",
+    "name": "[A03:2021] Injection (SQL, NoSQL, OS Command, LDAP, XSS)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)\n**Áp dụng cho:** Mọi web app có nhận input từ người dùng và tương tác DB / OS / LDAP"
+  },
+  {
+    "id": "A05_SECURITYMISCONFIGURATION",
+    "name": "[A05:2021] Security Misconfiguration",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)\n**Áp dụng cho:** Mọi web app — đặc biệt .NET Framework, ASP.NET Core, IIS"
+  },
+  {
+    "id": "A06_VULNERABLECOMPONENTS",
+    "name": "[A06:2021] Vulnerable and Outdated Components",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🟠 High\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "A07_AUTHFAILURES",
+    "name": "[A07:2021] Identification and Authentication Failures",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "A08_DATAINTEGRITYFAILURES",
+    "name": "[A08:2021] Software and Data Integrity Failures",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "A09_LOGGINGFAILURES",
+    "name": "[A09:2021] Security Logging and Monitoring Failures",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "A10_SSRF",
+    "name": "[A10:2021] Server-Side Request Forgery (SSRF)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** OWASP Web Application Top 10 (2021)"
+  },
+  {
+    "id": "WEB10_RACECONDITION",
+    "name": "[WEB10] Race Condition / TOCTOU",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app có giao dịch tài chính, quản lý tồn kho, coupon/voucher, concurrent file access"
+  },
+  {
+    "id": "WEB11_SOURCEFILEEXPOSURE",
+    "name": "[WEB11] Source File & Sensitive Data Exposure",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app — đặc biệt app deploy trên IIS, Apache, Nginx"
+  },
+  {
+    "id": "WEB1_HTTPSECURITYHEADERS",
+    "name": "[WEB1] HTTP Security Headers",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi loại Web App (WebForms, MVC, API, SPA)"
+  },
+  {
+    "id": "WEB2_CSRF_CLICKJACKING",
+    "name": "[WEB2] CSRF & Clickjacking Protection",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Web App có form HTML, state-changing requests"
+  },
+  {
+    "id": "WEB3_FRONTENDSECURITY",
+    "name": "[WEB3] Frontend Security",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Trang web có JavaScript, SPA (React/Vue/Angular), WebForms với JS"
+  },
+  {
+    "id": "NEWFILENAME",
+    "name": "[WEB4] File Upload Security",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app có chức năng upload file"
+  },
+  {
+    "id": "WEB5_ERRORHANDLING",
+    "name": "[WEB5] Error Handling & Information Disclosure",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟢 Low → 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app"
+  },
+  {
+    "id": "WEB6_WEBFORMSASPNET",
+    "name": "[WEB6] ASP.NET Specific Security (WebForms, MVC, Core)",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "**Severity:** 🟡 Medium\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Dự án ASP.NET WebForms, MVC, Core"
+  },
+  {
+    "id": "WEB7_THIRDPARTYDASHBOARDS",
+    "name": "[WEB7] Third-party Admin Dashboards & Management Endpoints",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app dùng thư viện có giao diện quản trị tích hợp sẵn"
+  },
+  {
+    "id": "WEB8_SENSITIVEACTIONREAUTH",
+    "name": "[WEB8] Sensitive Action Re-authentication",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app có chức năng thay đổi thông tin tài khoản, xác thực 2 bước, giao dịch quan trọng"
+  },
+  {
+    "id": "WEB9_CORSMISCONFIGURATION",
+    "name": "[WEB9] CORS Misconfiguration",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "**Severity:** 🔴 Critical\n**Tiêu chuẩn:** Web App Security\n**Áp dụng cho:** Mọi web app / API có CORS configuration — đặc biệt app dùng cookie-based auth hoặc JWT trong cookie"
+  },
+  {
+    "id": "SKILL",
+    "name": "Application Security Audit Skill",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "---\nname: api-security-audit\ndescription: >\n  Rà soát bảo mật toàn diện cho API và Web Application theo các tiêu chuẩn quốc tế.\n  Kích hoạt khi người dùng nhắc đến: \"kiểm tra bảo mật\", \"security audit\",\n  \"OWASP\", \"lỗ hổng API\", \"lỗ hổng web\", \"web security\", \"security review\",\n  \"bảo mật ứng dụng\","
+  },
+  {
+    "id": "XSS_INLINE_EVENT",
+    "name": "Cross-Site Scripting Inline Event Attributes (CWE-79)",
+    "category": "OWASP Web 2021",
+    "severity": "HIGH",
+    "desc": "Detects inline JavaScript event attributes like onfocus=, onerror="
+  },
+  {
+    "id": "BROKEN_ACCESS_CONTROL",
+    "name": "Unvalidated Privilege Parameter Tampering (CWE-639 / CWE-269)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Detects unvalidated role or privilege parameter assignments"
+  },
+  {
+    "id": "cwe_top25_rules",
+    "name": "cwe_top25_rules",
+    "category": "CWE Top 25",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from cwe_top25_rules.md"
+  },
+  {
+    "id": "nist_key_controls",
+    "name": "nist_key_controls",
+    "category": "NIST 800-53",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from nist_key_controls.md"
+  },
+  {
+    "id": "API10_2023",
+    "name": "Unsafe Consumption of APIs",
+    "category": "OWASP API 2023",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from API10_ThirdParty.md"
+  },
+  {
+    "id": "API1_2023",
+    "name": "Broken Object Level Authorization (BOLA)",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API1_BOLA.md"
+  },
+  {
+    "id": "API2_2023",
+    "name": "Broken Authentication",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API2_BrokenAuth.md"
+  },
+  {
+    "id": "API3_2023",
+    "name": "Broken Object Property Level Authorization",
+    "category": "OWASP API 2023",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from API3_MassAssignment.md"
+  },
+  {
+    "id": "API4_2023",
+    "name": "Unrestricted Resource Consumption",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API4_RateLimit.md"
+  },
+  {
+    "id": "API5_2023",
+    "name": "Broken Function Level Authorization",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API5_FunctionAuth.md"
+  },
+  {
+    "id": "API6_2023",
+    "name": "Unrestricted Access to Sensitive Business Flows",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API6_BusinessFlow.md"
+  },
+  {
+    "id": "API7_2023",
+    "name": "Server Side Request Forgery (SSRF)",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API7_SSRF.md"
+  },
+  {
+    "id": "API8_2023",
+    "name": "Security Misconfiguration",
+    "category": "OWASP API 2023",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from API8_Misconfiguration.md"
+  },
+  {
+    "id": "API9_2023",
+    "name": "Improper Inventory Management",
+    "category": "OWASP API 2023",
+    "severity": "LOW",
+    "desc": "Imported rule from API9_Inventory.md"
+  },
+  {
+    "id": "A01_2021",
+    "name": "Broken Access Control",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A01_BrokenAccessControl.md"
+  },
+  {
+    "id": "A02_2021",
+    "name": "Cryptographic Failures",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A02_CryptoFailures.md"
+  },
+  {
+    "id": "A03_2021",
+    "name": "Injection (SQL, NoSQL, OS Command, LDAP, XSS)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A03_Injection.md"
+  },
+  {
+    "id": "A04_2021",
+    "name": "Insecure Design",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from A04_InsecureDesign.md"
+  },
+  {
+    "id": "A05_2021",
+    "name": "Security Misconfiguration",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A05_SecurityMisconfiguration.md"
+  },
+  {
+    "id": "A06_2021",
+    "name": "Vulnerable and Outdated Components",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A06_VulnerableComponents.md"
+  },
+  {
+    "id": "A07_2021",
+    "name": "Identification and Authentication Failures",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A07_AuthFailures.md"
+  },
+  {
+    "id": "A08_2021",
+    "name": "Software and Data Integrity Failures",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from A08_DataIntegrityFailures.md"
+  },
+  {
+    "id": "A09_2021",
+    "name": "Security Logging and Monitoring Failures",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from A09_LoggingFailures.md"
+  },
+  {
+    "id": "A10_2021",
+    "name": "Server-Side Request Forgery (SSRF)",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from A10_SSRF.md"
+  },
+  {
+    "id": "WEB10",
+    "name": "Race Condition / TOCTOU",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB10_RaceCondition.md"
+  },
+  {
+    "id": "WEB11",
+    "name": "Source File & Sensitive Data Exposure",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB11_SourceFileExposure.md"
+  },
+  {
+    "id": "WEB1",
+    "name": "HTTP Security Headers",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB1_HTTPSecurityHeaders.md"
+  },
+  {
+    "id": "WEB2",
+    "name": "CSRF & Clickjacking Protection",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB2_CSRF_Clickjacking.md"
+  },
+  {
+    "id": "WEB3",
+    "name": "Frontend Security",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB3_FrontendSecurity.md"
+  },
+  {
+    "id": "WEB4",
+    "name": "File Upload Security",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from WEB4_FileUploadSecurity.md"
+  },
+  {
+    "id": "WEB5",
+    "name": "Error Handling & Information Disclosure",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB5_ErrorHandling.md"
+  },
+  {
+    "id": "WEB6",
+    "name": "ASP.NET Specific Security (WebForms, MVC, Core)",
+    "category": "OWASP Web 2021",
+    "severity": "MEDIUM",
+    "desc": "Imported rule from WEB6_WebFormsASPNET.md"
+  },
+  {
+    "id": "WEB7",
+    "name": "Third-party Admin Dashboards & Management Endpoints",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from WEB7_ThirdPartyDashboards.md"
+  },
+  {
+    "id": "WEB8",
+    "name": "Sensitive Action Re-authentication",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from WEB8_SensitiveActionReauth.md"
+  },
+  {
+    "id": "WEB9",
+    "name": "CORS Misconfiguration",
+    "category": "OWASP Web 2021",
+    "severity": "CRITICAL",
+    "desc": "Imported rule from WEB9_CORSMisconfiguration.md"
+  },
+  {
+    "id": "LLM01_PROMPT_INJECTION",
+    "name": "Nguy cơ Prompt Injection vào mô hình LLM (OWASP LLM01 / ASI01)",
+    "category": "OWASP LLM 2025",
+    "severity": "CRITICAL",
+    "desc": "Phát hiện nối chuỗi trực tiếp dữ liệu người dùng không tin cậy vào System Prompt hoặc LLM Prompt template."
+  },
+  {
+    "id": "LLM02_SENSITIVE_DATA_EXPOSURE",
+    "name": "Tiết lộ thông tin nhạy cảm qua LLM Context (OWASP LLM02)",
+    "category": "OWASP LLM 2025",
+    "severity": "HIGH",
+    "desc": "Phát hiện truyền secrets, API keys, passwords hoặc tokens nhạy cảm vào prompt context của mô hình LLM."
+  },
+  {
+    "id": "LLM06_EXCESSIVE_AGENCY",
+    "name": "Cấp quyền thực thi vượt mức cho AI Agent Tools (Excessive Agency - OWASP LLM06)",
+    "category": "OWASP LLM 2025",
+    "severity": "CRITICAL",
+    "desc": "Phát hiện cấu hình AI Tools với quyền thực thi shell hoặc hệ thống mà không có cơ chế kiểm duyệt/xác nhận."
+  },
+  {
+    "id": "GHA_EXPRESSION_INJECTION",
+    "name": "GitHub Actions Script Expression Injection (GHA Injection)",
+    "category": "CI/CD & GitHub Actions",
+    "severity": "CRITICAL",
+    "desc": "Phát hiện biểu thức ngữ cảnh GitHub không an toàn chèn trực tiếp vào câu lệnh run: gây nguy cơ chiếm quyền runner."
+  },
+  {
+    "id": "GHA_UNSAFE_CHECKOUT",
+    "name": "GitHub Actions Unsafe PR Target Checkout (PWN Request)",
+    "category": "CI/CD & GitHub Actions",
+    "severity": "HIGH",
+    "desc": "Phát hiện sự kiện pull_request_target checkout trực tiếp commit untrusted từ PR của fork bên ngoài."
+  },
+  {
+    "id": "DOCKER_ROOT_USER",
+    "name": "Container chạy dưới quyền Root (Dockerfile Root Execution)",
+    "category": "Container Security",
+    "severity": "MEDIUM",
+    "desc": "Phát hiện Dockerfile tường minh cấu hình USER root hoặc chạy tiến trình dưới quyền siêu người dùng."
+  },
+  {
+    "id": "DOCKER_CURL_BASH",
+    "name": "Thực thi script trực tiếp từ Internet trong Dockerfile (Curl Pipe Bash)",
+    "category": "Container Security",
+    "severity": "HIGH",
+    "desc": "Phát hiện tải và thực thi script trực tiếp không qua checksum trong Dockerfile (curl | bash, wget | sh)."
+  }
 ];
+
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
