@@ -1,5 +1,7 @@
 """Unit tests for new OWASP LLM, GitHub Actions, and Docker security rules."""
 
+# pylint: disable=redefined-outer-name
+
 import pytest
 
 from src.domain.cwe_owasp_mapper import CWEOWASPMapper
