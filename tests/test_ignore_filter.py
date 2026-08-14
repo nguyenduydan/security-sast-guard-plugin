@@ -244,3 +244,18 @@ def test_ignore_filter_aspnet_extended_rules(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "Nlog.config") is True
     app_insights = tmp_path / "ApplicationInsights.config"
     assert filter_inst.should_ignore(app_insights) is True
+
+
+def test_ignore_filter_rules_and_meta_files(tmp_path: Path) -> None:
+    """Rule definition directories and meta-rule database files must be ignored."""
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+
+    # Rules directory and files inside it
+    assert filter_inst.should_ignore_dir("rules") is True
+    assert filter_inst.should_ignore(tmp_path / "rules" / "sast_rules.json") is True
+    assert filter_inst.should_ignore(tmp_path / "rules" / "profiles.json") is True
+
+    # Standalone meta-rule files
+    assert filter_inst.should_ignore(tmp_path / "sast_rules.json") is True
+    assert filter_inst.should_ignore(tmp_path / "profiles.json") is True
+    assert filter_inst.should_ignore(tmp_path / "profile.json") is True

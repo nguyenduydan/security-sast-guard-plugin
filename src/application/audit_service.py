@@ -11,7 +11,10 @@ from src.domain.taint_tracker import TaintTracker
 from src.infrastructure.integrity_checker import IntegrityChecker
 from src.infrastructure.profile_loader import ProfileLoader
 from src.infrastructure.profile_resolver import ProfileResolver
-from src.infrastructure.report_generator import generate_markdown_report
+from src.infrastructure.report_generator import (
+    generate_markdown_report,
+    generate_sarif_report,
+)
 from src.infrastructure.symbol_cache import SymbolCache
 from src.infrastructure.version_loader import get_plugin_version
 
@@ -53,8 +56,14 @@ class AuditService:
         self.profile = self.profile_loader.load(str(self.profile_path))
         return self.profile
 
+    # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
     def run_audit(
-        self, target_path: str, verbose: bool = False, generate_report: bool = True
+        self,
+        target_path: str,
+        verbose: bool = False,
+        generate_report: bool = True,
+        output_format: str = "markdown",
+        sarif_output_path: str | None = None,
     ) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
         self._reload_profile()
@@ -70,6 +79,28 @@ class AuditService:
                 f"Scan complete. {len(findings)} findings in {scanned} files ({dur}s)."
             )
             return findings, "", summary
+
+        if output_format.lower() == "sarif" or sarif_output_path is not None:
+            out_dir = (
+                str(Path(sarif_output_path).parent) if sarif_output_path else "reports"
+            )
+            report_file, summary = generate_sarif_report(
+                findings,
+                output_dir=out_dir,
+                target_path=target_path,
+                metadata=metadata,
+                audit_level=audit_level,
+            )
+            if sarif_output_path and report_file != sarif_output_path:
+                Path(sarif_output_path).parent.mkdir(parents=True, exist_ok=True)
+                Path(report_file).replace(Path(sarif_output_path))
+                report_file = sarif_output_path
+                file_uri = Path(sarif_output_path).resolve().as_uri()
+                summary = (
+                    f"SAST Audit completed. Total: {len(findings)} findings.\n"
+                    f"SARIF report saved to: [{sarif_output_path}]({file_uri})"
+                )
+            return findings, report_file, summary
 
         report_md, summary = generate_markdown_report(
             findings,

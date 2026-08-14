@@ -120,16 +120,59 @@ def _handle_mode(args: list[str]) -> int:
     return 0
 
 
+# pylint: disable=too-many-branches
 def _handle_scan(args: list[str]) -> int:
-    """Handle scan / audit subcommand."""
+    """Handle scan / audit subcommand with format and level options."""
     verbose = "-v" in args or "--verbose" in args
-    clean_args = [a for a in args if a not in ("-v", "--verbose")]
 
-    target_path = clean_args[0] if clean_args else "."
+    sarif_output_path: str | None = None
+    output_format = "markdown"
+    target_level: str | None = None
+    positional_args: list[str] = []
+
+    idx = 0
+    while idx < len(args):
+        arg = args[idx]
+        if arg in ("-v", "--verbose"):
+            verbose = True
+            idx += 1
+        elif arg == "--sarif":
+            output_format = "sarif"
+            if idx + 1 < len(args) and not args[idx + 1].startswith("-"):
+                sarif_output_path = args[idx + 1]
+                idx += 2
+            else:
+                idx += 1
+        elif arg in ("--format", "-f"):
+            if idx + 1 < len(args):
+                output_format = args[idx + 1].lower()
+                idx += 2
+            else:
+                idx += 1
+        elif arg in ("--level", "-l"):
+            if idx + 1 < len(args):
+                target_level = args[idx + 1].lower()
+                idx += 2
+            else:
+                idx += 1
+        else:
+            positional_args.append(arg)
+            idx += 1
+
+    target_path = positional_args[0] if positional_args else "."
     if target_path.lower() == "codebase":
         target_path = "."
+
     service = AuditService()
-    _, _, summary = service.run_audit(target_path, verbose=verbose or True)
+    if target_level:
+        service.set_audit_level(target_level)
+
+    _, _, summary = service.run_audit(
+        target_path,
+        verbose=verbose or True,
+        output_format=output_format,
+        sarif_output_path=sarif_output_path,
+    )
     print(summary)
     return 0
 

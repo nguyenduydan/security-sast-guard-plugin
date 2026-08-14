@@ -77,6 +77,7 @@ DEFAULT_IGNORE_DIRS: set[str] = {
     "skills",
     "templates",
     "tests",
+    "rules",
 }
 
 DEFAULT_IGNORE_EXTS: set[str] = {
@@ -165,6 +166,10 @@ DEFAULT_IGNORE_FILES: set[str] = {
     "nlog.config",
     "applicationinsights.config",
     "loader.js",
+    # Rule definitions and security profiles (meta-rules)
+    "sast_rules.json",
+    "profiles.json",
+    "profile.json",
 }
 
 
