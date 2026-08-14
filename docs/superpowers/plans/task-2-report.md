@@ -1,69 +1,47 @@
-# Task 2 Report: Interactive Lazy Prompt
+# Task 2 Completion Report: Multi-Line Comment & Context Window Extraction in ContextExtractor
 
-## Summary of Implementation
-Implemented the interactive lazy prompt loop within `SASTScanner.scan()` in `src/domain/sast_scanner.py`.
-- Added helper method `_detect_matches(path: str) -> list[dict[str, Any]]` to act as a placeholder for match detection engine.
-- Integrated `extract_context(path, line)` from `src.domain.context_extractor` to extract line content, scope, and imports around detected matches.
-- Added prompt loop using `input()` to query user if context is safe (`Y` to allow, `N` to block as a violation).
-- Implemented full strict typing (PEP8, Ruff, Mypy compliance).
+## 1. Overview
+- **Task**: Task 2 - Multi-Line Comment & Context Window Extraction in ContextExtractor
+- **Branch**: `feat/semantic-precision-engine`
+- **Commit**: `2f4cd93` (`feat(context): add multi-line block comment tracking and context window extraction`)
+- **Status**: Completed (100% Green & Verified)
 
-## TDD Evidence
+---
 
-### RED Phase
-**Command:**
-`python -m pytest tests/test_sast.py -v`
+## 2. Implementation Details
 
-**Output:**
-```
-tests/test_sast.py::test_sast PASSED                                     [ 50%]
-tests/test_sast.py::test_sast_scanner_lazy_prompt FAILED                 [100%]
+### Modified Files
+1. [`src/domain/context_extractor.py`](file:///d:/AI/tools/security-sast-guard/src/domain/context_extractor.py)
+   - Updated `GenericSafeContextStrategy` to track multi-line block comments (`/* ... */` for C/JS/Java/CSS and `<!-- ... -->` for HTML/XML) across preceding lines up to the target line.
+   - Refactored `ContextExtractor.extract_context_from_lines` to compute `context_window` (±5 lines code snippet around the target line).
+   - Extracted helper methods `_extract_python_metadata` and `_extract_context_window` to maintain clean separation of concerns and ensure optimal cyclomatic complexity (pylint 10.00/10).
+   - Updated `extract_context` legacy wrapper to include `"context_window"` in return dictionary.
 
-FAILED tests/test_sast.py::test_sast_scanner_lazy_prompt - AttributeError: <src.domain.sast_scanner.SASTScanner object at 0x000001B35CFE5550> does not have the attribute '_detect_matches'
-```
-**Reason for expected failure:** `SASTScanner` had not yet implemented `_detect_matches` method or interactive prompt intercepting in `scan()`.
+2. [`tests/test_context_extractor.py`](file:///d:/AI/tools/security-sast-guard/tests/test_context_extractor.py)
+   - Added unit tests following TDD:
+     - `test_multiline_block_comment_js_is_safe`: Verifies JS multi-line comments are recognized as safe context.
+     - `test_multiline_block_comment_js_no_leading_asterisk_is_safe`: Verifies JS block comments without leading asterisks.
+     - `test_multiline_block_comment_html_is_safe`: Verifies HTML multi-line block comments (`<!-- ... -->`).
+     - `test_single_line_comment_does_not_leak_to_next_line`: Verifies comment state resets cleanly and does not leak.
+     - `test_context_window_extraction`: Verifies ±5 lines window retrieval and correct centering.
+     - `test_context_window_bounds`: Verifies bounded extraction at file limits (line 1, end of file).
 
-### GREEN Phase
-**Command:**
-`python -m pytest tests/test_sast.py -v`
+---
 
-**Output:**
-```
-tests/test_sast.py::test_sast PASSED                                     [ 50%]
-tests/test_sast.py::test_sast_scanner_lazy_prompt PASSED                 [100%]
+## 3. Verification & Quality Gates
 
-2 passed in 0.07s
-```
+| Check | Command | Result |
+|---|---|---|
+| **Unit Tests** | `python -m pytest tests/test_context_extractor.py` | 13 passed in 0.13s |
+| **Full Test Suite** | `python -m pytest` | 272 passed (100% green) |
+| **Ruff Linter** | `python -m ruff check .` | Passed (0 errors) |
+| **Ruff Formatter** | `python -m ruff format --check .` | Passed (126 files formatted) |
+| **Pylint** | `python -m pylint control_plane.py src/` | Score: 10.00/10 |
+| **Mypy** | `python -m mypy --config-file=pyproject.toml control_plane.py src/` | Success (0 issues in 53 files) |
 
-## Full Test Suite Results
-**Command:**
-`python -m pytest -v`
+---
 
-**Output:**
-```
-tests/test_context_extractor.py::test_extract_context PASSED             [ 14%]
-tests/test_context_extractor.py::test_extract_context_class_scope PASSED [ 28%]
-tests/test_context_extractor.py::test_extract_context_global_scope_and_no_imports PASSED [ 42%]
-tests/test_context_extractor.py::test_extract_context_line_out_of_bounds PASSED [ 57%]
-tests/test_plugin.py::test_plugin PASSED                                 [ 71%]
-tests/test_sast.py::test_sast PASSED                                     [ 85%]
-tests/test_sast.py::test_sast_scanner_lazy_prompt PASSED                 [100%]
-
-7 passed in 0.10s
-```
-
-## Linter & Type Checks
-- `python -m ruff check .` -> All checks passed!
-- `python -m mypy src/ tests/test_sast.py` -> Success: no issues found in 12 source files
-
-## Files Changed
-- `src/domain/sast_scanner.py`: Added `_detect_matches` and implemented interactive prompt in `scan()`.
-- `tests/test_sast.py`: Added unit test `test_sast_scanner_lazy_prompt` verifying `Y`/`N` prompt branches.
-
-## Self-Review Findings
-- **Completeness:** Fully implemented requirements in brief.
-- **Quality:** Clean names, strict PEP 585 typing (`list[dict[str, Any]]`), zero Ruff/Mypy errors.
-- **Discipline:** Only built requested functionality without over-engineering.
-- **Testing:** 7/7 tests passing, pristine output.
-
-## Issues or Concerns
-None.
+## 4. Architectural Notes
+- Standard library only (zero third-party dependencies).
+- Backward compatible with existing consumers of `ContextExtractor` and `extract_context`.
+- Ready for Task 3 (`AIVerifier` context window sanitizer gate) and Task 4 (`SASTScanner` integration).
