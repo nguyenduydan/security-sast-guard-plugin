@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.2.0...v2.3.0) (2026-08-14)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **scanner:** add OWASP LLM rules, parallel scanner, HTML dashboard, and git hook installer ([a5e4d53](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a5e4d53098905b53fbcaa3cf78b17a27137f6a11))
+
+
+### 📝 Documentation
+
+* update landing page and rules explorer with 95 security rules ([7b8dc5b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7b8dc5bd3aba2d14d5232d1dffcecbe194a05544))
+
 ## [2.2.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.1.0...v2.2.0) (2026-08-14)
 
 
