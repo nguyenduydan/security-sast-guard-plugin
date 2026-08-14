@@ -5,6 +5,8 @@ on:
 
 permissions:
   contents: read
+  security-events: write
+  actions: read
 
 jobs:
   sast-codebase-audit:
@@ -13,6 +15,7 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      actions: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
