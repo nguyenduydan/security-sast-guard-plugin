@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.domain.context_extractor import extract_context
+from src.domain.context_extractor import ContextExtractor, extract_context
 
 
 def test_extract_context(tmp_path: Path) -> None:
@@ -59,6 +59,7 @@ def test_extract_context_file_not_found(tmp_path: Path) -> None:
         "imports": "",
         "scope": "global",
         "is_safe_context": False,
+        "context_window": [],
     }
 
 
@@ -77,3 +78,72 @@ def test_extract_context_windows_line_endings(tmp_path: Path) -> None:
 
     result = extract_context(str(test_file), 1)
     assert result["line_content"] == "x = 10"
+
+
+def test_multiline_block_comment_js_is_safe() -> None:
+    extractor = ContextExtractor()
+    lines = [
+        "/*\n",
+        " * eval(userInput);\n",
+        " */\n",
+        "const valid = true;\n",
+    ]
+    ctx = extractor.extract_context_from_lines(lines, line_number=2, file_path="app.js")
+    assert ctx["is_safe_context"] is True
+
+
+def test_multiline_block_comment_js_no_leading_asterisk_is_safe() -> None:
+    extractor = ContextExtractor()
+    lines = [
+        "/*\n",
+        "   eval(userInput);\n",
+        "*/\n",
+        "const valid = true;\n",
+    ]
+    ctx = extractor.extract_context_from_lines(lines, line_number=2, file_path="app.js")
+    assert ctx["is_safe_context"] is True
+
+
+def test_multiline_block_comment_html_is_safe() -> None:
+    extractor = ContextExtractor()
+    lines = [
+        "<!--\n",
+        "  <script>evil()</script>\n",
+        "-->\n",
+        "<div>safe</div>\n",
+    ]
+    ctx = extractor.extract_context_from_lines(
+        lines, line_number=2, file_path="index.html"
+    )
+    assert ctx["is_safe_context"] is True
+
+
+def test_single_line_comment_does_not_leak_to_next_line() -> None:
+    extractor = ContextExtractor()
+    lines = [
+        "/* short comment */\n",
+        "eval(userInput);\n",
+    ]
+    ctx = extractor.extract_context_from_lines(lines, line_number=2, file_path="app.js")
+    assert ctx["is_safe_context"] is False
+
+
+def test_context_window_extraction() -> None:
+    extractor = ContextExtractor()
+    lines = [f"line_{i}\n" for i in range(1, 20)]
+    ctx = extractor.extract_context_from_lines(
+        lines, line_number=10, file_path="service.py"
+    )
+    assert "context_window" in ctx
+    window_lines = ctx["context_window"]
+    assert len(window_lines) == 11
+    assert "line_10" in window_lines[5]
+
+
+def test_context_window_bounds() -> None:
+    extractor = ContextExtractor()
+    lines = ["a\n", "b\n", "c\n"]
+    ctx = extractor.extract_context_from_lines(
+        lines, line_number=1, file_path="sample.py"
+    )
+    assert ctx["context_window"] == ["a", "b", "c"]
