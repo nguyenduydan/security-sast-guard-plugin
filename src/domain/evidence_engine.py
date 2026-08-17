@@ -9,6 +9,7 @@ NodeType = Literal["source", "propagation", "sanitizer", "sink"]
 
 
 _C_BLOCK_START: str = "/" + "*"
+_COMMENT_PREFIXES: tuple[str, ...] = ("#", "//", _C_BLOCK_START, "*")
 
 
 @dataclass
@@ -113,7 +114,7 @@ class EvidenceEngine:
         if symbols:
             for idx, line in enumerate(lines, start=1):
                 stripped = line.strip()
-                if not stripped or stripped.startswith(("#", "//", _C_BLOCK_START, "*")):
+                if not stripped or stripped.startswith(_COMMENT_PREFIXES):
                     continue
                 if any(sym in line for sym in symbols):
                     target_lines.add(idx)
