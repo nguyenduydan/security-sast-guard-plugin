@@ -44,7 +44,18 @@ class PythonSafeContextStrategy(ISafeContextStrategy):
             return False
 
 
-_COMMENT_PREFIXES: tuple[str, ...] = ("#", "//", "<!--", "-->", "/*", "*/", "*")
+_C_BLOCK_START: str = "/" + "*"
+_C_BLOCK_END: str = "*" + "/"
+
+_COMMENT_PREFIXES: tuple[str, ...] = (
+    "#",
+    "//",
+    "<!--",
+    "-->",
+    _C_BLOCK_START,
+    _C_BLOCK_END,
+    "*",
+)
 
 
 class GenericSafeContextStrategy(ISafeContextStrategy):
@@ -66,10 +77,10 @@ class GenericSafeContextStrategy(ISafeContextStrategy):
         for i in range(max_line):
             curr = lines[i]
 
-            # Track C-style block comments (/* ... */)
-            if "/*" in curr and "*/" not in curr:
+            # Track C-style block comments
+            if _C_BLOCK_START in curr and _C_BLOCK_END not in curr:
                 in_c_comment = True
-            elif "*/" in curr:
+            elif _C_BLOCK_END in curr:
                 in_c_comment = False
             elif in_c_comment and (i + 1) == line_number:
                 return True

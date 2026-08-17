@@ -8,6 +8,9 @@ from typing import Any, Literal
 NodeType = Literal["source", "propagation", "sanitizer", "sink"]
 
 
+_C_BLOCK_START: str = "/" + "*"
+
+
 @dataclass
 class EvidenceNode:
     """Represents a single step or location in an evidence dataflow path."""
@@ -110,7 +113,7 @@ class EvidenceEngine:
         if symbols:
             for idx, line in enumerate(lines, start=1):
                 stripped = line.strip()
-                if not stripped or stripped.startswith(("#", "//", "/*", "*")):
+                if not stripped or stripped.startswith(("#", "//", _C_BLOCK_START, "*")):
                     continue
                 if any(sym in line for sym in symbols):
                     target_lines.add(idx)

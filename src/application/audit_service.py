@@ -409,7 +409,7 @@ class AuditService:
                 if data.get("name"):
                     return str(data["name"])
             except (OSError, ValueError, KeyError):
-                pass  # package.json unreadable: fall back to directory name
+                pass  # manifest unreadable: fall back to directory name
 
         return cwd.name
 

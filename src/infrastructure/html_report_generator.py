@@ -286,9 +286,11 @@ def generate_html_report(
       }});
 
       if (filtered.length === 0) {{
-        container.innerHTML = (
-          '<div class="empty-state">✅ No security vulnerabilities matched.</div>'
-        );
+        container.textContent = '';
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'empty-state';
+        emptyDiv.textContent = '✅ No security vulnerabilities matched.';
+        container.appendChild(emptyDiv);
         return;
       }}
 
