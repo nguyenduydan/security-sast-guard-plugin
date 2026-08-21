@@ -176,8 +176,9 @@ class AIVerifier:
         ):
             return True
 
-        # 2. Check for sanitizers or safe typecasts in line or context
-        if any(s in combined_text for s in KNOWN_SANITIZERS):
+        # 2. Check for sanitizers or safe typecasts on target line or immediate preceding line
+        target_text = f"{finding.get('line_content', '')}\n{finding.get('preceding_line', '')}".lower()
+        if any(s in target_text for s in KNOWN_SANITIZERS):
             return True
 
         # 3. SQLi false positive check: Parameterized queries (params=, ?, %s, etc.)
