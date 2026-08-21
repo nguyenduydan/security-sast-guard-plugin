@@ -308,8 +308,8 @@ def test_firewall_engine_evaluate_v2_adversarial_chains() -> None:
     # 3. Base64 encoded Remove-Item -Recurse
     # "Remove-Item -Path C:\ -Recurse" in UTF-16LE base64
     b64_rm = (
-        "UgBlAG0AbwB2AGUALQBJAHQAZQBtACAALQBQAGEAdABoACAA"
-        "QwA6AFwAIAAtAFIAZQBjAHUAcgBzAGUA"
+        "UgBlAG0AbwB2AGUALQBJAHQAZQBtACAALQBQAGEAdABoACAA"  # pragma: allowlist secret
+        "QwA6AFwAIAAtAFIAZQBjAHUAcgBzAGUA"  # pragma: allowlist secret
     )
     v3 = engine.evaluate_v2(f"powershell -enc {b64_rm}")
     assert v3.verdict == "DENY"
