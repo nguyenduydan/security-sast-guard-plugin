@@ -75,9 +75,9 @@ jobs:
         run: |
           uv pip install --system detect-secrets
 
-      - name: Scan for Hardcoded Secrets
+      - name: Scan for Hardcoded Secrets against Baseline
         run: |
-          detect-secrets scan --all-files
+          detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
 
   dependency-review:
     name: Dependency Review
