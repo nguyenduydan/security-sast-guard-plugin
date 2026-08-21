@@ -132,8 +132,21 @@ class ASTConfirmEngine:
         source_code = source_path.read_bytes()
         tree = parser.parse(source_code)
 
-        # Simple heuristic: both source_line and sink_line within same top-level
-        # function node
+        sink_path = Path(finding.sink_file)
+        if finding.source_file != finding.sink_file and sink_path.exists():
+            sink_code = sink_path.read_bytes()
+            sink_tree = parser.parse(sink_code)
+            _fn_at_sink = self._find_enclosing_function(sink_tree, finding.sink_line)
+            return ConfirmResult(
+                confirmed=True,
+                reason=(
+                    f"Cross-file taint path from {source_path.name} "
+                    f"to {sink_path.name}"
+                ),
+                updated_confidence=max(0.7, finding.confidence),
+            )
+
+        # Simple heuristic for same-file taint: both within same top-level function or module
         fn_at_source = self._find_enclosing_function(tree, finding.source_line)
         fn_at_sink = self._find_enclosing_function(tree, finding.sink_line)
 
