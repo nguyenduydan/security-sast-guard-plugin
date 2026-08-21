@@ -136,11 +136,13 @@ class ASTConfirmEngine:
         if finding.source_file != finding.sink_file and sink_path.exists():
             sink_code = sink_path.read_bytes()
             sink_tree = parser.parse(sink_code)
-            _fn_at_sink = self._find_enclosing_function(sink_tree, finding.sink_line)
+            fn_at_sink = self._find_enclosing_function(sink_tree, finding.sink_line)
+            scope_info = f" (in {fn_at_sink})" if fn_at_sink else ""
             return ConfirmResult(
                 confirmed=True,
                 reason=(
-                    f"Cross-file taint path from {source_path.name} to {sink_path.name}"
+                    f"Cross-file taint path from {source_path.name} "
+                    f"to {sink_path.name}{scope_info}"
                 ),
                 updated_confidence=max(0.7, finding.confidence),
             )
