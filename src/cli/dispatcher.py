@@ -69,23 +69,13 @@ def _handle_firewall(args: list[str]) -> int:
     deny_rules: list[str] = overlay.get("deny", [])
     confirm_rules: list[str] = overlay.get("confirm", [])
 
-    for pattern in deny_rules:
-        try:
-            if re.search(pattern, cmd_text, re.IGNORECASE):
-                print(f"DENY: Dangerous pattern matched: '{pattern}'")
-                return 0
-        except re.error:
-            continue
+    from src.domain.firewall_engine import (  # pylint: disable=import-outside-toplevel
+        FirewallEngine,
+    )
 
-    for pattern in confirm_rules:
-        try:
-            if re.search(pattern, cmd_text, re.IGNORECASE):
-                print(f"CONFIRM: Potentially risky pattern matched: '{pattern}'")
-                return 0
-        except re.error:
-            continue
-
-    print("ALLOW: Command verified safe by firewall.")
+    engine = FirewallEngine(deny_rules=deny_rules, confirm_rules=confirm_rules)
+    verdict_res = engine.evaluate_v2(cmd_text)
+    print(f"{verdict_res.verdict}: {verdict_res.reason}")
     return 0
 
 
