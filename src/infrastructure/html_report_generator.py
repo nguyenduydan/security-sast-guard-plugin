@@ -35,7 +35,7 @@ def generate_html_report(
     lines_count = meta.get("total_lines", "N/A")
     duration_val = meta.get("duration_seconds", 0.0)
 
-    findings_json = json.dumps(findings, default=str)
+    findings_json = json.dumps(findings, default=str).replace("<", "\\u003c")
 
     html_template = f"""<!DOCTYPE html>
 <html lang="en">
