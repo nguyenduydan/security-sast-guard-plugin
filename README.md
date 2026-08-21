@@ -2,7 +2,7 @@
 
 <img src="banner.png" alt="Security SAST Guard banner" width="100%">
 
-# 🛡️ SECURITY SAST GUARD PLUGIN (v2.0.0)
+# 🛡️ SECURITY SAST GUARD PLUGIN (v2.4.1)
 **Zero-Trust Enterprise SAST & Real-time Command Firewall Engine**
 *Engineered for Google Antigravity 2.0 & Gemini CLI Ecosystems*
 
@@ -171,15 +171,16 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 
 ## 🛡️ Security Vectors & Rule Coverage
 
-Security SAST Guard implements **53 core SAST vector rules** mapped across major standards:
+Security SAST Guard implements **95 core SAST vector rules** mapped across major enterprise standards:
 
 | Framework / Category | Rule Count | High-Impact Vector Examples |
 | :--- | :---: | :--- |
-| **OWASP API Security 2023** | 10 | BOLA (API1), Broken Auth (API2), Mass Assignment (API3), SSRF (API7) |
-| **OWASP Web Application Top 10** | 10 | Broken Access Control (A01), Cryptographic Failure (A02), Injection (A03) |
-| **CWE-SANS Top 25** | 12 | SQLi (CWE-89), XSS (CWE-79), OS Command Injection (CWE-78), Path Traversal (CWE-22) |
-| **NIST 800-53 Security Controls** | 10 | AC-2 Account Management, SC-8 Transmission Integrity, AU-2 Audit Events |
-| **Secret & Credential Guard** | 11 | Hardcoded RSA/SSH Keys, API Tokens, Plaintext Password Assignment |
+| **OWASP Web Application Top 10** | 28 | Broken Access Control (A01), Cryptographic Failure (A02), Injection (A03), Deserialization RCE (A08) |
+| **Web Application Specific Rules** | 29 | DOM XSS, Inline Event Handlers, SQLi Variants, SSTI, Unsafe File Upload |
+| **OWASP API Security Top 10** | 27 | BOLA (API1), Broken Auth (API2), Mass Assignment (API3), SSRF (API7) |
+| **OWASP LLM 2025 Top 10** | 3 | Prompt Injection (LLM01), Sensitive Information Disclosure (LLM02), Excessive Agency (LLM06) |
+| **CI/CD & Container Security** | 4 | GitHub Actions Expression Injection, Unsafe Checkout, Docker Root Execution |
+| **CWE-SANS & NIST 800-53** | 4 | OS Command Injection (CWE-78), Path Traversal (CWE-22), Audit Events |
 
 ### Inline Suppression Syntax
 To suppress specific rule alerts on a target line, append `# sast-ignore [RULE_ID]`:
