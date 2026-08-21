@@ -45,6 +45,7 @@ Tất cả các lệnh terminal được chạy bởi Agent hoặc User đều p
   - `style`: Sửa định dạng code (khoảng trắng, formatting).
   - `test`: Thêm hoặc sửa các bài unit test.
 - **Không Đánh Tag / Sửa Version Thủ Công:** Repository sử dụng `release-please` v4 để tự động quản lý phiên bản. Tuyệt đối **KHÔNG** tự ý chạy `git tag`, không sửa thủ công `plugin.json` hay `pyproject.toml` để tránh downgrade version. Bot `release-please` sẽ tự động tạo Pull Request nâng version và cập nhật `CHANGELOG.md`.
+- **Cam kết nguyên tử cho từng Issue (Atomic Commits per Issue):** Tuyệt đối **KHÔNG** gom nhiều issues để làm chung rồi commit gộp 1 lần. Mỗi issue **BẮT BUỘC** phải được giải quyết và tạo commit riêng biệt (1 issue = 1 commit) kèm từ khóa liên kết rõ ràng dạng `Fixes #<id>` (VD: `fix(firewall): strip shell wrapper prefixes (Fixes #176)`). Điều này đảm bảo theo dõi chính xác tiến độ Milestone trên GitHub và giúp tự động đóng issue khi PR được merge.
 - **Luồng Git Branching:**
   1. Tuyệt đối **KHÔNG** commit trực tiếp lên `main`.
   2. Phải tạo nhánh mới: `git checkout -b <type>/<tên-nhánh>` (VD: `git checkout -b fix/taint-tracker` hoặc `git checkout -b feat/firewall-rules`).
