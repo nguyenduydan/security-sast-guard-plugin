@@ -71,9 +71,10 @@ class GitHookInstaller:
         shell_script = PRE_COMMIT_SHELL_SCRIPT.replace(
             "control_plane.py", f'"{cp_path}"'
         )
-        cmd_script = PRE_COMMIT_CMD_SCRIPT.replace(
-            "control_plane.py", f'"{cp_path}"'
-        )
+        cmd_script = PRE_COMMIT_CMD_SCRIPT.replace("control_plane.py", f'"{cp_path}"')
+
+        hook_shell = self.hooks_dir / "pre-commit"
+        hook_cmd = self.hooks_dir / "pre-commit.cmd"
 
         hook_shell.write_text(shell_script, encoding="utf-8")
         hook_cmd.write_text(cmd_script, encoding="utf-8")

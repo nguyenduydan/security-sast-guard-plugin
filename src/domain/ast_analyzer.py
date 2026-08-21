@@ -49,13 +49,13 @@ class ASTPrecisionAnalyzer:
                     node.value
                 ):
                     safe_vars.add(target.id)
-        elif isinstance(node, ast.AnnAssign):
-            if (
-                isinstance(node.target, ast.Name)
-                and node.value is not None
-                and self._is_safe_assignment_value(node.value)
-            ):
-                safe_vars.add(node.target.id)
+        elif (
+            isinstance(node, ast.AnnAssign)
+            and isinstance(node.target, ast.Name)
+            and node.value is not None
+            and self._is_safe_assignment_value(node.value)
+        ):
+            safe_vars.add(node.target.id)
 
     def _extract_safe_variables_scoped(
         self, tree: ast.AST, line_number: int
@@ -137,12 +137,15 @@ class ASTPrecisionAnalyzer:
             return all(self._is_safe_call_node(c, safe_vars) for c in call_nodes)
 
         target_nodes = [
-            n for n in ast.walk(tree) if getattr(n, "lineno", None) == line_number
+            n
+            for n in ast.walk(tree)
+            if getattr(n, "lineno", None) == line_number
+            and isinstance(n, (ast.Assign, ast.Expr, ast.AnnAssign))
         ]
         if not target_nodes:
             return False
 
-        return all(self._is_safe_target_node(n, safe_vars) for n in target_nodes)
+        return any(self._is_safe_target_node(n, safe_vars) for n in target_nodes)
 
     def _is_typecast_call(self, expr: ast.AST | None) -> bool:
         """Determine whether expression calls a safe typecast function."""
