@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.3.2...v2.4.0) (2026-08-21)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **build:** add CLI entry points [project.scripts] and optional dev extras in pyproject.toml (Fixes [#182](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/182)) ([0587a67](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0587a676eb19ff1c8638a2bc60ceaf575e9a48bd))
+* **sast:** harden rule engine for prompt injection, deserialization, and ReDoS prevention ([daaa02b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/daaa02ba4d4c3b1b6d1cedcfbb118565636ebc46))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** enforce baseline verification for hardcoded secrets scanning in security gate (Fixes [#171](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/171)) ([1c51cd9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1c51cd9a8b5864a5f24808ad47847be0d1f3bcd5))
+* **ci:** fix non-existent major versions in GitHub Actions workflows (Fixes [#164](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/164)) ([ea03d81](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ea03d8188d2e77cd5ef372927dc58b1081dc04ca))
+* **cli:** route CLI firewall command evaluation through FirewallEngine to prevent normalizer bypass (Fixes [#178](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/178)) ([259c49c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/259c49c18c53941c60c216c65ef49f433d615819))
+* **engine:** fix Darwin macOS 1024x process memory over-reporting in BoundedVerificationHarness (Fixes [#179](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/179)) ([d1022aa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d1022aac0dd50e28b238b90f443bcad3771bde41))
+* **engine:** resolve mathematical dead code in SecurityDecisionEngine for confirmed true positives (Fixes [#173](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/173)) ([ae595be](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ae595be774f6b72050208cb75c73dc8d54634fa1))
+* **firewall:** fix unreachable DESTRUCTIVE intent rule and add LATERAL_MOVEMENT capability group (Fixes [#177](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/177)) ([0be76ba](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0be76ba4c9b832c353dbf73da9cb7e1d5b57938d))
+* **firewall:** strip shell wrapper prefixes and normalize compound flags in FirewallNormalizer (Fixes [#176](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/176)) ([ca035e4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ca035e4c185de30048272ee710ea18208db4d6d9))
+* **git-hook:** resolve relative control_plane.py path in GitHookInstaller for external repositories (Fixes [#180](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/180)) ([80dcf48](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/80dcf487f49f25775a391cdd819af3e37ff8a71b))
+* **hooks:** fix runtime crash in post_write_hook.py on PostToolCallExecute (Fixes [#170](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/170)) ([5a603d9](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5a603d94e1d8890e0d71715b3bf60e6cb8f30190))
+* **scanner:** fix multi-file incremental git diff scanning ([12560bb](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/12560bb27c2a5b9eef50c53cfa69b87c31562b60))
+* **security:** eliminate overly broad substring sanitizer match in AIVerifier (Fixes [#169](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/169)) ([1b36867](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/1b368675453da84c3781bab2ad511cfc6e802487))
+* **security:** fix global variable scope flattening in ASTPrecisionAnalyzer (Fixes [#167](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/167)) ([21c261b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/21c261b4ecf764dd005ccad65134737ee494b8a8))
+* **security:** fix PowerShell Base64 colon parameter and prefix abbreviation bypass in Command Firewall (Fixes [#166](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/166)) ([db7f0ac](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/db7f0acd92849e2103a707fc3a08dba98a283ee4))
+* **security:** prevent remote download-and-execute LOLBIN chain bypasses in Command Firewall (Fixes [#172](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/172)) ([bdceee0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bdceee0f0e57a5220b54fea7a1b6e50306e51d04))
+* **security:** prevent stored XSS in interactive HTML report generator (Fixes [#165](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/165)) ([62fa217](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/62fa217fdd43d8d03d7ab06fb948573751432244))
+* **taint:** fix cross-file taint confirmation failure in ASTConfirmEngine (Fixes [#174](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/174)) ([76d6fe7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/76d6fe7f2b62a5fd4e0828d469bd95dce9595d60))
+* **taint:** replace naive substring grepping and improve CallGraphBuilder import chain precision (Fixes [#175](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/175)) ([0ecc176](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0ecc1761f6d520865a1edf5d6b03cd3e0209bd49))
+* **taint:** utilize sink function scope and replace mock tokens with low-entropy fixtures ([5753ce5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5753ce50ca0d3fccfb3a01a5765c85c233381011))
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **engine:** wire AdaptiveKnowledgeBase and TrustedSanitizerRegistry into core scan pipeline (Fixes [#181](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/181)) ([75e0231](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/75e023173e3546b998f166a058c491f63ac0febb))
+* **tests:** stabilize cross-subsystem test assertions and typing overrides ([03cfeca](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/03cfecad227f4bf3101c12bc4d70a371cf5d2a23))
+* **types:** clean stale tree-sitter overrides and enable mypy validation for hooks and tests (Fixes [#183](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/183)) ([7010727](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7010727c5065da7364c64d7c2bf975e7e8c2e0bd))
+
+
+### 📦 Build System & Dependencies
+
+* **deps:** bump actions/upload-artifact from 4 to 7 ([7a8a0b2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7a8a0b2d6c8add6011b1f71048f97a8c41d628ab))
+* **deps:** bump astral-sh/setup-uv from 5 to 7 ([fc886fd](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/fc886fdbe5c7eb976609e14a4b9101869379b2a5))
+* **deps:** bump github/codeql-action from 3 to 4 ([0dff0fa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0dff0fa1ffbba7dcfa3bd5234fb48f3b3e6eec17))
+
+
+### 📝 Documentation
+
+* **rules:** add atomic commit per issue policy to GEMINI.md ([aac6012](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/aac60124a567402277821d89470c67e83e4788a2))
+
+
+### Maintenance & Tooling
+
+* **ci:** remove missing dependencies label from dependabot config ([86bf7a8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/86bf7a887d13fcfd2813365b5dff9d2bdf173dc1))
+
 ## [2.3.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.3.1...v2.3.2) (2026-08-17)
 
 
