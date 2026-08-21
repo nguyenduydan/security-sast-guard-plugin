@@ -39,6 +39,18 @@ def test_dispatcher_scan_command(capsys: CaptureFixture[str], tmp_path) -> None:
     assert "Detailed report saved to:" in captured.out
 
 
+def test_dispatcher_scan_diff_command(capsys: CaptureFixture[str]) -> None:
+    code = main(["scan", "--diff"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "SAST Audit completed." in captured.out
+
+    code_diff_pos = main(["scan", "diff"])
+    assert code_diff_pos == 0
+    captured_diff_pos = capsys.readouterr()
+    assert "SAST Audit completed." in captured_diff_pos.out
+
+
 def test_dispatcher_level_command(capsys: CaptureFixture[str]) -> None:
     code = main(["level"])
     assert code == 0

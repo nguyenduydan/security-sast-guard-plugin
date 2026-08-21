@@ -65,7 +65,7 @@ class MCPToolHandlers:
     def handle_sast_scan_diff(self) -> dict[str, Any]:
         """Scan modified git files and include taint traces in output."""
         findings, _, summary = self.audit_service.run_audit(
-            target_path=".", generate_report=False
+            target_path=".", generate_report=False, incremental=True
         )
         taint_findings = self.audit_service.run_taint_analysis(".")
         taint_traces = [
