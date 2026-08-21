@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.4.1...v2.4.2) (2026-08-21)
+
+
+### 📝 Documentation
+
+* synchronize README and MCP integration guide with 95 SAST rules and 12 MCP tools ([3181cb4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3181cb47dac313e57a14d94dc4917b3478484eb6))
+
 ## [2.4.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.4.0...v2.4.1) (2026-08-21)
 
 
