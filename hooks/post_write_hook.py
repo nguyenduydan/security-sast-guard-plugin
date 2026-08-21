@@ -30,14 +30,18 @@ def main() -> int:
     if not target or not os.path.exists(target):
         return 0
 
-    service = AuditService()
-    _, findings, _summary = service.run_audit(target_path=target)
+    findings, _, _summary = service.run_audit(
+        target_path=target, generate_report=False
+    )
 
     if findings:
         msg = f"[SAST Guard] Auto-scan detected {len(findings)} findings in {target}:"
         print(msg)
         for f in findings[:3]:
-            print(f" - [{f.severity}] {f.rule_name} (Line {f.line_number})")
+            sev = f.get("severity", "UNKNOWN")
+            name = f.get("rule_name", f.get("rule_id", "Security Issue"))
+            line = f.get("line", f.get("line_number", 1))
+            print(f" - [{sev}] {name} (Line {line})")
         if len(findings) > 3:
             print(f" ... and {len(findings) - 3} more findings.")
     else:
