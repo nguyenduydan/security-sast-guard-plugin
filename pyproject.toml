@@ -93,10 +93,13 @@ warn_unreachable = true
 [[tool.mypy.overrides]]
 module = [
     "cachetools.*",
-    "tree_sitter.*",
-    "tree_sitter_languages.*",
 ]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
 
 
 # ==========================================
