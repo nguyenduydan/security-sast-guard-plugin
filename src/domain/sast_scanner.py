@@ -319,13 +319,13 @@ class SASTScanner:
         files_to_scan: list[Path] = []
         is_incremental = False
 
-        if target_path.is_file():
-            files_to_scan = [target_path]
-        elif incremental and GitHelper.is_git_repo(target_path):
+        if incremental and GitHelper.is_git_repo(target_path):
             git_files = GitHelper.get_changed_files(target_path)
             if git_files:
                 is_incremental = True
                 files_to_scan = git_files
+        elif target_path.is_file():
+            files_to_scan = [target_path]
 
         if not files_to_scan and target_path.is_dir():
             # Perform top-down os.walk with early directory pruning
@@ -342,11 +342,7 @@ class SASTScanner:
 
         valid_files: list[Path] = []
         for file_path in files_to_scan:
-            if (
-                target_path.is_file()
-                and target_path != file_path
-                and ignore_filter.should_ignore(file_path)
-            ):
+            if not target_path.is_file() and ignore_filter.should_ignore(file_path):
                 ignored_files += 1
             else:
                 valid_files.append(file_path)

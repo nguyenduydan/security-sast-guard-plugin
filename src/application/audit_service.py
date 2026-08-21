@@ -67,11 +67,15 @@ class AuditService:
         sarif_output_path: str | None = None,
         html_output_path: str | None = None,
         threads: int | None = None,
+        incremental: bool = False,
     ) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
         self._reload_profile()
         res = self.scanner.scan_with_metadata(
-            target_path, verbose=verbose, threads=threads
+            target_path,
+            verbose=verbose,
+            threads=threads,
+            incremental=incremental,
         )
         findings = res["findings"]
         metadata = res["metadata"]

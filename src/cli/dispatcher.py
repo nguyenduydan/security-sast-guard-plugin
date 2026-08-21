@@ -131,6 +131,7 @@ def _handle_scan(args: list[str]) -> int:
     output_format = "markdown"
     target_level: str | None = None
     threads: int | None = None
+    incremental = False
     positional_args: list[str] = []
 
     idx = 0
@@ -138,6 +139,9 @@ def _handle_scan(args: list[str]) -> int:
         arg = args[idx]
         if arg in ("-v", "--verbose"):
             verbose = True
+            idx += 1
+        elif arg in ("--diff", "-d"):
+            incremental = True
             idx += 1
         elif arg == "--sarif":
             output_format = "sarif"
@@ -181,6 +185,9 @@ def _handle_scan(args: list[str]) -> int:
     target_path = positional_args[0] if positional_args else "."
     if target_path.lower() == "codebase":
         target_path = "."
+    elif target_path.lower() == "diff":
+        incremental = True
+        target_path = "."
 
     service = AuditService()
     if target_level:
@@ -193,6 +200,7 @@ def _handle_scan(args: list[str]) -> int:
         sarif_output_path=sarif_output_path,
         html_output_path=html_output_path,
         threads=threads,
+        incremental=incremental,
     )
     print(summary)
     return 0

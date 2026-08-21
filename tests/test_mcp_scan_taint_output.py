@@ -40,9 +40,12 @@ def test_scan_diff_includes_taint_traces():
     with (
         patch.object(
             handlers.audit_service, "run_audit", return_value=([], "", "0 findings")
-        ),
+        ) as mock_run_audit,
         patch.object(handlers.audit_service, "run_taint_analysis", return_value=[]),
     ):
         result = handlers.handle_sast_scan_diff()
+        mock_run_audit.assert_called_once_with(
+            target_path=".", generate_report=False, incremental=True
+        )
     assert "taint_traces" in result
     assert result["taint_traces"] == []

@@ -32,24 +32,91 @@ def test_get_changed_files_not_git_repo(tmp_path: Path) -> None:
         assert not GitHelper.get_changed_files(tmp_path)
 
 
+def test_get_repo_root_success(tmp_path: Path) -> None:
+    """Test get_repo_root returns Path when rev-parse succeeds."""
+    mock_res = MagicMock(returncode=0, stdout=f"{tmp_path}\n")
+    with patch("subprocess.run", return_value=mock_res):
+        root = GitHelper.get_repo_root(tmp_path)
+        assert root == tmp_path.resolve()
+
+
+def test_get_repo_root_failure(tmp_path: Path) -> None:
+    """Test get_repo_root returns None when rev-parse fails."""
+    mock_res = MagicMock(returncode=128, stdout="")
+    with patch("subprocess.run", return_value=mock_res):
+        root = GitHelper.get_repo_root(tmp_path)
+        assert root is None
+
+
 def test_get_changed_files_success(tmp_path: Path) -> None:
     """Test get_changed_files collecting modified files."""
     test_file = tmp_path / "modified.py"
     test_file.write_text("print('hello')", encoding="utf-8")
 
-    mock_diff_head = MagicMock(returncode=0, stdout="modified.py\n")
+    mock_rev_parse = MagicMock(returncode=0, stdout=f"{tmp_path}\n")
+    mock_diff_base = MagicMock(returncode=0, stdout="modified.py\n")
+    mock_diff_head = MagicMock(returncode=0, stdout="")
     mock_diff_cached = MagicMock(returncode=0, stdout="")
     mock_ls_files = MagicMock(returncode=0, stdout="")
 
     with (
         patch.object(GitHelper, "is_git_repo", return_value=True),
+        patch.object(GitHelper, "get_diff_base", return_value="origin/main"),
         patch(
             "subprocess.run",
-            side_effect=[mock_diff_head, mock_diff_cached, mock_ls_files],
+            side_effect=[
+                mock_rev_parse,
+                mock_diff_base,
+                mock_diff_head,
+                mock_diff_cached,
+                mock_ls_files,
+            ],
         ),
     ):
         changed = GitHelper.get_changed_files(tmp_path)
         assert test_file in changed
+
+
+def test_get_changed_files_multiple_files_and_subdirectories(tmp_path: Path) -> None:
+    """Test get_changed_files collecting multiple modified, staged,
+    and untracked files.
+    """
+    file1 = tmp_path / "src" / "app.py"
+    file1.parent.mkdir(parents=True, exist_ok=True)
+    file1.write_text("print('app')", encoding="utf-8")
+
+    file2 = tmp_path / "tests" / "test_app.py"
+    file2.parent.mkdir(parents=True, exist_ok=True)
+    file2.write_text("print('test')", encoding="utf-8")
+
+    file3 = tmp_path / "README.md"
+    file3.write_text("# Readme", encoding="utf-8")
+
+    mock_rev_parse = MagicMock(returncode=0, stdout=f"{tmp_path}\n")
+    mock_diff_base = MagicMock(returncode=0, stdout="src/app.py\n")
+    mock_diff_head = MagicMock(returncode=0, stdout="")
+    mock_diff_cached = MagicMock(returncode=0, stdout="tests/test_app.py\n")
+    mock_ls_files = MagicMock(returncode=0, stdout="README.md\n")
+
+    with (
+        patch.object(GitHelper, "is_git_repo", return_value=True),
+        patch.object(GitHelper, "get_diff_base", return_value="origin/main"),
+        patch(
+            "subprocess.run",
+            side_effect=[
+                mock_rev_parse,
+                mock_diff_base,
+                mock_diff_head,
+                mock_diff_cached,
+                mock_ls_files,
+            ],
+        ),
+    ):
+        changed = GitHelper.get_changed_files(tmp_path)
+        assert len(changed) == 3
+        assert file1 in changed
+        assert file2 in changed
+        assert file3 in changed
 
 
 def test_get_diff_base_not_git_repo(tmp_path: Path) -> None:
