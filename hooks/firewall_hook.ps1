@@ -61,20 +61,21 @@ try {
         
         $decodedStrings = [System.Collections.Generic.List[string]]::new()
 
-        # Pattern 1: -enc / -encodedcommand / -e followed by base64 string
-        if ($text -match '-(?:e|enc|encodedcommand)\s+([A-Za-z0-9+/=]{4,})') {
-            $b64Str = $Matches[1]
+        # Pattern 1: -enc / -encodedcommand / -e / -encoded / -ec followed by base64 string
+        $matchesArgs = [regex]::Matches($text, '(?:[-/](?:e|enc|enco|encod|encode|encoded|encodedc|encodedco|encodedcom|encodedcomm|encodedcomma|encodedcomman|encodedcommand|ec))[:\s]+([A-Za-z0-9+/=]{4,})', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+        foreach ($m in $matchesArgs) {
+            $b64Str = $m.Groups[1].Value
             try {
                 $bytes = [System.Convert]::FromBase64String($b64Str)
-                $decoded = [System.Text.Encoding]::Unicode.GetString($bytes).Replace("`0", "")
-                if (-not [string]::IsNullOrWhiteSpace($decoded)) {
-                    $decodedStrings.Add($decoded)
-                }
+                $decodedUtf16 = [System.Text.Encoding]::Unicode.GetString($bytes).Replace("`0", "")
+                $decodedUtf8 = [System.Text.Encoding]::UTF8.GetString($bytes).Replace("`0", "")
+                if (-not [string]::IsNullOrWhiteSpace($decodedUtf16)) { $decodedStrings.Add($decodedUtf16) }
+                if (-not [string]::IsNullOrWhiteSpace($decodedUtf8)) { $decodedStrings.Add($decodedUtf8) }
             } catch {}
         }
 
         # Pattern 2: FromBase64String('...') or FromBase64String("...")
-        $matchesB64 = [regex]::Matches($text, 'FromBase64String\s*\(\s*[''"]([A-Za-z0-9+/=]{4,})[''"]\s*\)')
+        $matchesB64 = [regex]::Matches($text, '(?:\[(?:System\.)?Convert\]::)?FromBase64String\s*\(\s*[''"]([A-Za-z0-9+/=]{4,})[''"]\s*\)', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
         foreach ($m in $matchesB64) {
             $b64Str = $m.Groups[1].Value
             try {
@@ -87,6 +88,31 @@ try {
         }
 
         return $decodedStrings
+    }
+
+    function Resolve-FormatOperator([string]$text) {
+        if ([string]::IsNullOrEmpty($text)) { return $text }
+        try {
+            $pattern = '(?i)(?:\(\s*)?["'']([^"'']+)["'']\s+-f\s+((?:["''][^"'']*["'']|\d+)(?:\s*,\s*(?:["''][^"'']*["'']|\d+))*)(?:\s*\))?'
+            return [regex]::Replace($text, $pattern, {
+                param($match)
+                $template = $match.Groups[1].Value
+                $argsRaw = $match.Groups[2].Value
+                $argMatches = [regex]::Matches($argsRaw, '["'']([^"'']*)["'']|(\d+)')
+                $argsList = @()
+                foreach ($am in $argMatches) {
+                    if ($am.Groups[1].Success) { $argsList += $am.Groups[1].Value }
+                    else { $argsList += $am.Groups[2].Value }
+                }
+                $res = $template
+                for ($i = 0; $i -lt $argsList.Count; $i++) {
+                    $res = $res.Replace("{$i}", $argsList[$i])
+                }
+                return $res
+            })
+        } catch {
+            return $text
+        }
     }
 
     # Helper to check rules against a string
@@ -108,11 +134,17 @@ try {
     $deEscaped = Remove-Escapes $CommandText
     $textsToTest.Add($deEscaped)
 
+    # Format operator resolution
+    $formatted = Resolve-FormatOperator $CommandText
+    $textsToTest.Add($formatted)
+    $textsToTest.Add((Remove-Escapes $formatted))
+
     # Decoded Base64 commands
     $decodedList = Decode-Base64 $CommandText
     foreach ($dec in $decodedList) {
         $textsToTest.Add($dec)
         $textsToTest.Add((Remove-Escapes $dec))
+        $textsToTest.Add((Resolve-FormatOperator $dec))
     }
 
     # Also check de-escaped for base64
@@ -120,6 +152,7 @@ try {
     foreach ($dec in $decodedDeEscapedList) {
         $textsToTest.Add($dec)
         $textsToTest.Add((Remove-Escapes $dec))
+        $textsToTest.Add((Resolve-FormatOperator $dec))
     }
 
     $matchedDeny = $false
