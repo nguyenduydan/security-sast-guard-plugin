@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.4.0...v2.4.1) (2026-08-21)
+
+
+### 🐛 Bug Fixes
+
+* **rules:** prevent false positive prompt injection findings on internal f-strings ([9e1b5de](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9e1b5de1c81446c96df58b58d5360821cf6d0228))
+* **rules:** prevent false positive prompt injection findings on internal f-strings ([2a6dc8a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/2a6dc8ad100da448017861a6a334c5c13a7536c8))
+
 ## [2.4.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.3.2...v2.4.0) (2026-08-21)
 
 
