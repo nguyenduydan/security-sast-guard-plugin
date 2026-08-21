@@ -1,5 +1,6 @@
 """TaintTracker: traces tainted symbols from source assignments to sink call sites."""
 
+import re
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -104,6 +105,8 @@ class TaintTracker:
                 ).splitlines()
             except OSError:
                 continue
+
+            for lineno, line in enumerate(lines, start=1):
                 for sink in sinks:
                     if sink in line and re.search(
                         r"\b" + re.escape(symbol) + r"\b", line

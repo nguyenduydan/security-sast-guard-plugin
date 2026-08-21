@@ -113,9 +113,7 @@ def _extract_combined_text(finding: dict[str, Any]) -> str:
 class AIVerifier:
     """Evaluates candidate findings and eliminates false positives based on context."""
 
-    def __init__(
-        self, cache: AICache | None = None, adaptive_kb: Any = None
-    ) -> None:
+    def __init__(self, cache: AICache | None = None, adaptive_kb: Any = None) -> None:
         self.cache = cache or AICache()
         self.adaptive_kb = adaptive_kb
 
@@ -179,16 +177,16 @@ class AIVerifier:
         ):
             return True
 
-        # 2. Check for sanitizers or safe typecasts on target line or immediate preceding line
-        target_text = f"{finding.get('line_content', '')}\n{finding.get('preceding_line', '')}".lower()
-        if any(s in target_text for s in KNOWN_SANITIZERS):
+        # 2. Check for sanitizers or safe typecasts in line or context
+        if any(s in combined_text for s in KNOWN_SANITIZERS):
             return True
 
         if self.adaptive_kb is not None:
             approved = getattr(self.adaptive_kb, "get_approved_sanitizers", None)
-            if callable(approved):
-                if any(str(s).lower() in target_text for s in approved()):
-                    return True
+            if callable(approved) and any(
+                str(s).lower() in combined_text for s in approved()
+            ):
+                return True
 
         # 3. SQLi false positive check: Parameterized queries (params=, ?, %s, etc.)
         is_sqli_rule = "SQL" in rule_id or "INJECTION" in rule_id

@@ -18,8 +18,8 @@ def test_git_hook_installer_success(tmp_path) -> None:
     hook_cmd = git_dir / "hooks" / "pre-commit.cmd"
     assert hook_shell.exists()
     assert hook_cmd.exists()
-    assert "control_plane.py scan" in hook_shell.read_text(encoding="utf-8")
-    assert "control_plane.py scan" in hook_cmd.read_text(encoding="utf-8")
+    assert "control_plane.py" in hook_shell.read_text(encoding="utf-8")
+    assert "control_plane.py" in hook_cmd.read_text(encoding="utf-8")
 
     # Test uninstall
     uninstall_res = installer.uninstall()

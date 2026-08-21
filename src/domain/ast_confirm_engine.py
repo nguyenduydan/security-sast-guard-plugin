@@ -140,13 +140,13 @@ class ASTConfirmEngine:
             return ConfirmResult(
                 confirmed=True,
                 reason=(
-                    f"Cross-file taint path from {source_path.name} "
-                    f"to {sink_path.name}"
+                    f"Cross-file taint path from {source_path.name} to {sink_path.name}"
                 ),
                 updated_confidence=max(0.7, finding.confidence),
             )
 
-        # Simple heuristic for same-file taint: both within same top-level function or module
+        # Simple heuristic for same-file taint:
+        # both within same top-level function or module
         fn_at_source = self._find_enclosing_function(tree, finding.source_line)
         fn_at_sink = self._find_enclosing_function(tree, finding.sink_line)
 

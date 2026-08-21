@@ -30,9 +30,8 @@ def main() -> int:
     if not target or not os.path.exists(target):
         return 0
 
-    findings, _, _summary = service.run_audit(
-        target_path=target, generate_report=False
-    )
+    service = AuditService()
+    findings, _, _summary = service.run_audit(target_path=target, generate_report=False)
 
     if findings:
         msg = f"[SAST Guard] Auto-scan detected {len(findings)} findings in {target}:"

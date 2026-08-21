@@ -1,7 +1,6 @@
 """Dispatcher CLI module."""
 
 import platform
-import re
 import sys
 from collections.abc import Sequence
 from pathlib import Path

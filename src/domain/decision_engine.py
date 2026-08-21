@@ -11,8 +11,8 @@ SEVERITY_WEIGHT: dict[str, float] = {
     "low": 0.25,
 }
 
-W_SEVERITY: float = 0.50
-W_TAINT: float = 0.50
+W_SEVERITY: float = 0.30
+W_TAINT: float = 0.40
 W_SANITIZER: float = 0.30
 
 
@@ -132,7 +132,7 @@ class SecurityDecisionEngine:
         is_taint_confirmed = taint_confirmed_val > 0.0 or bool(
             ev.get("taint_confirmed")
         )
-        if risk_score >= 0.85 and is_taint_confirmed:
+        if risk_score >= 0.65 and is_taint_confirmed:
             return DecisionResult(
                 state=VerdictState.TRUE_POSITIVE,
                 risk_score=risk_score,
