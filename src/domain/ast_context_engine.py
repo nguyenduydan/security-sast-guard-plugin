@@ -28,11 +28,22 @@ class ASTContextEngine:
         _ = line_number
         stripped = line_content.strip()
 
+        # Node.js process sinks vs client JS regex detection
+        if file_path.endswith(
+            (".js", ".ts", ".jsx", ".tsx", ".mjs", ".cjs")
+        ) and re.search(
+            r"\b(?:child_process|cp)\.(?:exec|execSync|spawn|execFile)\s*\(",
+            stripped,
+        ):
+            return "node-process-sink"
+
         # HTML / ASPX Inline Event & Attribute Detection
-        if re.search(r"(?i)\bon[a-z]+\s*=", stripped):
+        if re.search(r"(?i)\bon[a-zA-Z]{2,20}\s*=", stripped):
             return "html-inline-event"
         if (
-            file_path.endswith((".html", ".htm", ".aspx", ".ascx"))
+            file_path.endswith(
+                (".html", ".htm", ".aspx", ".ascx", ".vue", ".svelte", ".jsp", ".ejs")
+            )
             and "<" in stripped
             and ">" in stripped
             and "=" in stripped
@@ -40,14 +51,40 @@ class ASTContextEngine:
             return "html-attribute"
 
         # JS / TS RegExp method vs Dangerous Sink Detection
-        if file_path.endswith((".js", ".ts", ".jsx", ".tsx", ".aspx", ".html")) and (
-            re.search(r"\.[a-zA-Z0-9_$]+\.exec\s*\(", stripped)
-            or "filenameRegex.exec" in stripped
+        if file_path.endswith(
+            (".js", ".ts", ".jsx", ".tsx", ".aspx", ".html", ".mjs", ".cjs")
+        ) and (
+            "filenameRegex.exec" in stripped
+            or re.search(r"/(?:\\.|[^/\\\n\r])+/[a-z]*\.exec\s*\(", stripped)
+            or (
+                re.search(r"\b[a-zA-Z0-9_$]+\.exec\s*\(", stripped)
+                and not re.search(r"\b(?:child_process|cp|process)\.exec", stripped)
+            )
         ):
             return "client-js-regex"
 
         # Server-side Backend Code Scope
-        if file_path.endswith((".py", ".cs", ".java", ".php", ".rb")):
+        if file_path.endswith(
+            (
+                ".py",
+                ".cs",
+                ".java",
+                ".php",
+                ".rb",
+                ".go",
+                ".rs",
+                ".cpp",
+                ".c",
+                ".cc",
+                ".cxx",
+                ".h",
+                ".hpp",
+                ".kt",
+                ".kts",
+                ".scala",
+                ".swift",
+            )
+        ):
             return "server-code"
 
         return "global"

@@ -129,6 +129,12 @@ DEFAULT_MAPPINGS: dict[str, MappingInfo] = {
         owasp_category="A08:2021-Software and Data Integrity Failures",
         owasp_name="Software and Data Integrity Failures",
     ),
+    "DESERIALIZATION_RCE": MappingInfo(
+        cwe_id="CWE-502",
+        cwe_name="Deserialization of Untrusted Data",
+        owasp_category="A08:2021-Software and Data Integrity Failures",
+        owasp_name="Software and Data Integrity Failures",
+    ),
     "UNSAFE_DESERIALIZATION": MappingInfo(
         cwe_id="CWE-502",
         cwe_name="Deserialization of Untrusted Data",
@@ -184,6 +190,12 @@ DEFAULT_MAPPINGS: dict[str, MappingInfo] = {
         owasp_name="Security Misconfiguration",
     ),
     "LLM01_PROMPT_INJECTION": MappingInfo(
+        cwe_id="CWE-77",
+        cwe_name="Improper Neutralization of Special Elements used in a Command",
+        owasp_category="LLM01:2025-Prompt-Injection",
+        owasp_name="Prompt Injection",
+    ),
+    "PROMPT_INJECTION_VULNERABLE": MappingInfo(
         cwe_id="CWE-77",
         cwe_name="Improper Neutralization of Special Elements used in a Command",
         owasp_category="LLM01:2025-Prompt-Injection",
