@@ -11,7 +11,7 @@ from collections.abc import Sequence
 
 DEFAULT_INTENT_RULES: list[tuple[set[str], set[str], str, float]] = [
     ({"NETWORK", "DATA_TRANSFER", "FILE_READ"}, set(), "EXFILTRATION", 0.85),
-    ({"FILE_WRITE", "PROCESS_EXEC"}, set(), "DESTRUCTIVE", 0.70),
+    ({"FILE_WRITE", "PROCESS_EXEC"}, set(), "DESTRUCTIVE", 0.85),
     ({"PERSISTENCE"}, set(), "PERSISTENCE", 0.90),
     ({"PRIVILEGE_CHANGE"}, set(), "PRIVILEGE_ESCALATION", 0.80),
     ({"NETWORK", "PROCESS_EXEC"}, set(), "SUPPLY_CHAIN", 0.75),
