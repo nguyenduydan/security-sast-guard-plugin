@@ -98,8 +98,8 @@ def test_sast_scanner_plaintext_secret_ignores_publickeytoken(tmp_path: Path) ->
     test_file = tmp_path / "Web.config"
     test_file.write_text(
         '<assemblyIdentity name="Newtonsoft.Json" '
-        'publicKeyToken="30ad4fe6b2a6aeed" />\n'
-        'var token = "30ad4fe6b2a6aeed";\n'
+        'publicKeyToken="30ad4fe6b2a6aeed" />\n'  # pragma: allowlist secret
+        'var token = "30ad4fe6b2a6aeed";\n'  # pragma: allowlist secret
     )
 
     scanner = SASTScanner()
