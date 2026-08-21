@@ -57,6 +57,10 @@ CAPABILITY_GROUPS: dict[str, list[str]] = {
         ),
         r"(?:-X\s*POST|--request\s+POST)\b",
     ],
+    "LATERAL_MOVEMENT": [
+        r"\b(?:psexec|winrm|smbclient|wmic\s+/node)\b",
+        r"\bssh\s+[\w\.-]+@[\w\.-]+",
+    ],
 }
 
 
