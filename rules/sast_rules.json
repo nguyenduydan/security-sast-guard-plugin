@@ -144,11 +144,11 @@
     "category": "owasp-api-2023",
     "severity": "Medium",
     "patterns": [
-      "f['\"][^'\"\\n\\r]*\\{[^\\n\\r]*(?:user_input|user_query|query|input|prompt|context|message)[^\\n\\r]*\\}",
-      "(?:system_prompt|prompt|instruction)\\s*(?:\\+|=)\\s*[^\\n\\r]*(?:user_input|user_query|input|prompt|message|query)",
-      "\\.format\\([^)]*(?:user_input|user_query|query|input|prompt)[^)]*\\)",
-      "PromptTemplate(?:\\.from_template)?\\s*\\([^)]*\\{user_input\\}",
-      "chat\\.completions\\.create\\s*\\([^)]*(?:user_input|user_query|req\\.body)"
+      "(?i)(?:system_prompt|prompt|instruction|llm_input|template)\\s*(?:\\+|=)\\s*f['\"][^'\"\\n\\r]*\\{[^\\n\\r]*(?:user_input|user_query|query|input|prompt|message)[^\\n\\r]*\\}",
+      "(?i)(?:system_prompt|prompt|instruction)\\s*(?:\\+|=)\\s*[^\\n\\r]*(?:user_input|user_query|input|prompt|message|query)",
+      "(?i)PromptTemplate(?:\\.from_template)?\\s*\\([^)]*\\{(?:user_input|user_query|query|input|prompt)[^)]*\\}",
+      "(?i)chat\\.completions\\.create\\s*\\([^)]*(?:user_input|user_query|req\\.body)",
+      "(?i)(?:llm|openai|client)\\.(?:chat|complete|generate|invoke)\\s*\\([^)]*(?:user_input|user_query|prompt)"
     ],
     "taint_enabled": true,
     "sources": [
