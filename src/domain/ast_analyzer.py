@@ -39,24 +39,50 @@ class ASTPrecisionAnalyzer:
         except (SyntaxError, OSError, UnicodeDecodeError, ValueError):
             return None
 
-    def _extract_safe_variables(self, tree: ast.AST) -> set[str]:
-        """Extract variables assigned with typecast calls or constant values."""
-        safe_vars: set[str] = set()
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Assign):
-                for target in node.targets:
-                    if isinstance(target, ast.Name) and self._is_safe_assignment_value(
-                        node.value
-                    ):
-                        safe_vars.add(target.id)
-            elif (
-                isinstance(node, ast.AnnAssign)
-                and isinstance(node.target, ast.Name)
+    def _collect_safe_assign(
+        self, node: ast.Assign | ast.AnnAssign, safe_vars: set[str]
+    ) -> None:
+        """Extract assigned targets if assigned value is safe."""
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and self._is_safe_assignment_value(
+                    node.value
+                ):
+                    safe_vars.add(target.id)
+        elif isinstance(node, ast.AnnAssign):
+            if (
+                isinstance(node.target, ast.Name)
                 and node.value is not None
                 and self._is_safe_assignment_value(node.value)
             ):
                 safe_vars.add(node.target.id)
-        return safe_vars
+
+    def _extract_safe_variables_scoped(
+        self, tree: ast.AST, line_number: int
+    ) -> set[str]:
+        """Extract safe variables accessible at the target line scope."""
+        global_safe: set[str] = set()
+        enclosing_scope: ast.AST | None = None
+
+        for node in ast.iter_child_nodes(tree):
+            if isinstance(node, (ast.Assign, ast.AnnAssign)):
+                self._collect_safe_assign(node, global_safe)
+            elif isinstance(
+                node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
+            ):
+                start = getattr(node, "lineno", 0)
+                end = getattr(node, "end_lineno", line_number)
+                if start <= line_number <= end:
+                    enclosing_scope = node
+
+        if enclosing_scope is None:
+            return global_safe
+
+        local_safe = set(global_safe)
+        for node in ast.walk(enclosing_scope):
+            if isinstance(node, (ast.Assign, ast.AnnAssign)):
+                self._collect_safe_assign(node, local_safe)
+        return local_safe
 
     def _is_safe_assignment_value(self, expr: ast.AST | None) -> bool:
         """Check if assigned value expression is typecast or constant."""
@@ -101,14 +127,22 @@ class ASTPrecisionAnalyzer:
         if tree is None:
             return False
 
-        safe_vars = self._extract_safe_variables(tree)
+        safe_vars = self._extract_safe_variables_scoped(tree, line_number)
+        call_nodes = [
+            n
+            for n in ast.walk(tree)
+            if isinstance(n, ast.Call) and getattr(n, "lineno", None) == line_number
+        ]
+        if call_nodes:
+            return all(self._is_safe_call_node(c, safe_vars) for c in call_nodes)
+
         target_nodes = [
             n for n in ast.walk(tree) if getattr(n, "lineno", None) == line_number
         ]
         if not target_nodes:
             return False
 
-        return any(self._is_safe_target_node(n, safe_vars) for n in target_nodes)
+        return all(self._is_safe_target_node(n, safe_vars) for n in target_nodes)
 
     def _is_typecast_call(self, expr: ast.AST | None) -> bool:
         """Determine whether expression calls a safe typecast function."""
