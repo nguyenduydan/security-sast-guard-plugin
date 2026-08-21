@@ -174,9 +174,11 @@ class SASTScanner:
     @staticmethod
     def _is_sink_rule(rule: dict[str, Any]) -> bool:
         """Determine if rule targets sink functions with safe literal args."""
+        rule_id = str(rule.get("id", "")).upper()
+        if "PROMPT" in rule_id or "LLM" in rule_id:
+            return False
         if rule.get("taint_enabled"):
             return True
-        rule_id = str(rule.get("id", "")).upper()
         return any(
             k in rule_id
             for k in (

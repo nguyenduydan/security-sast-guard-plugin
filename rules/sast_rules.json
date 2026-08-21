@@ -75,19 +75,52 @@
   {
     "id": "DESERIALIZATION_RCE",
     "name": "Unsafe Deserialization Risk (CWE-502)",
-    "description": "Detects parsing of untrusted input using unsafe deserializers like pickle, marshal, or PyYAML unsafe_load.",
+    "description": "Detects parsing of untrusted input using unsafe deserializers like pickle, marshal, PyYAML unsafe_load, BinaryFormatter, or Java ObjectInputStream.",
     "category": "owasp-web-2021",
     "severity": "High",
     "patterns": [
-      "pickle\\.loads\\s*\\(",
-      "marshal\\.loads\\s*\\(",
-      "yaml\\.unsafe_load\\s*\\(",
-      "Loader\\s*=\\s*(UnsafeLoader|Loader)"
+      "(?:pickle|_pickle|cPickle)\\.(?:loads?|Unpickler)\\s*\\(",
+      "marshal\\.(?:loads?)\\s*\\(",
+      "shelve\\.open\\s*\\(",
+      "yaml\\.(?:unsafe_load|load\\([^)]*Loader\\s*=\\s*(?:yaml\\.)?(?:UnsafeLoader|Loader|CLoader))",
+      "jsonpickle\\.(?:decode|loads?)\\s*\\(",
+      "BinaryFormatter\\.(?:Deserialize|UnsafeDeserialize)\\s*\\(",
+      "NetDataContractSerializer\\s*\\(",
+      "TypeNameHandling\\.(?:Auto|All|Objects|Arrays)",
+      "(?:SoapFormatter|LosFormatter|ObjectStateFormatter)\\.Deserialize\\s*\\(",
+      "(?:ObjectInputStream|XMLDecoder|[a-zA-Z0-9_$]+Input(?:Stream)?|ois|in|stream)\\.readObject\\s*\\(",
+      "\\.(?:readObject|readClassAndObject|readUnshared)\\s*\\(",
+      "(?:Kryo|HessianInput)\\.read(?:Object|ClassAndObject)\\s*\\(",
+      "(?<![a-zA-Z0-9_])unserialize\\s*\\(",
+      "(?:node-serialize|serialize)\\.unserialize\\s*\\(",
+      "funcster\\.unserialize\\s*\\("
     ],
     "remediation": {
       "fix_before": "import pickle\ndata = pickle.loads(user_input)",
       "fix_after": "import json\ndata = json.loads(user_input)"
-    }
+    },
+    "taint_enabled": true,
+    "sources": [
+      "request.GET",
+      "request.POST",
+      "request.form",
+      "request.body",
+      "input(",
+      "sys.argv",
+      "os.environ.get"
+    ],
+    "sinks": [
+      "pickle.loads",
+      "pickle.load",
+      "marshal.loads",
+      "marshal.load",
+      "yaml.unsafe_load",
+      "yaml.load",
+      "BinaryFormatter.Deserialize",
+      "ObjectInputStream.readObject",
+      "unserialize",
+      "serialize.unserialize"
+    ]
   },
   {
     "id": "XXE_RISK",
@@ -111,9 +144,11 @@
     "category": "owasp-api-2023",
     "severity": "Medium",
     "patterns": [
-      "f['\"].*\\{(user_input|query|input|prompt|context)\\}.*['\"]",
-      "prompt\\s*\\+\\s*",
-      "\\.format\\([^)]*(user_input|query)[^)]*\\)"
+      "f['\"][^'\"\\n\\r]*\\{[^\\n\\r]*(?:user_input|user_query|query|input|prompt|context|message)[^\\n\\r]*\\}",
+      "(?:system_prompt|prompt|instruction)\\s*(?:\\+|=)\\s*[^\\n\\r]*(?:user_input|user_query|input|prompt|message|query)",
+      "\\.format\\([^)]*(?:user_input|user_query|query|input|prompt)[^)]*\\)",
+      "PromptTemplate(?:\\.from_template)?\\s*\\([^)]*\\{user_input\\}",
+      "chat\\.completions\\.create\\s*\\([^)]*(?:user_input|user_query|req\\.body)"
     ],
     "taint_enabled": true,
     "sources": [
@@ -123,15 +158,19 @@
       "Request.Form",
       "Request.QueryString",
       "os.environ.get",
-      "input("
+      "input(",
+      "req.body",
+      "request.json",
+      "request.data"
     ],
     "sinks": [
-      "cursor.execute",
-      "db.query",
-      "db.execute",
-      "SqlCommand",
-      "executeQuery",
-      "mysqli_query"
+      "chat.completions.create",
+      "PromptTemplate",
+      "llm.invoke",
+      "llm.predict",
+      "llm.generate",
+      "generate_content",
+      "anthropic.messages.create"
     ]
   },
   {
@@ -1967,11 +2006,7 @@
       "MapHealthChecks\\\\\\|UseHealthChecks\\\\\\|AddHealthChecks\\\\\\|\\\\/health\\\\b\\\\\\|\\\\/metrics\\\\b\\\\\\|\\\\/actuator\\\\b",
       "RequireAuthorization\\.\\*health\\\\\\|health\\.\\*RequireAuthorization\\\\\\|health\\.\\*policy",
       "Quartz\\\\b\\\\\\|IScheduler\\\\b\\\\\\|JobBuilder\\\\\\.\\\\\\|TriggerBuilder\\\\\\.\\\\\\|IJob\\\\b",
-      "RedisCommander\\\\\\|RabbitMQ\\.\\*Management\\\\\\|rabbitmq\\.\\*management\\\\\\|redis\\.\\*ui",
-      "Web\\.config",
-      "\\-\\-\\-",
-      "\\-\\-\\-",
-      "\\-\\-\\-"
+      "RedisCommander\\\\\\|RabbitMQ\\.\\*Management\\\\\\|rabbitmq\\.\\*management\\\\\\|redis\\.\\*ui"
     ]
   },
   {
@@ -1982,39 +2017,10 @@
     "severity": "Critical",
     "action": "Block",
     "patterns": [
-      "🔴\\ Critical\\ —\\ Bắt\\ buộc\\ phải\\ re\\-auth:",
-      "✗\\ Đổi\\ email\\ đăng\\ nhập\\ /\\ email\\ nhận\\ 2FA",
-      "✗\\ Đổi\\ số\\ điện\\ thoại\\ nhận\\ OTP",
-      "✗\\ Thêm\\ /\\ xóa\\ thiết\\ bị\\ 2FA\\ \\(TOTP\\ Authenticator\\)",
-      "✗\\ Tắt\\ 2FA",
-      "✗\\ Xem\\ /\\ tải\\ backup\\ codes\\ 2FA",
-      "✗\\ Đổi\\ mật\\ khẩu\\ \\(phải\\ nhập\\ mật\\ khẩu\\ cũ\\)",
-      "🟡\\ Medium\\ —\\ Nên\\ có\\ re\\-auth\\ hoặc\\ confirm\\ bổ\\ sung:",
-      "✗\\ Thay\\ đổi\\ câu\\ hỏi\\ bảo\\ mật\\ /\\ recovery\\ options",
-      "✗\\ Kết\\ nối\\ /\\ hủy\\ liên\\ kết\\ tài\\ khoản\\ OAuth\\ \\(Google,\\ Facebook\\.\\.\\.\\)",
-      "✗\\ Thêm\\ phương\\ thức\\ thanh\\ toán",
-      "✗\\ Giao\\ dịch\\ tài\\ chính\\ lớn\\ \\(vượt\\ ngưỡng\\)",
-      "✗\\ Export\\ /\\ download\\ dữ\\ liệu\\ cá\\ nhân",
-      "✗\\ Xóa\\ tài\\ khoản",
-      "🟢\\ Low\\ —\\ Cân\\ nhắc\\ tùy\\ ngữ\\ cảnh:",
-      "✗\\ Thay\\ đổi\\ thông\\ tin\\ hồ\\ sơ\\ công\\ khai\\ \\(tên,\\ avatar\\)",
-      "✗\\ Thay\\ đổi\\ ngôn\\ ngữ\\ /\\ cài\\ đặt\\ giao\\ diện",
-      "email\\\\\\|phone\\\\\\|mobile\\\\\\|contact\\\\\\|recovery",
-      "\\|\\ grep\\ \\-i\\ \"update\\\\\\|change\\\\\\|edit\\\\\\|save\\\\\\|set\\\\b\\\\\\|modify\"",
-      "2fa\\\\\\|twofactor\\\\\\|two\\.factor\\\\\\|totp\\\\\\|authenticator\\\\\\|backup\\.\\*code\\\\\\|recovery\\.\\*code\\\\\\|mfa\\\\b",
-      "\\-\\-include=\"\\*\\.cs\"\\ \\-\\-include=\"\\*\\.js\"\\ \\-l",
-      "ChangePassword\\\\\\|UpdatePassword\\\\\\|ResetPwd\\\\\\|NewPassword\\\\\\|OldPassword\\\\\\|CurrentPassword",
-      "\\-\\-include=\"\\*\\.cs\"\\ \\-\\-include=\"\\*\\.js\"",
-      "DeleteAccount\\\\\\|DeactivateAccount\\\\\\|CloseAccount\\\\\\|RemoveUser\\\\b",
-      "\\-\\-include=\"\\*\\.cs\"\\ \\-\\-include=\"\\*\\.js\"",
-      "LinkLogin\\\\\\|UnlinkLogin\\\\\\|ExternalLogin\\\\\\|ConnectProvider\\\\\\|DisconnectProvider\\\\\\|OAuthCallback",
-      "\\-\\-include=\"\\*\\.cs\"\\ \\-\\-include=\"\\*\\.js\"",
-      "password\\\\\\|Password\\\\\\|otp\\\\\\|OTP\\\\\\|confirm\\\\\\|Confirm\\\\\\|verify\\\\\\|Verify\\\\\\|reauth\\\\\\|re\\.auth",
-      "\\-\\-\\ <đường_dẫn_file>",
-      "\\*\\*✅\\ ĐÚNG\\ —\\ Yêu\\ cầu\\ xác\\ nhận\\ trước\\ khi\\ đổi:\\*\\*",
-      "\\*\\*✅\\ ĐÚNG\\ —\\ Tắt\\ 2FA\\ yêu\\ cầu\\ nhập\\ 2FA\\ code:\\*\\*",
-      "\\*\\*✅\\ ĐÚNG\\ —\\ Đổi\\ mật\\ khẩu\\ yêu\\ cầu\\ mật\\ khẩu\\ cũ:\\*\\*",
-      "\\-\\-\\-"
+      "(?i)(?:ChangePassword|UpdatePassword|ResetPwd|NewPassword)\\s*\\(",
+      "(?i)(?:DeleteAccount|DeactivateAccount|CloseAccount|RemoveUser)\\s*\\(",
+      "(?i)(?:LinkLogin|UnlinkLogin|ExternalLogin|ConnectProvider|DisconnectProvider)\\s*\\(",
+      "(?i)(?:Disable2FA|TurnOff2FA|RemoveAuthenticator)\\s*\\("
     ]
   },
   {
@@ -2025,29 +2031,11 @@
     "severity": "Critical",
     "action": "Block",
     "patterns": [
-      "AllowAnyOrigin\\\\\\|AllowCredentials\\\\\\|AllowAnyHeader\\\\\\|AllowAnyMethod",
-      "WithOrigins\\\\\\|SetIsOriginAllowed\\\\\\|AddCors\\\\\\|UseCors\\\\\\|EnableCors\\\\\\|AddPolicy",
-      "CorsPolicyBuilder\\\\\\|CorsOptions\\\\\\|CorsMiddleware",
-      "Access\\-Control\\-Allow\\-Origin\\\\\\|Access\\-Control\\-Allow\\-Credentials\\\\\\|Access\\-Control\\-Allow\\-Methods\\\\\\|Access\\-Control\\-Allow\\-Headers",
-      "Web\\.config",
-      "cors\\\\\\|Access\\-Control",
-      "Web\\.config",
-      "web\\.config",
-      "Origin\\\\\\|origin\\\\\\|Request\\\\\\.Headers\\\\\\[\\\\",
-      "\\\\\\]\\\\\\|GetHeader\\.\\*origin\\\\\\|HttpContext\\.\\*Origin",
-      "null\\.\\*origin\\\\\\|origin\\.\\*null\\\\\\|\\\\",
-      "\\ \\-\\-include=",
-      "AllowAnyOrigin\\\\\\|AllowCredentials\\\\\\|WithOrigins\\\\\\|SetIsOriginAllowed\\\\\\|AddPolicy\\\\\\|Access\\-Control\\-Allow\\-Origin",
-      "Request\\\\\\.Headers\\\\\\[\\\\",
-      "\\\\\\]\\\\\\|GetHeader\\.\\*Origin\\\\\\|origin\\.\\*header",
-      "Response\\\\\\.Headers\\.\\*Access\\-Control\\\\\\|AddHeader\\.\\*Access\\-Control",
-      "\\*\\*❌\\ SAI\\ —\\ SetIsOriginAllowed\\ bypass:\\*\\*",
-      "\\*\\*❌\\ SAI\\ —\\ Dynamic\\ origin\\ reflection:\\*\\*",
-      "\\*\\*❌\\ SAI\\ —\\ Subdomain\\ check\\ lỏng:\\*\\*",
-      "\\*\\*✅\\ ĐÚNG\\ —\\ Whitelist\\ origin\\ cụ\\ thể:\\*\\*",
-      "\\*\\*✅\\ ĐÚNG\\ —\\ Dynamic\\ whitelist\\ \\(nếu\\ cần\\ nhiều\\ origin\\):\\*\\*",
-      "\\*\\*✅\\ ĐÚNG\\ —\\ Public\\ API\\ không\\ cần\\ credentials:\\*\\*",
-      "\\-\\-\\-"
+      "(?i)AllowAnyOrigin\\s*\\(\\s*\\)",
+      "(?i)WithOrigins\\s*\\(\\s*[\"']\\*[\"']\\s*\\)",
+      "(?i)SetIsOriginAllowed\\s*\\(\\s*_[^=]*=>\\s*true\\s*\\)",
+      "(?i)Access-Control-Allow-Origin\\s*:\\s*\\*",
+      "(?i)Response\\.Headers\\[[\"']Access-Control-Allow-Origin[\"']\\]\\s*="
     ]
   },
   {
@@ -2059,9 +2047,11 @@
     "scope": "server-code",
     "action": "Block",
     "patterns": [
-      "(?i)(?:system_prompt|prompt|instruction)\\s*(?:\\+|=)\\s*f?[\\\"'].*?\\{(?:user_input|user_query|input|prompt|message)\\}",
-      "(?i)chat\\.completions\\.create\\s*\\(.*?(?:user_input|user_query|req\\.body)",
-      "(?i)PromptTemplate(?:\\.from_template)?\\s*\\(\\s*f?[\\\"'].*?\\{user_input\\}"
+      "(?i)(?:system_prompt|prompt|instruction)\\s*(?:\\+|=)\\s*f?[\\\"'][^\\\"'\\n\\r]*?\\{(?:user_input|user_query|input|prompt|message|query)\\}",
+      "(?i)chat\\.completions\\.create\\s*\\([^)]*?(?:user_input|user_query|req\\.body|prompt)",
+      "(?i)PromptTemplate(?:\\.from_template)?\\s*\\(\\s*f?[\\\"'][^\\\"'\\n\\r]*?\\{(?:user_input|user_query|query|input|message)\\}",
+      "(?i)(?:llm|client)\\.(?:invoke|predict|generate|create|chat)\\s*\\([^)]*?(?:user_input|user_query|req\\.body)",
+      "(?i)genai\\.GenerativeModel\\([^)]*\\)\\.generate_content\\s*\\([^)]*?(?:user_input|user_query)"
     ],
     "taint_enabled": true,
     "sources": [
@@ -2069,13 +2059,18 @@
       "request.POST",
       "input(",
       "sys.argv",
-      "req.body"
+      "req.body",
+      "request.json",
+      "request.data"
     ],
     "sinks": [
       "chat.completions.create",
       "PromptTemplate",
       "llm.invoke",
-      "llm.predict"
+      "llm.predict",
+      "llm.generate",
+      "generate_content",
+      "anthropic.messages.create"
     ]
   },
   {
