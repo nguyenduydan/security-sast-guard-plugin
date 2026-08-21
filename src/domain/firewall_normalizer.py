@@ -438,6 +438,13 @@ class FirewallNormalizer:
         """Stage 8: Alias & Flag Expansion (rm→Remove-Item, -rf→-Recurse -Force)."""
         new_candidates = list(candidates)
         for cand in candidates:
+            # Strip execution wrappers: sudo, nohup, env, exec
+            stripped_wrapper = re.sub(
+                r"^(?:sudo|nohup|env|exec|&)\s+", "", cand, flags=re.IGNORECASE
+            ).strip()
+            if stripped_wrapper != cand and stripped_wrapper not in new_candidates:
+                new_candidates.append(stripped_wrapper)
+
             words = cand.split()
             if not words:
                 continue
