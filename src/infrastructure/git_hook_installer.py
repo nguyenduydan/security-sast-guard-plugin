@@ -65,11 +65,18 @@ class GitHookInstaller:
 
         self.hooks_dir.mkdir(parents=True, exist_ok=True)
 
-        hook_shell = self.hooks_dir / "pre-commit"
-        hook_cmd = self.hooks_dir / "pre-commit.cmd"
+        plugin_root = Path(__file__).parents[2].resolve()
+        cp_path = (plugin_root / "control_plane.py").as_posix()
 
-        hook_shell.write_text(PRE_COMMIT_SHELL_SCRIPT, encoding="utf-8")
-        hook_cmd.write_text(PRE_COMMIT_CMD_SCRIPT, encoding="utf-8")
+        shell_script = PRE_COMMIT_SHELL_SCRIPT.replace(
+            "control_plane.py", f'"{cp_path}"'
+        )
+        cmd_script = PRE_COMMIT_CMD_SCRIPT.replace(
+            "control_plane.py", f'"{cp_path}"'
+        )
+
+        hook_shell.write_text(shell_script, encoding="utf-8")
+        hook_cmd.write_text(cmd_script, encoding="utf-8")
 
         # Make shell hook executable on POSIX environments
         if os.name != "nt":
