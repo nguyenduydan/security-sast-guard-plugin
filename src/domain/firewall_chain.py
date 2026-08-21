@@ -25,22 +25,53 @@ class ChainThreatMatch:
 
 DEFAULT_CHAIN_THREAT_RULES: list[tuple[str, str, ChainVerdictType, str]] = [
     (
-        r"(?:Invoke-WebRequest|iwr|curl|wget)",
-        r"(?:Start-Process|Invoke-Expression|iex|bash|sh|python)",
+        (
+            r"(?:Invoke-WebRequest|iwr|Invoke-RestMethod|irm|curl|wget|"
+            r"Net\.WebClient|DownloadString|DownloadFile|DownloadData|"
+            r"bitsadmin|certutil\s+.*-urlcache|fetch)"
+        ),
+        (
+            r"(?:Start-Process|saps|Invoke-Expression|iex|bash|sh|zsh|"
+            r"python|python3|cmd|powershell|pwsh|chmod\s+\+x|\./[a-zA-Z0-9_\-\.]+)"
+        ),
         "DENY",
         "Download+Execute chain detected",
     ),
     (
-        r"Set-ExecutionPolicy\s+Bypass",
+        (
+            r"(?:Set-ExecutionPolicy\s+(?:-[a-zA-Z]+\s+)*(?:Bypass|Unrestricted|RemoteSigned)|"
+            r"-(?:ep|executionpolicy)\s+(?:Bypass|Unrestricted|RemoteSigned)|"
+            r"Set-ExecutionPolicy\s+.*Bypass)"
+        ),
         r".+",
         "DENY",
         "Policy bypass followed by execution",
     ),
     (
+        (
+            r"(?:Set-MpPreference|Add-MpPreference|Disable-NetFirewallRule|"
+            r"netsh\s+advfirewall|netsh\s+firewall)"
+        ),
+        r".+",
+        "DENY",
+        "Defense evasion chain detected",
+    ),
+    (
         r"git\s+clone\s+https?://",
-        r"(?:Invoke-Expression|iex|\./install|python\s+setup)",
+        r"(?:Invoke-Expression|iex|\./install|python\s+setup|pip\s+install)",
         "CONFIRM",
         "Unverified external repository clone and execution",
+    ),
+    (
+        r"(?:Get-ChildItem|dir|ls|Get-Content|cat|type|findstr|grep)",
+        (
+            r"(?:curl\b.*(?:-d|--data|-F|--form|-T)|"
+            r"Invoke-WebRequest\b.*(?:-Method\s+POST|-InFile)|"
+            r"Invoke-RestMethod\b.*(?:-Method\s+POST|-InFile)|"
+            r"iwr\b.*(?:-Body|-InFile))"
+        ),
+        "CONFIRM",
+        "Reconnaissance followed by exfiltration detected",
     ),
 ]
 
