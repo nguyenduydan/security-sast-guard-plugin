@@ -104,9 +104,10 @@ class TaintTracker:
                 ).splitlines()
             except OSError:
                 continue
-            for lineno, line in enumerate(lines, start=1):
                 for sink in sinks:
-                    if sink in line and symbol in line:
+                    if sink in line and re.search(
+                        r"\b" + re.escape(symbol) + r"\b", line
+                    ):
                         hits.append((rel, lineno, sink))
         return hits
 
