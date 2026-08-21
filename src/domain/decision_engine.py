@@ -11,8 +11,8 @@ SEVERITY_WEIGHT: dict[str, float] = {
     "low": 0.25,
 }
 
-W_SEVERITY: float = 0.30
-W_TAINT: float = 0.40
+W_SEVERITY: float = 0.50
+W_TAINT: float = 0.50
 W_SANITIZER: float = 0.30
 
 
