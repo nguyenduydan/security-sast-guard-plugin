@@ -12,11 +12,14 @@ import re
 CAPABILITY_GROUPS: dict[str, list[str]] = {
     "NETWORK": [
         r"\b(?:curl|wget|nc|netcat|nmap|tftp|ping|nslookup|dig|ssh|telnet)\b",
-        r"\b(?:Invoke-WebRequest|iwr|System\.Net\.WebClient)\b",
+        (
+            r"\b(?:Invoke-WebRequest|iwr|Invoke-RestMethod|irm|"
+            r"System\.Net\.WebClient|Net\.WebClient|bitsadmin|certutil)\b"
+        ),
         r"https?://",
     ],
     "FILE_READ": [
-        r"\b(?:Get-Content|gc|cat|type|head|tail|more|less|read|grep)\b",
+        r"\b(?:Get-Content|gc|cat|type|head|tail|more|less|read|grep|findstr)\b",
         r"(?:-d|--data|--data-binary|--data-raw|-T|--upload-file)\s+@\S+",
         r"<\s*\S+",
     ],
@@ -27,14 +30,17 @@ CAPABILITY_GROUPS: dict[str, list[str]] = {
     ],
     "PROCESS_EXEC": [
         (
-            r"\b(?:Start-Process|Invoke-Expression|iex|bash|sh|zsh|csh|ksh|"
+            r"\b(?:Start-Process|saps|Invoke-Expression|iex|bash|sh|zsh|csh|ksh|"
             r"python|python3|cmd|powershell|pwsh|wmic|eval|exec)\b"
         ),
         r"\.(?:py|sh|ps1|bat|exe)\b",
     ],
     "PRIVILEGE_CHANGE": [
         r"\b(?:sudo|runas|Set-ExecutionPolicy|su|chmod|chown|whoami\s+/priv)\b",
-        r"Set-ExecutionPolicy\s+(?:Bypass|Unrestricted|RemoteSigned)",
+        (
+            r"(?:Set-ExecutionPolicy|-(?:ep|executionpolicy))\s+"
+            r"(?:Bypass|Unrestricted|RemoteSigned)"
+        ),
     ],
     "PERSISTENCE": [
         r"\b(?:schtasks|crontab|systemctl\s+enable|launchctl)\b",
@@ -43,9 +49,12 @@ CAPABILITY_GROUPS: dict[str, list[str]] = {
         r"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
     ],
     "DATA_TRANSFER": [
-        r"\b(?:ftp|scp|rsync|sftp|tftp|Start-BitsTransfer)\b",
+        r"\b(?:ftp|scp|rsync|sftp|tftp|Start-BitsTransfer|bitsadmin)\b",
         r"curl\b.*(?:-X\s*POST|-d|--data|-F|--form|-T|--upload-file)",
-        r"Invoke-WebRequest\b.*(?:-Method\s+POST|-InFile|-OutFile)",
+        (
+            r"(?:Invoke-WebRequest|iwr|Invoke-RestMethod|irm)\b.*"
+            r"(?:-Method\s+POST|-InFile|-OutFile|-Body)"
+        ),
         r"(?:-X\s*POST|--request\s+POST)\b",
     ],
 }
