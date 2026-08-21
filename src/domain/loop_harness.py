@@ -20,7 +20,8 @@ def _get_process_memory_mb() -> float:
         if hasattr(resource, "getrusage") and hasattr(resource, "RUSAGE_SELF"):
             getrusage = getattr(resource, "getrusage")  # noqa: B009
             rusage_self = getattr(resource, "RUSAGE_SELF")  # noqa: B009
-            rusage = getrusage(rusage_self)
+            if sys.platform == "darwin":
+                return float(getattr(rusage, "ru_maxrss", 0)) / (1024.0 * 1024.0)
             return float(getattr(rusage, "ru_maxrss", 0)) / 1024.0
     except (ImportError, AttributeError):
         # resource module is unavailable on non-POSIX OS (e.g. Windows);
