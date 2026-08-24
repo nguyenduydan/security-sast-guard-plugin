@@ -2,7 +2,7 @@
 
 <img src="banner.png" alt="Security SAST Guard banner" width="100%">
 
-# 🛡️ SECURITY SAST GUARD PLUGIN (v2.4.1)
+# 🛡️ SECURITY SAST GUARD PLUGIN
 **Zero-Trust Enterprise SAST & Real-time Command Firewall Engine**
 *Engineered for Google Antigravity 2.0 & Gemini CLI Ecosystems*
 
@@ -21,6 +21,7 @@
 
 ## ⚡ Quick Start
 
+### Windows (PowerShell)
 ```powershell
 # Install Security SAST Guard Plugin
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"
@@ -33,11 +34,24 @@ cd $HOME\.gemini\config\plugins\security-sast-guard; .\update.ps1
 cd $HOME\.gemini\config\plugins\security-sast-guard; .\remove.ps1
 ```
 
+### Linux & macOS (POSIX Shell)
+```bash
+# Install Security SAST Guard Plugin
+curl -fsSL https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.sh -o install.sh
+chmod +x install.sh && ./install.sh
+
+# Update (Preserves local .sast/profile.json configuration)
+cd ~/.gemini/config/plugins/security-sast-guard && ./update.sh
+
+# Uninstall
+cd ~/.gemini/config/plugins/security-sast-guard && ./remove.sh
+```
+
 ---
 
 ## 🧠 Architecture & 13 Modular Subsystems
 
-Security SAST Guard v2.0.0 introduces a symbiotic AI-agent security architecture combining a **10-Stage Command Interception Firewall** with an **Intelligence-Driven SAST Engine**.
+Security SAST Guard introduces a symbiotic AI-agent security architecture combining a **10-Stage Command Interception Firewall** with an **Intelligence-Driven SAST Engine**.
 
 ```mermaid
 flowchart TD
@@ -158,6 +172,8 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 
 ## 🎮 Slash Commands & CLI Reference
 
+### Slash Commands & CLI Commands Matrix
+
 | Slash Command | CLI Command | Description |
 | :--- | :--- | :--- |
 | 🛡️ `/sast-audit [type] [path]` | `sast scan [path]` | Runs security audit (`file`, `diff`, `codebase`, `api`, `web`). |
@@ -166,8 +182,41 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 | 🎛️ `/sast-mode [strict\|draft]` | `sast mode [mode]` | `strict` enforces zero high/critical tolerance; `draft` logs only. |
 | 🎚️ `/sast-audit-level [lite\|full\|ultra]` | `sast level [level]` | Configures scanning depth (`lite`: fast regex, `full`: AST, `ultra`: Taint). |
 | 🛠️ `/sast-rules [sync\|add]` | `sast rules` | Synchronizes rule directory or validates custom `.md` rule specs. |
+| 🧱 `/sast-firewall [command]` | `sast firewall [cmd]` | Checks command safety against 10-stage normalizer (`ALLOW`, `CONFIRM`, `DENY`). |
+| 🆘 `/sast-help` | `sast help` | Displays quick command reference and security vectors guide. |
+
+### Extended CLI Flags
+- `--json <file_path>` / `--format json`: Exports scan findings as machine-readable structured JSON.
+- `-v` / `--verbose`: Enables verbose debug trace output for deep inspection.
 
 ---
+
+## 📁 Custom Exclusions & Blacklist Configuration
+
+Security SAST Guard automatically ignores built-in build caches, `.git`, dependencies (`node_modules`, `.venv`, `vendor`), and lock files.
+
+To customize scan exclusions for your repository, use either of the following:
+
+### 1. Standalone `blacklist.json` (Recommended)
+Place `blacklist.json` at your project root or in `.sast/blacklist.json`:
+```json
+[
+  "tests/fixtures/*",
+  "legacy_module/",
+  "generated_*.py",
+  "*.min.js",
+  "mock_data.json"
+]
+```
+
+### 2. Standard `.sastignore`
+Create a `.sastignore` file at your repository root with glob patterns:
+```gitignore
+# Ignore test fixtures and temporary generated files
+tests/fixtures/*
+build_artifacts/
+*.tmp
+```
 
 ## 🛡️ Security Vectors & Rule Coverage
 

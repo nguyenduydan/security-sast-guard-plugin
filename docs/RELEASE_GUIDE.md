@@ -1,6 +1,6 @@
-# Hướng Dẫn Quy Trình Xuất Bản Release & Migration Guide (Security SAST Guard v2.0.0)
+# Hướng Dẫn Quy Trình Xuất Bản Release & Migration Guide
 
-Tài liệu này quy định tiêu chuẩn phát hành phiên bản, quy trình commit, hướng dẫn nâng cấp từ v1.x lên v2.0.0 (Zero Breaking Changes) và tự động hóa xuất bản GitHub Release cho dự án **security-sast-guard-plugin**.
+Tài liệu này quy định tiêu chuẩn phát hành phiên bản, quy trình commit, hướng dẫn nâng cấp (Zero Breaking Changes) và tự động hóa xuất bản GitHub Release cho dự án **security-sast-guard-plugin**.
 
 ---
 
