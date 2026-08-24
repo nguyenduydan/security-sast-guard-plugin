@@ -126,8 +126,11 @@ class ASTConfirmEngine:
             )
 
         language = tree_sitter_languages.get_language(lang_name)
-        parser = Parser()
-        parser.set_language(language)
+        try:
+            parser = Parser(language)
+        except (TypeError, ValueError, AttributeError):
+            parser = Parser()
+            parser.set_language(language)
 
         source_code = source_path.read_bytes()
         tree = parser.parse(source_code)
