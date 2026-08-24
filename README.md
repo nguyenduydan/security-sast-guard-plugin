@@ -259,16 +259,16 @@ Security SAST Guard enforces strict pre-commit and automated release workflows v
 
 ## 📚 Enterprise Project Wiki
 
-Truy cập toàn bộ tài liệu chuyên sâu chuẩn doanh nghiệp tại thư mục [`docs/wiki/`](docs/wiki/Home.md):
+Explore the full enterprise-grade documentation suite in [`docs/wiki/`](docs/wiki/Home.md):
 
-| Chuyên Đề Wiki | Mô Tả Trọng Tâm | Đường Dẫn |
+| Wiki Module | Focus Area & Description | Direct Link |
 | :--- | :--- | :---: |
-| 🏠 **Home & Quick Start** | Tổng quan hệ thống, mô hình phòng thủ 2 lớp, 1-Click Installer cho PowerShell & POSIX Bash | [`Home.md`](docs/wiki/Home.md) |
+| 🏠 **Home & Quick Start** | System overview, two-tier Zero-Trust defense model, 1-Click Installer for PowerShell & POSIX Bash | [`Home.md`](docs/wiki/Home.md) |
 | 🧠 **Architecture & Security Model** | 10-Stage Deobfuscation, Threat Chains, AST Engine, Taint Tracking, Shannon Entropy | [`Architecture-and-Security-Model.md`](docs/wiki/Architecture-and-Security-Model.md) |
-| 🎮 **CLI & Slash Commands** | Hướng dẫn 8 Slash Commands cho AI Agent, toàn bộ cú pháp CLI `sast`, Blacklist & Exclusions | [`CLI-and-Slash-Commands.md`](docs/wiki/CLI-and-Slash-Commands.md) |
-| 🔌 **MCP Server Integration** | Đặc tả 12 Stdio MCP Tools, hướng dẫn kết nối Antigravity 2.0, Gemini CLI, Claude, Cursor | [`MCP-Server-Integration.md`](docs/wiki/MCP-Server-Integration.md) |
-| 🛡️ **Rule Engine & Taxonomy** | 95 Security Vectors, ánh xạ OWASP/CWE/NIST, cú pháp `# sast-ignore`, quy trình Markdown sync | [`Rule-Engine-and-Taxonomy.md`](docs/wiki/Rule-Engine-and-Taxonomy.md) |
-| 🔄 **CI/CD & Quality Gates** | Tích hợp SARIF 2.1.0 cho GitHub Security, 4 CI Quality Gates, Conventional Commits, Release Please v4 | [`CI-CD-and-Quality-Gates.md`](docs/wiki/CI-CD-and-Quality-Gates.md) |
+| 🎮 **CLI & Slash Commands** | Complete reference for 8 AI Agent Slash Commands, CLI syntax, Blacklist & Exclusions | [`CLI-and-Slash-Commands.md`](docs/wiki/CLI-and-Slash-Commands.md) |
+| 🔌 **MCP Server Integration** | 12 Stdio MCP Tools specifications, connection setup for Antigravity 2.0, Gemini CLI, Claude, Cursor | [`MCP-Server-Integration.md`](docs/wiki/MCP-Server-Integration.md) |
+| 🛡️ **Rule Engine & Taxonomy** | 95 Security Vectors, OWASP/CWE/NIST mappings, `# sast-ignore` inline syntax, Markdown sync | [`Rule-Engine-and-Taxonomy.md`](docs/wiki/Rule-Engine-and-Taxonomy.md) |
+| 🔄 **CI/CD & Quality Gates** | ISO SARIF 2.1.0 export for GitHub Security, 4 CI Quality Gates, Conventional Commits, Release Please v4 | [`CI-CD-and-Quality-Gates.md`](docs/wiki/CI-CD-and-Quality-Gates.md) |
 
 ---
 

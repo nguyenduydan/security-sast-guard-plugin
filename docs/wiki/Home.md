@@ -1,25 +1,25 @@
 # 🛡️ Security SAST Guard — Enterprise Wiki
 
-Chào mừng bạn đến với trung tâm tài liệu kỹ thuật chính thức của **Security SAST Guard** — Hệ thống phân tích bảo mật tĩnh (SAST) thời gian thực và Tường lửa Thực thi Lệnh (Command Interception Firewall) chuẩn **Zero-Trust**, được thiết kế đặc thù cho các Trợ lý Lập trình AI (**Google Antigravity 2.0**, **Gemini CLI**) và các chu trình phát triển phần mềm hiện đại.
+Welcome to the official technical documentation hub for **Security SAST Guard** — an enterprise-grade, real-time Static Application Security Testing (SAST) and **Zero-Trust Command Interception Firewall** engine engineered specifically for AI Coding Assistants (**Google Antigravity 2.0**, **Gemini CLI**) and modern autonomous agent workflows.
 
 ---
 
-## 🌟 Tổng Quan Hệ Thống (System Overview)
+## 🌟 System Overview
 
-Trong kỷ nguyên phát triển phần mềm với sự tham gia của AI Agents, các lỗ hổng bảo mật không chỉ phát sinh từ mã nguồn (Source Code) mà còn tiềm ẩn nguy cơ nghiêm trọng từ việc AI Agent tự động thực thi các lệnh Shell nguy hiểm, tải mã độc từ xa (`Download+Execute`), hoặc vượt quyền bảo mật (`ExecutionPolicy Bypass`).
+In the era of AI-assisted software engineering, security vulnerabilities stem not only from source code flaws but also from autonomous agent execution risks, such as accidental execution of destructive shell commands, unverified remote downloads (`Download+Execute`), or privilege bypass attacks (`ExecutionPolicy Bypass`).
 
-**Security SAST Guard** thiết lập mô hình phòng thủ cộng sinh 2 lớp (**Symbiotic Two-Tier Defense Architecture**):
+**Security SAST Guard** establishes a symbiotic two-tier defense architecture:
 
-1. **Lớp 1: Background Command Firewall (PreCommandExecute Hook)**:
-   - Chặn và kiểm toán mọi lệnh terminal trước khi được đưa vào shell execution loop.
-   - Chuỗi chuẩn hóa và giải mã 10 tầng (**10-Stage Deobfuscation Normalizer**).
-   - Phân loại quyền hạn (7 Capability Groups) và nhận diện ý đồ tấn công (Threat Intent Reasoning).
-   - Hệ thống quyết định 4 trạng thái (**4-State Decision Machine**) và ghi log bất biến (`.sast/firewall_audit.jsonl`).
-2. **Lớp 2: Stdio SAST Intelligence Server (12 Granular Tools)**:
-   - Cung cấp giao thức **Model Context Protocol (MCP)** qua Stdio cho phép AI Agent trực tiếp tra cứu an ninh, quét taint trace, kiểm tra dataflow từ Source đến Sink.
-   - Động cơ phân tích AST đa ngôn ngữ (Tree-Sitter Structural Context) giúp phân biệt chính xác ngữ cảnh Client-side vs Server-side.
-   - 95 vector quy tắc bảo mật bao phủ toàn diện **OWASP Top 10**, **OWASP API Top 10**, **OWASP LLM 2025**, **CWE Top 25** và **CI/CD Security**.
-   - Bộ dò tìm bí mật **Shannon Entropy** kết hợp nhận diện chữ ký API Token của các nhà cung cấp lớn (OpenAI, Anthropic, GitHub, AWS, Stripe...).
+1. **Tier 1: Background Command Interception Firewall (`PreCommandExecute` Hook)**:
+   - Synchronously intercepts and inspects every terminal command before execution in the shell.
+   - Executes a comprehensive **10-Stage Deobfuscation Normalizer** to defeat evasion techniques.
+   - Performs semantic capability classification (7 groups) and threat intent reasoning.
+   - Evaluates commands against a formal **4-State Decision Machine** and logs immutable audit records (`.sast/firewall_audit.jsonl`).
+2. **Tier 2: Stdio SAST Intelligence Server (12 Granular Tools)**:
+   - Implements the **Model Context Protocol (MCP)** over Stdio, empowering AI agents to perform proactive security audits, taint tracking, and dataflow graph inspection.
+   - Features a multi-language AST precision engine (`tree-sitter`) that distinguishes client-side DOM interactions from server-side execution sinks.
+   - Implements **95 core security vector rules** covering **OWASP Top 10**, **OWASP API Top 10**, **OWASP LLM Top 10 (2025)**, **CWE Top 25**, and **CI/CD Security**.
+   - Integrates a high-precision **Shannon Entropy Secret Detector** combined with provider token signatures (OpenAI, Anthropic, GitHub, AWS, Stripe, Slack, and private keys).
 
 ```mermaid
 flowchart TD
@@ -61,61 +61,61 @@ flowchart TD
 
 ---
 
-## ⚡ Hướng Dẫn Cài Đặt Nhanh (1-Click Quick Start)
+## ⚡ 1-Click Quick Start
 
-### 1. Môi trường Windows (PowerShell)
+### 1. Windows (PowerShell)
 
-Mở PowerShell với quyền người dùng hiện tại và chạy:
+Open PowerShell with standard user privileges and run:
 
 ```powershell
-# Tải và chạy bộ cài đặt tự động
+# Download and run the automated installer
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.ps1" -OutFile "install.ps1"
 .\install.ps1
 
-# Cập nhật plugin (Bảo toàn cấu hình .sast/profile.json của dự án)
+# Update the plugin (Preserves local .sast/profile.json configuration)
 cd $HOME\.gemini\config\plugins\security-sast-guard; .\update.ps1
 
-# Gỡ bỏ hoàn toàn plugin
+# Completely remove the plugin
 cd $HOME\.gemini\config\plugins\security-sast-guard; .\remove.ps1
 ```
 
-### 2. Môi trường Linux & macOS (POSIX Bash/Zsh)
+### 2. Linux & macOS (POSIX Bash/Zsh)
 
-Mở terminal và thực thi lệnh:
+Open terminal and execute:
 
 ```bash
-# Tải và chạy bộ cài đặt tự động
+# Download and run the automated installer
 curl -fsSL https://raw.githubusercontent.com/nguyenduydan/security-sast-guard-plugin/main/install.sh -o install.sh
 chmod +x install.sh && ./install.sh
 
-# Cập nhật plugin (Bảo toàn cấu hình .sast/profile.json)
+# Update the plugin (Preserves local .sast/profile.json configuration)
 cd ~/.gemini/config/plugins/security-sast-guard && ./update.sh
 
-# Gỡ bỏ hoàn toàn plugin
+# Completely remove the plugin
 cd ~/.gemini/config/plugins/security-sast-guard && ./remove.sh
 ```
 
 ---
 
-## 📚 Danh Mục Chuyên Đề Wiki (Documentation Index)
+## 📚 Technical Wiki Index
 
-Bộ Wiki kỹ thuật bao gồm 5 chuyên đề chuyên sâu giúp bạn nắm vững mọi khía cạnh của hệ thống:
+Explore our comprehensive technical guides for complete architectural and operational mastery:
 
-| STT | Chuyên Đề | Tóm Tắt Nội Dung | Liên Kết |
+| Section | Topic | Core Contents & Focus Areas | Direct Link |
 | :---: | :--- | :--- | :---: |
-| 1 | **Kiến Trúc & Mô Hình Zero-Trust** | Chi tiết 10-Stage Deobfuscation, Capability/Intent reasoning, Threat Chains, AST Precision Engine, Taint Tracking & Shannon Entropy Detector. | [Xem chi tiết](Architecture-and-Security-Model.md) |
-| 2 | **CLI & Slash Commands** | Hướng dẫn sử dụng 8 Slash Commands cho AI Agent, toàn bộ cú pháp CLI `sast`, flags mở rộng và cấu hình Blacklist / `.sastignore`. | [Xem chi tiết](CLI-and-Slash-Commands.md) |
-| 3 | **Tích Hợp Stdio MCP Server** | Hướng dẫn 12 Stdio MCP Tools (kèm schema chi tiết) và cách tích hợp vào Antigravity 2.0, Gemini CLI, Claude Desktop, Cursor. | [Xem chi tiết](MCP-Server-Integration.md) |
-| 4 | **Rule Engine & Security Taxonomy** | Ma trận 95 vector quy tắc, ánh xạ CWE/OWASP/NIST, cú pháp inline `# sast-ignore`, và quy trình đồng bộ Markdown sang JSON. | [Xem chi tiết](Rule-Engine-and-Taxonomy.md) |
-| 5 | **CI/CD & Quality Gates** | Tích hợp SARIF 2.1.0 vào GitHub Code Scanning, bộ 4 Quality Gates (Ruff, Pylint 10/10, MyPy, Pytest), Git Flow & Release Please v4. | [Xem chi tiết](CI-CD-and-Quality-Gates.md) |
+| 1 | **Architecture & Zero-Trust Defense** | 10-Stage Deobfuscation, Capability/Intent reasoning, Threat Chains, AST Precision Engine, Taint Tracking & Shannon Entropy Detector. | [Read Guide](Architecture-and-Security-Model.md) |
+| 2 | **CLI & Slash Commands Reference** | Complete guide for 8 AI Agent Slash Commands, CLI commands syntax, extended flags, and Blacklist / `.sastignore` management. | [Read Guide](CLI-and-Slash-Commands.md) |
+| 3 | **Stdio MCP Server Integration** | 12 Stdio MCP Tools specification (with complete schemas) and connection guides for Antigravity 2.0, Gemini CLI, Claude Desktop, and Cursor. | [Read Guide](MCP-Server-Integration.md) |
+| 4 | **SAST Rule Engine & Taxonomy** | 95 Security Vectors matrix, CWE/OWASP/NIST mappings, inline suppression (`# sast-ignore`), and Markdown to JSON rule synchronization. | [Read Guide](Rule-Engine-and-Taxonomy.md) |
+| 5 | **CI/CD Quality Gates & Release** | ISO SARIF 2.1.0 for GitHub Code Scanning, 4 mandatory Quality Gates (Ruff, Pylint 10/10, MyPy, Pytest), Git Flow & Release Please v4. | [Read Guide](CI-CD-and-Quality-Gates.md) |
 
 ---
 
-## 🧩 Yêu Cầu Hệ Thống (System Requirements)
+## 🧩 System Requirements
 
-- **Python Runtime**: Python 3.10+ (Khuyến nghị 3.12 hoặc 3.14).
-- **Hệ điều hành hỗ trợ**: Windows 10/11, Windows Server, Ubuntu 20.04+, Debian 11+, macOS Sonoma / Sequoia.
-- **Hệ sinh thái AI Tương thích**:
+- **Python Runtime**: Python 3.10+ (Python 3.12 or 3.14 recommended).
+- **Supported Operating Systems**: Windows 10/11, Windows Server, Ubuntu 20.04+, Debian 11+, macOS Sonoma / Sequoia.
+- **Compatible AI Ecosystems**:
   - Google Antigravity 2.0 (Native Plugin & MCP)
   - Gemini CLI Ecosystem
-  - Claude Desktop / Cursor IDE (qua giao thức Model Context Protocol Stdio)
+  - Claude Desktop / Cursor IDE (via Model Context Protocol Stdio)

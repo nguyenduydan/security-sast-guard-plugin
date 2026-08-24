@@ -1,14 +1,14 @@
-# 🔌 Tích Hợp Stdio MCP Server (12 Tools)
+# 🔌 Stdio MCP Server Integration (12 Tools)
 
-Tài liệu này cung cấp hướng dẫn toàn diện về máy chủ **Model Context Protocol (MCP)** dạng Stdio tích hợp trong **Security SAST Guard**, bao gồm đặc tả kỹ thuật của **12 Stdio MCP Tools** và hướng dẫn cấu hình kết nối cho các trợ lý AI phổ biến (**Google Antigravity 2.0**, **Gemini CLI**, **Claude Desktop**, **Cursor**).
+This document provides complete technical specifications for the **Model Context Protocol (MCP)** Stdio Server in **Security SAST Guard**, including full input/output schemas for all **12 Stdio MCP Tools** and setup instructions for major AI environments (**Google Antigravity 2.0**, **Gemini CLI**, **Claude Desktop**, and **Cursor**).
 
 ---
 
-## 🌐 1. Giới Thiệu Giao Thức Model Context Protocol (MCP)
+## 🌐 1. Model Context Protocol (MCP) Overview
 
-Model Context Protocol (MCP) là chuẩn giao tiếp mở do Anthropic và cộng đồng AI phát triển, cho phép các AI Agents tương tác an toàn với các công cụ cục bộ thông qua luồng Standard Input/Output (**JSON-RPC 2.0 qua Stdio**).
+The Model Context Protocol (MCP) is an open standard developed by Anthropic and the AI ecosystem that enables AI agents to securely invoke local tools via Standard Input/Output (**JSON-RPC 2.0 over Stdio**).
 
-Máy chủ MCP của Security SAST Guard (`python -m src.mcp.server`) cung cấp một bộ công cụ bảo mật thông minh giúp Agent chủ động kiểm tra code, truy vết rò rỉ dữ liệu (Taint Tracing), và xác thực an toàn câu lệnh shell trước khi thực thi.
+The Security SAST Guard MCP Server (`python -m src.mcp.server`) equips autonomous AI coding agents with real-time static security analysis, taint dataflow tracing, and command safety evaluation capabilities.
 
 ```mermaid
 sequenceDiagram
@@ -29,13 +29,13 @@ sequenceDiagram
 
 ---
 
-## 🛠️ 2. Danh Mục 12 Stdio MCP Tools Chi Tiết
+## 🛠️ 2. Comprehensive 12 Stdio MCP Tools Reference
 
 ### 2.1. `sast_scan_file`
-Thực hiện quét bảo mật chuyên sâu cho một tệp đơn lẻ, tự động trích xuất các luồng Taint Traces.
+Audits a single source file and extracts complete taint traces from Source to Sink.
 
 - **Input Parameters**:
-  - `file_path` (*string, bắt buộc*): Đường dẫn tuyệt đối hoặc tương đối tới tệp cần kiểm tra.
+  - `file_path` (*string, required*): Absolute or relative path to the target source file.
 - **Output Schema**:
   ```json
   {
@@ -73,18 +73,18 @@ Thực hiện quét bảo mật chuyên sâu cho một tệp đơn lẻ, tự đ
 ---
 
 ### 2.2. `sast_scan_diff`
-Thực hiện quét bảo mật gia tăng (incremental) chỉ trên các dòng mã nguồn vừa được chỉnh sửa theo `git diff`.
+Performs incremental static security analysis exclusively on modified lines identified in the active `git diff`.
 
-- **Input Parameters**: Không có (Tự động phát hiện diff trong Git repository).
-- **Output Schema**: Danh sách các phát hiện bảo mật và taint traces tương tự `sast_scan_file`, nhưng được thu hẹp trong phạm vi các dòng thay đổi.
+- **Input Parameters**: None (Automatically inspects the local Git repository).
+- **Output Schema**: Returns findings array and taint traces scoped strictly to changed lines.
 
 ---
 
 ### 2.3. `sast_check_command`
-Đánh giá mức độ an toàn của một câu lệnh shell trước khi AI Agent đề xuất thực thi qua terminal.
+Evaluates the safety and intent of a shell command before an AI Agent proposes executing it in the terminal.
 
 - **Input Parameters**:
-  - `command` (*string, bắt buộc*): Chuỗi lệnh terminal cần kiểm tra.
+  - `command` (*string, required*): The raw shell command string to evaluate.
 - **Output Schema**:
   ```json
   {
@@ -93,14 +93,14 @@ Thực hiện quét bảo mật gia tăng (incremental) chỉ trên các dòng m
     "matched_pattern": "DOWNLOAD_EXEC_CHAIN"
   }
   ```
-  *(Các giá trị `verdict` hợp lệ: `ALLOW`, `CONFIRM`, `DENY`)*.
+  *(Valid verdicts: `ALLOW`, `CONFIRM`, `DENY`)*.
 
 ---
 
 ### 2.4. `sast_get_status`
-Truy xuất toàn bộ thông tin trạng thái hoạt động, profile và số lượng rule đang nạp.
+Retrieves system telemetry, active configuration profile, and rule statistics.
 
-- **Input Parameters**: Không có.
+- **Input Parameters**: None.
 - **Output Schema**:
   ```json
   {
@@ -119,10 +119,10 @@ Truy xuất toàn bộ thông tin trạng thái hoạt động, profile và số
 ---
 
 ### 2.5. `sast_set_level`
-Điều chỉnh mức độ sâu của bộ phân tích tĩnh theo thời gian thực.
+Dynamically adjusts static analysis depth for the active session.
 
 - **Input Parameters**:
-  - `level` (*string, bắt buộc*): Giá trị cho phép: `"lite"`, `"full"`, `"ultra"`.
+  - `level` (*string, required*): Permitted values: `"lite"`, `"full"`, `"ultra"`.
 - **Output Schema**:
   ```json
   {
@@ -135,10 +135,10 @@ Truy xuất toàn bộ thông tin trạng thái hoạt động, profile và số
 ---
 
 ### 2.6. `sast_set_mode`
-Chuyển đổi chế độ kiểm soát chính sách giữa thực thi nghiêm ngặt và ghi nhận thử nghiệm.
+Switches enforcement policy strictness between blocking mode and advisory mode.
 
 - **Input Parameters**:
-  - `mode` (*string, bắt buộc*): Giá trị cho phép: `"strict"`, `"draft"`.
+  - `mode` (*string, required*): Permitted values: `"strict"`, `"draft"`.
 - **Output Schema**:
   ```json
   {
@@ -151,9 +151,9 @@ Chuyển đổi chế độ kiểm soát chính sách giữa thực thi nghiêm 
 ---
 
 ### 2.7. `sast_init`
-Khởi tạo file cấu hình `.sast/profile.json` cho thư mục dự án hiện hành nếu chưa tồn tại.
+Initializes a project-local `.sast/profile.json` security configuration in the current workspace.
 
-- **Input Parameters**: Không có.
+- **Input Parameters**: None.
 - **Output Schema**:
   ```json
   {
@@ -166,11 +166,11 @@ Khởi tạo file cấu hình `.sast/profile.json` cho thư mục dự án hiệ
 ---
 
 ### 2.8. `sast_sync_rules`
-Đồng bộ và biên dịch các quy tắc bảo mật dạng Markdown từ thư mục chỉ định vào `sast_rules.json`.
+Compiles and synchronizes Markdown rule definitions into `sast_rules.json`.
 
 - **Input Parameters**:
-  - `rules_dir` (*string, tùy chọn*): Thư mục chứa các tệp quy tắc `.md` (Mặc định: `rules/`).
-  - `output_file` (*string, tùy chọn*): Đường dẫn tệp JSON đầu ra (Mặc định: `rules/sast_rules.json`).
+  - `rules_dir` (*string, optional*): Directory containing `.md` rules (Default: `rules/`).
+  - `output_file` (*string, optional*): Destination JSON file (Default: `rules/sast_rules.json`).
 - **Output Schema**:
   ```json
   {
@@ -184,31 +184,31 @@ Khởi tạo file cấu hình `.sast/profile.json` cho thư mục dự án hiệ
 ---
 
 ### 2.9. `sast_get_help`
-Lấy cẩm nang tra cứu nhanh danh mục lệnh slash command và bản đồ vector.
+Fetches command guidance, available slash commands, and security vector mappings.
 
-- **Input Parameters**: Không có.
-- **Output Schema**: Danh sách các kỹ năng hỗ trợ và tóm tắt cú pháp.
+- **Input Parameters**: None.
+- **Output Schema**: Structured help metadata and command definitions.
 
 ---
 
 ### 2.10. `sast_get_dataflow_path`
-Truy vấn toàn bộ đường đi lan truyền dữ liệu từ mẫu Source đến mẫu Sink trong kho mã nguồn.
+Queries all dataflow propagation paths connecting a specific Source pattern to a Sink pattern.
 
 - **Input Parameters**:
-  - `source_pattern` (*string, bắt buộc*): Ký hiệu hoặc hàm nguồn (Ví dụ: `request.args`).
-  - `sink_pattern` (*string, bắt buộc*): Ký hiệu hoặc hàm đích (Ví dụ: `cursor.execute`).
-  - `repo_path` (*string, tùy chọn*): Đường dẫn thư mục quét (Mặc định: `"."`).
-- **Output Schema**: Mảng các đối tượng đường dẫn chi tiết gồm danh sách file, số dòng, symbol name và step type.
+  - `source_pattern` (*string, required*): Source symbol pattern (e.g., `request.args`).
+  - `sink_pattern` (*string, required*): Sink symbol pattern (e.g., `cursor.execute`).
+  - `repo_path` (*string, optional*): Repository root path (Default: `"."`).
+- **Output Schema**: Array of structured taint flow paths with file names, line numbers, symbols, and step types.
 
 ---
 
 ### 2.11. `sast_get_taint_context`
-Trích xuất đoạn mã ngữ cảnh xung quanh dòng bị nghi ngờ nhiễm độc (Taint line) để AI Agent phân tích sâu.
+Extracts code snippets and propagation metadata around a suspected taint line.
 
 - **Input Parameters**:
-  - `file_path` (*string, bắt buộc*): Đường dẫn đến tệp nguồn.
-  - `line_number` (*integer, bắt buộc*): Số dòng nghi ngờ.
-  - `context_lines` (*integer, tùy chọn*): Số dòng ngữ cảnh mở rộng trước và sau (Mặc định: `10`).
+  - `file_path` (*string, required*): Source file path.
+  - `line_number` (*integer, required*): Target line number.
+  - `context_lines` (*integer, optional*): Surrounding context window lines (Default: `10`).
 - **Output Schema**:
   ```json
   {
@@ -228,12 +228,12 @@ Trích xuất đoạn mã ngữ cảnh xung quanh dòng bị nghi ngờ nhiễm 
 ---
 
 ### 2.12. `sast_generate_report`
-Tổng hợp các phát hiện bảo mật và phân tích nhận định của AI để xuất bản báo cáo Markdown / SARIF hoàn chỉnh.
+Synthesizes security findings and AI analysis notes to generate complete Markdown and SARIF reports.
 
 - **Input Parameters**:
-  - `findings` (*array of objects, bắt buộc*): Mảng các lỗ hổng đã phát hiện.
-  - `target_path` (*string, bắt buộc*): Đường dẫn mục tiêu quét.
-  - `ai_analysis` (*string, bắt buộc*): Nhận xét phân tích ngữ cảnh của AI Agent.
+  - `findings` (*array of objects, required*): Discovered vulnerabilities list.
+  - `target_path` (*string, required*): Scanned directory or file path.
+  - `ai_analysis` (*string, required*): AI agent context analysis and remediation notes.
 - **Output Schema**:
   ```json
   {
@@ -245,10 +245,10 @@ Tổng hợp các phát hiện bảo mật và phân tích nhận định của 
 
 ---
 
-## ⚙️ 3. Hướng Dẫn Cấu Hình Kết Nối Trên Các Nền Tảng
+## ⚙️ 3. Platform Integration Configuration
 
 ### 3.1. Google Antigravity 2.0 & Gemini CLI
-Tạo hoặc bổ sung vào file `mcp_config.json` tại thư mục dự án hoặc `~/.gemini/antigravity/mcp_config.json`:
+Add `sast-guard` to `mcp_config.json` in your project root or `~/.gemini/antigravity/mcp_config.json`:
 
 ```json
 {
@@ -263,7 +263,7 @@ Tạo hoặc bổ sung vào file `mcp_config.json` tại thư mục dự án ho�
 ```
 
 ### 3.2. Claude Desktop App
-Thêm vào file cấu hình `claude_desktop_config.json` (Trên Windows: `%APPDATA%\Claude\claude_desktop_config.json`, trên macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`):
+Add the configuration to `claude_desktop_config.json` (Windows: `%APPDATA%\Claude\claude_desktop_config.json`, macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`):
 
 ```json
 {
@@ -278,8 +278,8 @@ Thêm vào file cấu hình `claude_desktop_config.json` (Trên Windows: `%APPDA
 ```
 
 ### 3.3. Cursor IDE
-Mở **Settings $\to$ Features $\to$ MCP Servers $\to$ Add New MCP Server**:
+Navigate to **Settings $\to$ Features $\to$ MCP Servers $\to$ Add New MCP Server**:
 - **Name**: `security-sast-guard`
 - **Type**: `command`
 - **Command**: `python -m src.mcp.server`
-- **Working Directory**: Đường dẫn đến thư mục dự án của bạn.
+- **Working Directory**: Your project root directory.
