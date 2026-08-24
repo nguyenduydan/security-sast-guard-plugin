@@ -317,3 +317,15 @@ def test_firewall_engine_evaluate_v2_adversarial_chains() -> None:
     # 4. Nested backticks on alias rm -rf
     v4 = engine.evaluate_v2("r`m` `-`r`f C:\\important")
     assert v4.verdict == "DENY"
+
+    # 5. POSIX ANSI-C octal escape sequence (rm -rf /)
+    v5 = engine.evaluate_v2("bash -c \"$'\\162\\155\\040\\055\\162\\146\\040\\057'\"")
+    assert v5.verdict == "DENY"
+
+
+def test_normalizer_posix_octal_escapes() -> None:
+    """Test POSIX octal escape sequence de-obfuscation."""
+    normalizer = FirewallNormalizer()
+    octal_payload = "$'\\162\\155\\040\\055\\162\\146\\040\\057'"
+    candidates = normalizer.normalize(octal_payload)
+    assert any("rm -rf /" in c for c in candidates)
