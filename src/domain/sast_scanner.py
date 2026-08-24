@@ -490,7 +490,7 @@ class SASTScanner:
     def scan_code(self, code: str, filename: str = "sample.py") -> list[Finding]:
         """Scan code string directly and return list of Finding domain objects."""
         rules = self._load_rules()
-        findings: list[Finding] = []
+        raw_findings: list[dict[str, Any]] = []
         lines = code.splitlines()
 
         prev_line: str | None = None
@@ -523,6 +523,11 @@ class SASTScanner:
                     if self._rule_matches_line(line_content, rule):
                         if self._is_suppressed(line_content, prev_line, rule_id):
                             continue
+                        ctx = self.context_extractor.extract_context_from_lines(
+                            lines, line_idx, filename
+                        )
+                        if ctx.get("is_safe_context"):
+                            continue
                         if (
                             filename.endswith(".py")
                             and self._is_sink_rule(rule)
@@ -531,18 +536,42 @@ class SASTScanner:
                             )
                         ):
                             continue
-                        findings.append(
-                            Finding(
-                                rule_id=rule_id,
-                                rule_name=rule.get("name", "Unknown Rule"),
-                                path=filename,
-                                line=line_idx,
-                                line_content=line_content,
-                                severity=rule.get("severity", "MEDIUM"),
-                                scope=scope,
-                                action=rule.get("action", "Block"),
-                                remediation=rule.get("remediation"),
-                            )
+                        raw_findings.append(
+                            {
+                                "rule_id": rule_id,
+                                "rule_name": rule.get("name", "Unknown Rule"),
+                                "path": filename,
+                                "line": line_idx,
+                                "line_content": ctx.get("line_content", line_content),
+                                "severity": rule.get("severity", "MEDIUM"),
+                                "scope": (
+                                    scope
+                                    if scope != "global"
+                                    else ctx.get("scope", "global")
+                                ),
+                                "action": rule.get("action", "Block"),
+                                "remediation": rule.get("remediation"),
+                                "context_window": ctx.get("context_window", []),
+                            }
                         )
             prev_line = line_content
-        return findings
+
+        if self.ai_verifier:
+            verified_findings, _ = self.ai_verifier.filter_false_positives(raw_findings)
+        else:
+            verified_findings = raw_findings
+
+        return [
+            Finding(
+                rule_id=d["rule_id"],
+                rule_name=d["rule_name"],
+                path=d["path"],
+                line=d["line"],
+                line_content=d["line_content"],
+                severity=d["severity"],
+                scope=d["scope"],
+                action=d.get("action", "Block"),
+                remediation=d.get("remediation"),
+            )
+            for d in verified_findings
+        ]
