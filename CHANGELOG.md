@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.4.2...v2.5.0) (2026-08-24)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **ast:** modernize tree-sitter Parser API and add mock AST unit tests for ASTConfirmEngine (Fixes [#193](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/193)) ([4c7d167](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/4c7d167b14f19e1d70b39085ce6455990c99255b))
+* **ci:** add multi-OS CI matrix and cross-platform tests for firewall hooks (Fixes [#185](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/185)) ([ee64c4f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ee64c4f505400e396f33504266acfb4ebab93cb3))
+* **devex:** enhance repository with Makefile, Code of Conduct, Architecture & Threat Model docs, examples, and GitHub automations ([bc0252e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bc0252e8ac01909b6939cf542e647cadfc0de268))
+* **ignore:** add AI agent directories (.agents, .gemini, .antigravity, .cursor, .claude, etc.) to blacklist and default ignore list ([70c45d7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/70c45d7735c553bf7f43e154a2345df068795673))
+* **install:** add POSIX shell installation and management scripts (install.sh, update.sh, remove.sh) (Fixes [#197](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/197)) ([8a4d279](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8a4d279fb07dc71dd4c6b94a9c5287e9a6e07efd))
+* **mcp:** implement real rule synchronization in sast_sync_rules MCP tool handler (Fixes [#200](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/200)) ([d0913f8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d0913f81879e464c967512ffb71f0038de8d8e31))
+* **mcp:** support optional output_file parameter in handle_sast_sync_rules ([985776b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/985776b22f35fed8d47abe2566320a7c7ecea4dc))
+* **reports:** add JSON report format support in CLI and unit tests for generate_json_report (Fixes [#202](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/202)) ([8ca7540](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8ca7540fd93871c5c47e881b39f6e253f23d54e1))
+* **scanner:** support standalone blacklist.json for custom scan exclusions ([b8f9e73](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b8f9e7321a4d1c2d9529561cac4419d5f312d0c8))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** align CI matrix python version with pyproject requires-python 3.12+ ([a31aa0e](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a31aa0e9c7c0ddb6f747d6282fe10f6cfd641d26))
+* **cli:** fix unconditional verbose mode in CLI dispatcher (Fixes [#189](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/189)) ([d790cc4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d790cc4eef79ad6f87f4c3255d65be6d7b29b1af))
+* **firewall:** support Linux POSIX octal escape sequences in FirewallNormalizer (Fixes [#186](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/186)) ([3e200a2](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/3e200a24f4d2d12a8d66f642a4ba3d01ee1c70e1))
+* **metrics:** resolve Windows and POSIX path format mismatch in SecurityMetricsEngine (Fixes [#190](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/190)) ([9645b6b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9645b6ba30d2b0b2763214b1e25f045e89d4d500))
+* **rules:** correct copy-pasted SQL sinks in PROMPT_INJECTION_VULNERABLE rule (Fixes [#188](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/188)) ([2634907](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/26349075517e1e5b5d6df99f1f227f186777fcc9))
+* **scanner:** add explanatory comment to empty except clause in IgnoreFilter ([28640fa](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/28640fa2b596eb63c6c3262f132b6fef4c353a8e))
+* **scanner:** integrate ContextExtractor and AIVerifier into SASTScanner.scan_code (Fixes [#192](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/192)) ([ddb152a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ddb152ac0c75e7f5ee78ddca89af61d418e91879))
+* **scanner:** prevent workspace path pollution in run_audit_v2 writing logs to plugin directory (Fixes [#191](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/191)) ([026c670](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/026c67072e2e0288606d9577e2cd09ec482616a7))
+* **scripts:** remove hardcoded local machine Windows path in scripts/md_to_json.py (Fixes [#184](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/184)) ([6346cf7](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/6346cf735d35b53fe284518fae22b9b8b37a5825))
+* **taint:** enhance SymbolIndexer regex to support typed and multi-language variable declarations (Fixes [#187](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/187)) ([0602e41](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/0602e41bb21b4ca07441d7bae607b3a2016b21d3))
+
+
+### ♻️ Refactoring & Code Hygiene
+
+* **ci:** adopt setup-env composite action across GitHub Actions workflows (Fixes [#196](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/196)) ([5d19931](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5d199315eecc5c177216b10a0e8291bccf574885))
+* **ci:** streamline CI/CD pipeline and consolidate redundant runner jobs ([ee03497](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ee0349790e7b7b24d15916ec3f0af02b3466e09c))
+* **hooks:** standardize output formatting and exit codes between firewall_hook.ps1 and firewall_hook.py (Fixes [#198](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/198)) ([ff96b66](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ff96b6615024fe17a56dfbcfe7c01c416421fbc1))
+* **rules:** filter out empty pattern stubs in sast_rules.json during rule sync (Fixes [#199](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/199)) ([011c07c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/011c07c645aa5821aa51484905cb3f57e37d85e5))
+
+
+### 📝 Documentation
+
+* **plugin:** synchronize complete list of 8 skills in plugin.json (Fixes [#194](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/194)) ([b1b1e1a](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/b1b1e1aff25e93d3c022029b23a7915b0acdead7))
+* remove hardcoded version and synchronize documentation for POSIX scripts, blacklist.json, and CLI options ([914b271](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/914b27127ea37ace7c282c28c10956652585dca7))
+
+
+### Maintenance & Tooling
+
+* **release:** replace hardcoded personal git author identity in release SBOM workflow (Fixes [#195](https://github.com/nguyenduydan/security-sast-guard-plugin/issues/195)) ([c715953](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c715953d7693b8a8b5225c630498ecf8b489b987))
+
 ## [2.4.2](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.4.1...v2.4.2) (2026-08-21)
 
 
