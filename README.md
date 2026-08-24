@@ -18,7 +18,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[⚡ Quick Start](#-quick-start) • [📚 Project Wiki](docs/wiki/Home.md) • [🧠 Architecture](docs/ARCHITECTURE.md) • [🛡️ Security Model](docs/SECURITY_MODEL.md) • [🔌 MCP Server](#-stdio-mcp-server-integration) • [🎮 Slash Commands & CLI](#-slash-commands--cli-reference) • [🛡️ Security Vectors](#-security-vectors--rule-coverage) • [🔄 CI/CD & Release](#-cicd-workflow--quality-gates)
+[⚡ Quick Start](#-quick-start) • [🗺️ Roadmap](docs/ROADMAP.md) • [📚 Project Wiki](docs/wiki/Home.md) • [🧠 Architecture](docs/ARCHITECTURE.md) • [🛡️ Security Model](docs/SECURITY_MODEL.md) • [🔌 MCP Server](#-stdio-mcp-server-integration) • [🎮 Slash Commands & CLI](#-slash-commands--cli-reference) • [🛡️ Security Vectors](#-security-vectors--rule-coverage) • [🔄 CI/CD & Release](#-cicd-workflow--quality-gates)
 
 </div>
 
