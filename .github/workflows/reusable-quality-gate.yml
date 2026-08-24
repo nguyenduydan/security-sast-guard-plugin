@@ -30,19 +30,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python 3.12
-        uses: actions/setup-python@v5
+      - name: Setup Python & Dependencies
+        uses: ./.github/actions/setup-env
         with:
           python-version: "3.12"
-
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-
-      - name: Install Dependencies
-        run: |
-          uv pip install --system -e . ruff pylint
 
       - name: Run Ruff Linter & Formatter Check
         run: |
@@ -60,19 +51,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python 3.12
-        uses: actions/setup-python@v5
+      - name: Setup Python & Dependencies
+        uses: ./.github/actions/setup-env
         with:
           python-version: "3.12"
-
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-
-      - name: Install Dependencies
-        run: |
-          uv pip install --system -e . mypy pytest
 
       - name: Run Mypy Type Checker
         run: |
@@ -85,19 +67,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python 3.12
-        uses: actions/setup-python@v5
+      - name: Setup Python & Dependencies
+        uses: ./.github/actions/setup-env
         with:
           python-version: "3.12"
-
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-
-      - name: Install Dependencies
-        run: |
-          uv pip install --system -e . pytest
 
       - name: Run Pytest Suite
         run: |
