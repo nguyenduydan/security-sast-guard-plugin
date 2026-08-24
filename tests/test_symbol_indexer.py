@@ -1,29 +1,27 @@
-# tests/test_symbol_indexer.py
-import tempfile
 import textwrap
 from pathlib import Path
 
 from src.domain.symbol_indexer import SymbolIndexer
 
 
-def _make_repo(files: dict[str, str]) -> str:
-    """Create a temp directory with given files."""
-    d = tempfile.mkdtemp()
+def _make_repo(files: dict[str, str], base_dir: Path) -> str:
+    """Create a test directory with given files."""
     for name, content in files.items():
-        p = Path(d) / name
+        p = base_dir / name
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(content, encoding="utf-8")
-    return d
+    return str(base_dir)
 
 
-def test_index_finds_simple_assignment():
+def test_index_finds_simple_assignment(tmp_path: Path) -> None:
     repo = _make_repo(
         {
             "views.py": textwrap.dedent("""\
             user_input = request.GET.get('q')
             name = request.GET.get('name')
         """)
-        }
+        },
+        tmp_path,
     )
     indexer = SymbolIndexer(repo)
     result = indexer.index(["request.GET"])
@@ -32,8 +30,8 @@ def test_index_finds_simple_assignment():
     assert result["user_input"][0] == ("views.py", 1)
 
 
-def test_index_skips_non_assignment_lines():
-    repo = _make_repo({"views.py": "print(request.GET.get('q'))\n"})
+def test_index_skips_non_assignment_lines(tmp_path: Path) -> None:
+    repo = _make_repo({"views.py": "print(request.GET.get('q'))\n"}, tmp_path)
     indexer = SymbolIndexer(repo)
     result = indexer.index(["request.GET"])
     assert len(result) == 0

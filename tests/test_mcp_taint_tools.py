@@ -1,4 +1,3 @@
-import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
@@ -55,17 +54,14 @@ def test_get_dataflow_path_empty_findings():
     assert result["total"] == 0
 
 
-def test_get_taint_context_returns_code_snippet():
-    with tempfile.TemporaryDirectory() as d:
-        f = Path(d) / "app.py"
-        f.write_text(
-            "line1\nuser_input = request.GET.get('q')\nline3\n", encoding="utf-8"
-        )
-        handlers = MCPToolHandlers()
-        with patch.object(
-            handlers.audit_service, "run_taint_analysis", return_value=[_make_finding()]
-        ):
-            result = handlers.handle_sast_get_taint_context(str(f), 2, context_lines=3)
+def test_get_taint_context_returns_code_snippet(tmp_path: Path) -> None:
+    f = tmp_path / "app.py"
+    f.write_text("line1\nuser_input = request.GET.get('q')\nline3\n", encoding="utf-8")
+    handlers = MCPToolHandlers()
+    with patch.object(
+        handlers.audit_service, "run_taint_analysis", return_value=[_make_finding()]
+    ):
+        result = handlers.handle_sast_get_taint_context(str(f), 2, context_lines=3)
     assert result["status"] == "success"
     assert "user_input" in result["code_snippet"]
     assert result["line"] == 2

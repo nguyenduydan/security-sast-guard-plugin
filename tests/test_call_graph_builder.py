@@ -1,25 +1,24 @@
-import tempfile
 import textwrap
 from pathlib import Path
 
 from src.domain.call_graph_builder import CallGraphBuilder
 
 
-def _make_repo(files: dict[str, str]) -> str:
-    d = tempfile.mkdtemp()
+def _make_repo(files: dict[str, str], base_dir: Path) -> str:
     for name, content in files.items():
-        p = Path(d) / name
+        p = base_dir / name
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(content, encoding="utf-8")
-    return d
+    return str(base_dir)
 
 
-def test_build_import_graph_python():
+def test_build_import_graph_python(tmp_path: Path) -> None:
     repo = _make_repo(
         {
             "views.py": "from utils import run_query\n",
             "utils.py": "def run_query(q): pass\n",
-        }
+        },
+        tmp_path,
     )
     builder = CallGraphBuilder(repo)
     graph = builder.build_import_graph(["views.py"])
@@ -28,19 +27,20 @@ def test_build_import_graph_python():
     assert any("utils.py" in dep for dep in graph["views.py"])
 
 
-def test_build_import_graph_no_imports():
-    repo = _make_repo({"standalone.py": "x = 1\n"})
+def test_build_import_graph_no_imports(tmp_path: Path) -> None:
+    repo = _make_repo({"standalone.py": "x = 1\n"}, tmp_path)
     builder = CallGraphBuilder(repo)
     graph = builder.build_import_graph(["standalone.py"])
     assert graph["standalone.py"] == []
 
 
-def test_build_import_graph_circular_does_not_hang():
+def test_build_import_graph_circular_does_not_hang(tmp_path: Path) -> None:
     repo = _make_repo(
         {
             "a.py": "from b import foo\n",
             "b.py": "from a import bar\n",
-        }
+        },
+        tmp_path,
     )
     builder = CallGraphBuilder(repo)
     # Should complete without infinite loop
@@ -48,7 +48,7 @@ def test_build_import_graph_circular_does_not_hang():
     assert "a.py" in graph
 
 
-def test_trace_to_sinks_finds_cross_file_sink():
+def test_trace_to_sinks_finds_cross_file_sink(tmp_path: Path) -> None:
     repo = _make_repo(
         {
             "views.py": textwrap.dedent("""\
@@ -60,7 +60,8 @@ def test_trace_to_sinks_finds_cross_file_sink():
             def run_query(q):
                 cursor.execute(q)
         """),
-        }
+        },
+        tmp_path,
     )
     builder = CallGraphBuilder(repo)
     chains = builder.trace_to_sinks("views.py", "user_input", ["cursor.execute"])
@@ -69,11 +70,12 @@ def test_trace_to_sinks_finds_cross_file_sink():
     assert chains[0].terminal_sink == "cursor.execute"
 
 
-def test_trace_to_sinks_no_cross_file_match():
+def test_trace_to_sinks_no_cross_file_match(tmp_path: Path) -> None:
     repo = _make_repo(
         {
             "views.py": "user_input = request.GET.get('q')\n",
-        }
+        },
+        tmp_path,
     )
     builder = CallGraphBuilder(repo)
     chains = builder.trace_to_sinks("views.py", "user_input", ["eval"])
