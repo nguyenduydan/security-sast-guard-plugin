@@ -73,14 +73,46 @@ class SymbolIndexer:
         return result
 
     def extract_symbol_name(self, line: str, source: str) -> str | None:
-        """Return the LHS variable name if line is a simple assignment from source."""
+        """Return the LHS variable name if line is an assignment from source."""
         escaped = re.escape(source)
-        pattern = re.compile(
-            r"^[ \t]*([a-zA-Z_]\w*)(?:\s*:\s*\S+)?\s*=\s*.*?" + escaped
-        )
-        m = pattern.match(line)
-        if m:
-            return m.group(1)
+        patterns = [
+            # Pattern 1: Go walrus operator (query := ...source)
+            re.compile(r"^[ \t]*([a-zA-Z_]\w*)\s*:=\s*.*?" + escaped),
+            # Pattern 2: JS/TS/Rust/Kotlin (const/let/var/val/final varName = source)
+            re.compile(
+                r"^[ \t]*(?:(?:const|let|var|val|final)\s+(?:mut\s+)?)"
+                r"([a-zA-Z_]\w*)(?:\s*:\s*\S+)?\s*=\s*.*?" + escaped
+            ),
+            # Pattern 3: Java/C#/C++ typed declarations (Type varName = source)
+            re.compile(
+                r"^[ \t]*(?:(?:public|private|protected|static|readonly"
+                r"|final|volatile)\s+)*"
+                r"(?:[a-zA-Z_]\w*(?:<[^>]+>)?(?:\[\])?)\s+"
+                r"([a-zA-Z_]\w*)\s*=\s*.*?" + escaped
+            ),
+            # Pattern 4: Standard / Python typed & untyped
+            re.compile(r"^[ \t]*([a-zA-Z_]\w*)(?:\s*:\s*\S+)?\s*=\s*.*?" + escaped),
+        ]
+        keyword_exclusions = {
+            "const",
+            "let",
+            "var",
+            "val",
+            "final",
+            "public",
+            "private",
+            "protected",
+            "static",
+            "return",
+            "import",
+            "export",
+        }
+        for pat in patterns:
+            m = pat.match(line)
+            if m:
+                sym = m.group(1)
+                if sym not in keyword_exclusions:
+                    return sym
         return None
 
     def _iter_code_files(self) -> Iterator[Path]:
