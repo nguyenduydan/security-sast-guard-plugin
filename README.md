@@ -7,13 +7,18 @@
 *Engineered for Google Antigravity 2.0 & Gemini CLI Ecosystems*
 
 [![CI Quality Gate](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/ci.yml)
+[![CodeQL Security](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/codeql.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/codeql.yml)
 [![Release Status](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/nguyenduydan/security-sast-guard-plugin/actions/workflows/release.yml)
 [![Latest Release](https://img.shields.io/github/v/release/nguyenduydan/security-sast-guard-plugin?color=10b981)](https://github.com/nguyenduydan/security-sast-guard-plugin/releases)
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
+[![Code Style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Type Checked: MyPy](https://img.shields.io/badge/type%20checked-mypy%20strict-blue.svg)](https://mypy-lang.org/)
 [![MCP Server](https://img.shields.io/badge/MCP-Stdio%20Server%20(12%20Tools)-violet.svg)](#-stdio-mcp-server-integration)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[⚡ Quick Start](#-quick-start) • [🧠 Architecture & 13 Modules](#-architecture--13-modular-subsystems) • [🔌 MCP Server](#-stdio-mcp-server-integration) • [🎮 Slash Commands & CLI](#-slash-commands--cli-reference) • [🛡️ Security Vectors](#-security-vectors--rule-coverage) • [🔄 CI/CD & Release](#-cicd-workflow--quality-gates)
+[⚡ Quick Start](#-quick-start) • [🧠 Architecture](docs/ARCHITECTURE.md) • [🛡️ Security Model](docs/SECURITY_MODEL.md) • [🔌 MCP Server](#-stdio-mcp-server-integration) • [🎮 Slash Commands & CLI](#-slash-commands--cli-reference) • [🛡️ Security Vectors](#-security-vectors--rule-coverage) • [🔄 CI/CD & Release](#-cicd-workflow--quality-gates)
 
 </div>
 

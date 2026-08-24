@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Ask Questions & Discussions
+    url: https://github.com/nguyenduydan/security-sast-guard-plugin/discussions
+    about: Ask questions, share ideas, and discuss integrations with the community.
+  - name: 🛡️ Report a Security Vulnerability
+    url: https://github.com/nguyenduydan/security-sast-guard-plugin/security/advisories/new
+    about: Privately report a security vulnerability or firewall bypass to the maintainers.
+  - name: 📖 Documentation & Architecture
+    url: https://github.com/nguyenduydan/security-sast-guard-plugin/blob/main/docs/ARCHITECTURE.md
+    about: Read deep architectural details and subsystem specifications.

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "security-sast-guard": {
+      "command": "python",
+      "args": ["-m", "src.mcp.server"],
+      "cwd": "${workspaceFolder}"
+    }
+  }
+}

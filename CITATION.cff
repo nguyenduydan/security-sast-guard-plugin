@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software in your research or AI security tooling, please cite it as below."
+authors:
+  - family-names: "Nguyen"
+    given-names: "Duy Dan"
+    orcid: "https://orcid.org/0009-0000-0000-0000"
+title: "Security SAST Guard: Zero-Trust Enterprise SAST & Real-time Command Firewall Engine for AI Agents"
+version: 2.4.2
+date-released: 2026-08-24
+url: "https://github.com/nguyenduydan/security-sast-guard-plugin"
+license: "MIT"
+keywords:
+  - "sast"
+  - "ai-security"
+  - "command-firewall"
+  - "antigravity"
+  - "model-context-protocol"
+  - "taint-analysis"
+  - "static-analysis"

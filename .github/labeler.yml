@@ -1,0 +1,27 @@
+"area:firewall":
+  - "src/domain/firewall*/**/*"
+  - "src/domain/firewall*"
+  - "hooks/**/*"
+
+"area:sast":
+  - "src/domain/sast*"
+  - "src/domain/ast*"
+  - "src/domain/taint*"
+  - "src/domain/symbol*"
+  - "rules/**/*"
+
+"area:mcp":
+  - "src/mcp/**/*"
+  - "mcp_config.json"
+
+"area:cli":
+  - "src/cli/**/*"
+  - "control_plane.py"
+
+"area:ci":
+  - ".github/**/*"
+  - "pyproject.toml"
+
+"area:docs":
+  - "docs/**/*"
+  - "*.md"
