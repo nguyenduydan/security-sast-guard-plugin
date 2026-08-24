@@ -15,12 +15,22 @@ def test_ignore_filter_default_dirs(tmp_path: Path) -> None:
 
     gemini_path = tmp_path / ".gemini" / "rules.json"
     agent_path = tmp_path / ".agents" / "task.py"
+    antigravity_path = tmp_path / ".antigravity" / "context.json"
+    cursor_path = tmp_path / ".cursor" / "rules.md"
+    claude_path = tmp_path / ".claude" / "config.json"
+    cline_path = tmp_path / ".cline" / "state.json"
+    brain_path = tmp_path / ".brain" / "memory.json"
 
     assert filter_inst.should_ignore(node_path) is True
     assert filter_inst.should_ignore(venv_path) is True
     assert filter_inst.should_ignore(git_path) is True
     assert filter_inst.should_ignore(gemini_path) is True
     assert filter_inst.should_ignore(agent_path) is True
+    assert filter_inst.should_ignore(antigravity_path) is True
+    assert filter_inst.should_ignore(cursor_path) is True
+    assert filter_inst.should_ignore(claude_path) is True
+    assert filter_inst.should_ignore(cline_path) is True
+    assert filter_inst.should_ignore(brain_path) is True
     assert filter_inst.should_ignore(src_path) is False
 
 
