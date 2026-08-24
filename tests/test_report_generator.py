@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from src.infrastructure.report_generator import (
+    generate_json_report,
     generate_markdown_report,
     generate_sarif_report,
 )
@@ -228,3 +229,40 @@ def test_generate_markdown_report_with_remediation(tmp_path: Path) -> None:
     assert "safeHandler" in content
     assert 'os.system("ping " + user_input)' in content
     assert "subprocess.run" in content
+
+
+def test_generate_json_report(tmp_path: Path) -> None:
+    findings = [
+        {
+            "rule_id": "CRITICAL_SQLI",
+            "rule_name": "SQL Injection",
+            "path": "db/query.py",
+            "line": 42,
+            "line_content": "cursor.execute(query)",
+            "severity": "Critical",
+            "scope": "global",
+        },
+    ]
+
+    report_file, summary = generate_json_report(findings, output_dir=str(tmp_path))
+
+    assert Path(report_file).exists()
+    assert report_file.endswith(".json")
+    assert "SAST Audit completed. Total: 1 findings." in summary
+    assert "JSON report saved to:" in summary
+
+    data = json.loads(Path(report_file).read_text(encoding="utf-8"))
+    assert data["findings_count"] == 1
+    assert data["summary"]["critical"] == 1
+    assert data["findings"][0]["rule_id"] == "CRITICAL_SQLI"
+
+
+def test_generate_json_report_empty(tmp_path: Path) -> None:
+    report_file, summary = generate_json_report([], output_dir=str(tmp_path))
+
+    assert Path(report_file).exists()
+    assert "Total: 0 findings." in summary
+
+    data = json.loads(Path(report_file).read_text(encoding="utf-8"))
+    assert data["findings_count"] == 0
+    assert data["findings"] == []

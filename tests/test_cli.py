@@ -179,3 +179,25 @@ def test_dispatcher_scan_verbose_flag(capsys: CaptureFixture[str], tmp_path) -> 
     assert code_verbose == 0
     captured_verbose = capsys.readouterr()
     assert "Scanning" in captured_verbose.out
+
+
+def test_dispatcher_scan_json_flag(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_file = tmp_path / "test.html"
+    test_file.write_text('<input onfocus="alert(1)">', encoding="utf-8")
+    json_file = tmp_path / "out.json"
+    code = main(["scan", str(test_file), "--json", str(json_file)])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "JSON report saved to:" in captured.out
+    assert json_file.exists()
+    json_content = json_file.read_text(encoding="utf-8")
+    assert '"findings_count": 1' in json_content
+
+
+def test_dispatcher_scan_format_json(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_file = tmp_path / "clean.py"
+    test_file.write_text("x = 1\n", encoding="utf-8")
+    code = main(["scan", str(test_file), "--format", "json"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "JSON report saved to:" in captured.out

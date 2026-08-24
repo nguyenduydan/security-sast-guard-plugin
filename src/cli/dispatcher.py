@@ -117,6 +117,7 @@ def _handle_scan(args: list[str]) -> int:
 
     sarif_output_path: str | None = None
     html_output_path: str | None = None
+    json_output_path: str | None = None
     output_format = "markdown"
     target_level: str | None = None
     threads: int | None = None
@@ -143,6 +144,13 @@ def _handle_scan(args: list[str]) -> int:
             output_format = "html"
             if idx + 1 < len(args) and not args[idx + 1].startswith("-"):
                 html_output_path = args[idx + 1]
+                idx += 2
+            else:
+                idx += 1
+        elif arg == "--json":
+            output_format = "json"
+            if idx + 1 < len(args) and not args[idx + 1].startswith("-"):
+                json_output_path = args[idx + 1]
                 idx += 2
             else:
                 idx += 1
@@ -188,6 +196,7 @@ def _handle_scan(args: list[str]) -> int:
         output_format=output_format,
         sarif_output_path=sarif_output_path,
         html_output_path=html_output_path,
+        json_output_path=json_output_path,
         threads=threads,
         incremental=incremental,
     )
