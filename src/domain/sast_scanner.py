@@ -13,6 +13,7 @@ from .ai_verifier import AIVerifier
 from .ast_analyzer import ASTPrecisionAnalyzer
 from .ast_context_engine import ASTContextEngine
 from .context_extractor import ContextExtractor
+from .entropy_detector import ShannonEntropyDetector
 from .git_helper import GitHelper
 from .ignore_filter import IgnoreFilter
 from .models import Finding
@@ -36,6 +37,7 @@ class SASTScanner:
         self.ast_analyzer = ASTPrecisionAnalyzer()
         self.ast_engine = ASTContextEngine()
         self.context_extractor = ContextExtractor()
+        self.entropy_detector = ShannonEntropyDetector()
         self._load_profile()
 
     def _load_profile(self) -> None:
@@ -273,6 +275,36 @@ class SASTScanner:
                                 "action": rule.get("action", "Block"),
                                 "remediation": rule.get("remediation"),
                                 "context_window": ctx.get("context_window", []),
+                            }
+                        )
+
+                # High-Entropy Secrets & Provider Token Signatures
+                entropy_findings = self.entropy_detector.scan_line(
+                    line_content, line_idx, str_path
+                )
+                for ef in entropy_findings:
+                    ef_rule_id = ef["rule_id"]
+                    if not self._is_suppressed(line_content, prev_line, ef_rule_id):
+                        findings.append(
+                            {
+                                "rule_id": ef_rule_id,
+                                "rule_name": ef["rule_name"],
+                                "path": str_path,
+                                "line": line_idx,
+                                "line_content": line_content,
+                                "severity": ef["severity"],
+                                "scope": scope,
+                                "action": ef.get("action", "Block"),
+                                "remediation": {
+                                    "fix_before": line_content,
+                                    "fix_after": (
+                                        "# Store secret in environment variable\n"
+                                        "import os\n"
+                                        "secret = os.environ.get('SECRET_KEY')"
+                                    ),
+                                },
+                                "entropy": ef.get("entropy"),
+                                "context_window": [],
                             }
                         )
 
