@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.6.0...v2.7.0) (2026-08-24)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **scanner:** integrate Shannon entropy and token signature secret detector into SAST audit ([42c5adf](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/42c5adf7b9faadc7871cab99ca6a1060640a6100))
+
+
+### 🐛 Bug Fixes
+
+* **tests:** add detect-secrets allowlist pragma and resolve line length in entropy tests ([adce59c](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/adce59cdadd7279c2a74c9924f35f2dc1578ac98))
+* **tests:** chunk mock token fixtures to resolve detect-secrets false alarms ([e74be76](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e74be76e931fef8bea3ac706ab9ea33f31938c8b))
+
 ## [2.6.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.5.0...v2.6.0) (2026-08-24)
 
 
