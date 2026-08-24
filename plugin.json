@@ -6,10 +6,13 @@
   "main": "control_plane.py",
   "skills": [
     "sast-audit",
-    "sast-status",
+    "sast-audit-level",
+    "sast-firewall",
+    "sast-help",
     "sast-init",
     "sast-mode",
-    "sast-audit-level"
+    "sast-rules",
+    "sast-status"
   ]
 }
 
