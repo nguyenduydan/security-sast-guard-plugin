@@ -208,7 +208,9 @@ class MCPToolHandlers:
             "profile_path": str(profile_file),
         }
 
-    def handle_sast_sync_rules(self, rules_dir: str = "") -> dict[str, Any]:
+    def handle_sast_sync_rules(
+        self, rules_dir: str = "", output_file: str = ""
+    ) -> dict[str, Any]:
         """Sync custom rules from rules_dir or default directory."""
         from scripts.md_to_json import (  # pylint: disable=import-outside-toplevel
             sync_rules,
@@ -216,7 +218,11 @@ class MCPToolHandlers:
 
         repo_root = Path(__file__).resolve().parents[2]
         source = Path(rules_dir).resolve() if rules_dir else repo_root / "rules"
-        target = repo_root / "rules" / "sast_rules.json"
+        target = (
+            Path(output_file).resolve()
+            if output_file
+            else repo_root / "rules" / "sast_rules.json"
+        )
 
         if not source.exists():
             return {
