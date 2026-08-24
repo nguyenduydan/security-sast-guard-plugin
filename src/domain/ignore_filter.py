@@ -1,6 +1,7 @@
 """SAST ignore filter with zero-config defaults and custom .sastignore support."""
 
 import fnmatch
+import json
 from pathlib import Path
 
 DEFAULT_IGNORE_DIRS: set[str] = {
@@ -170,17 +171,19 @@ DEFAULT_IGNORE_FILES: set[str] = {
     "sast_rules.json",
     "profiles.json",
     "profile.json",
+    "blacklist.json",
 }
 
 
 class IgnoreFilter:
-    """Filters paths based on built-in defaults and custom .sastignore file."""
+    """Filters paths based on built-in defaults, .sastignore, and blacklist.json."""
 
     def __init__(self, root_dir: str | Path | None = None) -> None:
         self.custom_patterns: list[str] = []
         self.root_dir: Path | None = Path(root_dir).resolve() if root_dir else None
         if self.root_dir:
             self._load_custom_sastignore(self.root_dir)
+            self._load_custom_blacklist_json(self.root_dir)
 
     def _load_custom_sastignore(self, root_dir: Path) -> None:
         self.root_dir = root_dir.resolve()
@@ -197,14 +200,87 @@ class IgnoreFilter:
         except OSError:
             pass  # Custom ignore file absent or unreadable: use defaults only
 
+    @staticmethod
+    def _parse_json_patterns(content: object) -> list[str]:
+        """Extract string pattern list from parsed JSON array or object."""
+        patterns: list[str] = []
+        if isinstance(content, list):
+            for item in content:
+                if isinstance(item, str) and item.strip():
+                    patterns.append(item.strip().rstrip("/"))
+            return patterns
+
+        if isinstance(content, dict):
+            keys = ("blacklist", "ignore", "patterns", "dirs", "files", "paths")
+            for key in keys:
+                val = content.get(key)
+                if isinstance(val, list):
+                    for item in val:
+                        if isinstance(item, str) and item.strip():
+                            patterns.append(item.strip().rstrip("/"))
+        return patterns
+
+    def _load_custom_blacklist_json(self, root_dir: Path) -> None:
+        """Load exclusion patterns from .sast/blacklist.json or blacklist.json."""
+        target_files = [
+            root_dir / ".sast" / "blacklist.json",
+            root_dir / "blacklist.json",
+        ]
+        for b_file in target_files:
+            if not b_file.is_file():
+                continue
+            try:
+                content = json.loads(b_file.read_text(encoding="utf-8"))
+                for pat in self._parse_json_patterns(content):
+                    if pat not in self.custom_patterns:
+                        self.custom_patterns.append(pat)
+            except (json.JSONDecodeError, OSError):
+                pass
+
+    @staticmethod
+    def _matches_default_rules(p: Path) -> bool:
+        """Check if file matches default ignored extensions or filenames."""
+        name_lower = p.name.lower()
+        if p.suffix.lower() in DEFAULT_IGNORE_EXTS:
+            return True
+        if name_lower in DEFAULT_IGNORE_FILES:
+            return True
+        return (
+            name_lower.endswith(".designer.cs")
+            or name_lower.endswith(".min.js")
+            or name_lower.endswith(".bundle.js")
+        )
+
+    def _matches_custom_pattern(
+        self,
+        clean_pat: str,
+        str_path: str,
+        file_name: str,
+        rel_str: str | None,
+        parts: tuple[str, ...],
+    ) -> bool:
+        """Check if path matches a specific custom ignore pattern."""
+        if fnmatch.fnmatch(str_path, clean_pat) or fnmatch.fnmatch(
+            file_name, clean_pat
+        ):
+            return True
+        if rel_str is not None and (
+            fnmatch.fnmatch(rel_str, clean_pat)
+            or fnmatch.fnmatch(rel_str, f"{clean_pat}/*")
+        ):
+            return True
+        return any(fnmatch.fnmatch(part, clean_pat) for part in parts)
+
     def should_ignore(self, path: Path | str) -> bool:
         """Check if path should be ignored by built-in defaults or custom patterns."""
         p = Path(path)
         parts = p.parts
+        rel_str: str | None = None
         if self.root_dir:
             try:
                 rel_p = p.resolve().relative_to(self.root_dir)
                 dir_parts = rel_p.parts[:-1]
+                rel_str = str(rel_p).replace("\\", "/")
             except ValueError:
                 dir_parts = p.parts[:-1]
         else:
@@ -215,30 +291,18 @@ class IgnoreFilter:
             if part in DEFAULT_IGNORE_DIRS:
                 return True
 
-        # Check extension, exact filename, minified JS,
-        # or .designer.cs auto-generated files
-        name_lower = p.name.lower()
-        if (
-            p.suffix.lower() in DEFAULT_IGNORE_EXTS
-            or name_lower in DEFAULT_IGNORE_FILES
-            or name_lower.endswith(".designer.cs")
-            or name_lower.endswith(".min.js")
-            or name_lower.endswith(".bundle.js")
-        ):
+        if self._matches_default_rules(p):
             return True
 
-        # Check custom fnmatch patterns from .sastignore
+        # Check custom fnmatch patterns from .sastignore and blacklist.json
         str_path = str(p).replace("\\", "/")
         file_name = p.name
         for pattern in self.custom_patterns:
             clean_pattern = pattern.replace("\\", "/")
-            if fnmatch.fnmatch(str_path, clean_pattern) or fnmatch.fnmatch(
-                file_name, clean_pattern
+            if self._matches_custom_pattern(
+                clean_pattern, str_path, file_name, rel_str, parts
             ):
                 return True
-            for part in parts:
-                if fnmatch.fnmatch(part, clean_pattern):
-                    return True
 
         return False
 
@@ -248,6 +312,8 @@ class IgnoreFilter:
             return True
         for pattern in self.custom_patterns:
             clean_pattern = pattern.replace("\\", "/")
-            if fnmatch.fnmatch(dir_name, clean_pattern):
+            if fnmatch.fnmatch(dir_name, clean_pattern) or fnmatch.fnmatch(
+                f"{dir_name}/*", clean_pattern
+            ):
                 return True
         return False

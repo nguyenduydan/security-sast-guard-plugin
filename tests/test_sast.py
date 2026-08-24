@@ -164,4 +164,3 @@ def test_scan_code_ai_verifier_and_context_parity(tmp_path: Path) -> None:
     # Both file scan and in-memory scan_code filter the sanitized innerHTML finding
     assert len(file_findings) == 0
     assert len(code_findings) == 0
-

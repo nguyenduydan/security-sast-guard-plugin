@@ -259,3 +259,62 @@ def test_ignore_filter_rules_and_meta_files(tmp_path: Path) -> None:
     assert filter_inst.should_ignore(tmp_path / "sast_rules.json") is True
     assert filter_inst.should_ignore(tmp_path / "profiles.json") is True
     assert filter_inst.should_ignore(tmp_path / "profile.json") is True
+    assert filter_inst.should_ignore(tmp_path / "blacklist.json") is True
+
+
+def test_ignore_filter_blacklist_json_array(tmp_path: Path) -> None:
+    """blacklist.json as an array of patterns should exclude matching paths."""
+    bl_file = tmp_path / "blacklist.json"
+    bl_file.write_text(
+        '["tests/fixtures/*", "legacy_dir/", "mock_data.py", "*.bak"]\n',
+        encoding="utf-8",
+    )
+
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+    assert (
+        filter_inst.should_ignore(tmp_path / "tests" / "fixtures" / "sample.py") is True
+    )
+    assert filter_inst.should_ignore(tmp_path / "legacy_dir" / "old_engine.py") is True
+    assert filter_inst.should_ignore(tmp_path / "mock_data.py") is True
+    assert filter_inst.should_ignore(tmp_path / "app.py.bak") is True
+    assert filter_inst.should_ignore(tmp_path / "src" / "valid.py") is False
+
+
+def test_ignore_filter_blacklist_json_in_dot_sast(tmp_path: Path) -> None:
+    """.sast/blacklist.json should be loaded automatically."""
+    sast_dir = tmp_path / ".sast"
+    sast_dir.mkdir(parents=True, exist_ok=True)
+    bl_file = sast_dir / "blacklist.json"
+    bl_file.write_text('["custom_skip/*", "temp_*.py"]\n', encoding="utf-8")
+
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+    assert filter_inst.should_ignore(tmp_path / "custom_skip" / "module.py") is True
+    assert filter_inst.should_ignore(tmp_path / "temp_calc.py") is True
+    assert filter_inst.should_ignore(tmp_path / "normal_calc.py") is False
+
+
+def test_ignore_filter_blacklist_json_object_structure(
+    tmp_path: Path,
+) -> None:
+    """Object structure with blacklist / ignore keys should be parsed."""
+    bl_file = tmp_path / "blacklist.json"
+    bl_file.write_text(
+        '{"blacklist": ["archived/*"], "ignore": ["ignored_file.py"]}\n',
+        encoding="utf-8",
+    )
+
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+    assert filter_inst.should_ignore(tmp_path / "archived" / "old.py") is True
+    assert filter_inst.should_ignore(tmp_path / "ignored_file.py") is True
+    assert filter_inst.should_ignore(tmp_path / "active.py") is False
+
+
+def test_ignore_filter_blacklist_json_malformed(tmp_path: Path) -> None:
+    """Corrupted/malformed blacklist.json should fallback gracefully."""
+    bl_file = tmp_path / "blacklist.json"
+    bl_file.write_text("INVALID JSON CONTENT {{{", encoding="utf-8")
+
+    filter_inst = IgnoreFilter(root_dir=tmp_path)
+    # Default rules still work properly without crash
+    assert filter_inst.should_ignore(tmp_path / "node_modules" / "a.js") is True
+    assert filter_inst.should_ignore(tmp_path / "src" / "valid.py") is False
