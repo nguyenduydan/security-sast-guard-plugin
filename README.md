@@ -18,7 +18,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[⚡ Quick Start](#-quick-start) • [🧠 Architecture](docs/ARCHITECTURE.md) • [🛡️ Security Model](docs/SECURITY_MODEL.md) • [🔌 MCP Server](#-stdio-mcp-server-integration) • [🎮 Slash Commands & CLI](#-slash-commands--cli-reference) • [🛡️ Security Vectors](#-security-vectors--rule-coverage) • [🔄 CI/CD & Release](#-cicd-workflow--quality-gates)
+[⚡ Quick Start](#-quick-start) • [📚 Project Wiki](docs/wiki/Home.md) • [🧠 Architecture](docs/ARCHITECTURE.md) • [🛡️ Security Model](docs/SECURITY_MODEL.md) • [🔌 MCP Server](#-stdio-mcp-server-integration) • [🎮 Slash Commands & CLI](#-slash-commands--cli-reference) • [🛡️ Security Vectors](#-security-vectors--rule-coverage) • [🔄 CI/CD & Release](#-cicd-workflow--quality-gates)
 
 </div>
 
@@ -254,6 +254,21 @@ Security SAST Guard enforces strict pre-commit and automated release workflows v
   3. **MyPy Type Checking:** Ensures strict static typing (`mypy --config-file=pyproject.toml control_plane.py src/`).
   4. **Pytest Suite:** Runs 100% passing test coverage (`pytest`).
 - **Release Workflow (`.github/workflows/release.yml`):** Managed automatically by `release-please` v4. Automatically drafts PRs, bumps versions, updates `CHANGELOG.md`, and creates tagged GitHub Releases upon merge.
+
+---
+
+## 📚 Enterprise Project Wiki
+
+Truy cập toàn bộ tài liệu chuyên sâu chuẩn doanh nghiệp tại thư mục [`docs/wiki/`](docs/wiki/Home.md):
+
+| Chuyên Đề Wiki | Mô Tả Trọng Tâm | Đường Dẫn |
+| :--- | :--- | :---: |
+| 🏠 **Home & Quick Start** | Tổng quan hệ thống, mô hình phòng thủ 2 lớp, 1-Click Installer cho PowerShell & POSIX Bash | [`Home.md`](docs/wiki/Home.md) |
+| 🧠 **Architecture & Security Model** | 10-Stage Deobfuscation, Threat Chains, AST Engine, Taint Tracking, Shannon Entropy | [`Architecture-and-Security-Model.md`](docs/wiki/Architecture-and-Security-Model.md) |
+| 🎮 **CLI & Slash Commands** | Hướng dẫn 8 Slash Commands cho AI Agent, toàn bộ cú pháp CLI `sast`, Blacklist & Exclusions | [`CLI-and-Slash-Commands.md`](docs/wiki/CLI-and-Slash-Commands.md) |
+| 🔌 **MCP Server Integration** | Đặc tả 12 Stdio MCP Tools, hướng dẫn kết nối Antigravity 2.0, Gemini CLI, Claude, Cursor | [`MCP-Server-Integration.md`](docs/wiki/MCP-Server-Integration.md) |
+| 🛡️ **Rule Engine & Taxonomy** | 95 Security Vectors, ánh xạ OWASP/CWE/NIST, cú pháp `# sast-ignore`, quy trình Markdown sync | [`Rule-Engine-and-Taxonomy.md`](docs/wiki/Rule-Engine-and-Taxonomy.md) |
+| 🔄 **CI/CD & Quality Gates** | Tích hợp SARIF 2.1.0 cho GitHub Security, 4 CI Quality Gates, Conventional Commits, Release Please v4 | [`CI-CD-and-Quality-Gates.md`](docs/wiki/CI-CD-and-Quality-Gates.md) |
 
 ---
 
