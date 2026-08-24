@@ -1,5 +1,7 @@
 """Unit tests for CLI dispatcher and profile loader."""
 
+from pathlib import Path
+
 from pytest import CaptureFixture
 
 from src.application.audit_service import AuditService
@@ -194,10 +196,56 @@ def test_dispatcher_scan_json_flag(capsys: CaptureFixture[str], tmp_path) -> Non
     assert '"findings_count": 1' in json_content
 
 
-def test_dispatcher_scan_format_json(capsys: CaptureFixture[str], tmp_path) -> None:
+def test_dispatcher_scan_format_json(
+    capsys: CaptureFixture[str], tmp_path: Path
+) -> None:
     test_file = tmp_path / "clean.py"
     test_file.write_text("x = 1\n", encoding="utf-8")
     code = main(["scan", str(test_file), "--format", "json"])
     assert code == 0
     captured = capsys.readouterr()
     assert "JSON report saved to:" in captured.out
+
+
+def test_dispatcher_audit_folder_and_positional_prefixes(
+    capsys: CaptureFixture[str], tmp_path: Path
+) -> None:
+    target_dir = tmp_path / "my_module"
+    target_dir.mkdir()
+    target_file = target_dir / "app.py"
+    target_file.write_text("x = 1\n", encoding="utf-8")
+
+    # Test 'sast audit folder <path>'
+    code_folder = main(["audit", "folder", str(target_dir)])
+    assert code_folder == 0
+    captured_folder = capsys.readouterr()
+    assert (
+        "SAST Audit completed" in captured_folder.out
+        or "Scan complete" in captured_folder.out
+    )
+
+    # Test 'sast audit dir <path>'
+    code_dir = main(["audit", "dir", str(target_dir)])
+    assert code_dir == 0
+    captured_dir = capsys.readouterr()
+    assert (
+        "SAST Audit completed" in captured_dir.out
+        or "Scan complete" in captured_dir.out
+    )
+
+    # Test 'sast audit file <path>'
+    code_file = main(["audit", "file", str(target_file)])
+    assert code_file == 0
+    captured_file = capsys.readouterr()
+    assert (
+        "SAST Audit completed" in captured_file.out
+        or "Scan complete" in captured_file.out
+    )
+
+    # Test 'sast audit codebase'
+    code_cb = main(["audit", "codebase"])
+    assert code_cb == 0
+    captured_cb = capsys.readouterr()
+    assert (
+        "SAST Audit completed" in captured_cb.out or "Scan complete" in captured_cb.out
+    )
