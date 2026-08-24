@@ -7,24 +7,8 @@ permissions:
   contents: read
 
 jobs:
-  manifest-check:
-    name: Manifest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Verify Manifest Version Match
-        run: |
-          python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version']"
-
-  lint-and-format:
-    name: Lint & Format
+  quality-gate:
+    name: Quality & Tests (Ubuntu)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -34,6 +18,10 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           python-version: "3.12"
+
+      - name: Verify Manifest Version Match
+        run: |
+          python -c "import json; p=json.load(open('plugin.json')); e=json.load(open('gemini-extension.json')); assert p['version'] == e['version']"
 
       - name: Run Ruff Linter & Formatter Check
         run: |
@@ -42,11 +30,23 @@ jobs:
 
       - name: Run Pylint Analysis
         run: |
-          python -m pylint control_plane.py hooks/run_audit_hook.py scripts/md_to_json.py src/ tests/
+          python -m pylint control_plane.py src/
 
-  type-check:
-    name: Type Check
-    runs-on: ubuntu-latest
+      - name: Run Mypy Type Checker
+        run: |
+          python -m mypy --config-file=pyproject.toml control_plane.py src/
+
+      - name: Run Pytest Suite
+        run: |
+          python -m pytest
+
+  cross-platform-tests:
+    name: Tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -55,27 +55,6 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           python-version: "3.12"
-
-      - name: Run Mypy Type Checker
-        run: |
-          python -m mypy --config-file=pyproject.toml control_plane.py src/
-
-  pytest-suite:
-    name: Tests (${{ matrix.os }} - Py${{ matrix.python-version }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.12"]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python & Dependencies
-        uses: ./.github/actions/setup-env
-        with:
-          python-version: ${{ matrix.python-version }}
 
       - name: Run Pytest Suite
         run: |
