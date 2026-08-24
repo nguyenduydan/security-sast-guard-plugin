@@ -124,12 +124,14 @@ class SecurityMetricsEngine:
     @staticmethod
     def _extract_key(finding: Finding | dict[str, Any]) -> tuple[str, int, str]:
         if isinstance(finding, Finding):
-            return (finding.path, finding.line, finding.rule_id)
+            norm_path = str(finding.path).replace("\\", "/")
+            return (norm_path, finding.line, finding.rule_id)
         if isinstance(finding, dict):
-            path = str(finding.get("path") or finding.get("file") or "")
+            raw_path = str(finding.get("path") or finding.get("file") or "")
+            norm_path = raw_path.replace("\\", "/")
             line = int(finding.get("line") or 0)
             rule_id = str(finding.get("rule_id") or "")
-            return (path, line, rule_id)
+            return (norm_path, line, rule_id)
         raise TypeError(f"Unsupported finding type: {type(finding)}")
 
     @staticmethod

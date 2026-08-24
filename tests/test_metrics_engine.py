@@ -140,3 +140,35 @@ def test_evaluate_dicts() -> None:
     assert result.recall == 1.0
     assert result.f1_score == 1.0
     assert result.critical_recall == 1.0
+
+
+def test_evaluate_windows_and_posix_path_normalization() -> None:
+    """Test path normalization matches Windows backslashes with POSIX slashes."""
+    expected = [
+        Finding(
+            rule_id="SQL_INJECTION",
+            rule_name="SQL Injection",
+            path="src/app/views.py",
+            line=10,
+            line_content="cursor.execute(query)",
+            severity="CRITICAL",
+        ),
+    ]
+    actual_windows = [
+        Finding(
+            rule_id="SQL_INJECTION",
+            rule_name="SQL Injection",
+            path="src\\app\\views.py",
+            line=10,
+            line_content="cursor.execute(query)",
+            severity="CRITICAL",
+        ),
+    ]
+
+    engine = SecurityMetricsEngine()
+    result = engine.evaluate(expected=expected, actual=actual_windows)
+    assert result.tp == 1
+    assert result.fp == 0
+    assert result.fn == 0
+    assert result.precision == 1.0
+    assert result.recall == 1.0
