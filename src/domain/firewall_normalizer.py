@@ -231,9 +231,13 @@ class FirewallNormalizer:
         return new_candidates
 
     def _stage3_decode_hex(self, candidates: list[str]) -> list[str]:
-        """Stage 3: Hex Escape decoding (\\x52\\x65\\x6d → Rem)."""
+        """Stage 3: Hex & Octal Escape decoding.
+
+        Examples: \\x52\\x65\\x6d → Rem, \\162\\155 → rm
+        """
         new_candidates = list(candidates)
         hex_seq_re = re.compile(r"(?:\\x[0-9a-fA-F]{2})+")
+        octal_seq_re = re.compile(r"(?:\\[0-7]{1,3})+")
 
         for cand in candidates:
 
@@ -242,10 +246,31 @@ class FirewallNormalizer:
                 hex_bytes = bytes.fromhex(hex_str.replace("\\x", ""))
                 return hex_bytes.decode("utf-8", errors="ignore")
 
+            def _replace_octal(match: re.Match[str]) -> str:
+                full_str = match.group(0)
+                octal_tokens = re.findall(r"\\([0-7]{1,3})", full_str)
+                chars: list[str] = []
+                for oct_val in octal_tokens:
+                    try:
+                        chars.append(chr(int(oct_val, 8)))
+                    except Exception:  # pylint: disable=broad-exception-caught
+                        return full_str
+                return "".join(chars)
+
             if "\\x" in cand:
                 decoded = hex_seq_re.sub(_replace_hex, cand)
                 if decoded != cand and decoded not in new_candidates:
                     new_candidates.append(decoded)
+
+            if "\\" in cand:
+                decoded_oct = octal_seq_re.sub(_replace_octal, cand)
+                if "$'" in decoded_oct:
+                    cleaned_ansi_c = decoded_oct.replace("$'", "").replace("'", "")
+                    if cleaned_ansi_c != cand and cleaned_ansi_c not in new_candidates:
+                        new_candidates.append(cleaned_ansi_c)
+                if decoded_oct != cand and decoded_oct not in new_candidates:
+                    new_candidates.append(decoded_oct)
+
         return new_candidates
 
     def _stage4_decode_unicode(self, candidates: list[str]) -> list[str]:
