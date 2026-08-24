@@ -208,12 +208,15 @@ def main() -> None:
 
     source_dir = args.dir
     if not source_dir:
-        # Fallback to internal rules/ directory if it exists, or external repo
-        local_rules_dir = Path(__file__).parents[1] / "rules"
+        # Fallback to internal rules/ directory if it exists
+        local_rules_dir = Path(__file__).resolve().parents[1] / "rules"
         if local_rules_dir.exists():
             source_dir = str(local_rules_dir)
         else:
-            source_dir = r"D:\AI\tools\mcp-agent-audit\api-security-audit\rules"
+            raise FileNotFoundError(
+                f"Default rules directory not found at {local_rules_dir}. "
+                "Please specify path via --dir."
+            )
 
     count = sync_rules(source_dir, target_json=str(target_path))
     print(f"Successfully synced {count} SAST rules into '{target_path.name}'.")
