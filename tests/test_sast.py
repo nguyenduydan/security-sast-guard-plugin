@@ -145,3 +145,23 @@ def test_ast_precision_real_vulnerability_detected(tmp_path: Path) -> None:
     findings = scanner.scan_code(code, filename="vuln_task.py")
     assert len(findings) == 1
     assert findings[0].rule_id == "RCE_RISK"
+
+
+def test_scan_code_ai_verifier_and_context_parity(tmp_path: Path) -> None:
+    """Ensure scan_code applies ContextExtractor and AIVerifier like scan()."""
+    # Safe code with DOMPurify sanitizer preceding line
+    safe_code = (
+        "const clean = DOMPurify.sanitize(user_input);\n"
+        'document.getElementById("out").innerHTML = clean;\n'
+    )
+    safe_file = tmp_path / "safe_dom.js"
+    safe_file.write_text(safe_code, encoding="utf-8")
+
+    scanner = SASTScanner()
+    file_findings = scanner.scan(str(safe_file))
+    code_findings = scanner.scan_code(safe_code, filename="safe_dom.js")
+
+    # Both file scan and in-memory scan_code filter the sanitized innerHTML finding
+    assert len(file_findings) == 0
+    assert len(code_findings) == 0
+
