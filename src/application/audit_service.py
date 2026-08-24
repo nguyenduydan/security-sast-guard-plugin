@@ -162,10 +162,13 @@ class AuditService:
         registry = FrameworkRegistry()
         harness = BoundedVerificationHarness()
 
-        repo_root = Path(__file__).parents[2]
-        audit_log = AppendOnlyAuditLog(repo_root / ".sast" / "firewall_audit.jsonl")
+        target = Path(target_path).resolve()
+        workspace_root = target if target.is_dir() else target.parent
+        audit_log = AppendOnlyAuditLog(
+            workspace_root / ".sast" / "firewall_audit.jsonl"
+        )
         fingerprint_tracker = SemanticFingerprintTracker(
-            repo_root / ".sast" / "baseline.json"
+            workspace_root / ".sast" / "baseline.json"
         )
 
         v2_findings: list[dict[str, Any]] = []
@@ -232,6 +235,14 @@ class AuditService:
                 symbol=code_line.strip(),
             )
             is_new = fingerprint_tracker.is_new(fp_id)
+            if is_new:
+                fingerprint_tracker.add_fingerprint(
+                    rule_id=rule_id,
+                    normalized_sink=rule_id,
+                    normalized_source=f.get("scope", "user_input"),
+                    dataflow_signature="DATAFLOW",
+                    symbol=code_line.strip(),
+                )
 
             enriched = dict(f)
             enriched.update(
@@ -257,6 +268,9 @@ class AuditService:
                     "risk_score": decision.risk_score,
                 },
             )
+
+        if v2_findings:
+            fingerprint_tracker.save_baseline()
 
         return {
             "v2_findings": v2_findings,
