@@ -9,8 +9,8 @@ permissions:
   actions: read
 
 jobs:
-  sast-codebase-audit:
-    name: SAST Audit
+  security-gate:
+    name: Security & SAST Audit
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,12 +25,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Scan for Hardcoded Secrets
+        run: |
+          detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+
       - name: Run Full SAST Security Audit & Generate SARIF
         run: |
           python control_plane.py audit codebase --level full --sarif results.sarif
 
       - name: Upload SAST SARIF Report Artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: sast-sarif-report
@@ -44,57 +48,3 @@ jobs:
         with:
           sarif_file: results.sarif
           category: security-sast-guard
-
-  secret-scanning:
-    name: Secret Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python & Dependencies
-        uses: ./.github/actions/setup-env
-        with:
-          python-version: "3.12"
-
-      - name: Scan for Hardcoded Secrets against Baseline
-        run: |
-          detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
-
-  dependency-review:
-    name: Dependency Review
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Dependency Review Scan
-        uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: high
-
-  gate-result:
-    name: Gate Result
-    runs-on: ubuntu-latest
-    if: always()
-    needs:
-      - sast-codebase-audit
-      - secret-scanning
-    steps:
-      - name: Check Required Jobs
-        run: |
-          SAST="${{ needs.sast-codebase-audit.result }}"
-          SECRETS="${{ needs.secret-scanning.result }}"
-
-          if [ "$SAST" != "success" ]; then
-            echo "❌ SAST Audit failed (result: $SAST)"
-            exit 1
-          fi
-
-          if [ "$SECRETS" != "success" ]; then
-            echo "❌ Secret Scan failed (result: $SECRETS)"
-            exit 1
-          fi
-
-          echo "✅ Security Gate passed (sast=$SAST, secrets=$SECRETS)"

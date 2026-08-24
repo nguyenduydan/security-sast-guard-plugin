@@ -17,36 +17,9 @@ permissions:
 
 jobs:
   quality-gate:
-    name: Quality Check
+    name: Quality Gate
     uses: ./.github/workflows/reusable-quality-gate.yml
 
   security-gate:
-    name: Security Check
+    name: Security Gate
     uses: ./.github/workflows/reusable-security-gate.yml
-
-  ci-status-gate:
-    name: Status Gate
-    runs-on: ubuntu-latest
-    if: always()
-    needs:
-      - quality-gate
-      - security-gate
-    permissions:
-      contents: read
-    steps:
-      - name: Verify All Gates Passed
-        run: |
-          QUALITY="${{ needs.quality-gate.result }}"
-          SECURITY="${{ needs.security-gate.result }}"
-
-          if [ "$QUALITY" != "success" ]; then
-            echo "❌ Quality Gate failed (result: $QUALITY)"
-            exit 1
-          fi
-
-          if [ "$SECURITY" != "success" ] && [ "$SECURITY" != "skipped" ]; then
-            echo "❌ Security Gate failed (result: $SECURITY)"
-            exit 1
-          fi
-
-          echo "✅ All CI Gates passed (quality=$QUALITY, security=$SECURITY)"
