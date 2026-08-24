@@ -7,8 +7,11 @@ from src.application.audit_service import AuditService
 
 def test_audit_service_v2_execution(tmp_path: Path) -> None:
     # Create sample file to scan
-    sample_file = tmp_path / "sample.aspx"
-    sample_file.write_text('<%: Request.QueryString["name"] %>', encoding="utf-8")
+    sample_file = tmp_path / "sample.py"
+    sample_file.write_text(
+        'cursor.execute("SELECT * FROM users WHERE id = " + user_input)\n',
+        encoding="utf-8",
+    )
 
     service = AuditService()
     res = service.run_audit_v2(str(tmp_path))
@@ -18,3 +21,9 @@ def test_audit_service_v2_execution(tmp_path: Path) -> None:
     assert "summary" in res
     assert "total_count" in res
     assert isinstance(res["v2_findings"], list)
+
+    # Verify that .sast files are written to the target workspace root
+    target_sast_dir = tmp_path / ".sast"
+    assert target_sast_dir.exists()
+    assert (target_sast_dir / "firewall_audit.jsonl").exists()
+    assert (target_sast_dir / "baseline.json").exists()
