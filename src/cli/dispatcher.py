@@ -184,7 +184,7 @@ def _handle_scan(args: list[str]) -> int:
 
     _, _, summary = service.run_audit(
         target_path,
-        verbose=verbose or True,
+        verbose=verbose,
         output_format=output_format,
         sarif_output_path=sarif_output_path,
         html_output_path=html_output_path,

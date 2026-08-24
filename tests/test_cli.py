@@ -162,3 +162,20 @@ def test_dispatcher_hook_commands(capsys: CaptureFixture[str], tmp_path) -> None
     assert code_un == 0
     captured_un = capsys.readouterr()
     assert "Successfully uninstalled" in captured_un.out
+
+
+def test_dispatcher_scan_verbose_flag(capsys: CaptureFixture[str], tmp_path) -> None:
+    test_dir = tmp_path / "src"
+    test_dir.mkdir()
+    (test_dir / "a.py").write_text("x = 1\n", encoding="utf-8")
+    (test_dir / "b.py").write_text("y = 2\n", encoding="utf-8")
+
+    code_quiet = main(["scan", str(test_dir)])
+    assert code_quiet == 0
+    captured_quiet = capsys.readouterr()
+    assert "Scanning" not in captured_quiet.out
+
+    code_verbose = main(["scan", str(test_dir), "-v"])
+    assert code_verbose == 0
+    captured_verbose = capsys.readouterr()
+    assert "Scanning" in captured_verbose.out
