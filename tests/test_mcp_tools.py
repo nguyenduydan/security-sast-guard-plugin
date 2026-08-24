@@ -43,6 +43,11 @@ def test_mcp_tool_handlers_new_tools() -> None:
 
     res_sync = handlers.handle_sast_sync_rules()
     assert res_sync["status"] == "success"
+    assert res_sync["rule_count"] >= 1
+    assert "target_file" in res_sync
+
+    res_sync_invalid = handlers.handle_sast_sync_rules("nonexistent_rules_dir_xyz")
+    assert res_sync_invalid["status"] == "error"
 
     res_help = handlers.handle_sast_get_help()
     assert res_help["status"] == "success"

@@ -209,12 +209,35 @@ class MCPToolHandlers:
         }
 
     def handle_sast_sync_rules(self, rules_dir: str = "") -> dict[str, Any]:
-        """Sync custom rules to project profile."""
-        target = rules_dir or "default"
-        return {
-            "status": "success",
-            "message": f"SAST rules synced successfully. Target dir: '{target}'",
-        }
+        """Sync custom rules from rules_dir or default directory."""
+        from scripts.md_to_json import (  # pylint: disable=import-outside-toplevel
+            sync_rules,
+        )
+
+        repo_root = Path(__file__).resolve().parents[2]
+        source = Path(rules_dir).resolve() if rules_dir else repo_root / "rules"
+        target = repo_root / "rules" / "sast_rules.json"
+
+        if not source.exists():
+            return {
+                "status": "error",
+                "message": f"Rules source directory does not exist: {source}",
+            }
+
+        try:
+            rule_count = sync_rules(str(source), str(target))
+            self.audit_service.scanner.get_rules(force_reload=True)
+            return {
+                "status": "success",
+                "message": (f"Synced {rule_count} SAST rules from '{source.name}'."),
+                "rule_count": rule_count,
+                "target_file": str(target),
+            }
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            return {
+                "status": "error",
+                "message": f"Failed to sync rules: {exc}",
+            }
 
     def handle_sast_get_help(self) -> dict[str, Any]:
         """Get SAST Guard help and usage documentation."""
