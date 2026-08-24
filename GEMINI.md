@@ -1,4 +1,4 @@
-# Security & SAST Guard — Agent Directives (v2.0.0)
+# Security & SAST Guard — Agent Directives
 
 System này tự động vận hành hai lớp phòng thủ bảo mật Zero-Trust: **Command Interception Firewall** ở background (PreCommandExecute hook) và **Stdio SAST Intelligence Server** dành cho các AI Agent (Antigravity 2.0 / Gemini CLI).
 
