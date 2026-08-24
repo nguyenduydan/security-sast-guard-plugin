@@ -17,14 +17,17 @@ def test_calculate_entropy_math() -> None:
     assert low_ent < 2.0
 
     # High entropy base64 string
-    high_ent = detector.calculate_entropy("vR8xL4nK9qP2mS7zB1wX6jD3fH5tY0aC")
+    test_str = "vR8xL4nK9qP2mS7zB1wX6jD3fH5tY0aC"  # pragma: allowlist secret
+    high_ent = detector.calculate_entropy(test_str)
     assert high_ent > 4.5
 
 
 def test_openai_token_detection() -> None:
     """Verify detection of OpenAI API secret keys."""
     detector = ShannonEntropyDetector()
-    dummy_key = "sk-" + "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4"
+    dummy_key = (
+        "sk-" + "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4"
+    )  # pragma: allowlist secret
     line = f'openai_key = "{dummy_key}"'
     findings = detector.scan_line(line, 1, "test.py")
     rule_ids = {f["rule_id"] for f in findings}
@@ -34,7 +37,9 @@ def test_openai_token_detection() -> None:
 def test_github_pat_detection() -> None:
     """Verify detection of GitHub Personal Access Tokens."""
     detector = ShannonEntropyDetector()
-    dummy_pat = "ghp_" + "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8"
+    dummy_pat = (
+        "ghp_" + "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8"
+    )  # pragma: allowlist secret
     line = f'token = "{dummy_pat}"'
     findings = detector.scan_line(line, 1, "test.py")
     rule_ids = {f["rule_id"] for f in findings}
@@ -44,7 +49,7 @@ def test_github_pat_detection() -> None:
 def test_aws_key_detection() -> None:
     """Verify detection of AWS Access Key IDs."""
     detector = ShannonEntropyDetector()
-    dummy_aws = "AKIA" + "0123456789ABCDEF"
+    dummy_aws = "AKIA" + "0123456789ABCDEF"  # pragma: allowlist secret
     line = f'AWS_ACCESS_KEY_ID = "{dummy_aws}"'
     findings = detector.scan_line(line, 1, "test.py")
     rule_ids = {f["rule_id"] for f in findings}
@@ -54,7 +59,7 @@ def test_aws_key_detection() -> None:
 def test_stripe_token_detection() -> None:
     """Verify detection of Stripe Live API secret keys."""
     detector = ShannonEntropyDetector()
-    dummy_stripe = "sk_live_" + "0123456789abcdefABCDEF01"
+    dummy_stripe = "sk_live_" + "0123456789abcdefABCDEF01"  # pragma: allowlist secret
     line = f'stripe.api_key = "{dummy_stripe}"'
     findings = detector.scan_line(line, 1, "test.py")
     rule_ids = {f["rule_id"] for f in findings}
@@ -64,7 +69,9 @@ def test_stripe_token_detection() -> None:
 def test_slack_token_detection() -> None:
     """Verify detection of Slack Bot/User tokens."""
     detector = ShannonEntropyDetector()
-    dummy_slack = "xoxb-" + "123456789012-" + "123456789012-" + "abcdefghijklmnopqrstuvwx"
+    prefix = "xoxb-123456789012-123456789012-"
+    suffix = "abcdefghijklmnopqrstuvwx"
+    dummy_slack = prefix + suffix  # pragma: allowlist secret
     line = f'SLACK_TOKEN = "{dummy_slack}"'
     findings = detector.scan_line(line, 1, "test.py")
     rule_ids = {f["rule_id"] for f in findings}
@@ -74,7 +81,7 @@ def test_slack_token_detection() -> None:
 def test_private_key_detection() -> None:
     """Verify detection of unencrypted RSA/EC private keys."""
     detector = ShannonEntropyDetector()
-    line = "-----BEGIN RSA PRIVATE KEY-----"
+    line = "-----BEGIN RSA PRIVATE KEY-----"  # pragma: allowlist secret
     findings = detector.scan_line(line, 1, "test.py")
     rule_ids = {f["rule_id"] for f in findings}
     assert "TOKEN_PRIVATE_KEY" in rule_ids
@@ -84,7 +91,8 @@ def test_high_entropy_secret_with_security_context() -> None:
     """Verify high-entropy random string detection when assigned to secret keyword."""
     detector = ShannonEntropyDetector()
     # High entropy base64 string (32 chars)
-    line = 'api_secret_key = "vR8xL4nK9qP2mS7zB1wX6jD3fH5tY0aC"'
+    rand_val = "vR8xL4nK9qP2mS7zB1wX6jD3fH5tY0aC"  # pragma: allowlist secret
+    line = f'api_secret_key = "{rand_val}"'
     findings = detector.scan_line(line, 10, "app.py")
     rule_ids = {f["rule_id"] for f in findings}
     assert "HIGH_ENTROPY_SECRET" in rule_ids
@@ -112,12 +120,13 @@ def test_false_positive_filtering() -> None:
 
 def test_sast_scanner_integration(tmp_path: Path) -> None:
     """Verify integration of ShannonEntropyDetector inside SASTScanner."""
-    dummy_key = "sk-" + "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4"
+    dummy_key = (
+        "sk-" + "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4"
+    )  # pragma: allowlist secret
+    auth_val = "vR8xL4nK9qP2mS7zB1wX6jD3fH5tY0aC"  # pragma: allowlist secret
     vuln_file = tmp_path / "secret_leak.py"
     vuln_file.write_text(
-        "# Secret file\n"
-        f'openai_secret = "{dummy_key}"\n'
-        'auth_token = "vR8xL4nK9qP2mS7zB1wX6jD3fH5tY0aC"\n',
+        f'# Secret file\nopenai_secret = "{dummy_key}"\nauth_token = "{auth_val}"\n',
         encoding="utf-8",
     )
 
