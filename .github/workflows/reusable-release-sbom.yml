@@ -28,8 +28,8 @@ jobs:
 
       - name: Configure Git Author Identity
         run: |
-          git config --global user.name "fogvn"
-          git config --global user.email "dn135897@gmail.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Determine Release Notes File
         id: notes
@@ -56,6 +56,9 @@ jobs:
             install.ps1 \
             update.ps1 \
             remove.ps1 \
+            install.sh \
+            update.sh \
+            remove.sh \
             commands \
             hooks \
             rules \
