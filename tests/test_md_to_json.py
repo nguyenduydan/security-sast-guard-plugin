@@ -79,3 +79,34 @@ def test_main_default_rules_resolution(monkeypatch: object, tmp_path: Path) -> N
     monkeypatch.setattr(sys, "argv", ["md_to_json.py", "--target", str(output_json)])
     main()
     assert output_json.exists()
+
+
+def test_sync_rules_filters_empty_patterns(tmp_path: Path) -> None:
+    target_json = tmp_path / "rules_with_empty.json"
+    target_json.write_text(
+        json.dumps(
+            [
+                {
+                    "id": "EMPTY_STUB",
+                    "name": "Empty Stub Rule",
+                    "patterns": [],
+                },
+                {
+                    "id": "VALID_RULE",
+                    "name": "Valid Rule",
+                    "patterns": ["valid_regex"],
+                },
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    empty_dir = tmp_path / "empty_rules"
+    empty_dir.mkdir()
+    count = sync_rules(str(empty_dir), target_json=str(target_json))
+    assert count >= 1
+
+    data = json.loads(target_json.read_text(encoding="utf-8"))
+    rule_ids = [r["id"] for r in data]
+    assert "EMPTY_STUB" not in rule_ids
+    assert "VALID_RULE" in rule_ids
