@@ -185,6 +185,8 @@ def _handle_scan(args: list[str]) -> int:
     elif target_path.lower() == "diff":
         incremental = True
         target_path = "."
+    elif target_path.lower() in ("folder", "dir", "directory", "file", "path"):
+        target_path = positional_args[1] if len(positional_args) > 1 else "."
 
     service = AuditService()
     if target_level:

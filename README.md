@@ -181,7 +181,7 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 
 | Slash Command | CLI Command | Description |
 | :--- | :--- | :--- |
-| 🛡️ `/sast-audit [type] [path]` | `sast scan [path]` | Runs security audit (`file`, `diff`, `codebase`, `api`, `web`). |
+| 🛡️ `/sast-audit [type] [path]` | `sast scan [path]` | Runs security audit (`folder`, `file`, `diff`, `codebase`, `api`, `web`). |
 | 📊 `/sast-status` | `sast status` | Displays active profile, audit level, mode, and loaded rule count. |
 | 🚀 `/sast-init` | `sast init` | Creates local `.sast/profile.json` security configuration. |
 | 🎛️ `/sast-mode [strict\|draft]` | `sast mode [mode]` | `strict` enforces zero high/critical tolerance; `draft` logs only. |
