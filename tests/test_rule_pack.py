@@ -28,6 +28,20 @@ def test_llm01_prompt_injection_detection(scanner: SASTScanner, tmp_path) -> Non
     assert "LLM01_PROMPT_INJECTION" in rule_ids
 
 
+def test_prompt_injection_sinks_are_llm_apis(scanner: SASTScanner) -> None:
+    """Verify PROMPT_INJECTION_VULNERABLE has genuine LLM sinks, not SQL sinks."""
+    rules = scanner.get_rules()
+    prompt_rule = next(
+        (r for r in rules if r.get("id") == "PROMPT_INJECTION_VULNERABLE"),
+        None,
+    )
+    assert prompt_rule is not None
+    sinks = prompt_rule.get("sinks", [])
+    assert "openai.ChatCompletion" in sinks
+    assert "cursor.execute" not in sinks
+    assert "SqlCommand" not in sinks
+
+
 def test_llm02_sensitive_data_exposure(scanner: SASTScanner, tmp_path) -> None:
     """Verify LLM02_SENSITIVE_DATA_EXPOSURE detects secrets in prompt context."""
     vuln_file = tmp_path / "llm_secret.py"

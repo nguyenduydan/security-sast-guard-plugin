@@ -164,13 +164,17 @@
       "request.data"
     ],
     "sinks": [
+      "openai.ChatCompletion",
+      "client.chat.completions.create",
       "chat.completions.create",
       "PromptTemplate",
       "llm.invoke",
       "llm.predict",
       "llm.generate",
       "generate_content",
-      "anthropic.messages.create"
+      "model.generate_content",
+      "anthropic.messages.create",
+      "langchain.chains"
     ]
   },
   {
