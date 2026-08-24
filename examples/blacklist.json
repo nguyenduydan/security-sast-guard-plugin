@@ -1,0 +1,8 @@
+[
+  "tests/fixtures/*",
+  "legacy_modules/",
+  "generated_*.py",
+  "*.min.js",
+  "*.bundle.js",
+  "mock_data.json"
+]
