@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.5.0...v2.6.0) (2026-08-24)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **audit:** support folder scanning in sast-audit and CLI dispatcher ([9b2a1a0](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/9b2a1a02b52d1085f6fe412b67a1d4136685344e))
+
+
+### 🐛 Bug Fixes
+
+* **ci:** update labeler configuration to actions/labeler v5 schema ([8e05ee6](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8e05ee65ade9e2dc90ea9d454f51def2fb4faf9e))
+
 ## [2.5.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.4.2...v2.5.0) (2026-08-24)
 
 
