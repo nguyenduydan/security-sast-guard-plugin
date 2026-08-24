@@ -36,12 +36,13 @@ def test_mcp_server_tools_list() -> None:
     assert len(tools) >= 8
 
 
-def test_mcp_tool_handlers_new_tools() -> None:
+def test_mcp_tool_handlers_new_tools(tmp_path) -> None:
     handlers = MCPToolHandlers()
     res_init = handlers.handle_sast_init()
     assert res_init["status"] == "success"
 
-    res_sync = handlers.handle_sast_sync_rules()
+    out_file = str(tmp_path / "synced_rules.json")
+    res_sync = handlers.handle_sast_sync_rules(output_file=out_file)
     assert res_sync["status"] == "success"
     assert res_sync["rule_count"] >= 1
     assert "target_file" in res_sync
