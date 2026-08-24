@@ -144,7 +144,12 @@ def sync_rules(source_dir: str, target_json: str = "rules/sast_rules.json") -> i
             for rule in parse_md_rules(str(md_file)):
                 rule_map[rule["id"]] = rule
 
-    final_rules = list(rule_map.values())
+    final_rules = [
+        r
+        for r in rule_map.values()
+        if r.get("patterns")
+        and any(isinstance(p, str) and p.strip() for p in r["patterns"])
+    ]
     target_path.parent.mkdir(parents=True, exist_ok=True)
     target_path.write_text(
         json.dumps(final_rules, indent=2, ensure_ascii=False), encoding="utf-8"
