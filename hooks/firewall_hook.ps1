@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)]
-    [string]$CommandText
+    [string]$CommandText,
+    [switch]$Json
 )
 
 $ErrorActionPreference = "Stop"
@@ -205,16 +206,42 @@ try {
         }
     }
 
+    $decision = "allow"
+    $reason = "Command allowed by firewall rules."
+    $verdict = "ALLOW"
+
     if ($matchedDeny) {
-        Write-Output "DENY"
+        $decision = "deny"
+        $reason = "Command matched DENY firewall rule."
+        $verdict = "DENY"
     } elseif ($matchedConfirm) {
-        Write-Output "CONFIRM"
+        $decision = "force_ask"
+        $reason = "Command requires user confirmation before execution."
+        $verdict = "CONFIRM"
+    }
+
+    if ($Json.IsPresent -or $env:FIREWALL_OUTPUT_JSON -eq "1") {
+        $resultObj = [PSCustomObject]@{
+            decision = $decision
+            reason   = $reason
+            verdict  = $verdict
+        }
+        Write-Output ($resultObj | ConvertTo-Json -Compress)
     } else {
-        Write-Output "ALLOW"
+        Write-Output $verdict
     }
 } catch {
     # Fail-closed fallback
-    Write-Output "DENY"
+    if ($Json.IsPresent -or $env:FIREWALL_OUTPUT_JSON -eq "1") {
+        $errObj = [PSCustomObject]@{
+            decision = "deny"
+            reason   = "Firewall evaluation failed closed."
+            verdict  = "DENY"
+        }
+        Write-Output ($errObj | ConvertTo-Json -Compress)
+    } else {
+        Write-Output "DENY"
+    }
     exit 1
 }
 

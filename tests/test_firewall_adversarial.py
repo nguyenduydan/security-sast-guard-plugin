@@ -1,8 +1,10 @@
 """Adversarial unit tests for Anti-Bypass & Tamper Resistance in Command Firewall."""
 
 import base64
+import json
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -161,3 +163,40 @@ def test_firewall_fail_closed_missing_or_corrupted(tmp_path: Path) -> None:
     )
     assert code_corrupt == 1
     assert out_corrupt == "DENY"
+
+
+def test_firewall_hook_json_output() -> None:
+    """Test -Json flag outputs structured JSON decision and verdict."""
+    cmd = [
+        POWERSHELL_EXE or "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(HOOK_PATH),
+        "-CommandText",
+        "git status",
+        "-Json",
+    ]
+    result = subprocess.run(  # noqa: S603
+        cmd, capture_output=True, text=True, cwd=REPO_ROOT, check=False
+    )
+    assert result.returncode == 0
+    data = json.loads(result.stdout.strip())
+    assert data["decision"] == "allow"
+    assert data["verdict"] == "ALLOW"
+
+
+def test_python_firewall_hook_execution() -> None:
+    """Test hooks/firewall_hook.py CLI execution returning structured JSON."""
+    py_hook = REPO_ROOT / "hooks" / "firewall_hook.py"
+    result = subprocess.run(  # noqa: S603
+        [sys.executable, str(py_hook), "git status"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+        check=False,
+    )
+    assert result.returncode == 0
+    data = json.loads(result.stdout.strip())
+    assert data["decision"] == "allow"
