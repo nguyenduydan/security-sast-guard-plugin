@@ -1,9 +1,10 @@
 """Unit tests for scripts/md_to_json.py rule converter."""
 
 import json
+import sys
 from pathlib import Path
 
-from scripts.md_to_json import parse_md_rules, sync_rules
+from scripts.md_to_json import main, parse_md_rules, sync_rules
 
 
 def test_parse_md_rules(tmp_path: Path) -> None:
@@ -71,3 +72,10 @@ def test_parse_md_rules_with_action(tmp_path: Path) -> None:
     assert rules[0]["id"] == "RULE_01"
     assert rules[0]["severity"] == "Medium"
     assert rules[0]["action"] == "Warn"
+
+
+def test_main_default_rules_resolution(monkeypatch: object, tmp_path: Path) -> None:
+    output_json = tmp_path / "sast_rules.json"
+    monkeypatch.setattr(sys, "argv", ["md_to_json.py", "--target", str(output_json)])
+    main()
+    assert output_json.exists()
