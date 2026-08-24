@@ -235,6 +235,8 @@ class IgnoreFilter:
                     if pat not in self.custom_patterns:
                         self.custom_patterns.append(pat)
             except (json.JSONDecodeError, OSError):
+                # Malformed or unreadable blacklist JSON:
+                # gracefully ignore and continue using default rules
                 pass
 
     @staticmethod
