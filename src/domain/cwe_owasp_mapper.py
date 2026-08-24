@@ -237,6 +237,54 @@ DEFAULT_MAPPINGS: dict[str, MappingInfo] = {
         owasp_category="A08:2021-Software and Data Integrity Failures",
         owasp_name="Unverified Remote Code Execution",
     ),
+    "HIGH_ENTROPY_SECRET": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="Hardcoded Secret & Key",
+    ),
+    "TOKEN_OPENAI": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="OpenAI API Key Leak",
+    ),
+    "TOKEN_GITHUB": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="GitHub Token Leak",
+    ),
+    "TOKEN_AWS": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="AWS Access Key Leak",
+    ),
+    "TOKEN_ANTHROPIC": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="Anthropic API Key Leak",
+    ),
+    "TOKEN_STRIPE": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="Stripe API Key Leak",
+    ),
+    "TOKEN_SLACK": MappingInfo(
+        cwe_id="CWE-798",
+        cwe_name="Use of Hard-coded Credentials",
+        owasp_category="A07:2021-Identification and Authentication Failures",
+        owasp_name="Slack Token Leak",
+    ),
+    "TOKEN_PRIVATE_KEY": MappingInfo(
+        cwe_id="CWE-312",
+        cwe_name="Cleartext Storage of Sensitive Information",
+        owasp_category="A02:2021-Cryptographic Failures",
+        owasp_name="Private Key Exposure",
+    ),
 }
 
 FALLBACK_MAPPING = MappingInfo(
