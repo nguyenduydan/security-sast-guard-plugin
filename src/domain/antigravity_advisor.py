@@ -56,7 +56,6 @@ def is_sdk_available() -> bool:
         return False
 
 
-
 class AntigravitySecurityAdvisor:
     """Orchestrates AI security analysis and token tracking via Antigravity SDK."""
 
@@ -278,11 +277,11 @@ Analyze each finding and respond in the following STRICT JSON format:
                 disabled_tools=[
                     "run_command",
                     "edit_file",
-                    "write_to_file",
-                    "delete_file",
+                    "create_file",
+                    "start_subagent",
                 ]
             )
-        except TypeError:
+        except (TypeError, ValueError, Exception):  # pylint: disable=broad-exception-caught
             capabilities = CapabilitiesConfig()
 
         config = LocalAgentConfig(

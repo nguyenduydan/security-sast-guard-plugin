@@ -346,17 +346,17 @@ Review the Pull Request diff and respond in STRICT JSON format:
                 LocalAgentConfig,
             )
 
-            # Zero-Trust capabilities hardening
+            # Zero-Trust capabilities hardening: disable write/exec tools
             try:
                 capabilities = CapabilitiesConfig(
                     disabled_tools=[
                         "run_command",
                         "edit_file",
-                        "write_to_file",
-                        "delete_file",
+                        "create_file",
+                        "start_subagent",
                     ]
                 )
-            except TypeError:
+            except (TypeError, ValueError, Exception):  # pylint: disable=broad-exception-caught
                 capabilities = CapabilitiesConfig()
 
             config = LocalAgentConfig(
