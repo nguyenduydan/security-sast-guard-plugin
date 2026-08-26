@@ -148,9 +148,12 @@ def test_analyze_findings_empty_findings() -> None:
     assert report.findings_advice == []
 
 
-def test_analyze_findings_with_mocked_sdk() -> None:
+def test_analyze_findings_with_mocked_sdk(tmp_path: Any) -> None:
     """Test full analyze_findings workflow with mocked google.antigravity SDK."""
-    advisor = AntigravitySecurityAdvisor()
+    from src.domain.ai_cache import AICache
+
+    cache = AICache(cache_file=tmp_path / "test_mock_cache.json")
+    advisor = AntigravitySecurityAdvisor(cache=cache)
     findings = [
         {
             "rule_id": "COMMAND_INJECTION",
@@ -349,3 +352,87 @@ def test_dispatcher_ai_triage_subcommand(tmp_path: Any, capsys: Any) -> None:
     captured = capsys.readouterr()
     assert code == 0
     assert "SAST Audit completed" in captured.out
+
+
+def test_analyze_findings_cache_hit(tmp_path: Any) -> None:
+    """Test that cached findings consume 0 tokens and return cached advice."""
+    from src.domain.ai_cache import AICache
+
+    cache_file = tmp_path / "test_cache.json"
+    cache = AICache(cache_file=cache_file)
+    advisor = AntigravitySecurityAdvisor(cache=cache)
+
+    finding = {
+        "rule_id": "HARDCODED_API_KEY",
+        "path": "secret.py",
+        "line": 1,
+        "line_content": "API_KEY = 'AIzaSy12345'",
+    }
+    key = advisor._compute_finding_cache_key(finding)
+    cache.set_advice(
+        key,
+        {
+            "rule_id": "HARDCODED_API_KEY",
+            "file_path": "secret.py",
+            "line": 1,
+            "analysis": "Cached secret analysis",
+            "exploitability": "High",
+            "suggested_fix": "os.environ['API_KEY']",
+            "is_likely_false_positive": False,
+        },
+    )
+
+    with patch.object(advisor, "is_available", return_value=True):
+        report = advisor.analyze_findings([finding])
+        assert report.status == "success"
+        assert report.token_usage.total_tokens == 0
+        assert len(report.findings_advice) == 1
+        assert report.findings_advice[0].suggested_fix == "os.environ['API_KEY']"
+        assert "local SHA-256 cache" in report.executive_summary
+
+
+def test_adaptive_batching_multiple_batches(tmp_path: Any) -> None:
+    """Test adaptive batching splits findings and aggregates tokens."""
+    from src.domain.ai_cache import AICache
+
+    cache_file = tmp_path / "test_cache.json"
+    cache = AICache(cache_file=cache_file)
+    advisor = AntigravitySecurityAdvisor(cache=cache, batch_size=2)
+
+    findings = [
+        {
+            "rule_id": f"RULE_{i}",
+            "path": f"file_{i}.py",
+            "line": i,
+            "line_content": f"code_{i}",
+        }
+        for i in range(5)
+    ]
+
+    mock_batch_result = (
+        "Batch summary",
+        [
+            AIFindingAdvice(
+                rule_id="RULE_X",
+                file_path="file_X.py",
+                line=1,
+                analysis="Analysis",
+                exploitability="Medium",
+                suggested_fix="Fix",
+            )
+        ],
+        AITokenUsage(input_tokens=100, output_tokens=50, total_tokens=150),
+    )
+
+    with (
+        patch.object(advisor, "is_available", return_value=True),
+        patch.object(
+            advisor, "_analyze_batch", AsyncMock(return_value=mock_batch_result)
+        ) as mock_batch,
+    ):
+        report = advisor.analyze_findings(findings)
+        assert report.status == "success"
+        # 5 items with batch_size=2 => 3 batches (2, 2, 1)
+        assert mock_batch.call_count == 3
+        # 3 batches * 150 tokens = 450 tokens
+        assert report.token_usage.total_tokens == 450

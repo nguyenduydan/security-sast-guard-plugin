@@ -70,3 +70,27 @@ class AICache:
             "is_valid_finding": is_valid_finding,
         }
         self._save()
+
+    def get_advice(self, key: str) -> dict[str, Any] | None:
+        """Get cached AI advisor advice payload (dict or None if miss/expired)."""
+        entry = self._data.get(key)
+        if not entry:
+            return None
+
+        timestamp = entry.get("timestamp", 0)
+        if time.time() - timestamp > self.ttl:
+            del self._data[key]
+            self._save()
+            return None
+
+        advice: dict[str, Any] | None = entry.get("advice")
+        return advice
+
+    def set_advice(self, key: str, advice: dict[str, Any]) -> None:
+        """Set cached AI advisor advice payload."""
+        self._data[key] = {
+            "timestamp": time.time(),
+            "advice": advice,
+            "is_valid_finding": not advice.get("is_likely_false_positive", False),
+        }
+        self._save()
