@@ -3,8 +3,9 @@
    ========================================================================== */
 
 const GITHUB_REPO = "nguyenduydan/security-sast-guard-plugin";
-const FALLBACK_VERSION = "v2.3.0";
+const FALLBACK_VERSION = "v2.8.0";
 let activeCategory = "ALL";
+
 let autoPlayTimer = null;
 let isAutoPlaying = false;
 
