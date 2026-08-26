@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.7.4...v2.8.0) (2026-08-26)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **ai:** add Antigravity AI automated Pull Request reviewer workflow ([c7f663d](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c7f663d121cbbc6e55787cbf2893d46db0e15be3))
+* **ai:** integrate Antigravity SDK for security triage and token telemetry ([a2b05d4](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/a2b05d43d983292fe51e2af33bcbbbc274cda837))
+* **ai:** optimize Antigravity advisor with caching, adaptive batching, and capabilities hardening ([080f844](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/080f844c06b2b56c12d2a7decc8f00aa5b0224ef))
+
+
+### 🐛 Bug Fixes
+
+* **ai:** correct CapabilitiesConfig disabled_tools enum values and exception handling ([73f93be](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/73f93bee3abd7a87f06edf99e0dbc714961e669c))
+* **ai:** handle ModuleNotFoundError in is_sdk_available when parent google namespace is missing ([7d4cdb8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/7d4cdb82387af08183efeaf95cf30388561e087d))
+* **ci:** bootstrap sys.path and handle utf-8 git diff encoding in pr_reviewer ([ef3e6bc](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ef3e6bcfc7737741a7133d5568d3447c8c432546))
+
+
+### Maintenance & Tooling
+
+* **ci:** remove PR Review Bot and retain local Antigravity AI triage capabilities ([27b4102](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/27b4102e41a32ceef4ffe1da79679284f44882ea))
+
 ## [2.7.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.7.3...v2.7.4) (2026-08-26)
 
 
