@@ -15,8 +15,17 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from src.application.audit_service import AuditService
-from src.domain.pr_review_advisor import PRReviewAdvisor, PRReviewResult
+# Ensure repository root is on sys.path for direct script execution
+_REPO_ROOT = str(Path(__file__).resolve().parents[1])
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+
+# pylint: disable=wrong-import-position
+from src.application.audit_service import AuditService  # noqa: E402
+from src.domain.pr_review_advisor import (  # noqa: E402
+    PRReviewAdvisor,
+    PRReviewResult,
+)
 
 BOT_MARKER = "<!-- antigravity-pr-reviewer -->"
 
@@ -36,9 +45,11 @@ def _get_git_diff(base_branch: str = "main") -> str:
                 diff_cmd,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 check=False,
             )
-            if res.returncode == 0 and res.stdout.strip():
+            if res.returncode == 0 and res.stdout and res.stdout.strip():
                 return res.stdout
         except (subprocess.SubprocessError, OSError):
             continue

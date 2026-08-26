@@ -41,9 +41,11 @@ jobs:
         run: |
           python scripts/pr_reviewer.py
         env:
+          PYTHONPATH: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+
 
       - name: Upload PR Review Report Artifact
         uses: actions/upload-artifact@v4
