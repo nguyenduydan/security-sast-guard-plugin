@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.8.0...v2.9.0) (2026-08-26)
+
+
+### 🚀 Features & SAST Security Rules
+
+* **ai:** integrate AI root-cause triage automatically into standard scan and audit ([5361267](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/5361267ad8e36b0540d366a928a6530b3fbbe1dd))
+
+
+### 📝 Documentation
+
+* **ai:** update README and ROADMAP for Antigravity AI triage capabilities ([bfa3d2b](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/bfa3d2b1ef80389d41f94f1029b828bf6e00d5d2))
+* **landing:** update docs/index.html and app.js to v2.8.0 with AI triage features ([68224d1](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/68224d17a7dc20f45b7af87daab121b5ec9a313f))
+
+
+### 🎨 Code Style & Formatting
+
+* **audit:** fix ruff line length and formatting ([d0695a8](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/d0695a896908d88968111e2c15e3d27eb208ebde))
+
 ## [2.8.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.7.4...v2.8.0) (2026-08-26)
 
 
