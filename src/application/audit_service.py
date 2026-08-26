@@ -85,7 +85,7 @@ class AuditService:
         metadata = res["metadata"]
         audit_level = self.profile.get("audit_level", "full")
 
-        # Antigravity AI Security Advisor Integration (Auto-enabled when SDK is installed)
+        # Antigravity AI Advisor (Auto-enabled when SDK is installed)
         if enable_ai and findings:
             advisor = AntigravitySecurityAdvisor()
             if advisor.is_available():
@@ -121,7 +121,6 @@ class AuditService:
                             for a in ai_report.findings_advice
                         ],
                     }
-
 
         if not generate_report:
             scanned = metadata.get("scanned_files", 0)

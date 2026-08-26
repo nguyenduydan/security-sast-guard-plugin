@@ -366,7 +366,6 @@ def test_dispatcher_no_ai_flag(tmp_path: Any, capsys: Any) -> None:
     assert "SAST Audit completed" in captured.out
 
 
-
 def test_dispatcher_ai_triage_subcommand(tmp_path: Any, capsys: Any) -> None:
     """Test CLI dispatcher with ai-triage subcommand."""
     test_file = tmp_path / "clean.py"

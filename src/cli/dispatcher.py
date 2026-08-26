@@ -141,7 +141,6 @@ def _handle_scan(args: list[str]) -> int:
             enable_ai = False
             idx += 1
         elif arg == "--sarif":
-
             output_format = "sarif"
             if idx + 1 < len(args) and not args[idx + 1].startswith("-"):
                 sarif_output_path = args[idx + 1]
