@@ -21,16 +21,24 @@ permissions:
 
 jobs:
   security-gate:
-    name: Security Audit
-    uses: ./.github/workflows/reusable-security-gate.yml
+    name: Security & SAST Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-  release-package-sbom:
-    name: SBOM & Attestation
-    needs: [security-gate]
-    if: startsWith(github.ref, 'refs/tags/v')
-    uses: ./.github/workflows/reusable-release-sbom.yml
-    with:
-      tag_name: ${{ github.ref_name }}
+      - name: Setup Python & Dependencies
+        uses: ./.github/actions/setup-env
+        with:
+          python-version: "3.12"
+
+      - name: Scan for Hardcoded Secrets
+        run: |
+          detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+
+      - name: Run Full SAST Security Audit
+        run: |
+          python control_plane.py audit codebase --level full
 
   release-please:
     name: Release PR
@@ -47,3 +55,89 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+  release-package-sbom:
+    name: Package & Attest (SBOM)
+    needs: [security-gate]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git Author Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine Release Notes File
+        id: notes
+        run: |
+          if [ -f "docs/releases/${{ github.ref_name }}.md" ]; then
+            echo "path=docs/releases/${{ github.ref_name }}.md" >> $GITHUB_OUTPUT
+          elif [ -f "CHANGELOG.md" ]; then
+            echo "path=CHANGELOG.md" >> $GITHUB_OUTPUT
+          else
+            echo "path=README.md" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Package Release Asset
+        run: |
+          git archive \
+            --format=zip \
+            --prefix=security-sast-guard/ \
+            --output=${{ github.ref_name }}.zip \
+            HEAD -- \
+            plugin.json \
+            gemini-extension.json \
+            control_plane.py \
+            hooks.json \
+            install.ps1 \
+            update.ps1 \
+            remove.ps1 \
+            install.sh \
+            update.sh \
+            remove.sh \
+            commands \
+            hooks \
+            rules \
+            skills \
+            src
+
+      - name: Generate SHA-256 Checksum
+        run: |
+          sha256sum ${{ github.ref_name }}.zip > checksums.txt
+
+      - name: Generate Software Bill of Materials (SBOM)
+        uses: anchore/sbom-action@v0
+        with:
+          path: "."
+          format: "spdx-json"
+          output-file: "spdx.json"
+
+      - name: Attest Build Provenance (OIDC Cryptographic Attestation)
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: "${{ github.ref_name }}.zip"
+
+      - name: Publish Official GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body_path: ${{ steps.notes.outputs.path }}
+          files: |
+            ${{ github.ref_name }}.zip
+            checksums.txt
+            spdx.json
+          generate_release_notes: true
+          draft: false
+          prerelease: false
