@@ -33,7 +33,6 @@ def test_is_sdk_available_when_parent_module_not_found() -> None:
         assert is_sdk_available() is False
 
 
-
 def test_estimate_tokens() -> None:
     """Test token estimation fallback."""
     advisor = AntigravitySecurityAdvisor()
