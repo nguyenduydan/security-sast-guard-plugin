@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.4](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.7.3...v2.7.4) (2026-08-26)
+
+
+### 📦 Build System & Dependencies
+
+* **deps:** bump actions/attest-build-provenance from 2 to 4 ([f02aa6f](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f02aa6f73da2ced442a20856639092296389d59c))
+* **deps:** bump actions/checkout from 4 to 7 ([855a569](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/855a569313bfaa181dc4d9dd68153b3749208d03))
+* **deps:** bump actions/labeler from 5 to 7 ([e4f7b00](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/e4f7b004d1b0c6497aea07b0a1d5cbae25b704d1))
+* **deps:** bump actions/stale from 9 to 11 ([476cb68](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/476cb68c061945d2d66105dc91ea1785beb9b9df))
+* **deps:** bump actions/upload-artifact from 4 to 7 ([c2a48e3](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/c2a48e30f9dab8a205762b07a3dc4d4fe8189730))
+* **deps:** bump googleapis/release-please-action from 4 to 5 ([568a0e1](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/568a0e19d70e3b493f00581a7d5300120664899a))
+* **deps:** bump softprops/action-gh-release from 2 to 3 ([f7343ed](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/f7343ed9bf2559bc1b07791e870ca7ec0c73fbc9))
+
+
+### 🤖 CI/CD Workflows
+
+* **workflows:** streamline and minimalize github workflows to 5 core files ([8f51204](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/8f51204561de18496390b3825cd51bd6ed4a373b))
+
 ## [2.7.3](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.7.2...v2.7.3) (2026-08-24)
 
 
