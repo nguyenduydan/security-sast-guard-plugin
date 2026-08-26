@@ -50,7 +50,11 @@ SECURITY_SYSTEM_INSTRUCTIONS = (
 
 def is_sdk_available() -> bool:
     """Check if google-antigravity SDK is installed and available for import."""
-    return importlib.util.find_spec("google.antigravity") is not None
+    try:
+        return importlib.util.find_spec("google.antigravity") is not None
+    except (ModuleNotFoundError, ImportError, ValueError, AttributeError):
+        return False
+
 
 
 class AntigravitySecurityAdvisor:
