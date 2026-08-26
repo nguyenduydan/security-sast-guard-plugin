@@ -110,9 +110,9 @@ def _handle_mode(args: list[str]) -> int:
     return 0
 
 
-# pylint: disable=too-many-branches,too-many-statements
+# pylint: disable=too-many-branches,too-many-statements,too-many-locals
 def _handle_scan(args: list[str]) -> int:
-    """Handle scan / audit subcommand with format, threads, and level options."""
+    """Handle scan / audit subcommand with format, threads, level, and ai options."""
     verbose = "-v" in args or "--verbose" in args
 
     sarif_output_path: str | None = None
@@ -122,6 +122,7 @@ def _handle_scan(args: list[str]) -> int:
     target_level: str | None = None
     threads: int | None = None
     incremental = False
+    enable_ai = False
     positional_args: list[str] = []
 
     idx = 0
@@ -132,6 +133,9 @@ def _handle_scan(args: list[str]) -> int:
             idx += 1
         elif arg in ("--diff", "-d"):
             incremental = True
+            idx += 1
+        elif arg in ("--ai", "-a"):
+            enable_ai = True
             idx += 1
         elif arg == "--sarif":
             output_format = "sarif"
@@ -201,6 +205,7 @@ def _handle_scan(args: list[str]) -> int:
         json_output_path=json_output_path,
         threads=threads,
         incremental=incremental,
+        enable_ai=enable_ai,
     )
     print(summary)
     return 0
@@ -274,6 +279,9 @@ def dispatch(args: list[str]) -> int:
 
     if command in ("scan", "audit"):
         return _handle_scan(args[1:])
+
+    if command in ("ai-triage", "triage", "ai-audit"):
+        return _handle_scan(["--ai", *args[1:]])
 
     if command == "init":
         return _handle_init()

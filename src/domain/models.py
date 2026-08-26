@@ -172,3 +172,41 @@ class AuditEntry:
     entry_type: Literal["SAST_FINDING", "FIREWALL_VERDICT", "DECISION", "KB_APPROVAL"]
     payload: dict[str, Any]
     entry_hash: str
+
+
+# ── Antigravity AI Telemetry & Advice Models ───────────────────────────────
+
+
+@dataclass
+class AITokenUsage:
+    """Token consumption telemetry for AI agent calls."""
+
+    input_tokens: int = 0
+    thinking_tokens: int = 0
+    output_tokens: int = 0
+    total_tokens: int = 0
+
+
+@dataclass
+class AIFindingAdvice:
+    """AI security analysis and remediation suggestion for a specific finding."""
+
+    rule_id: str
+    file_path: str
+    line: int
+    analysis: str
+    exploitability: str
+    suggested_fix: str
+    is_likely_false_positive: bool = False
+
+
+@dataclass
+class AntigravityAuditReport:
+    """Aggregated security triage and telemetry report from Antigravity Agent."""
+
+    executive_summary: str
+    findings_advice: list[AIFindingAdvice]
+    token_usage: AITokenUsage
+    model_name: str = "google-antigravity-agent"
+    status: str = "success"  # "success" | "skipped" | "error" | "not_installed"
+    error_message: str | None = None
