@@ -283,6 +283,14 @@ def dispatch(args: list[str]) -> int:
     if command in ("ai-triage", "triage", "ai-audit"):
         return _handle_scan(["--ai", *args[1:]])
 
+    if command in ("pr-review", "review-pr"):
+        # pylint: disable=import-outside-toplevel
+        from scripts.pr_reviewer import (
+            main as pr_reviewer_main,
+        )
+
+        return pr_reviewer_main()
+
     if command == "init":
         return _handle_init()
 
