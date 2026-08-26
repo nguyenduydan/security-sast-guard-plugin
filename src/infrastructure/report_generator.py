@@ -157,6 +157,67 @@ def _build_remediation_summary(findings: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+# pylint: disable=too-many-locals
+def _format_ai_report_block(ai_data: dict[str, Any]) -> str:
+    """Format Antigravity AI security analysis & token telemetry markdown section."""
+    if not ai_data or ai_data.get("status") in ("skipped", "not_installed"):
+        if ai_data and ai_data.get("status") == "not_installed":
+            return (
+                "> [!NOTE]\n"
+                "> **Antigravity AI Triage:** Skipped "
+                "(Package `google-antigravity` is not installed).\n\n"
+                "---\n\n"
+            )
+        return ""
+
+    tokens = ai_data.get("token_usage", {})
+    in_tok = tokens.get("input_tokens", 0)
+    think_tok = tokens.get("thinking_tokens", 0)
+    out_tok = tokens.get("output_tokens", 0)
+    tot_tok = tokens.get("total_tokens", in_tok + think_tok + out_tok)
+
+    summary = ai_data.get("summary", "")
+    advices = ai_data.get("findings_advice", [])
+
+    lines = [
+        "## 🤖 Antigravity AI Security Intelligence & Token Telemetry\n",
+        "### 📊 Token Telemetry Accounting",
+        "| Metric | Token Count |",
+        "|---|---|",
+        f"| 📥 **Input Tokens** | `{in_tok:,}` |",
+        f"| 💭 **Thinking Tokens** | `{think_tok:,}` |",
+        f"| 📤 **Output Tokens** | `{out_tok:,}` |",
+        f"| 🔢 **Total Tokens** | `{tot_tok:,}` |",
+        "",
+        "### 🧠 AI Executive Security Assessment",
+        f"{summary}\n",
+    ]
+
+    if advices:
+        lines.append("### 🛠️ AI Remediation Advice & Suggested Patches\n")
+        for adv in advices:
+            rule_id = adv.get("rule_id", "UNKNOWN")
+            file_p = adv.get("file_path", "")
+            line_no = adv.get("line", 1)
+            analysis = adv.get("analysis", "")
+            exploit = adv.get("exploitability", "Medium")
+            sug_fix = adv.get("suggested_fix", "")
+            fp_flag = (
+                " (⚠️ Likely False-Positive)"
+                if adv.get("is_likely_false_positive")
+                else ""
+            )
+
+            lines.append(f"#### 🔍 `{rule_id}` at `{file_p}:{line_no}`{fp_flag}")
+            lines.append(f"- **Exploitability Assessment:** `{exploit}`")
+            if analysis:
+                lines.append(f"- **Root-Cause Analysis:** {analysis}")
+            if sug_fix:
+                lines.append(f"\n**💡 Suggested Secure Patch:**\n```\n{sug_fix}\n```\n")
+
+    return "\n".join(lines) + "\n---\n\n"
+
+
 # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
 def _substitute_placeholders(
     template: str,
@@ -176,6 +237,12 @@ def _substitute_placeholders(
     fp_filtered = meta.get("false_positives_filtered", 0)
     inc_mode = "ON (Git Diff)" if meta.get("incremental_mode") else "OFF (Full Walk)"
 
+    ai_meta = meta.get("ai_report")
+    ai_tokens = ai_meta.get("token_usage", {}) if isinstance(ai_meta, dict) else {}
+    ai_token_str = (
+        f"{ai_tokens.get('total_tokens', 0):,}" if ai_tokens else "0 (Heuristic Only)"
+    )
+
     metadata_block = f"""
 ## 🔍 Audit Metadata & Transparency
 | Metric | Value |
@@ -187,6 +254,7 @@ def _substitute_placeholders(
 | 🚫 **Ignored Files** | `{ignored_files}` |
 | 📝 **Lines Analyzed** | `{total_lines}` |
 | 🤖 **AI False-Positives Filtered** | `{fp_filtered}` |
+| 🔢 **AI Token Consumption** | `{ai_token_str}` |
 | ⚙️ **Rules Applied** | `{rules_applied}` |
 | ⏱️ **Scan Duration** | `{duration}s` |
 """
@@ -211,7 +279,9 @@ def _substitute_placeholders(
         content = content.replace(key, val)
 
     if "## 🔍 Detailed Findings" in content:
-        if ai_analysis:
+        if isinstance(ai_meta, dict):
+            ai_block = _format_ai_report_block(ai_meta)
+        elif ai_analysis:
             ai_block = f"## 🤖 AI Security Analysis\n\n{ai_analysis}\n\n---\n\n"
         else:
             ai_block = ""
