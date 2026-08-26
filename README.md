@@ -182,6 +182,7 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 | Slash Command | CLI Command | Description |
 | :--- | :--- | :--- |
 | 🛡️ `/sast-audit [type] [path]` | `sast scan [path]` | Runs security audit (`folder`, `file`, `diff`, `codebase`, `api`, `web`). |
+| 🤖 `/sast-audit --ai [path]` | `sast ai-triage [path]` | Runs SAST audit + Agentic AI root-cause analysis via Google Antigravity SDK. |
 | 📊 `/sast-status` | `sast status` | Displays active profile, audit level, mode, and loaded rule count. |
 | 🚀 `/sast-init` | `sast init` | Creates local `.sast/profile.json` security configuration. |
 | 🎛️ `/sast-mode [strict\|draft]` | `sast mode [mode]` | `strict` enforces zero high/critical tolerance; `draft` logs only. |
@@ -191,8 +192,28 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 | 🆘 `/sast-help` | `sast help` | Displays quick command reference and security vectors guide. |
 
 ### Extended CLI Flags
+- `-a` / `--ai`: Activates **Google Antigravity AI Security Advisor** for root-cause triage & remediation advice.
 - `--json <file_path>` / `--format json`: Exports scan findings as machine-readable structured JSON.
 - `-v` / `--verbose`: Enables verbose debug trace output for deep inspection.
+
+---
+
+## 🤖 Google Antigravity SDK Integration (`google-antigravity`)
+
+Security SAST Guard embeds the **Google Antigravity Python SDK** as an optional extra (`[ai]`) to provide non-intrusive, zero-trust AI root-cause triage directly within your IDE:
+
+```bash
+# Install with optional AI Agent triage support
+pip install -e ".[ai]"
+```
+
+### 🌟 Key Agentic AI Highlights
+1. **Local Zero-Cost Execution:** Leverages active Google Antigravity IDE / CLI login quotas — **zero extra API keys or fees required**.
+2. **Deterministic SHA-256 Cache:** Previously analyzed code snippets are served instantly with **0 tokens consumed**.
+3. **Token Accounting Telemetry:** Reports exact `Input`, `Thinking`, `Output`, and `Total Tokens` consumed.
+4. **Zero-Trust Hardening:** Hardcoded `CapabilitiesConfig(disabled_tools=["run_command", "edit_file", "create_file", "start_subagent"])` prevents prompt injection attacks from modifying your workspace.
+5. **Graceful Fallback:** If `google-antigravity` is not installed or running offline, the tool automatically falls back to 100% heuristic static analysis without crashing.
+
 
 ---
 

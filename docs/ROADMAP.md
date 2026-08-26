@@ -71,7 +71,8 @@ flowchart TD
 | **Firewall** | `FirewallNormalizer` (10 deobf stages), `CapabilityClassifier`, `IntentClassifier`, `ChainAnalyzer`, `DecisionEngine` | ✅ Production |
 | **SAST Engine** | `SASTScanner` (Parallel), `ShannonEntropyDetector`, `ASTContextEngine`, `ASTPrecisionAnalyzer` | ✅ Production |
 | **Taint Tracking** | `TaintTracker`, `CallGraphBuilder`, `SymbolIndexer`, `ASTConfirmEngine` | ✅ Production |
-| **AI Verification** | `AIVerifier` (Regex-based sanitizer matcher), `AICache` (LRU) | ⚠️ Regex-only |
+| **AI Verification & Triage** | `AntigravitySecurityAdvisor` (Google Antigravity SDK), `AICache` (SHA-256), Adaptive Batching, Token Telemetry | ✅ Production |
+
 | **Frameworks** | `DotNetWebForms`, `Generic`, `React` (Rule-level) | ⚠️ Limited |
 | **MCP Server** | 12 Stdio Tools (JSON-RPC) | ✅ Production |
 | **Exporters** | ISO SARIF 2.1.0, Markdown, JSON, Pure ANSI TUI, HTML Dashboard | ✅ Production |
