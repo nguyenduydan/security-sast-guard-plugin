@@ -122,7 +122,7 @@ def _handle_scan(args: list[str]) -> int:
     target_level: str | None = None
     threads: int | None = None
     incremental = False
-    enable_ai = False
+    enable_ai = True
     positional_args: list[str] = []
 
     idx = 0
@@ -137,7 +137,11 @@ def _handle_scan(args: list[str]) -> int:
         elif arg in ("--ai", "-a"):
             enable_ai = True
             idx += 1
+        elif arg == "--no-ai":
+            enable_ai = False
+            idx += 1
         elif arg == "--sarif":
+
             output_format = "sarif"
             if idx + 1 < len(args) and not args[idx + 1].startswith("-"):
                 sarif_output_path = args[idx + 1]

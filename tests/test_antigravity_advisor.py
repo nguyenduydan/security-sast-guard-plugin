@@ -327,9 +327,12 @@ def test_audit_service_with_enable_ai(tmp_path: Any) -> None:
     )
 
     service = AuditService()
-    with patch(
-        "src.application.audit_service.AntigravitySecurityAdvisor.analyze_findings",
-        return_value=mock_report,
+    with (
+        patch.object(AntigravitySecurityAdvisor, "is_available", return_value=True),
+        patch(
+            "src.application.audit_service.AntigravitySecurityAdvisor.analyze_findings",
+            return_value=mock_report,
+        ),
     ):
         findings, _, summary = service.run_audit(
             str(test_file),
@@ -350,6 +353,18 @@ def test_dispatcher_ai_flag(tmp_path: Any, capsys: Any) -> None:
     captured = capsys.readouterr()
     assert code == 0
     assert "SAST Audit completed" in captured.out
+
+
+def test_dispatcher_no_ai_flag(tmp_path: Any, capsys: Any) -> None:
+    """Test CLI dispatcher with --no-ai flag."""
+    test_file = tmp_path / "clean.py"
+    test_file.write_text("print('Hello')", encoding="utf-8")
+
+    code = main(["scan", str(test_file), "--no-ai"])
+    captured = capsys.readouterr()
+    assert code == 0
+    assert "SAST Audit completed" in captured.out
+
 
 
 def test_dispatcher_ai_triage_subcommand(tmp_path: Any, capsys: Any) -> None:

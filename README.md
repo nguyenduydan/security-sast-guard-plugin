@@ -181,8 +181,7 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 
 | Slash Command | CLI Command | Description |
 | :--- | :--- | :--- |
-| 🛡️ `/sast-audit [type] [path]` | `sast scan [path]` | Runs security audit (`folder`, `file`, `diff`, `codebase`, `api`, `web`). |
-| 🤖 `/sast-audit --ai [path]` | `sast ai-triage [path]` | Runs SAST audit + Agentic AI root-cause analysis via Google Antigravity SDK. |
+| 🛡️ `/sast-audit [type] [path]` | `sast scan [path]` | Runs security audit (`folder`, `file`, `diff`, `codebase`, `api`, `web`) with automatic AI root-cause triage when SDK is present. |
 | 📊 `/sast-status` | `sast status` | Displays active profile, audit level, mode, and loaded rule count. |
 | 🚀 `/sast-init` | `sast init` | Creates local `.sast/profile.json` security configuration. |
 | 🎛️ `/sast-mode [strict\|draft]` | `sast mode [mode]` | `strict` enforces zero high/critical tolerance; `draft` logs only. |
@@ -192,9 +191,10 @@ Generates standard ISO SARIF 2.1.0 artifacts compatible with GitHub Code Scannin
 | 🆘 `/sast-help` | `sast help` | Displays quick command reference and security vectors guide. |
 
 ### Extended CLI Flags
-- `-a` / `--ai`: Activates **Google Antigravity AI Security Advisor** for root-cause triage & remediation advice.
+- `--no-ai`: Disables AI root-cause triage and forces pure static analysis mode.
 - `--json <file_path>` / `--format json`: Exports scan findings as machine-readable structured JSON.
 - `-v` / `--verbose`: Enables verbose debug trace output for deep inspection.
+
 
 ---
 

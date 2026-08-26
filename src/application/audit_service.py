@@ -71,7 +71,7 @@ class AuditService:
         json_output_path: str | None = None,
         threads: int | None = None,
         incremental: bool = False,
-        enable_ai: bool = False,
+        enable_ai: bool = True,
     ) -> tuple[list[dict[str, Any]], str, str]:
         """Execute SAST audit on target path and return findings and report."""
         self._reload_profile()
@@ -85,39 +85,43 @@ class AuditService:
         metadata = res["metadata"]
         audit_level = self.profile.get("audit_level", "full")
 
-        # Antigravity AI Security Advisor Integration
-        should_run_ai = enable_ai or (audit_level == "ultra")
-        if should_run_ai and findings:
+        # Antigravity AI Security Advisor Integration (Auto-enabled when SDK is installed)
+        if enable_ai and findings:
             advisor = AntigravitySecurityAdvisor()
-            project_ctx = {
-                "stack": self._resolve_stack(),
-                "mode": self.profile.get("mode", "strict"),
-                "project_id": self._resolve_project_id(),
-            }
-            ai_report = advisor.analyze_findings(findings, project_context=project_ctx)
-            metadata["ai_report"] = {
-                "status": ai_report.status,
-                "summary": ai_report.executive_summary,
-                "model_name": ai_report.model_name,
-                "token_usage": {
-                    "input_tokens": ai_report.token_usage.input_tokens,
-                    "thinking_tokens": ai_report.token_usage.thinking_tokens,
-                    "output_tokens": ai_report.token_usage.output_tokens,
-                    "total_tokens": ai_report.token_usage.total_tokens,
-                },
-                "findings_advice": [
-                    {
-                        "rule_id": a.rule_id,
-                        "file_path": a.file_path,
-                        "line": a.line,
-                        "analysis": a.analysis,
-                        "exploitability": a.exploitability,
-                        "suggested_fix": a.suggested_fix,
-                        "is_likely_false_positive": a.is_likely_false_positive,
+            if advisor.is_available():
+                project_ctx = {
+                    "stack": self._resolve_stack(),
+                    "mode": self.profile.get("mode", "strict"),
+                    "project_id": self._resolve_project_id(),
+                }
+                ai_report = advisor.analyze_findings(
+                    findings, project_context=project_ctx
+                )
+                if ai_report.status != "not_installed":
+                    metadata["ai_report"] = {
+                        "status": ai_report.status,
+                        "summary": ai_report.executive_summary,
+                        "model_name": ai_report.model_name,
+                        "token_usage": {
+                            "input_tokens": ai_report.token_usage.input_tokens,
+                            "thinking_tokens": ai_report.token_usage.thinking_tokens,
+                            "output_tokens": ai_report.token_usage.output_tokens,
+                            "total_tokens": ai_report.token_usage.total_tokens,
+                        },
+                        "findings_advice": [
+                            {
+                                "rule_id": a.rule_id,
+                                "file_path": a.file_path,
+                                "line": a.line,
+                                "analysis": a.analysis,
+                                "exploitability": a.exploitability,
+                                "suggested_fix": a.suggested_fix,
+                                "is_likely_false_positive": a.is_likely_false_positive,
+                            }
+                            for a in ai_report.findings_advice
+                        ],
                     }
-                    for a in ai_report.findings_advice
-                ],
-            }
+
 
         if not generate_report:
             scanned = metadata.get("scanned_files", 0)
