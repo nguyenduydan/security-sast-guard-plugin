@@ -24,6 +24,16 @@ def test_is_sdk_available_not_installed() -> None:
         assert is_sdk_available() is False
 
 
+def test_is_sdk_available_when_parent_module_not_found() -> None:
+    """Test is_sdk_available when parent google module raises ModuleNotFoundError."""
+    with patch(
+        "importlib.util.find_spec",
+        side_effect=ModuleNotFoundError("No module named 'google'"),
+    ):
+        assert is_sdk_available() is False
+
+
+
 def test_estimate_tokens() -> None:
     """Test token estimation fallback."""
     advisor = AntigravitySecurityAdvisor()
