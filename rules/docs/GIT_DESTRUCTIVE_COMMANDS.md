@@ -1,7 +1,7 @@
 # GIT_DESTRUCTIVE_COMMANDS — Protect Against Destructive Git Operations
 
 ## Description
-Phát hiện và ngăn chặn các lệnh Git nguy hiểm có thể làm mất mã nguồn hoặc đè lịch sử commit không thể rollback như `git reset --hard`, `git checkout -- .`, `git clean -fdx`, `git push --force`.
+Detects and blocks destructive Git commands that could cause source code loss or unrecoverable history overwrites, such as `git reset --hard`, `git checkout -- .`, `git clean -fdx`, and `git push --force`.
 
 ## Severity
 🔴 Critical
