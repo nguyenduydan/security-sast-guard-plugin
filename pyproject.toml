@@ -21,9 +21,6 @@ dev = [
     "pytest-cov>=5.0.0",
     "detect-secrets>=1.5.0",
 ]
-ai = [
-    "google-antigravity>=0.1.0",
-]
 
 [tool.setuptools.package-data]
 "*" = ["*.json", "*.md", "*.html"]
@@ -98,14 +95,8 @@ module = [
     "cachetools.*",
     "tree_sitter.*",
     "tree_sitter_languages.*",
-    "google.antigravity.*",
 ]
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "tests.*"
-disallow_untyped_defs = false
-disallow_incomplete_defs = false
 
 
 # ==========================================

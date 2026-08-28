@@ -98,7 +98,7 @@ class MCPServer:
             "error": {"code": -32601, "message": f"Method '{method}' not found"},
         }
 
-    # pylint: disable=too-many-return-statements
+    # pylint: disable=too-many-return-statements,too-many-branches
     def execute_tool(
         self, tool_name: str | None, args: dict[str, Any]
     ) -> dict[str, Any]:
@@ -138,6 +138,12 @@ class MCPServer:
                 args.get("findings", []),
                 args.get("target_path", "."),
                 args.get("ai_analysis", ""),
+            )
+        if tool_name == "sast_get_taint_evidence":
+            return self.handlers.handle_sast_get_taint_evidence(
+                args.get("file_path", ""),
+                args.get("line_number", 0),
+                args.get("slice_window", 7),
             )
 
         return {"error": f"Unknown tool name: {tool_name}"}

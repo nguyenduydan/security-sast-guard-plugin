@@ -355,3 +355,84 @@ class MCPToolHandlers:
                 "sanitized": False,
             },
         }
+
+    # pylint: disable=too-many-locals
+    def handle_sast_get_taint_evidence(
+        self,
+        file_path: str,
+        line_number: int,
+        slice_window: int = 7,
+    ) -> dict[str, Any]:
+        """Extract precise 5-15 line program slice and evidence graph for a finding."""
+        path = Path(file_path)
+        if not path.exists():
+            return {"status": "error", "message": f"File not found: {file_path}"}
+        try:
+            source_code = path.read_text(encoding="utf-8", errors="ignore")
+            lines = source_code.splitlines()
+        except OSError as exc:
+            return {"status": "error", "message": str(exc)}
+
+        from src.domain.evidence_engine import (  # pylint: disable=import-outside-toplevel
+            EvidenceEngine,
+        )
+
+        engine = EvidenceEngine()
+        all_findings = self.audit_service.run_taint_analysis(str(path.parent))
+        matched_taint = [
+            f
+            for f in all_findings
+            if (f.sink_file in file_path and f.sink_line == line_number)
+            or (f.source_file in file_path and f.source_line == line_number)
+        ]
+
+        if matched_taint:
+            primary_finding = matched_taint[0]
+            trace_steps = [
+                {
+                    "file": s.file,
+                    "line": s.line,
+                    "symbol": s.symbol,
+                    "step_type": s.step_type,
+                }
+                for s in primary_finding.trace_path
+            ]
+            graph = engine.build_from_trace(
+                finding_id=f"{primary_finding.rule_id}@{file_path}:{line_number}",
+                trace_steps=trace_steps,
+                source_code_map={file_path: source_code},
+            )
+            program_slice = graph.program_slice
+            is_complete = graph.is_complete_path
+            nodes = [
+                {
+                    "node_id": n.node_id,
+                    "node_type": n.node_type,
+                    "file_path": n.file_path,
+                    "line_number": n.line_number,
+                    "symbol": n.symbol,
+                    "code_snippet": n.code_snippet,
+                }
+                for n in graph.nodes
+            ]
+        else:
+            # Fallback window slice around line_number
+            start = max(1, line_number - slice_window)
+            end = min(len(lines), line_number + slice_window)
+            program_slice = [
+                f"L{idx}: {lines[idx - 1].strip()}"
+                for idx in range(start, end + 1)
+                if idx - 1 < len(lines)
+            ]
+            is_complete = False
+            nodes = []
+
+        return {
+            "status": "success",
+            "file_path": file_path,
+            "line_number": line_number,
+            "program_slice": program_slice,
+            "slice_line_count": len(program_slice),
+            "is_complete_dataflow": is_complete,
+            "evidence_nodes": nodes,
+        }

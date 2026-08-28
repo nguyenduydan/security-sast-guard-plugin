@@ -123,6 +123,7 @@ def _handle_scan(args: list[str]) -> int:
     threads: int | None = None
     incremental = False
     enable_ai = True
+    ci_mode = False
     positional_args: list[str] = []
 
     idx = 0
@@ -133,6 +134,9 @@ def _handle_scan(args: list[str]) -> int:
             idx += 1
         elif arg in ("--diff", "-d"):
             incremental = True
+            idx += 1
+        elif arg == "--ci":
+            ci_mode = True
             idx += 1
         elif arg in ("--ai", "-a"):
             enable_ai = True
@@ -199,7 +203,7 @@ def _handle_scan(args: list[str]) -> int:
     if target_level:
         service.set_audit_level(target_level)
 
-    _, _, summary = service.run_audit(
+    findings, _, summary = service.run_audit(
         target_path,
         verbose=verbose,
         output_format=output_format,
@@ -211,6 +215,22 @@ def _handle_scan(args: list[str]) -> int:
         enable_ai=enable_ai,
     )
     print(summary)
+
+    if ci_mode:
+        critical_or_high = [
+            f
+            for f in findings
+            if str(f.get("severity", "")).lower() in ("critical", "high")
+        ]
+        if critical_or_high:
+            print(
+                f"\n❌ CI Quality Gate Failed: Found {len(critical_or_high)} "
+                "Critical/High security findings."
+            )
+            return 1
+        print("\n✅ CI Quality Gate Passed: 0 Critical/High findings.")
+        return 0
+
     return 0
 
 

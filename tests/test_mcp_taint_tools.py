@@ -73,3 +73,28 @@ def test_get_taint_context_file_not_found():
     result = handlers.handle_sast_get_taint_context("/nonexistent/file.py", 1)
     assert result["status"] == "error"
     assert "not found" in result["message"].lower()
+
+
+def test_get_taint_evidence_returns_program_slice(tmp_path: Path) -> None:
+    f = tmp_path / "app.py"
+    f.write_text(
+        "import os\n"
+        "req = get_request()\n"
+        "user_cmd = req.get('cmd')\n"
+        "os.system(user_cmd)\n",
+        encoding="utf-8",
+    )
+    handlers = MCPToolHandlers()
+    result = handlers.handle_sast_get_taint_evidence(str(f), 4, slice_window=3)
+    assert result["status"] == "success"
+    assert result["file_path"] == str(f)
+    assert result["line_number"] == 4
+    assert len(result["program_slice"]) > 0
+    assert any("os.system" in line for line in result["program_slice"])
+
+
+def test_get_taint_evidence_file_not_found() -> None:
+    handlers = MCPToolHandlers()
+    result = handlers.handle_sast_get_taint_evidence("/nonexistent/file.py", 1)
+    assert result["status"] == "error"
+    assert "not found" in result["message"].lower()

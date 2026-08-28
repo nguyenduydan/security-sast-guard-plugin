@@ -190,4 +190,28 @@ TOOLS_SCHEMAS: list[dict[str, Any]] = [
             "required": ["findings", "target_path", "ai_analysis"],
         },
     },
+    {
+        "name": "sast_get_taint_evidence",
+        "description": (
+            "Extract precise 5-15 line program slice and evidence graph for a finding."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "File path containing the vulnerability finding.",
+                },
+                "line_number": {
+                    "type": "integer",
+                    "description": "Line number of the finding sink.",
+                },
+                "slice_window": {
+                    "type": "integer",
+                    "description": "Optional lines above/below to extract (default 7).",
+                },
+            },
+            "required": ["file_path", "line_number"],
+        },
+    },
 ]
