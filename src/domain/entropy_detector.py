@@ -48,6 +48,12 @@ class ShannonEntropyDetector:
             re.compile(r"\b(AKIA|ASIA)[0-9A-Z]{16}\b"),
         ),
         (
+            "TOKEN_GOOGLE",
+            "Google API / Gemini Key Leak",
+            "Critical",
+            re.compile(r"\bAIza[0-9A-Za-z-_]{35}\b"),
+        ),
+        (
             "TOKEN_ANTHROPIC",
             "Anthropic Claude API Key Leak",
             "Critical",
@@ -67,6 +73,44 @@ class ShannonEntropyDetector:
                 r"\b(xoxb-[0-9]{10,}-[0-9]{10,}-[a-zA-Z0-9]{24,}|"
                 r"xoxp-[0-9]{10,}-[0-9]{10,}-[a-zA-Z0-9]{24,})\b"
             ),
+        ),
+        (
+            "TOKEN_SLACK_WEBHOOK",
+            "Slack Incoming Webhook Leak",
+            "Critical",
+            re.compile(
+                r"https://hooks\.slack\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+"
+            ),
+        ),
+        (
+            "TOKEN_TWILIO",
+            "Twilio API Key Leak",
+            "High",
+            re.compile(r"\bSK[0-9a-fA-F]{32}\b"),
+        ),
+        (
+            "TOKEN_SENDGRID",
+            "SendGrid API Key Leak",
+            "Critical",
+            re.compile(r"\bSG\.[a-zA-Z0-9_-]{22}\.[a-zA-Z0-9_-]{43}\b"),
+        ),
+        (
+            "TOKEN_DOCKER_HUB",
+            "Docker Hub Access Token Leak",
+            "Critical",
+            re.compile(r"\bdckr_pat_[a-zA-Z0-9_-]{27}\b"),
+        ),
+        (
+            "TOKEN_VAULT",
+            "HashiCorp Vault Token Leak",
+            "High",
+            re.compile(r"\b(hvs\.[a-zA-Z0-9_-]{24,}|s\.[a-zA-Z0-9_-]{24,})\b"),
+        ),
+        (
+            "TOKEN_AZURE_SAS",
+            "Azure Shared Access Signature Leak",
+            "High",
+            re.compile(r"(?i)\b(?:sig|signature)=[a-zA-Z0-9%_-]{43,}\b"),
         ),
         (
             "TOKEN_PRIVATE_KEY",

@@ -9,12 +9,13 @@ After modifying source code or before committing/pushing, the Agent **MUST** run
 ## 1. Agentic Code Discovery & MCP Usage
 
 - **Prioritize codebase-memory-mcp:** The Agent **MUST** prioritize tools from the `codebase-memory-mcp` server (such as `search_graph`, `query_graph`, `get_code_snippet`, `get_architecture`) to explore codebase architecture, dependency relationships, and dataflows before using blind search commands (`grep` or raw file reading).
-- **Integrate sast-guard MCP Server (12 Tools):** The Agent **MUST** invoke the Stdio MCP tools provided by `sast-guard` when performing security tasks:
+- **Integrate sast-guard MCP Server (13 Tools):** The Agent **MUST** invoke the Stdio MCP tools provided by `sast-guard` when performing security tasks:
   - `sast_scan_file`: Check security for a specific file and extract taint traces.
   - `sast_scan_diff`: Scan security on modified lines based on Git diff.
   - `sast_check_command`: Check shell command safety before proposing execution.
   - `sast_get_dataflow_path`: Trace dataflow paths from Source to Sink.
   - `sast_get_taint_context`: Inspect taint context snippets at specified lines.
+  - `sast_get_taint_evidence`: Extract concise program slice and evidence graph for a finding.
   - `sast_get_status` / `sast_set_mode` / `sast_set_level` / `sast_init` / `sast_sync_rules` / `sast_get_help` / `sast_generate_report`.
 
 ---

@@ -179,3 +179,64 @@ def test_sast_scanner_integration(tmp_path: Path) -> None:
 
     assert "TOKEN_OPENAI" in rule_ids
     assert "HIGH_ENTROPY_SECRET" in rule_ids
+
+
+def test_expanded_provider_tokens_detection() -> None:
+    """Verify detection of Google, Azure SAS, Slack Webhook, Twilio, SendGrid,
+    Docker Hub, and Vault.
+    """
+    detector = ShannonEntropyDetector()
+
+    # 1. Google / Gemini API key
+    dummy_google = _join_parts(
+        "AIza", "SyD", "1234567890", "abcdefghij", "KLMNOPQRSTUV"
+    )
+    f_google = detector.scan_line(f'GEMINI_KEY = "{dummy_google}"', 1, "test.py")
+    assert any(f["rule_id"] == "TOKEN_GOOGLE" for f in f_google)
+
+    # 2. Azure SAS token
+    dummy_sas = _join_parts(
+        "sig=", "a1b2c3d4e5f6g7h8i9j0", "k1l2m3n4o5p6q7r8s9t0", "1234567890A"
+    )
+    f_azure = detector.scan_line(
+        f'blob_url = "https://myacct.blob.core.windows.net/cnt?{dummy_sas}"',
+        2,
+        "test.py",
+    )
+    assert any(f["rule_id"] == "TOKEN_AZURE_SAS" for f in f_azure)
+
+    # 3. Slack Webhook URL
+    dummy_webhook = _join_parts(
+        "https://hooks.",
+        "slack.com/services/",
+        "T12345678/",
+        "B87654321/",
+        "a1b2c3d4e5f6g7h8i9j0k1l2",
+    )
+    f_slack_hook = detector.scan_line(f'webhook = "{dummy_webhook}"', 3, "test.py")
+    assert any(f["rule_id"] == "TOKEN_SLACK_WEBHOOK" for f in f_slack_hook)
+
+    # 4. Twilio API key
+    dummy_twilio = _join_parts("SK", "0123456789abcdef", "0123456789abcdef")
+    f_twilio = detector.scan_line(f'twilio_key = "{dummy_twilio}"', 4, "test.py")
+    assert any(f["rule_id"] == "TOKEN_TWILIO" for f in f_twilio)
+
+    # 5. SendGrid API key
+    dummy_sendgrid = _join_parts(
+        "SG.",
+        "abcdefghijklmnopqrstuv",
+        ".",
+        "1234567890abcdefghijklmnopqrstuvwxyz1234567",
+    )
+    f_sendgrid = detector.scan_line(f'sendgrid_key = "{dummy_sendgrid}"', 5, "test.py")
+    assert any(f["rule_id"] == "TOKEN_SENDGRID" for f in f_sendgrid)
+
+    # 6. Docker Hub PAT
+    dummy_docker = _join_parts("dckr_pat_", "abcdefghijklmnopqrstuvwxyz1")
+    f_docker = detector.scan_line(f'docker_pat = "{dummy_docker}"', 6, "test.py")
+    assert any(f["rule_id"] == "TOKEN_DOCKER_HUB" for f in f_docker)
+
+    # 7. Vault Token
+    dummy_vault = _join_parts("hvs.", "abcdefghijklmnopqrstuvwxyz12")
+    f_vault = detector.scan_line(f'vault_token = "{dummy_vault}"', 7, "test.py")
+    assert any(f["rule_id"] == "TOKEN_VAULT" for f in f_vault)

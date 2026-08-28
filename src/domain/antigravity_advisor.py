@@ -265,26 +265,27 @@ Analyze each finding and respond in the following STRICT JSON format:
     ) -> tuple[str, list[AIFindingAdvice], AITokenUsage]:
         """Process a single batch of findings through Antigravity Agent."""
         # Dynamic import of google.antigravity
-        from google.antigravity import (  # pylint: disable=import-outside-toplevel,no-name-in-module
-            Agent,
-            CapabilitiesConfig,
-            LocalAgentConfig,
-        )
+        ag_module = importlib.import_module("google.antigravity")
+        agent_cls = ag_module.Agent
+        capabilities_cls = getattr(ag_module, "CapabilitiesConfig", None)
+        local_config_cls = ag_module.LocalAgentConfig
 
         # Zero-Trust capabilities hardening: disable command and file modification tools
-        try:
-            capabilities = CapabilitiesConfig(
-                disabled_tools=[
-                    "run_command",
-                    "edit_file",
-                    "create_file",
-                    "start_subagent",
-                ]
-            )
-        except (TypeError, ValueError, Exception):  # pylint: disable=broad-exception-caught
-            capabilities = CapabilitiesConfig()
+        capabilities = None
+        if capabilities_cls is not None:
+            try:
+                capabilities = capabilities_cls(
+                    disabled_tools=[
+                        "run_command",
+                        "edit_file",
+                        "create_file",
+                        "start_subagent",
+                    ]
+                )
+            except (TypeError, ValueError, Exception):  # pylint: disable=broad-exception-caught
+                capabilities = capabilities_cls()
 
-        config = LocalAgentConfig(
+        config = local_config_cls(
             system_instructions=self.system_instructions,
             capabilities=capabilities,
         )
@@ -292,7 +293,7 @@ Analyze each finding and respond in the following STRICT JSON format:
         # sast-ignore PROMPT_INJECTION_VULNERABLE
         prompt = self._build_triage_prompt(batch_findings, project_context)
 
-        async with Agent(config) as agent:
+        async with agent_cls(config) as agent:
             # Pre-count prompt tokens if supported
             count_fn = getattr(agent, "count_tokens", None)
             if callable(count_fn):

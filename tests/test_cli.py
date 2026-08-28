@@ -249,3 +249,27 @@ def test_dispatcher_audit_folder_and_positional_prefixes(
     assert (
         "SAST Audit completed" in captured_cb.out or "Scan complete" in captured_cb.out
     )
+
+
+def test_dispatcher_scan_ci_flag_clean(
+    capsys: CaptureFixture[str], tmp_path: Path
+) -> None:
+    """Test --ci flag exits with 0 on clean code."""
+    clean_file = tmp_path / "clean_code.py"
+    clean_file.write_text("x: int = 42\n", encoding="utf-8")
+    code = main(["scan", str(clean_file), "--ci"])
+    assert code == 0
+    captured = capsys.readouterr()
+    assert "CI Quality Gate Passed" in captured.out
+
+
+def test_dispatcher_scan_ci_flag_failed(
+    capsys: CaptureFixture[str], tmp_path: Path
+) -> None:
+    """Test --ci flag exits with 1 on Critical / High findings."""
+    vuln_file = tmp_path / "vuln_code.py"
+    vuln_file.write_text("import os\nos.system(user_input)\n", encoding="utf-8")
+    code = main(["scan", str(vuln_file), "--ci"])
+    assert code == 1
+    captured = capsys.readouterr()
+    assert "CI Quality Gate Failed" in captured.out
