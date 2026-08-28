@@ -189,15 +189,28 @@ def test_expanded_provider_tokens_detection() -> None:
 
     # 1. Google / Gemini API key
     dummy_google = _join_parts(
-        "AIza", "SyD", "1234567890", "abcdefghij", "KLMNOPQRSTUV"
-    )
+        "AIza", "SyD1", "2345", "6789", "0abc", "defg", "hijk", "LMNO", "PQRS", "TUV"
+    )  # pragma: allowlist secret
     f_google = detector.scan_line(f'GEMINI_KEY = "{dummy_google}"', 1, "test.py")
     assert any(f["rule_id"] == "TOKEN_GOOGLE" for f in f_google)
 
     # 2. Azure SAS token
     dummy_sas = _join_parts(
-        "sig=", "a1b2c3d4e5f6g7h8i9j0", "k1l2m3n4o5p6q7r8s9t0", "1234567890A"
-    )
+        "sig=",
+        "a1b2",
+        "c3d4",
+        "e5f6",
+        "g7h8",
+        "i9j0",
+        "k1l2",
+        "m3n4",
+        "o5p6",
+        "q7r8",
+        "s9t0",
+        "1234",
+        "5678",
+        "90A",
+    )  # pragma: allowlist secret
     f_azure = detector.scan_line(
         f'blob_url = "https://myacct.blob.core.windows.net/cnt?{dummy_sas}"',
         2,
@@ -207,36 +220,64 @@ def test_expanded_provider_tokens_detection() -> None:
 
     # 3. Slack Webhook URL
     dummy_webhook = _join_parts(
-        "https://hooks.",
-        "slack.com/services/",
+        "https://",
+        "hooks.",
+        "slack.com/",
+        "services/",
         "T12345678/",
         "B87654321/",
-        "a1b2c3d4e5f6g7h8i9j0k1l2",
-    )
+        "a1b2",
+        "c3d4",
+        "e5f6",
+        "g7h8",
+        "i9j0",
+        "k1l2",
+    )  # pragma: allowlist secret
     f_slack_hook = detector.scan_line(f'webhook = "{dummy_webhook}"', 3, "test.py")
     assert any(f["rule_id"] == "TOKEN_SLACK_WEBHOOK" for f in f_slack_hook)
 
     # 4. Twilio API key
-    dummy_twilio = _join_parts("SK", "0123456789abcdef", "0123456789abcdef")
+    dummy_twilio = _join_parts(
+        "SK", "0123", "4567", "89ab", "cdef", "0123", "4567", "89ab", "cdef"
+    )  # pragma: allowlist secret
     f_twilio = detector.scan_line(f'twilio_key = "{dummy_twilio}"', 4, "test.py")
     assert any(f["rule_id"] == "TOKEN_TWILIO" for f in f_twilio)
 
     # 5. SendGrid API key
     dummy_sendgrid = _join_parts(
         "SG.",
-        "abcdefghijklmnopqrstuv",
+        "abcd",
+        "efgh",
+        "ijkl",
+        "mnop",
+        "qrst",
+        "uv",
         ".",
-        "1234567890abcdefghijklmnopqrstuvwxyz1234567",
-    )
+        "1234",
+        "5678",
+        "90ab",
+        "cdef",
+        "ghij",
+        "klmn",
+        "opqr",
+        "stuv",
+        "wxyz",
+        "1234",
+        "567",
+    )  # pragma: allowlist secret
     f_sendgrid = detector.scan_line(f'sendgrid_key = "{dummy_sendgrid}"', 5, "test.py")
     assert any(f["rule_id"] == "TOKEN_SENDGRID" for f in f_sendgrid)
 
     # 6. Docker Hub PAT
-    dummy_docker = _join_parts("dckr_pat_", "abcdefghijklmnopqrstuvwxyz1")
+    dummy_docker = _join_parts(
+        "dckr_", "pat_", "abcd", "efgh", "ijkl", "mnop", "qrst", "uvwx", "yz1"
+    )  # pragma: allowlist secret
     f_docker = detector.scan_line(f'docker_pat = "{dummy_docker}"', 6, "test.py")
     assert any(f["rule_id"] == "TOKEN_DOCKER_HUB" for f in f_docker)
 
     # 7. Vault Token
-    dummy_vault = _join_parts("hvs.", "abcdefghijklmnopqrstuvwxyz12")
+    dummy_vault = _join_parts(
+        "hvs.", "abcd", "efgh", "ijkl", "mnop", "qrst", "uvwx", "yz12"
+    )  # pragma: allowlist secret
     f_vault = detector.scan_line(f'vault_token = "{dummy_vault}"', 7, "test.py")
     assert any(f["rule_id"] == "TOKEN_VAULT" for f in f_vault)
