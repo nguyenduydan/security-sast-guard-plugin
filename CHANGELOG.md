@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.1](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.10.0...v2.10.1) (2026-10-26)
+
+
+### 📦 Build System & Dependencies
+
+* **deps:** bump actions/checkout from 4 to 7 ([0877722](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/08777223ce20e64977e456a488db210ad126f219))
+* **deps:** bump actions/upload-artifact from 4 to 7 ([ae79bb5](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/ae79bb5514b5e217188122238de2ef2735120218))
+* **deps:** bump dependabot/fetch-metadata from 2 to 3 ([aaf0040](https://github.com/nguyenduydan/security-sast-guard-plugin/commit/aaf004016b0bc8323ec910d6b3df029cbb197357))
+
 ## [2.10.0](https://github.com/nguyenduydan/security-sast-guard-plugin/compare/v2.9.1...v2.10.0) (2026-08-28)
 
 
